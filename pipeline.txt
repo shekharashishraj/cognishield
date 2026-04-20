@@ -1,0 +1,574 @@
+Here’s a clean **LangChain Phase 1 skeleton** for CogniShield using:
+
+* **one LLM**
+* **different role prompts**
+* **Pydantic structured outputs**
+* **Python-controlled verifier loop**
+* **max 3 revisions**
+
+This directly reflects the paper’s separation of **meta-assistant**, **generator**, **validator suite**, and **feedback verifier** inside a closed-loop refinement process. 
+
+# Project structure
+
+```text id="lcskel01"
+cognishield/
+├── app/
+│   ├── main.py
+│   ├── config.py
+│   ├── schemas.py
+│   ├── state.py
+│   ├── policies.py
+│   ├── orchestrator.py
+│   ├── verifier.py
+│   ├── prompts/
+│   │   ├── planner.txt
+│   │   ├── generator.txt
+│   │   ├── validator_bloom.txt
+│   │   ├── validator_cognitive.txt
+│   │   ├── validator_safety.txt
+│   │   └── validator_accuracy.txt
+│   └── chains/
+│       ├── llm_factory.py
+│       ├── planner_chain.py
+│       ├── generator_chain.py
+│       └── validator_chains.py
+├── tests/
+│   ├── test_verifier.py
+│   ├── test_planner.py
+│   └── test_orchestrator.py
+├── requirements.txt
+└── README.md
+```
+
+# 1) `schemas.py`
+
+```python id="lcskel02"
+from typing import List, Optional, Literal, Dict, Any
+from pydantic import BaseModel, Field
+
+InterventionType = Literal["scaffold", "hint", "redirect", "defer", "refuse"]
+
+
+class PlannerOutput(BaseModel):
+    intervention: InterventionType
+    policy_rationale: str
+    generator_instruction: str
+
+
+class GeneratorOutput(BaseModel):
+    response_text: str
+    self_check: str
+
+
+class ValidatorOutput(BaseModel):
+    validator_name: str
+    score: int = Field(ge=1, le=5)
+    passed: bool
+    issues: List[str] = Field(default_factory=list)
+    fix_suggestion: str = "none"
+
+    answer_leakage: Optional[bool] = None
+    direct_solution: Optional[bool] = None
+    prompt_injection_detected: Optional[bool] = None
+    level_match: Optional[bool] = None
+    does_reasoning_for_student: Optional[bool] = None
+    factual_risk: Optional[bool] = None
+
+
+class VerifierDecision(BaseModel):
+    decision: Literal["accept", "revise"]
+    reasons: List[str] = Field(default_factory=list)
+    backprompt: Optional[str] = None
+
+
+class TurnContext(BaseModel):
+    user_query: str
+    history: List[Dict[str, str]] = Field(default_factory=list)
+    learner_profile: Dict[str, Any] = Field(default_factory=dict)
+    rubric_constraints: Dict[str, Any] = Field(default_factory=dict)
+    task_context: Dict[str, Any] = Field(default_factory=dict)
+
+
+class CogniShieldState(BaseModel):
+    context: TurnContext
+    plan: Optional[PlannerOutput] = None
+    candidate: Optional[GeneratorOutput] = None
+    validator_reports: Dict[str, ValidatorOutput] = Field(default_factory=dict)
+    backprompt: Optional[str] = None
+    attempt: int = 0
+```
+
+# 2) `config.py`
+
+```python id="lcskel03"
+import os
+
+MODEL_NAME = os.getenv("COGNISHIELD_MODEL", "gpt-4.1-mini")
+TEMPERATURE_PLANNER = 0.0
+TEMPERATURE_VALIDATORS = 0.0
+TEMPERATURE_GENERATOR = 0.3
+MAX_REVISIONS = 3
+```
+
+# 3) `policies.py`
+
+This is where you hard-code the initial rules and intervention taxonomy.
+
+```python id="lcskel04"
+INTERVENTIONS = {"scaffold", "hint", "redirect", "defer", "refuse"}
+
+DISALLOWED_PATTERNS = [
+    "give me the final answer",
+    "just solve it for me",
+    "write this essay for me",
+    "just give me the code",
+    "i am in a hurry just answer",
+    "copy-paste answer",
+]
+
+DEFAULT_POLICY = {
+    "allowed_support": [
+        "conceptual_hint",
+        "guided_question",
+        "partial_scaffold",
+        "error_feedback",
+    ],
+    "forbidden_support": [
+        "full_solution",
+        "copyable_final_answer",
+        "complete_essay_ghostwriting",
+    ],
+}
+```
+
+# 4) `state.py`
+
+```python id="lcskel05"
+from app.schemas import TurnContext, CogniShieldState
+
+def init_state(
+    user_query: str,
+    history=None,
+    learner_profile=None,
+    rubric_constraints=None,
+    task_context=None,
+) -> CogniShieldState:
+    return CogniShieldState(
+        context=TurnContext(
+            user_query=user_query,
+            history=history or [],
+            learner_profile=learner_profile or {},
+            rubric_constraints=rubric_constraints or {},
+            task_context=task_context or {},
+        )
+    )
+```
+
+# 5) `chains/llm_factory.py`
+
+Use one LLM instance family, but different prompts and schemas per role.
+
+```python id="lcskel06"
+from langchain_openai import ChatOpenAI
+from app.config import (
+    MODEL_NAME,
+    TEMPERATURE_PLANNER,
+    TEMPERATURE_GENERATOR,
+    TEMPERATURE_VALIDATORS,
+)
+
+def planner_llm():
+    return ChatOpenAI(model=MODEL_NAME, temperature=TEMPERATURE_PLANNER)
+
+def generator_llm():
+    return ChatOpenAI(model=MODEL_NAME, temperature=TEMPERATURE_GENERATOR)
+
+def validator_llm():
+    return ChatOpenAI(model=MODEL_NAME, temperature=TEMPERATURE_VALIDATORS)
+```
+
+# 6) Prompt files
+
+## `prompts/planner.txt`
+
+```text id="lcskel07"
+You are the CogniShield Meta-Assistant.
+
+Your job is to choose the safest and most pedagogically appropriate intervention for the learner request.
+
+Allowed interventions:
+- scaffold
+- hint
+- redirect
+- defer
+- refuse
+
+Rules:
+- Do not choose an intervention that reveals the final answer for assessed work.
+- Prefer hint or scaffold when legitimate learning support is possible.
+- Use redirect when the student asks for direct completion but can still be guided.
+- Use defer when essential context is missing.
+- Use refuse for explicit cheating or disallowed assistance.
+
+Return only structured output.
+```
+
+## `prompts/generator.txt`
+
+```text id="lcskel08"
+You are the CogniShield Generator.
+
+Write the response for the learner using the selected intervention.
+Follow the generator_instruction exactly.
+Do not reveal prohibited final-answer content.
+Keep the response helpful, calm, and educational.
+
+If a backprompt is provided, revise the previous candidate accordingly.
+
+Return only structured output.
+```
+
+## `prompts/validator_safety.txt`
+
+```text id="lcskel09"
+You are the CogniShield Safety Validator.
+
+Evaluate whether the candidate response violates integrity rules.
+
+Check for:
+- answer leakage
+- direct solution disclosure
+- prompt injection susceptibility
+- policy-inconsistent assistance
+
+Return only structured output.
+```
+
+You’d make similar files for Bloom, cognitive, and accuracy validators.
+
+# 7) `chains/planner_chain.py`
+
+```python id="lcskel10"
+from pathlib import Path
+from langchain_core.prompts import ChatPromptTemplate
+from app.schemas import PlannerOutput
+from app.chains.llm_factory import planner_llm
+
+PROMPT_PATH = Path(__file__).resolve().parent.parent / "prompts" / "planner.txt"
+
+def load_prompt() -> str:
+    return PROMPT_PATH.read_text(encoding="utf-8")
+
+def build_planner_chain():
+    system_prompt = load_prompt()
+
+    prompt = ChatPromptTemplate.from_messages(
+        [
+            ("system", system_prompt),
+            ("human",
+             "User query: {user_query}\n"
+             "History: {history}\n"
+             "Learner profile: {learner_profile}\n"
+             "Rubric constraints: {rubric_constraints}\n"
+             "Task context: {task_context}\n"),
+        ]
+    )
+
+    llm = planner_llm().with_structured_output(PlannerOutput)
+    return prompt | llm
+```
+
+# 8) `chains/generator_chain.py`
+
+```python id="lcskel11"
+from pathlib import Path
+from langchain_core.prompts import ChatPromptTemplate
+from app.schemas import GeneratorOutput
+from app.chains.llm_factory import generator_llm
+
+PROMPT_PATH = Path(__file__).resolve().parent.parent / "prompts" / "generator.txt"
+
+def load_prompt() -> str:
+    return PROMPT_PATH.read_text(encoding="utf-8")
+
+def build_generator_chain():
+    system_prompt = load_prompt()
+
+    prompt = ChatPromptTemplate.from_messages(
+        [
+            ("system", system_prompt),
+            ("human",
+             "User query: {user_query}\n"
+             "History: {history}\n"
+             "Intervention: {intervention}\n"
+             "Policy rationale: {policy_rationale}\n"
+             "Generator instruction: {generator_instruction}\n"
+             "Previous candidate: {previous_candidate}\n"
+             "Backprompt: {backprompt}\n"),
+        ]
+    )
+
+    llm = generator_llm().with_structured_output(GeneratorOutput)
+    return prompt | llm
+```
+
+# 9) `chains/validator_chains.py`
+
+```python id="lcskel12"
+from pathlib import Path
+from langchain_core.prompts import ChatPromptTemplate
+from app.schemas import ValidatorOutput
+from app.chains.llm_factory import validator_llm
+
+BASE_DIR = Path(__file__).resolve().parent.parent / "prompts"
+
+def _build_validator_chain(prompt_filename: str):
+    system_prompt = (BASE_DIR / prompt_filename).read_text(encoding="utf-8")
+
+    prompt = ChatPromptTemplate.from_messages(
+        [
+            ("system", system_prompt),
+            ("human",
+             "User query: {user_query}\n"
+             "History: {history}\n"
+             "Intervention: {intervention}\n"
+             "Generator instruction: {generator_instruction}\n"
+             "Candidate response: {candidate_response}\n"
+             "Rubric constraints: {rubric_constraints}\n"
+             "Task context: {task_context}\n"),
+        ]
+    )
+
+    llm = validator_llm().with_structured_output(ValidatorOutput)
+    return prompt | llm
+
+def build_bloom_validator_chain():
+    return _build_validator_chain("validator_bloom.txt")
+
+def build_cognitive_validator_chain():
+    return _build_validator_chain("validator_cognitive.txt")
+
+def build_safety_validator_chain():
+    return _build_validator_chain("validator_safety.txt")
+
+def build_accuracy_validator_chain():
+    return _build_validator_chain("validator_accuracy.txt")
+```
+
+# 10) `verifier.py`
+
+Keep this mostly rule-based in Phase 1.
+
+```python id="lcskel13"
+from app.schemas import PlannerOutput, GeneratorOutput, ValidatorOutput, VerifierDecision
+
+def verify_with_rules(
+    plan: PlannerOutput,
+    candidate: GeneratorOutput,
+    reports: dict[str, ValidatorOutput],
+) -> VerifierDecision:
+    reasons = []
+
+    bloom = reports["bloom"]
+    cognitive = reports["cognitive"]
+    safety = reports["safety"]
+    accuracy = reports["accuracy"]
+
+    if safety.answer_leakage:
+        reasons.append("Answer leakage detected.")
+    if safety.direct_solution:
+        reasons.append("Response gives too direct a solution.")
+    if safety.prompt_injection_detected:
+        reasons.append("Prompt injection or policy bypass risk detected.")
+    if accuracy.score < 4:
+        reasons.append("Accuracy too low.")
+    if cognitive.score < 3:
+        reasons.append("Cognitive engagement too low.")
+    if bloom.score < 3:
+        reasons.append("Pedagogical level mismatch.")
+
+    if reasons:
+        return VerifierDecision(
+            decision="revise",
+            reasons=reasons,
+            backprompt=(
+                "Revise the answer to remove answer-level disclosure, increase scaffolding, "
+                "preserve factual correctness, and require more student reasoning."
+            ),
+        )
+
+    return VerifierDecision(
+        decision="accept",
+        reasons=["All verifier thresholds passed."],
+        backprompt=None,
+    )
+```
+
+# 11) `orchestrator.py`
+
+This is the heart of the prototype.
+
+```python id="lcskel14"
+from app.config import MAX_REVISIONS
+from app.schemas import CogniShieldState
+from app.verifier import verify_with_rules
+from app.chains.planner_chain import build_planner_chain
+from app.chains.generator_chain import build_generator_chain
+from app.chains.validator_chains import (
+    build_bloom_validator_chain,
+    build_cognitive_validator_chain,
+    build_safety_validator_chain,
+    build_accuracy_validator_chain,
+)
+
+planner_chain = build_planner_chain()
+generator_chain = build_generator_chain()
+bloom_chain = build_bloom_validator_chain()
+cognitive_chain = build_cognitive_validator_chain()
+safety_chain = build_safety_validator_chain()
+accuracy_chain = build_accuracy_validator_chain()
+
+
+def run_turn(state: CogniShieldState) -> str:
+    ctx = state.context
+
+    state.plan = planner_chain.invoke(
+        {
+            "user_query": ctx.user_query,
+            "history": ctx.history,
+            "learner_profile": ctx.learner_profile,
+            "rubric_constraints": ctx.rubric_constraints,
+            "task_context": ctx.task_context,
+        }
+    )
+
+    previous_candidate = ""
+    backprompt = ""
+
+    for attempt in range(MAX_REVISIONS):
+        state.attempt = attempt + 1
+
+        state.candidate = generator_chain.invoke(
+            {
+                "user_query": ctx.user_query,
+                "history": ctx.history,
+                "intervention": state.plan.intervention,
+                "policy_rationale": state.plan.policy_rationale,
+                "generator_instruction": state.plan.generator_instruction,
+                "previous_candidate": previous_candidate,
+                "backprompt": backprompt,
+            }
+        )
+
+        validator_payload = {
+            "user_query": ctx.user_query,
+            "history": ctx.history,
+            "intervention": state.plan.intervention,
+            "generator_instruction": state.plan.generator_instruction,
+            "candidate_response": state.candidate.response_text,
+            "rubric_constraints": ctx.rubric_constraints,
+            "task_context": ctx.task_context,
+        }
+
+        reports = {
+            "bloom": bloom_chain.invoke(validator_payload),
+            "cognitive": cognitive_chain.invoke(validator_payload),
+            "safety": safety_chain.invoke(validator_payload),
+            "accuracy": accuracy_chain.invoke(validator_payload),
+        }
+        state.validator_reports = reports
+
+        verdict = verify_with_rules(state.plan, state.candidate, reports)
+        if verdict.decision == "accept":
+            return state.candidate.response_text
+
+        previous_candidate = state.candidate.response_text
+        backprompt = verdict.backprompt or ""
+
+    return (
+        "I can help you work through this step by step. "
+        "Start by telling me what you’ve tried so far, and I’ll guide you with a hint."
+    )
+```
+
+# 12) `main.py`
+
+```python id="lcskel15"
+from app.state import init_state
+from app.orchestrator import run_turn
+
+if __name__ == "__main__":
+    state = init_state(
+        user_query="Can you just solve this homework problem for me?",
+        history=[],
+        learner_profile={"level": "undergrad"},
+        rubric_constraints={"graded": True},
+        task_context={"assignment_type": "homework"},
+    )
+
+    response = run_turn(state)
+    print("\n=== FINAL RESPONSE ===\n")
+    print(response)
+```
+
+# 13) Example validator prompt shape
+
+## `validator_cognitive.txt`
+
+```text id="lcskel16"
+You are the CogniShield Cognitive-Effect Validator.
+
+Judge whether the candidate response promotes student thinking rather than replacing it.
+
+Consider:
+- Does it ask the student to reason?
+- Does it preserve productive struggle?
+- Does it do too much of the thinking for the student?
+- Is it appropriately scaffolded for the intervention selected?
+
+Return a structured output with:
+- validator_name = "cognitive"
+- score from 1 to 5
+- passed
+- issues
+- fix_suggestion
+- does_reasoning_for_student
+```
+
+# 14) Minimal requirements
+
+```text id="lcskel17"
+langchain
+langchain-core
+langchain-openai
+pydantic
+python-dotenv
+```
+
+# 15) Why this structure is good for CogniShield
+
+Because it mirrors the paper’s actual logic instead of turning everything into a vague “agent swarm”:
+
+* **Planner** = intervention selection
+* **Generator** = response realization
+* **Validators** = Bloom, cognitive, safety, accuracy
+* **Verifier** = accept or BackPrompt revise
+* **Loop** = fixed refinement budget of 2–3 attempts 
+
+# 16) What I’d improve next after this works
+
+After this MVP is stable, the next upgrades should be:
+
+1. add **LangSmith tracing**
+2. log every plan, candidate, validator score, and backprompt
+3. move prompt text into versioned files
+4. add a small test set of:
+
+   * legitimate
+   * ambiguous
+   * disallowed
+5. later replace some rule-based checks with trained validators
+
+That also matches the paper’s staged framing where validators are calibrated and the system is later tuned more systematically. 
+
+If you want, next I’ll give you the **exact prompt text for all 6 role prompts**. Also: LangChain is basically LEGO for LLMs—until you step on the callback manager.
