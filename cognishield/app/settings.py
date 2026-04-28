@@ -1,9 +1,13 @@
 from __future__ import annotations
 
-from typing import Optional
+from typing import Literal, Optional
 
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+from cognishield.app.schemas import AnswerQualityLevel, ConcernLevel
+
+PipelineKind = Literal["legacy", "meta"]
 
 
 class Settings(BaseSettings):
@@ -30,6 +34,29 @@ class Settings(BaseSettings):
     temperature_planner: float = 0.0
     temperature_generator: float = 0.3
     temperature_validators: float = 0.0
+    temperature_meta: float = Field(default=0.0, description="Meta-agent structured classification.")
+    temperature_revision: float = Field(
+        default=0.3,
+        description="Final revision pass that may align output with meta + verifier.",
+    )
+
+    pipeline: PipelineKind = Field(
+        default="legacy",
+        description='Orchestration: "legacy" (planner+validators loop) or "meta" (primary→meta→revision).',
+    )
+
+    meta_verifier_max_cognitive_concern: ConcernLevel = Field(
+        default="medium",
+        description="Reject if cognitive concern level is strictly worse than this (low < medium < high).",
+    )
+    meta_verifier_max_safety_concern: ConcernLevel = Field(
+        default="medium",
+        description="Reject if safety concern level is strictly worse than this.",
+    )
+    meta_verifier_min_answer_quality: AnswerQualityLevel = Field(
+        default="partial",
+        description="Reject if answer-direction quality is below this (inaccurate < partial < accurate).",
+    )
 
     max_revisions: int = Field(default=3, ge=1, le=10)
 

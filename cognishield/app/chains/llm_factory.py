@@ -24,3 +24,11 @@ def generator_llm(settings: Settings) -> ChatOpenAI:
 
 def validator_llm(settings: Settings) -> ChatOpenAI:
     return _chat_openai(settings, settings.temperature_validators)
+
+
+def meta_llm(settings: Settings) -> ChatOpenAI:
+    return _chat_openai(settings, settings.temperature_meta)
+
+
+def revision_llm(settings: Settings) -> ChatOpenAI:
+    return _chat_openai(settings, settings.temperature_revision)

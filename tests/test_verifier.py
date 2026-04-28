@@ -1,12 +1,28 @@
 from __future__ import annotations
 
 from cognishield.app.schemas import (
+    AnswerDirectionClassifier,
+    CognitiveSafetyClassifier,
     GeneratorOutput,
+    MetaAgentOutput,
     PlannerOutput,
     ValidatorOutput,
 )
 from cognishield.app.settings import Settings
-from cognishield.app.verifier import verify_with_rules
+from cognishield.app.verifier import verify_meta_classifiers, verify_with_rules
+
+
+def _meta(
+    *,
+    cognitive: str = "low",
+    safety: str = "low",
+    answer: str = "accurate",
+) -> MetaAgentOutput:
+    return MetaAgentOutput(
+        cognitive_classifier=CognitiveSafetyClassifier(level=cognitive, reason="test"),
+        safety_classifier=CognitiveSafetyClassifier(level=safety, reason="test"),
+        answer_classifier=AnswerDirectionClassifier(level=answer, reason="test"),
+    )
 
 
 def _reports(
@@ -70,6 +86,31 @@ def test_verifier_revises_on_answer_leakage() -> None:
     verdict = verify_with_rules(plan, candidate, _reports(safety_leak=True), settings)
     assert verdict.decision == "revise"
     assert verdict.backprompt
+
+
+def test_meta_verifier_accepts_when_thresholds_pass() -> None:
+    settings = Settings()
+    verdict = verify_meta_classifiers(_meta(), settings)
+    assert verdict.decision == "accept"
+
+
+def test_meta_verifier_revises_on_high_cognitive() -> None:
+    settings = Settings(meta_verifier_max_cognitive_concern="medium")
+    verdict = verify_meta_classifiers(_meta(cognitive="high"), settings)
+    assert verdict.decision == "revise"
+    assert verdict.backprompt
+
+
+def test_meta_verifier_revises_on_high_safety() -> None:
+    settings = Settings(meta_verifier_max_safety_concern="low")
+    verdict = verify_meta_classifiers(_meta(safety="medium"), settings)
+    assert verdict.decision == "revise"
+
+
+def test_meta_verifier_revises_on_inaccurate_answer() -> None:
+    settings = Settings(meta_verifier_min_answer_quality="partial")
+    verdict = verify_meta_classifiers(_meta(answer="inaccurate"), settings)
+    assert verdict.decision == "revise"
 
 
 def test_verifier_respects_custom_accuracy_threshold() -> None:

@@ -6,6 +6,40 @@ from pydantic import BaseModel, Field
 
 InterventionType = Literal["scaffold", "hint", "redirect", "defer", "refuse"]
 
+# Meta pipeline: severity of concern for cognitive/safety (low = little concern / better).
+ConcernLevel = Literal["low", "medium", "high"]
+
+# Meta pipeline: factual/directional quality of the draft toward a correct solution.
+AnswerQualityLevel = Literal["inaccurate", "partial", "accurate"]
+
+
+class CognitiveSafetyClassifier(BaseModel):
+    """Concern severity for cognitive engagement or safety risk (low is preferable)."""
+
+    level: ConcernLevel
+    reason: str
+
+
+class AnswerDirectionClassifier(BaseModel):
+    """Quality of hints/direction relative to a correct solution."""
+
+    level: AnswerQualityLevel
+    reason: str
+
+
+class MetaAgentOutput(BaseModel):
+    """Structured output from the meta-agent (one LLM call)."""
+
+    cognitive_classifier: CognitiveSafetyClassifier
+    safety_classifier: CognitiveSafetyClassifier
+    answer_classifier: AnswerDirectionClassifier
+
+
+class RevisionOutput(BaseModel):
+    """Final user-facing response after optional alignment with meta + verifier."""
+
+    response_text: str
+
 
 class PlannerOutput(BaseModel):
     intervention: InterventionType
@@ -54,3 +88,8 @@ class CogniShieldState(BaseModel):
     validator_reports: Dict[str, ValidatorOutput] = Field(default_factory=dict)
     backprompt: Optional[str] = None
     attempt: int = 0
+    # Meta pipeline (primary → meta → revision); legacy pipeline leaves these unset.
+    primary_draft: Optional[GeneratorOutput] = None
+    meta_output: Optional[MetaAgentOutput] = None
+    meta_verifier_decision: Optional[VerifierDecision] = None
+    final_response_text: Optional[str] = None

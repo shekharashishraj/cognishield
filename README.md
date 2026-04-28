@@ -1,12 +1,12 @@
 # CogniShield (Phase 1 prototype)
 
-LangChain-based closed loop: **planner → generator → validators → rule verifier**, with `pydantic-settings` + **Tyro** CLI, stdlib logging, and optional JSONL traces.
+LangChain-based pipelines: **legacy** (planner → generator → four validators → rule verifier) or **meta** (primary → meta-agent → rule verifier → revision), with `pydantic-settings` + **Tyro** CLI, stdlib logging, and optional JSONL traces. Details and CLI flags are in [`docs/architecture.md`](docs/architecture.md).
 
 ## Documentation
 
 Full codebase documentation and the **vLLM server + inference manual** live under **[`docs/`](docs/README.md)**:
 
-- [Architecture](docs/architecture.md) — flow, stack, layout  
+- [Architecture](docs/architecture.md) — legacy vs meta flow, diagrams, CLI/env, prompt files, tuning  
 - [Module reference](docs/modules.md) — every package and script  
 - [vLLM inference](docs/vllm-inference.md) — install vLLM, `vllm serve`, env vars, run CogniShield  
 
@@ -74,6 +74,9 @@ python3 -m cognishield.app.cli --model gpt-4o --query "Give a hint, not the answ
 
 # No API calls (wiring / CI smoke)
 python3 -m cognishield.app.cli --query "test" --dry-run
+
+# Meta pipeline (primary → meta → revision); see docs/architecture.md
+python3 -m cognishield.app.cli --pipeline meta --query "Give me a hint only."
 ```
 
 ### Traces (JSONL)

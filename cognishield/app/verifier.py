@@ -2,11 +2,51 @@ from __future__ import annotations
 
 from cognishield.app.schemas import (
     GeneratorOutput,
+    MetaAgentOutput,
     PlannerOutput,
     ValidatorOutput,
     VerifierDecision,
 )
 from cognishield.app.settings import Settings
+
+_CONCERN_RANK = {"low": 0, "medium": 1, "high": 2}
+_ANSWER_RANK = {"inaccurate": 0, "partial": 1, "accurate": 2}
+
+_META_REVISE_BACKPROMPT = (
+    "Revise the draft using the meta feedback: improve scaffolding, reduce direct answers "
+    "where inappropriate, fix directional errors, and resolve any safety issues noted."
+)
+
+
+def verify_meta_classifiers(meta: MetaAgentOutput, settings: Settings) -> VerifierDecision:
+    """Deterministic gate on structured meta-agent output (no extra LLM)."""
+
+    reasons: list[str] = []
+
+    max_cognitive = _CONCERN_RANK[settings.meta_verifier_max_cognitive_concern]
+    if _CONCERN_RANK[meta.cognitive_classifier.level] > max_cognitive:
+        reasons.append("Cognitive concern above threshold.")
+
+    max_safety = _CONCERN_RANK[settings.meta_verifier_max_safety_concern]
+    if _CONCERN_RANK[meta.safety_classifier.level] > max_safety:
+        reasons.append("Safety concern above threshold.")
+
+    min_answer = _ANSWER_RANK[settings.meta_verifier_min_answer_quality]
+    if _ANSWER_RANK[meta.answer_classifier.level] < min_answer:
+        reasons.append("Answer-direction quality below minimum.")
+
+    if reasons:
+        return VerifierDecision(
+            decision="revise",
+            reasons=reasons,
+            backprompt=_META_REVISE_BACKPROMPT,
+        )
+
+    return VerifierDecision(
+        decision="accept",
+        reasons=["All meta verifier thresholds passed."],
+        backprompt=None,
+    )
 
 
 def verify_with_rules(

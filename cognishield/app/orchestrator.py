@@ -4,7 +4,10 @@ import json
 from typing import Any, Callable, Optional
 
 from cognishield.app.chains.generator_chain import build_generator_chain
+from cognishield.app.chains.meta_chain import build_meta_chain
 from cognishield.app.chains.planner_chain import build_planner_chain
+from cognishield.app.chains.primary_chain import build_primary_chain
+from cognishield.app.chains.revision_chain import build_revision_chain
 from cognishield.app.chains.validator_chains import (
     build_accuracy_validator_chain,
     build_bloom_validator_chain,
@@ -13,16 +16,22 @@ from cognishield.app.chains.validator_chains import (
 )
 from cognishield.app.logging_setup import get_logger
 from cognishield.app.schemas import (
+    AnswerDirectionClassifier,
     CogniShieldState,
+    CognitiveSafetyClassifier,
     GeneratorOutput,
+    MetaAgentOutput,
     PlannerOutput,
+    RevisionOutput,
     ValidatorOutput,
 )
 from cognishield.app.settings import Settings
 from cognishield.app.trace import JsonlTracer
-from cognishield.app.verifier import verify_with_rules
+from cognishield.app.verifier import verify_meta_classifiers, verify_with_rules
 
 _LOG = get_logger("cognishield.orchestrator")
+
+EmitFn = Callable[[str, dict[str, Any]], None]
 
 FALLBACK_RESPONSE = (
     "I can help you work through this step by step. "
@@ -62,53 +71,99 @@ def _stub_validator(name: str) -> ValidatorOutput:
     )
 
 
-def run_turn(
-    state: CogniShieldState,
-    settings: Settings,
-    tracer: Optional[JsonlTracer] = None,
-) -> str:
+def _stub_primary_draft() -> GeneratorOutput:
+    return GeneratorOutput(
+        response_text=(
+            "[dry_run] Primary: What quantity are you solving for, and what values are given?"
+        ),
+        self_check="dry_run stub",
+    )
+
+
+def _stub_meta_output() -> MetaAgentOutput:
+    return MetaAgentOutput(
+        cognitive_classifier=CognitiveSafetyClassifier(
+            level="low",
+            reason="dry_run: scaffolding leaves reasoning to the student.",
+        ),
+        safety_classifier=CognitiveSafetyClassifier(
+            level="low",
+            reason="dry_run: no harmful or policy-bypass content.",
+        ),
+        answer_classifier=AnswerDirectionClassifier(
+            level="accurate",
+            reason="dry_run: hint points toward the correct approach.",
+        ),
+    )
+
+
+def _stub_revision_text() -> str:
+    return (
+        "[dry_run] Final: Start by naming the target quantity, then list givens and constraints."
+    )
+
+
+def _context_payload(state: CogniShieldState) -> dict[str, str]:
     ctx = state.context
-    trace = tracer
+    return {
+        "user_query": ctx.user_query,
+        "history": _serialize(ctx.history),
+        "learner_profile": _serialize(ctx.learner_profile),
+        "rubric_constraints": _serialize(ctx.rubric_constraints),
+        "task_context": _serialize(ctx.task_context),
+    }
 
-    def emit(stage: str, payload: dict[str, Any]) -> None:
-        if trace:
-            trace.event(stage, payload)
-        _LOG.info("%s", stage)
 
-    if settings.dry_run:
-        state.plan = _stub_plan()
-        emit("plan", {"dry_run": True, "plan": state.plan.model_dump()})
-        backprompt = ""
-        for attempt in range(settings.max_revisions):
-            state.attempt = attempt + 1
-            state.candidate = _stub_candidate(backprompt)
-            emit(
-                "generate",
-                {
-                    "dry_run": True,
-                    "attempt": state.attempt,
-                    "candidate": state.candidate.model_dump(),
-                },
-            )
-            reports = {
-                "bloom": _stub_validator("bloom"),
-                "cognitive": _stub_validator("cognitive"),
-                "safety": _stub_validator("safety"),
-                "accuracy": _stub_validator("accuracy"),
-            }
-            state.validator_reports = reports
-            for name, rep in reports.items():
-                emit(f"validate:{name}", {"dry_run": True, "report": rep.model_dump()})
-            verdict = verify_with_rules(state.plan, state.candidate, reports, settings)
-            emit("verify", verdict.model_dump())
-            if verdict.decision == "accept":
-                _LOG.info("accepted after %s attempts (dry_run)", state.attempt)
-                return state.candidate.response_text
-            previous_candidate = state.candidate.response_text
-            backprompt = verdict.backprompt or ""
-            emit("revise", {"attempt": state.attempt, "backprompt": backprompt})
-        return FALLBACK_RESPONSE
+def _dry_run_legacy_turn(state: CogniShieldState, settings: Settings, emit: EmitFn) -> str:
+    state.plan = _stub_plan()
+    emit("plan", {"dry_run": True, "plan": state.plan.model_dump()})
+    backprompt = ""
+    for attempt in range(settings.max_revisions):
+        state.attempt = attempt + 1
+        state.candidate = _stub_candidate(backprompt)
+        emit(
+            "generate",
+            {
+                "dry_run": True,
+                "attempt": state.attempt,
+                "candidate": state.candidate.model_dump(),
+            },
+        )
+        reports = {
+            "bloom": _stub_validator("bloom"),
+            "cognitive": _stub_validator("cognitive"),
+            "safety": _stub_validator("safety"),
+            "accuracy": _stub_validator("accuracy"),
+        }
+        state.validator_reports = reports
+        for name, rep in reports.items():
+            emit(f"validate:{name}", {"dry_run": True, "report": rep.model_dump()})
+        verdict = verify_with_rules(state.plan, state.candidate, reports, settings)
+        emit("verify", verdict.model_dump())
+        if verdict.decision == "accept":
+            _LOG.info("accepted after %s attempts (dry_run)", state.attempt)
+            return state.candidate.response_text
+        backprompt = verdict.backprompt or ""
+        emit("revise", {"attempt": state.attempt, "backprompt": backprompt})
+    return FALLBACK_RESPONSE
 
+
+def _dry_run_meta_turn(state: CogniShieldState, settings: Settings, emit: EmitFn) -> str:
+    state.primary_draft = _stub_primary_draft()
+    emit("primary", {"dry_run": True, "draft": state.primary_draft.model_dump()})
+    state.meta_output = _stub_meta_output()
+    emit("meta", {"dry_run": True, "meta": state.meta_output.model_dump()})
+    verdict = verify_meta_classifiers(state.meta_output, settings)
+    state.meta_verifier_decision = verdict
+    emit("verify", verdict.model_dump())
+    final = RevisionOutput(response_text=_stub_revision_text())
+    state.final_response_text = final.response_text
+    emit("revision", {"dry_run": True, "final": final.model_dump()})
+    return final.response_text
+
+
+def _run_legacy_turn(state: CogniShieldState, settings: Settings, emit: EmitFn) -> str:
+    ctx = state.context
     planner_chain = build_planner_chain(settings)
     generator_chain = build_generator_chain(settings)
     validators: list[tuple[str, bool, Callable[[], Any]]] = [
@@ -178,7 +233,12 @@ def run_turn(
             chain = builder()
             reports[name] = chain.invoke(validator_payload)
             emit(f"validate:{name}", {"report": reports[name].model_dump()})
-            _LOG.info("Validator %s score=%s passed=%s", name, reports[name].score, reports[name].passed)
+            _LOG.info(
+                "Validator %s score=%s passed=%s",
+                name,
+                reports[name].score,
+                reports[name].passed,
+            )
 
         state.validator_reports = reports
         verdict = verify_with_rules(state.plan, state.candidate, reports, settings)
@@ -190,9 +250,64 @@ def run_turn(
 
         previous_candidate = state.candidate.response_text
         backprompt = verdict.backprompt or ""
-        emit("revise", {"attempt": state.attempt, "reasons": verdict.reasons, "backprompt": backprompt})
+        emit(
+            "revise",
+            {"attempt": state.attempt, "reasons": verdict.reasons, "backprompt": backprompt},
+        )
         _LOG.info("Verifier requested revision: %s", verdict.reasons)
 
     _LOG.warning("Max revisions exhausted")
     emit("max_revisions", {"max": settings.max_revisions})
     return FALLBACK_RESPONSE
+
+
+def _run_meta_turn(state: CogniShieldState, settings: Settings, emit: EmitFn) -> str:
+    base = _context_payload(state)
+    primary_chain = build_primary_chain(settings)
+    meta_chain = build_meta_chain(settings)
+    revision_chain = build_revision_chain(settings)
+
+    state.primary_draft = primary_chain.invoke(base)
+    emit("primary", {"draft": state.primary_draft.model_dump()})
+
+    meta_payload = {**base, "draft_response": state.primary_draft.response_text}
+    state.meta_output = meta_chain.invoke(meta_payload)
+    emit("meta", {"meta": state.meta_output.model_dump()})
+
+    verdict = verify_meta_classifiers(state.meta_output, settings)
+    state.meta_verifier_decision = verdict
+    emit("verify", verdict.model_dump())
+
+    revision_payload = {
+        **base,
+        "draft_response": state.primary_draft.response_text,
+        "meta_json": _serialize(state.meta_output.model_dump()),
+        "verifier_json": _serialize(verdict.model_dump()),
+    }
+    final = revision_chain.invoke(revision_payload)
+    state.final_response_text = final.response_text
+    emit("revision", {"final": final.model_dump()})
+    _LOG.info("Meta pipeline completed; final len=%s", len(final.response_text))
+    return final.response_text
+
+
+def run_turn(
+    state: CogniShieldState,
+    settings: Settings,
+    tracer: Optional[JsonlTracer] = None,
+) -> str:
+    trace = tracer
+
+    def emit(stage: str, payload: dict[str, Any]) -> None:
+        if trace:
+            trace.event(stage, payload)
+        _LOG.info("%s", stage)
+
+    if settings.dry_run:
+        if settings.pipeline == "meta":
+            return _dry_run_meta_turn(state, settings, emit)
+        return _dry_run_legacy_turn(state, settings, emit)
+
+    if settings.pipeline == "meta":
+        return _run_meta_turn(state, settings, emit)
+    return _run_legacy_turn(state, settings, emit)
