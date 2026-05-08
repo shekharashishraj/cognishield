@@ -45,6 +45,17 @@ class Settings(BaseSettings):
         description='Orchestration: "legacy" (planner+validators loop) or "meta" (primary→meta→revision).',
     )
 
+    primary_raw_text: bool = Field(
+        default=False,
+        description=(
+            "If true, the meta-pipeline primary chain treats the model output as "
+            "raw text and wraps it into GeneratorOutput(response_text=..., "
+            "self_check=\"\"). Required when serving a fine-tuned chat model "
+            "that does not emit JSON. Default false preserves the existing "
+            "with_structured_output(GeneratorOutput) behavior used by GPT-4o."
+        ),
+    )
+
     meta_verifier_max_cognitive_concern: ConcernLevel = Field(
         default="medium",
         description="Reject if cognitive concern level is strictly worse than this (low < medium < high).",

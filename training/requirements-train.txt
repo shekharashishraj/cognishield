@@ -1,0 +1,29 @@
+# Training-only dependencies. Kept separate from the production
+# requirements.txt so installing CogniShield for inference stays light.
+#
+# Install with:
+#   python -m venv .venv-train
+#   source .venv-train/bin/activate
+#   pip install -r training/requirements-train.txt
+
+# Core training stack.
+torch>=2.4
+transformers>=4.45,<5
+# trl>=0.12 added SFTConfig.assistant_only_loss; <0.20 keeps max_seq_length
+# stable and avoids the loss-stagnation regression tracked in trl#3910.
+trl>=0.12,<0.20
+peft>=0.13
+datasets>=3.0
+accelerate>=1.0
+safetensors>=0.4
+
+# Config / IO.
+pyyaml>=6.0
+huggingface_hub>=0.25
+openai>=1.0
+
+# QLoRA backend. Only ships on Linux + CUDA; safe to omit on macOS.
+bitsandbytes>=0.44; platform_system == "Linux"
+
+# Smoke-eval client (vLLM-compatible /v1/chat/completions).
+requests>=2.31
