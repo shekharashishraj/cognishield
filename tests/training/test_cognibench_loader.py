@@ -7,6 +7,7 @@ ingests it correctly and the row count + split distribution match.
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 import pytest
@@ -14,7 +15,12 @@ import pytest
 from training.data.cognibench_loader import filter_accepted, iter_jsonl
 
 
-DATA = Path("/Users/ashishrajshekhar/Desktop/cognishield/sft.generated.batch.jsonl")
+DATA = Path(
+    os.environ.get(
+        "DATA_PATH",
+        Path(__file__).resolve().parents[2] / "sft.generated.batch.jsonl",
+    )
+)
 pytestmark = pytest.mark.skipif(not DATA.exists(), reason="SFT dataset not on this host")
 
 
