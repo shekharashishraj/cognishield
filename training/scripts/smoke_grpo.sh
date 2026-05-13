@@ -4,10 +4,12 @@
 set -euo pipefail
 
 CONFIG="${GRPO_CONFIG:-training/configs/rl/grpo_smoke.yaml}"
-DATA="${DATA_PATH:-cognibench.jsonl}"
+DATA="${DATA_PATH:-data/grpo_smoke_problems.jsonl}"
 
 if [[ ! -f "$DATA" ]]; then
-  echo "[smoke_grpo] $DATA not found. Generate it with:  python cognibench_pipeline.py" >&2
+  echo "[smoke_grpo] $DATA not found." >&2
+  echo "  GRPO needs records with 'problem' and 'solution' fields (the SFT JSONL doesn't carry GT)." >&2
+  echo "  Seed a tiny file or set DATA_PATH=/path/to/problems.jsonl" >&2
   exit 2
 fi
 
