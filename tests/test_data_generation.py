@@ -16,7 +16,7 @@ from training.data_generation.schema import GeneratedConversation, load_config
 from training.data_generation.validators import validate_conversation
 
 
-CONFIG_PATH = Path("training/data_generation/configs/batch_001.yaml")
+CONFIG_PATH = Path("training/data_generation/configs/batch.yaml")
 
 
 def _conversation(
@@ -96,9 +96,6 @@ def _planned_conversation(planned) -> dict:
     payload["metadata"]["tags"] = planned.tags
     payload["turn_context"]["learner_profile"] = {"level": planned.difficulty_level}
     payload["turn_context"]["rubric_constraints"]["tutor_answer_policy"] = planned.policy
-    payload["turn_context"]["task_context"]["problem_statement"] = (
-        f"Test problem for {planned.example_id}."
-    )
     return payload
 
 
@@ -166,15 +163,14 @@ def test_batch_config_loads_and_plan_counts() -> None:
     config = load_config(CONFIG_PATH)
     plan = build_generation_plan(config)
 
-    assert config.generator.model == "gpt-4o"
-    assert config.judge.model == "gpt-5.1"
-    assert config.run.max_candidate_examples == 300
+    total = config.run.total_examples
     assert config.feedback.enabled is True
     assert config.feedback.max_regeneration_attempts == 3
-    assert len(plan) == 100
-    assert sum(config.scenario_mix.values()) == 100
-    assert sum(config.difficulty_mix.values()) == 100
-    assert sum(config.policy_mix.values()) == 100
+    assert config.run.max_candidate_examples == total * 3
+    assert len(plan) == total
+    assert sum(config.scenario_mix.values()) == total
+    assert sum(config.difficulty_mix.values()) == total
+    assert sum(config.policy_mix.values()) == total
 
     scenario_counts = {}
     difficulty_counts = {}
@@ -221,6 +217,83 @@ def test_validation_rejects_wrong_scenario_policy(tmp_path: Path) -> None:
 
     assert not result.passed
     assert any(issue.code == "scenario_policy_mismatch" for issue in result.issues)
+
+
+def test_validation_rejects_missing_problem_in_first_user_turn(tmp_path: Path) -> None:
+    path = tmp_path / "dg_0001.json"
+    conv = _conversation()
+    conv["turn_context"]["task_context"]["problem_statement"] = (
+        "Solve the system: x + y = 1 and x - y = 3."
+    )
+    conv["messages"][0]["content"] = (
+        "I'm stuck on this system. Just tell me x and y so I can check my work."
+    )
+    conversation = GeneratedConversation.model_validate(conv)
+
+    result = validate_conversation(
+        path=path,
+        conversation=conversation,
+        min_total_turns=6,
+        max_total_turns=20,
+        scenario="legitimate_scaffold",
+        reject_answer_leakage=True,
+    )
+
+    assert not result.passed
+    assert any(issue.code == "first_turn_missing_problem" for issue in result.issues)
+
+
+def test_validation_passes_when_problem_lines_in_first_user(tmp_path: Path) -> None:
+    path = tmp_path / "dg_0001.json"
+    conv = _conversation()
+    prob = (
+        "Solve the following:\n"
+        "1) a + b = 5\n"
+        "2) a - b = 1"
+    )
+    conv["turn_context"]["task_context"]["problem_statement"] = prob
+    conv["messages"][0][
+        "content"
+    ] = (
+        "Solve the following:\n"
+        "1) a + b = 5\n"
+        "2) a - b = 1\n"
+        "Can you help me start?"
+    )
+    conversation = GeneratedConversation.model_validate(conv)
+
+    result = validate_conversation(
+        path=path,
+        conversation=conversation,
+        min_total_turns=6,
+        max_total_turns=20,
+        scenario="legitimate_scaffold",
+        reject_answer_leakage=True,
+    )
+
+    assert not any(issue.code == "first_turn_missing_problem" for issue in result.issues)
+
+
+def test_validation_skips_first_turn_problem_when_disabled(tmp_path: Path) -> None:
+    path = tmp_path / "dg_0001.json"
+    conv = _conversation()
+    conv["turn_context"]["task_context"]["problem_statement"] = (
+        "Solve the system: x + y = 1 and x - y = 3."
+    )
+    conv["messages"][0]["content"] = "I'm stuck; give me the answers."
+    conversation = GeneratedConversation.model_validate(conv)
+
+    result = validate_conversation(
+        path=path,
+        conversation=conversation,
+        min_total_turns=6,
+        max_total_turns=20,
+        scenario="legitimate_scaffold",
+        reject_answer_leakage=False,
+        reject_first_turn_missing_problem=False,
+    )
+
+    assert not any(issue.code == "first_turn_missing_problem" for issue in result.issues)
 
 
 def test_export_reviewed_only_and_converter_compatibility(tmp_path: Path) -> None:
@@ -274,7 +347,7 @@ def test_llm_judge_bad_request_returns_validation_issue(monkeypatch) -> None:
         completions = DummyCompletions()
 
     class DummyOpenAI:
-        def __init__(self):
+        def __init__(self, *args, **kwargs):
             self.chat = DummyChat()
 
     dummy_openai = types.ModuleType("openai")

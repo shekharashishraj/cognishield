@@ -144,18 +144,18 @@ Current default config:
 
 | Setting | Value |
 | --- | --- |
-| Config | `training/data_generation/configs/batch_001.yaml` |
-| Target final examples | `100` |
-| Candidate safety cap | `300` |
-| Generator model | `gpt-4o` |
-| LLM judge model | `gpt-5.1` |
+| Config | `training/data_generation/configs/batch.yaml` (exact numbers in file) |
+| Target final examples | `1000` (`run.total_examples`) |
+| Candidate safety cap | `3000` (`run.max_candidate_examples`; or omit for `3 × total_examples`) |
+| Generator model | `gemma-31b-it` (OpenAI-compatible / vLLM) |
+| LLM judge model | `gemma-31b-it` |
 | Regeneration attempts | `3` retries per candidate, so up to 4 total attempts |
 | Final validation | Deterministic local validation only; the LLM judge already ran during generation |
 
 Important behavior:
 
-- `total_examples: 100` means the pipeline tries to produce **100 final usable
-  SFT examples**, not merely 100 attempted prompts.
+- `total_examples` in `batch.yaml` means the pipeline tries to produce that many final usable
+  SFT examples, not merely the same number of attempted prompts.
 - If a candidate fails all retries, the pipeline creates a replacement
   candidate with the same scenario, difficulty, subject/topic, policy, split,
   coercion level, and guidance, but with a new id such as `dg_0101`.
@@ -163,8 +163,8 @@ Important behavior:
   and the LLM judge. They are not automatically accepted.
 - If OpenAI rejects the LLM judge prompt, the candidate is marked with
   `llm_judge_prompt_rejected` and retried or replaced; the run does not crash.
-- The run stops when 100 examples are accepted or when the 300-candidate cap is
-  reached.
+- The run stops when `total_examples` are accepted or when `max_candidate_examples`
+  is reached.
 
 ### Data Generation Setup
 
@@ -179,53 +179,55 @@ pip install -U pip
 pip install -r training/requirements-train.txt
 ```
 
-Set the API key:
+Set the API key (or use a non-empty placeholder and `OPENAI_BASE_URL` for vLLM;
+see comments in `training/data_generation/configs/batch.yaml`):
 
 ```bash
 export OPENAI_API_KEY="sk-..."
 ```
 
-### Generate 100 Examples
+### Generate examples (default config)
 
-From the repo root:
+From the repo root (adjust export/convert paths if you change `output_dir` in
+`batch.yaml`):
 
 ```bash
 python training/data_generation/run_pipeline.py \
-  --config training/data_generation/configs/batch_001.yaml \
-  --export-output data/generated_reviewed/batch_001 \
+  --config training/data_generation/configs/batch.yaml \
+  --export-output data/generated_reviewed/batch \
   --include-draft-valid \
-  --convert-output training/data/sft.generated.batch_001.jsonl \
-  --convert-stats training/data/sft.generated.batch_001.stats.json \
+  --convert-output training/data/sft.generated.batch.jsonl \
+  --convert-stats training/data/sft.generated.batch.stats.json \
   --keep-going-on-validation-failure
 ```
 
 During a run, accepted raw examples are written to:
 
 ```text
-data/generated/batch_001/raw/
+data/generated/batch/raw/
 ```
 
 Monitor progress from another terminal:
 
 ```bash
-find data/generated/batch_001/raw -maxdepth 1 -name '*.json' | wc -l
+find data/generated/batch/raw -maxdepth 1 -name '*.json' | wc -l
 ```
 
 ### Data Generation Outputs
 
 | Output | Meaning |
 | --- | --- |
-| `data/generated/batch_001/generation_plan.json` | Initial and replacement candidate plan |
-| `data/generated/batch_001/raw/` | Candidates accepted by schema, local validation, and LLM judge |
-| `data/generated/batch_001/generation_rejected/` | Failed generation attempts with validation issues |
-| `data/generated/batch_001/valid/` | Raw examples that pass final deterministic validation |
-| `data/generated/batch_001/rejected/` | Raw examples rejected by final deterministic validation |
-| `data/generated/batch_001/events.jsonl` | Structured event log |
-| `data/generated/batch_001/run.log` | Human-readable log |
-| `data/generated/batch_001/summary.json` | Latest stage summary |
-| `data/generated_reviewed/batch_001/` | Exported examples for conversion |
-| `training/data/sft.generated.batch_001.jsonl` | Final OpenAI-style SFT JSONL |
-| `training/data/sft.generated.batch_001.stats.json` | SFT conversion stats |
+| `data/generated/batch/generation_plan.json` | Initial and replacement candidate plan |
+| `data/generated/batch/raw/` | Candidates accepted by schema, local validation, and LLM judge |
+| `data/generated/batch/generation_rejected/` | Failed generation attempts with validation issues |
+| `data/generated/batch/valid/` | Raw examples that pass final deterministic validation |
+| `data/generated/batch/rejected/` | Raw examples rejected by final deterministic validation |
+| `data/generated/batch/events.jsonl` | Structured event log |
+| `data/generated/batch/run.log` | Human-readable log |
+| `data/generated/batch/summary.json` | Latest stage summary |
+| `data/generated_reviewed/batch/` | Exported examples for conversion |
+| `training/data/sft.generated.batch.jsonl` | Final OpenAI-style SFT JSONL |
+| `training/data/sft.generated.batch.stats.json` | SFT conversion stats |
 
 For manual review workflows, omit `--include-draft-valid`; export will include
 only examples marked `annotator.review_status: approved`.

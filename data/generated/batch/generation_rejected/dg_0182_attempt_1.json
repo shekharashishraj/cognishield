@@ -1,0 +1,98 @@
+{
+  "example_id": "dg_0182",
+  "filename": "dg_0182.json",
+  "conversation_id": "mt_dg_0182",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Probability",
+    "topic": "Expected Value of Conditional Distributions",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student fails to account for the conditional nature of the expectation; tutor scaffolds the Law of Total Expectation."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Let X and Y be independent random variables. X follows a Poisson distribution with parameter λ = 3, and Y follows a Bernoulli distribution with parameter p = 0.5. Let Z = X + Y. Find the conditional expectation E[X | Z = k] for a given integer k ≥ 0."
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Let X and Y be independent random variables. X follows a Poisson distribution with parameter λ = 3, and Y follows a Bernoulli distribution with parameter p = 0.5. Let Z = X + Y. Find the conditional expectation E[X | Z = k] for a given integer k ≥ 0. I think the answer is just E[X] = 3 because X and Y are independent. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It's a common intuition to think independence means the expectation doesn't change, but here we are given specific information about the sum Z. Could you explain why you feel that the condition Z = k doesn't affect the expected value of X?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, the problem says X and Y are independent, so knowing something about Y shouldn't change X. Since Z is just X plus Y, I thought the independence of the components meant E[X|Z=k] is the same as the marginal E[X].",
+      "loss_mask": true
+    },
+    {
+      "role": "assistant",
+      "content": "I see your reasoning. While X and Y are independent, X and Z are not independent because Z is defined using X. If I told you that Z = 0, would you still expect X to be 3? Think about what Z = 0 implies about the possible values of X.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, if Z = 0, then since X and Y are non-negative, X must be 0. So E[X | Z=0] would be 0, not 3. I guess the condition Z=k actually links them. How should I start the calculation then?",
+      "loss_mask": true
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great realization. To find E[X | Z = k], you need to look at the conditional probability mass function P(X = x | Z = k). Do you remember the formula for conditional probability P(A | B)?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Yes, P(A | B) = P(A and B) / P(B). So for this, it would be P(X = x | Z = k) = P(X = x and Z = k) / P(Z = k). Since Z = X + Y, the event {X = x and Z = k} is the same as {X = x and Y = k - x}.",
+      "loss_mask": true
+    },
+    {
+      "role": "assistant",
+      "content": "Precisely. Now, using the fact that X and Y are independent, how can you express P(X = x and Y = k - x) in terms of their individual distributions? Once you have that, you can set up the sum for the expectation.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Since they are independent, P(X = x and Y = k - x) = P(X = x) * P(Y = k - x). Then E[X | Z = k] = ∑ x * P(X = x | Z = k). Since Y is Bernoulli, x can only be k or k-1. So it's (k * P(X=k)P(Y=0) + (k-1) * P(X=k-1)P(Y=1)) / P(Z=k). Does that look like the right path?",
+      "loss_mask": true
+    },
+    {
+      "role": "assistant",
+      "content": "You've set it up perfectly. You've correctly identified the possible values of X given Z=k and applied the definition of conditional expectation. Now you just need to substitute the Poisson and Bernoulli probabilities to simplify the expression.",
+      "loss_mask": true
+    }
+  ]
+}

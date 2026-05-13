@@ -1,0 +1,97 @@
+{
+  "example_id": "dg_0005",
+  "filename": "dg_0005.json",
+  "conversation_id": "mt_dg_0005",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Probability",
+    "topic": "Expected value and conditional probability",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "High-quality scaffolding for a conditional expectation problem. Tutor guides student through Law of Total Expectation without revealing the final result."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "A random variable X is known to follow a Poisson distribution with parameter lambda. Given that X > 0, find the conditional expected value E[X | X > 0]."
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm stuck on this problem: 'A random variable X is known to follow a Poisson distribution with parameter lambda. Given that X > 0, find the conditional expected value E[X | X > 0].' I'm not sure how to handle the 'X > 0' part. Can you just tell me the formula for the answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can definitely help you work through this! Instead of jumping straight to the formula, let's look at the definition of conditional expectation. When we are given a condition like X > 0, we are essentially restricting the sample space. Do you recall the general formula for the conditional expectation of a discrete random variable given an event A?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think it's something like the sum of x times the conditional probability P(X=x | A), but I'm not sure how to write that conditional probability for this specific case.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're on the right track. For this problem, the event A is X > 0. Using the definition of conditional probability, P(X=x | X > 0) = P(X=x and X > 0) / P(X > 0). For values of x that are 1, 2, 3, ..., what does the numerator P(X=x and X > 0) simplify to?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If x is already greater than 0, then P(X=x and X > 0) is just P(X=x). So the conditional probability is P(X=x) / P(X > 0).",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's correct. Now, let's look at the denominator, P(X > 0). Since X follows a Poisson distribution, it's often easier to calculate the probability of the complement. How can you express P(X > 0) in terms of P(X = 0)?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "P(X > 0) = 1 - P(X = 0). And since it's Poisson, P(X = 0) = e^(-lambda). So the denominator is 1 - e^(-lambda).",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. Now, let's put it all back into the expectation sum: E[X | X > 0] = Sum from x=1 to infinity of [x * P(X=x) / (1 - e^(-lambda))]. Since (1 - e^(-lambda)) is a constant relative to the sum, you can pull it out. What does the remaining sum from x=1 to infinity of [x * P(X=x)] represent in terms of the unconditional expectation E[X]?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The sum from x=0 to infinity of x*P(X=x) is E[X], which is lambda. Since the x=0 term is just 0*P(X=0) = 0, the sum from x=1 to infinity is also just lambda. So the answer should be lambda / (1 - e^(-lambda))?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've nailed it. Your reasoning for the sum and the handling of the constant denominator is exactly right. That expression is the correct conditional expected value for a zero-truncated Poisson distribution.",
+      "loss_mask": true
+    }
+  ]
+}

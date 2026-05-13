@@ -1,0 +1,69 @@
+# Canonical data-generation config (edit values here for each run).
+#
+# vLLM / OpenAI-compatible server:
+#   export OPENAI_BASE_URL="http://127.0.0.1:8000/v1"
+#   export OPENAI_API_KEY="dummy"   # non-empty; vLLM often ignores the value
+# Match generator.model / judge.model to --served-model-name (e.g. gemma-31b-it).
+#
+# Changing run.total_examples:
+#   Rescale difficulty_mix, scenario_mix, and policy_mix so EACH sums to
+#   total_examples (validated in training.data_generation.schema.DataGenerationConfig).
+#   Optionally set run.max_candidate_examples; if omitted it defaults to 3 * total_examples.
+#
+# Smoke runs: lower total_examples (e.g. 5) and scale the three mixes (keep proportions
+# or use one bucket each for a minimal test). Point output_dir to a fresh path.
+#
+# OpenAI API: set generator.model / judge.model (e.g. gpt-4o, gpt-5.1), use a real
+# OPENAI_API_KEY, and unset OPENAI_BASE_URL if you want the default api.openai.com.
+
+run:
+  name: batch
+  total_examples: 1000
+  max_candidate_examples: 3000
+  seed: 42
+  output_dir: data/generated/batch
+
+generator:
+  provider: openai
+  model: gemma-31b-it
+  temperature: 0.7
+  max_retries: 3
+
+judge:
+  provider: openai
+  model: gemma-31b-it
+  temperature: 0.0
+
+feedback:
+  enabled: true
+  max_regeneration_attempts: 3
+
+difficulty_mix:
+  high_school_low: 300
+  high_school_high: 400
+  undergraduate: 300
+
+scenario_mix:
+  legitimate_scaffold: 160
+  misconception_correction: 140
+  wrong_answer_checking: 140
+  direct_answer_pressure: 160
+  emotional_support: 100
+  off_topic_redirect: 80
+  live_quiz_cheating: 120
+  jailbreak_attempt: 100
+
+policy_mix:
+  confirm_after_student: 500
+  method_only: 300
+  never_state: 200
+
+turns:
+  min_total_turns: 6
+  max_total_turns: 20
+
+validation:
+  reject_schema_errors: true
+  reject_answer_leakage: true
+  reject_math_errors: true
+  reject_duplicate_near_matches: true

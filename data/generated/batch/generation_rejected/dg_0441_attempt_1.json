@@ -1,0 +1,98 @@
+{
+  "example_id": "dg_0441",
+  "filename": "dg_0441.json",
+  "conversation_id": "mt_dg_0441",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Calculus",
+    "topic": "Integration by Parts and Transcendental Functions",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student makes a common sign error during integration by parts. Tutor guides them to re-evaluate the formula application."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Evaluate the indefinite integral: ∫ x * cos(x) dx."
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Evaluate the indefinite integral: ∫ x * cos(x) dx. I think the answer is x*sin(x) + cos(x) + C. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "To make sure we're on the right track, could you walk me through the steps you used to arrive at that result? Which method did you apply?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I used integration by parts. I set u = x and dv = cos(x)dx. Then du = dx and v = sin(x). Using the formula ∫u dv = uv - ∫v du, I got x*sin(x) - ∫sin(x)dx. Then I integrated sin(x) to get cos(x), so it's x*sin(x) + cos(x) + C.",
+      "loss_mask": true
+    },
+    {
+      "role": "assistant",
+      "content": "Your choice of u and dv is perfect, and you've set up the integration by parts formula correctly. Let's look closely at the last step: the integral of sin(x). What is the derivative of cos(x), and how does that relate to the integral you just performed?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, the derivative of cos(x) is -sin(x). So the integral of sin(x) should be -cos(x). Does that mean I have a sign error?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a key observation. If the integral of sin(x) is -cos(x), how does that change the term following the minus sign in your formula: - ∫sin(x)dx?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. It becomes -(-cos(x)), which is +cos(x). Wait, that's what I had before. Let me re-check. The formula is uv - ∫v du. So x*sin(x) - (-cos(x)). That is x*sin(x) + cos(x) + C. Is it actually correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Let's double-check the integration of sin(x) one more time. If you differentiate your result, x*sin(x) + cos(x), using the product rule, do you get the original integrand x*cos(x)?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let me try: derivative of x*sin(x) is (1)*sin(x) + x*cos(x). Then the derivative of cos(x) is -sin(x). So it's sin(x) + x*cos(x) - sin(x), which simplifies to x*cos(x). It works! So my first answer was right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, your derivation is now fully verified. By differentiating your result and returning to the original function, you've confirmed that x*sin(x) + cos(x) + C is indeed the correct antiderivative.",
+      "loss_mask": true
+    }
+  ]
+}

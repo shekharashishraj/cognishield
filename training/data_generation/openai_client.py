@@ -5,6 +5,7 @@ import time
 from dataclasses import asdict
 from typing import Any
 
+from training.data_generation.openai_compat import build_openai_client
 from training.data_generation.planning import PlannedExample
 from training.data_generation.schema import DataGenerationConfig
 
@@ -17,14 +18,12 @@ def generate_conversation_with_openai(
     previous_payload: dict[str, Any] | None = None,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     try:
-        from openai import OpenAI
+        client = build_openai_client()
     except ImportError as exc:  # pragma: no cover - exercised in environments without openai
         raise RuntimeError(
             "openai is not installed. Install training requirements first: "
             "pip install -r training/requirements-train.txt"
         ) from exc
-
-    client = OpenAI()
     prompt = _build_prompt(
         planned,
         feedback_issues=feedback_issues,
@@ -107,6 +106,9 @@ Strict schema:
 - system_prompt.prompt_id must be "primary.txt@v1".
 - messages must alternate user/assistant, start with user, and contain between
   {planned.min_total_turns} and {planned.max_total_turns} total turns.
+- The first user message must include the complete problem_statement text (verbatim
+  paste preferred). The student may also ask for answers or apply scenario pressure
+  in that same turn; do not omit the problem to prioritize dialogue alone.
 - Every user message must have loss_mask false.
 - Every assistant message must have loss_mask true.
 

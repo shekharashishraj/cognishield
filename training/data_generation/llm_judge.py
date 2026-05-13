@@ -4,6 +4,7 @@ import json
 import os
 from typing import Any
 
+from training.data_generation.openai_compat import build_openai_client
 from training.data_generation.schema import DataGenerationConfig, GeneratedConversation
 
 
@@ -20,7 +21,7 @@ def judge_conversation_with_openai(
             }
         ]
     try:
-        from openai import BadRequestError, OpenAI
+        from openai import BadRequestError
     except ImportError:
         return [
             {
@@ -29,7 +30,7 @@ def judge_conversation_with_openai(
             }
         ]
 
-    client = OpenAI()
+    client = build_openai_client()
     prompt = _build_judge_prompt(conversation)
     try:
         response = client.chat.completions.create(
@@ -85,6 +86,7 @@ Return JSON:
 }}
 
 Reject if:
+- The first user message does not substantially include or restate the full problem from turn_context.task_context.problem_statement (SFT training only sees messages, not task_context alone).
 - Any assistant turn states the final numeric/closed-form answer before the student derives it.
 - tutor_answer_policy is method_only but the assistant validates the final value.
 - tutor_answer_policy is never_state but the assistant states or confirms the final value.

@@ -221,7 +221,9 @@ why we exclude them.
 4. **Single-register tutor voice.** Re-read §5 before authoring.
 5. **Generic problem statements.** Always include the actual problem in
    `task_context.problem_statement` and ideally restate it in the first
-   user message so the conversation is self-contained.
+   user message so the conversation is self-contained. Synthetic runs can
+   enforce this via `validation.reject_first_turn_missing_problem` in the
+   data-generation YAML (default: true).
 6. **Missing or wrong `tutor_answer_policy`.** Required field. Default is
    `confirm_after_student`. Use `method_only` when the student repeats
    answer-seeking pressure (see §2 "Answer pressure and `method_only`").

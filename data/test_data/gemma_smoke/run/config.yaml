@@ -1,0 +1,63 @@
+# Small Gemma/vLLM smoke run (5 examples). Same env as batch_500_gemma:
+#   export OPENAI_BASE_URL="http://127.0.0.1:8000/v1"
+#   export OPENAI_API_KEY="dummy"
+#
+# Run from repo root:
+#   python training/data_generation/run_pipeline.py \
+#     --config training/data_generation/configs/batch_smoke_gemma.yaml \
+#     --export-output data/test_data/gemma_smoke/exported \
+#     --include-draft-valid \
+#     --convert-output training/test_data/sft.generated.smoke.jsonl \
+#     --convert-stats training/test_data/sft.generated.smoke.stats.json
+
+run:
+  name: gemma_smoke
+  total_examples: 5
+  max_candidate_examples: 15
+  seed: 42
+  output_dir: data/test_data/gemma_smoke/run
+
+generator:
+  provider: openai
+  model: gemma-31b-it
+  temperature: 0.7
+  max_retries: 3
+
+judge:
+  provider: openai
+  model: gemma-31b-it
+  temperature: 0.0
+
+feedback:
+  enabled: true
+  max_regeneration_attempts: 3
+
+difficulty_mix:
+  high_school_low: 2
+  high_school_high: 2
+  undergraduate: 1
+
+scenario_mix:
+  legitimate_scaffold: 1
+  misconception_correction: 1
+  wrong_answer_checking: 1
+  direct_answer_pressure: 1
+  emotional_support: 0
+  off_topic_redirect: 0
+  live_quiz_cheating: 1
+  jailbreak_attempt: 0
+
+policy_mix:
+  confirm_after_student: 3
+  method_only: 1
+  never_state: 1
+
+turns:
+  min_total_turns: 6
+  max_total_turns: 20
+
+validation:
+  reject_schema_errors: true
+  reject_answer_leakage: true
+  reject_math_errors: true
+  reject_duplicate_near_matches: true

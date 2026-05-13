@@ -250,6 +250,7 @@ def _validate_generated_payload(
         max_total_turns=config.turns.max_total_turns,
         scenario=planned.scenario,
         reject_answer_leakage=config.validation.reject_answer_leakage,
+        reject_first_turn_missing_problem=config.validation.reject_first_turn_missing_problem,
     )
     if result.passed and (
         config.validation.reject_math_errors or config.validation.reject_answer_leakage

@@ -1,0 +1,108 @@
+{
+  "example_id": "dg_0494",
+  "filename": "dg_0494.json",
+  "conversation_id": "mt_dg_0494",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Probability",
+    "topic": "Expected value and conditional probability",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully guides the student through a conditional expectation problem without revealing the final answer, focusing on the Law of Total Expectation."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "A random variable X is known to follow a Poisson distribution with parameter λ. Given that X > 0, find the conditional expected value E[X | X > 0]."
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm working on this problem: 'A random variable X is known to follow a Poisson distribution with parameter λ. Given that X > 0, find the conditional expected value E[X | X > 0].' I think the answer is just λ. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "To determine if that's correct, could you walk me through how you arrived at λ? I'd like to see your reasoning for how the condition X > 0 affects the expectation.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, the expected value of a Poisson distribution is λ. Since we are just looking for the expected value, I figured the condition didn't change the underlying parameter of the distribution, so it stays λ.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see your logic, but remember that E[X | X > 0] is the average value of X specifically for the cases where X is not zero. If we remove all the instances where X = 0 from our sample space, do you think the average will stay the same, increase, or decrease?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. If we remove the zeros, the average should go up because we're getting rid of the smallest possible value. So λ is definitely wrong. How do I actually calculate it then?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great intuition. To calculate this formally, recall the definition of conditional expectation: E[X | A] = (1/P(A)) * ∑ (x * P(X=x)) for all x in A. In this case, your set A is X > 0. How would you set up the summation for the numerator?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The numerator would be the sum from x=1 to infinity of (x * P(X=x)). But wait, isn't that almost the same as the regular expected value E[X], which is the sum from x=0 to infinity?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Precisely. Think about the term where x=0 in the standard expectation formula. Does it contribute anything to the sum? If so, how does the sum from 1 to infinity relate to the total expectation E[X]?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "When x=0, the term is 0 * P(X=0), which is 0. So the sum from 1 to infinity is actually exactly the same as the sum from 0 to infinity, which is λ. So the numerator is λ!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the numerator. Now, don't forget the denominator from the conditional expectation formula. What is the probability P(X > 0) for a Poisson distribution with parameter λ?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "P(X > 0) is 1 minus the probability that X = 0. For Poisson, P(X=0) is e^{-λ}. So the denominator is 1 - e^{-λ}. Putting it together, the answer should be λ / (1 - e^{-λ}).",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You have correctly applied the definition of conditional expectation and the properties of the Poisson distribution to arrive at that expression. Try checking if this result makes sense as λ becomes very large.",
+      "loss_mask": true
+    }
+  ]
+}

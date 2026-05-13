@@ -64,6 +64,7 @@ def validate_run(
                 max_total_turns=config.turns.max_total_turns,
                 scenario=plan_item.get("scenario"),
                 reject_answer_leakage=config.validation.reject_answer_leakage,
+                reject_first_turn_missing_problem=config.validation.reject_first_turn_missing_problem,
             )
             if run_llm_judge and result.passed and (
                 config.validation.reject_math_errors or config.validation.reject_answer_leakage

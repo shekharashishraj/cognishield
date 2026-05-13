@@ -88,22 +88,41 @@ The data-generation pipeline creates schema-compatible multi-turn math
 tutoring examples in a staged run directory. It does not write directly
 to `data/multi_turn/`.
 
-The default config uses `gpt-4o` to generate conversations and `gpt-5.1`
-as the stricter LLM judge. During generation, each candidate is validated
-before it is accepted into `raw/`; failed candidates are written to
+The canonical config is [`data_generation/configs/batch.yaml`](data_generation/configs/batch.yaml).
+By default it targets a local **Gemma** instruct model (`gemma-31b-it`) for
+both generation and the LLM judge. During generation, each candidate is
+validated before it is accepted into `raw/`; failed candidates are written to
 `generation_rejected/` and the validator issues are fed back to the
 generator for another attempt when `feedback.enabled` is true.
 
-The recommended one-command workflow is:
+**OpenAI-compatible servers (vLLM, etc.):** The generator and judge use the
+Python `openai` client. Point it at a local server by setting:
+
+```bash
+export OPENAI_BASE_URL="http://127.0.0.1:8000/v1"
+export OPENAI_API_KEY="dummy"   # non-empty placeholder; required for the judge gate
+```
+
+Match `generator.model` / `judge.model` in [`configs/batch.yaml`](data_generation/configs/batch.yaml)
+to `--served-model-name` from vLLM.
+
+The recommended one-command workflow (paths match the default `output_dir:
+data/generated/batch` in `batch.yaml`; override `--export-output` /
+`--convert-output` if you change `output_dir` in the YAML):
 
 ```bash
 python training/data_generation/run_pipeline.py \
-    --config training/data_generation/configs/batch_001.yaml \
-    --export-output data/generated_reviewed/batch_001 \
+    --config training/data_generation/configs/batch.yaml \
+    --export-output data/generated_reviewed/batch \
     --include-draft-valid \
-    --convert-output training/data/sft.generated.batch_001.jsonl \
-    --convert-stats training/data/sft.generated.batch_001.stats.json
+    --convert-output training/data/sft.generated.batch.jsonl \
+    --convert-stats training/data/sft.generated.batch.stats.json
 ```
+
+**Smoke runs:** edit `batch.yaml` — lower `run.total_examples`, rescale the three
+mix maps so each sums to that value, and set `run.output_dir` to a small test
+directory (see comments at the top of `batch.yaml`). Then run the same command
+with `--export-output` / `--convert-output` paths that match your smoke layout.
 
 For production review, omit `--include-draft-valid`; export will include
 only examples manually marked with `annotator.review_status: approved`.
@@ -113,14 +132,14 @@ only one part of the pipeline.
 
 ```bash
 python training/data_generation/generate_dataset.py \
-    --config training/data_generation/configs/batch_001.yaml
+    --config training/data_generation/configs/batch.yaml
 
 python training/data_generation/validate_dataset.py \
-    --run-dir data/generated/batch_001
+    --run-dir data/generated/batch
 
 python training/data_generation/export_reviewed.py \
-    --run-dir data/generated/batch_001 \
-    --output data/generated_reviewed/batch_001
+    --run-dir data/generated/batch \
+    --output data/generated_reviewed/batch
 ```
 
 By default, export includes only examples whose
@@ -131,8 +150,8 @@ After export, reuse the existing converter:
 
 ```bash
 python training/convert.py \
-    --input data/generated_reviewed/batch_001 \
-    --output training/data/sft.generated.batch_001.jsonl
+    --input data/generated_reviewed/batch \
+    --output training/data/sft.generated.batch.jsonl
 ```
 
 Each generation run writes `run.log`, `events.jsonl`, `errors.jsonl`,

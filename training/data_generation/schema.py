@@ -70,6 +70,7 @@ class ValidationConfig(BaseModel):
     reject_answer_leakage: bool = True
     reject_math_errors: bool = True
     reject_duplicate_near_matches: bool = True
+    reject_first_turn_missing_problem: bool = True
 
 
 class DataGenerationConfig(BaseModel):

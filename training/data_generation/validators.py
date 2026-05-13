@@ -47,6 +47,7 @@ def validate_conversation(
     max_total_turns: int,
     scenario: str | None = None,
     reject_answer_leakage: bool = True,
+    reject_first_turn_missing_problem: bool = True,
 ) -> ValidationResult:
     result = ValidationResult(passed=True)
     expected_id = f"mt_{path.stem}"
@@ -71,11 +72,54 @@ def validate_conversation(
     if scenario and not allowed_policy_for_scenario(scenario, policy):
         result.add("scenario_policy_mismatch", f"{scenario} does not allow policy {policy}")
 
+    if reject_first_turn_missing_problem:
+        problem = (
+            conversation.turn_context.task_context.get("problem_statement")
+            if isinstance(conversation.turn_context.task_context, dict)
+            else None
+        )
+        if isinstance(problem, str) and problem.strip() and conversation.messages:
+            first = conversation.messages[0]
+            if first.role == "user" and not _first_user_covers_problem_statement(problem, first.content):
+                result.add(
+                    "first_turn_missing_problem",
+                    "first user message must include the full problem_statement (verbatim or line-wise)",
+                )
+
     if reject_answer_leakage:
         _check_answer_leakage(conversation, result)
 
     result.passed = not result.issues
     return result
+
+
+def _normalize_for_problem_match(text: str) -> str:
+    """Lowercase, collapse whitespace, trim trailing sentence punctuation for loose match."""
+    s = re.sub(r"\s+", " ", text.strip().lower())
+    while s and s[-1] in ".!?":
+        s = s[:-1].rstrip()
+    return s.strip()
+
+
+def _first_user_covers_problem_statement(problem: str, first_user: str) -> bool:
+    """True if the first user turn contains the full problem or each non-empty line."""
+    problem = problem.strip()
+    first_user = first_user.strip()
+    if not problem or not first_user:
+        return False
+    pn = _normalize_for_problem_match(problem)
+    fn = _normalize_for_problem_match(first_user)
+    if pn and pn in fn:
+        return True
+    nonempty_lines = False
+    for raw_line in problem.splitlines():
+        ln = _normalize_for_problem_match(raw_line)
+        if not ln:
+            continue
+        nonempty_lines = True
+        if ln not in fn:
+            return False
+    return nonempty_lines
 
 
 def load_json_object(path: Path) -> dict[str, Any]:
