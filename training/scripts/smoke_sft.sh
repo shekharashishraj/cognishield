@@ -3,10 +3,10 @@
 set -euo pipefail
 
 CONFIG="${SFT_CONFIG:-training/configs/sft/qwen35_9b_smoke.yaml}"
-DATA="${DATA_PATH:-cognibench.jsonl}"
+DATA="${DATA_PATH:-/Users/ashishrajshekhar/Desktop/cognishield/sft.generated.batch.jsonl}"
 
 if [[ ! -f "$DATA" ]]; then
-  echo "[smoke_sft] $DATA not found. Generate it with:  python cognibench_pipeline.py" >&2
+  echo "[smoke_sft] $DATA not found. Override with: DATA_PATH=/path/to/sft.jsonl $0" >&2
   exit 2
 fi
 

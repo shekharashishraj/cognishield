@@ -9,11 +9,15 @@ model:
 
 init_from: checkpoints/tutor_sft/final
 
+# NOTE: GRPO needs (problem, ground_truth) per record so r_sol can run.
+# `sft.generated.batch.jsonl` carries only chat messages — point this at the
+# math-problems file (e.g. BigMath-filtered) once it lands. Records without
+# `problem` or `solution` will be silently skipped at load time.
 data:
-  path: cognibench.jsonl
+  path: data/grpo_problems.jsonl
   max_seq_len: 4096
   val_fraction: 0.0
-  keep_splits: [exemplary_legitimate, adequate_ambiguous]
+  keep_splits: [exemplary_legitimate, adequate_ambiguous, failing_disallowed]
 
 peft:
   enabled: true

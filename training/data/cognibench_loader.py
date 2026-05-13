@@ -1,21 +1,20 @@
-"""Load `cognibench.jsonl` → HuggingFace Dataset with rendered chat prompts."""
+"""Load the SFT JSONL → HuggingFace Dataset with rendered chat prompts."""
 
 from __future__ import annotations
 
-import json
 import random
 from pathlib import Path
 from typing import Iterable, List, Optional
 
-from training.data.schemas import Conversation
 from training.data.chat_template import render_messages
+from training.data.schemas import Conversation
 
 
 def iter_jsonl(path: str | Path) -> Iterable[Conversation]:
-    """Yield `Conversation` objects, skipping malformed rows with a stderr note."""
+    """Yield `Conversation` objects; warn-and-skip malformed rows."""
     p = Path(path)
     if not p.exists():
-        raise FileNotFoundError(f"cognibench data not found at {p}")
+        raise FileNotFoundError(f"SFT data not found at {p}")
     with p.open() as f:
         for i, line in enumerate(f):
             line = line.strip()
@@ -24,7 +23,6 @@ def iter_jsonl(path: str | Path) -> Iterable[Conversation]:
             try:
                 yield Conversation.model_validate_json(line)
             except Exception as exc:  # pragma: no cover - malformed row
-                # surface line number so the data team can fix upstream
                 import sys
 
                 print(f"[loader] skip line {i}: {exc}", file=sys.stderr)
@@ -34,12 +32,13 @@ def filter_accepted(
     convs: Iterable[Conversation],
     keep_splits: Optional[List[str]] = None,
 ) -> List[Conversation]:
-    """Keep only judge-accepted conversations.
+    """Keep only conversations we want to imitate.
 
-    Today the pipeline doesn't set `judge_accepted`, so we approximate by
-    keeping `split in keep_splits` (typically exemplary + adequate, dropping
-    `failing_disallowed` which represents tutor failures we should NOT imitate).
-    Once the data pipeline emits `judge_accepted`, switch to that field.
+    Priority: `judge_accepted == True` if present. Otherwise: split
+    membership. All three SFT splits — exemplary_legitimate,
+    adequate_ambiguous, failing_disallowed — contain correct tutor
+    behavior (scaffold / transform-redirect / refuse respectively) so
+    by default we keep all three.
     """
     kept: List[Conversation] = []
     for c in convs:
@@ -61,34 +60,40 @@ def build_sft_dataset(
     seed: int = 42,
     keep_splits: Optional[List[str]] = None,
 ):
-    """Return `(train_ds, val_ds)` HuggingFace Datasets with chat-rendered text + mask spans.
+    """Return `(train_ds, val_ds)` HuggingFace Datasets with rendered text + spans.
 
     Each row carries:
       - `text`: full chat-rendered string
-      - `assistant_spans`: list of `[start_char, end_char]` for tutor-turn substrings
-      - `meta`: dict of conversation metadata
+      - `assistant_spans`: list of `[start_char, end_char]` for assistant turns
+      - `meta`: dict of conversation metadata (split, id)
     """
-    from datasets import Dataset  # lazy: HF datasets
+    from datasets import Dataset  # lazy
 
     convs = filter_accepted(iter_jsonl(path), keep_splits=keep_splits)
     if not convs:
-        raise ValueError(f"no judge-accepted conversations found in {path}")
+        raise ValueError(f"no usable conversations found in {path}")
 
     rows = []
     for c in convs:
-        text, spans = render_messages(c.turns, tokenizer)
+        text, spans = render_messages(c.messages, tokenizer)
+        if not spans:
+            # No assistant turns ⇒ nothing to train on; skip.
+            continue
         rows.append(
             {
                 "text": text,
                 "assistant_spans": spans,
                 "meta": {
-                    "subject": c.subject,
+                    "conversation_id": c.conversation_id,
                     "split": c.split,
-                    "coercion_level": c.coercion_level,
                     "age_band": c.age_band,
+                    "coercion_level": c.coercion_level,
                 },
             }
         )
+
+    if not rows:
+        raise ValueError(f"no rows with assistant turns in {path}")
 
     rng = random.Random(seed)
     rng.shuffle(rows)

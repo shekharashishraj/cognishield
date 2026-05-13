@@ -35,10 +35,23 @@ the test suite.
 
 ## Three phases
 
+## Data
+
+- **SFT data**: `sft.generated.batch.jsonl` (586 conversations across 3
+  splits — `exemplary_legitimate`, `adequate_ambiguous`,
+  `failing_disallowed` — all containing correct tutor behavior). Format is
+  OpenAI chat: `{conversation_id, split, messages:[{role, content}, ...]}`
+  with `role ∈ {system, user, assistant}`. The loader keeps all three
+  splits by default.
+- **GRPO data**: a *separate* problems file with `problem` + `solution`
+  fields per record (math GT for `r_sol`). Not provided by the SFT file —
+  point `data.path` at e.g. a BigMath-filtered JSONL.
+
 ### Phase 1 — SFT warm-start
 
-Full fine-tune on judge-accepted cognibench dialogs, with **student turns
-masked from the loss**. Paper §5.1: LR 2e-5, batch 32, 1 epoch.
+Full fine-tune on the SFT JSONL with **assistant-turn-only loss**
+(system + user tokens are masked to `-100`). Paper §5.1: LR 2e-5, batch
+32, 1 epoch.
 
 ```bash
 # smoke (~5 min on H200)
