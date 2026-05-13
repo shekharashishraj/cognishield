@@ -1,0 +1,77 @@
+# Phase 2 GRPO smoke test — < 15 minutes on a single H200.
+# Mock judges + mock student keep the loop self-contained.
+# Asserts: reward is finite, varies across rollouts, one checkpoint persists.
+
+model:
+  name: Qwen/Qwen3.5-9B
+  dtype: bfloat16
+  attn: sdpa
+  trust_remote_code: true
+
+init_from: checkpoints/sft_smoke/final
+
+data:
+  path: cognibench.jsonl
+  max_seq_len: 1024
+  val_fraction: 0.0
+  keep_splits: [exemplary_legitimate, adequate_ambiguous]
+
+peft:
+  enabled: true
+  r: 8
+  alpha: 16
+  dropout: 0.0
+  target_modules: [q_proj, v_proj]
+
+group_size: 2
+batch_problems: 4
+mu_grad_steps: 1
+lr: 5.0e-7
+kl_beta: 0.005
+total_updates: 3
+save_steps: 3
+logging_steps: 1
+seed: 42
+
+rewards:
+  lambda_ped: 1.0
+  lambda_safety: 1.0
+  lambda_age: 1.0
+  aux_template: 0.1
+  aux_eoc: 0.2
+  aux_length: 0.1
+  length_budget_tokens_per_turn: 512
+
+rollout:
+  max_dialog_turns: 6
+  min_dialog_turns: 2
+  end_token: "<end_of_conversation>"
+  temperature: 1.0
+
+infer:
+  backend: transformers
+  gpu_memory_utilization: 0.45
+  max_model_len: 1024
+
+judges:
+  endpoint: http://localhost:8001/v1
+  model: mock-judge
+  mock: true
+  temperature: 0.0
+  max_tokens: 128
+  timeout: 5.0
+
+student:
+  endpoint: http://localhost:8002/v1
+  model: mock-student
+  mock: true
+  temperature: 1.0
+  max_tokens: 128
+  timeout: 5.0
+  solve_samples_k: 2
+
+wandb:
+  enabled: false
+  mode: disabled
+
+out_dir: checkpoints/grpo_smoke

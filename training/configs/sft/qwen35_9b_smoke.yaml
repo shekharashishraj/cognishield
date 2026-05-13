@@ -1,0 +1,47 @@
+# Phase 1 SFT smoke test — < 5 minutes on a single H200.
+# Asserts the whole stack wires up: tokenizer, masked-loss collator,
+# Trainer, checkpoint save. Does NOT validate convergence quality.
+
+model:
+  name: Qwen/Qwen3.5-9B
+  dtype: bfloat16
+  attn: sdpa             # skip flash-attn for faster cold start
+  trust_remote_code: true
+
+data:
+  path: cognibench.jsonl
+  max_seq_len: 1024
+  val_fraction: 0.0
+  seed: 42
+  keep_splits: [exemplary_legitimate, adequate_ambiguous]
+
+optim:
+  lr: 2.0e-5
+  betas: [0.9, 0.95]
+  weight_decay: 0.0
+  scheduler: constant
+  warmup_ratio: 0.0
+  optimizer: adamw_torch_fused
+
+train:
+  epochs: 1
+  max_steps: 10
+  per_device_bs: 1
+  grad_accum: 1
+  grad_ckpt: true
+  full_finetune: true
+  save_steps: 10
+  eval_steps: 100
+  logging_steps: 1
+  seed: 42
+
+peft:
+  enabled: false
+
+wandb:
+  enabled: false
+  mode: disabled
+  run_name: sft-smoke
+
+mask_student_turns: true
+out_dir: checkpoints/sft_smoke

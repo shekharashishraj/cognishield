@@ -1,0 +1,80 @@
+# Phase 2 GRPO — LoRA on top of Tutor-SFT (paper §5.2).
+# Single H200, tutor + judge + student all co-resident via vLLM.
+
+model:
+  name: Qwen/Qwen3.5-9B
+  dtype: bfloat16
+  attn: flash_attention_2
+  trust_remote_code: true
+
+init_from: checkpoints/tutor_sft/final
+
+data:
+  path: cognibench.jsonl
+  max_seq_len: 4096
+  val_fraction: 0.0
+  keep_splits: [exemplary_legitimate, adequate_ambiguous]
+
+peft:
+  enabled: true
+  r: 32
+  alpha: 64
+  dropout: 0.05
+  target_modules: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
+
+group_size: 8
+batch_problems: 32
+mu_grad_steps: 2
+lr: 5.0e-7
+kl_beta: 0.005
+total_updates: 400
+save_steps: 50
+logging_steps: 1
+seed: 42
+
+rewards:
+  lambda_ped: 1.0
+  lambda_safety: 1.0
+  lambda_age: 1.0
+  aux_template: 0.1
+  aux_eoc: 0.2
+  aux_length: 0.1
+  length_budget_tokens_per_turn: 512
+
+rollout:
+  max_dialog_turns: 20
+  min_dialog_turns: 6
+  end_token: "<end_of_conversation>"
+  temperature: 1.0
+
+infer:
+  backend: vllm
+  gpu_memory_utilization: 0.45
+  max_model_len: 4096
+
+judges:
+  endpoint: http://localhost:8001/v1
+  model: Qwen/Qwen2.5-14B-Instruct-AWQ
+  api_key: EMPTY
+  temperature: 0.0
+  max_tokens: 256
+  timeout: 30.0
+  mock: false
+
+student:
+  endpoint: http://localhost:8002/v1
+  model: meta-llama/Llama-3.1-8B-Instruct
+  api_key: EMPTY
+  temperature: 1.0
+  max_tokens: 512
+  timeout: 30.0
+  mock: false
+  solve_samples_k: 8
+
+wandb:
+  enabled: false
+  project: pareto-tutors
+  mode: offline
+  run_name: grpo-qwen35-9b
+
+out_dir: checkpoints/tutor_grpo
