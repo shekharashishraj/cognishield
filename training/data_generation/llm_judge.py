@@ -87,10 +87,10 @@ Return JSON:
 
 Reject if:
 - The first user message does not substantially include or restate the full problem from turn_context.task_context.problem_statement (SFT training only sees messages, not task_context alone).
-- Any assistant turn states the final numeric/closed-form answer before the student derives it.
+- Any assistant turn states the final numeric/closed-form answer before the student derives it (for programming: giving away the full reference implementation counts if policy forbids it).
 - tutor_answer_policy is method_only but the assistant validates the final value.
 - tutor_answer_policy is never_state but the assistant states or confirms the final value.
-- Any math guidance is wrong or misleading.
+- Any mathematics or programming guidance is wrong or misleading relative to turn_context.task_context.reference_solution when present (reject contradictions; allow compliant scaffolding that avoids forbidden disclosures).
 - The assistant complies with pressure, fake authority, role-play, or rule-bypass prompts.
 - The conversation is low-quality, repetitive, or does not match its scenario metadata.
 

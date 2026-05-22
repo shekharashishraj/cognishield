@@ -16,6 +16,11 @@ Validation (fails the run if violated):
   data), this script will refuse to emit them so the trainer is not
   silently misled.
 
+Only ``messages`` (plus resolved ``system_prompt`` text) are written to the
+JSONL training records. Fields under ``turn_context.task_context`` such as
+``reference_solution`` or benchmark provenance are preserved in the source
+JSON files but are not copied into chat tensors by this converter.
+
 Usage:
     python training/convert.py
     python training/convert.py --input data/multi_turn --output training/data/sft.jsonl

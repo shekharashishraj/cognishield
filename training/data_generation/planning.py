@@ -2,13 +2,14 @@ from __future__ import annotations
 
 import json
 import random
+from collections.abc import Callable
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
+from training.data_generation.benchmark_seeds import BenchmarkSeed, sample_benchmark_seed
 from training.data_generation.schema import DataGenerationConfig
 from training.data_generation.taxonomy import (
     DIFFICULTY_TO_METADATA,
-    MATH_TOPICS,
     allowed_policy_for_scenario,
     scenario_spec,
 )
@@ -22,6 +23,11 @@ class PlannedExample:
     scenario: str
     difficulty_level: str
     metadata_difficulty: str
+    task_domain: str
+    problem_statement: str
+    reference_solution: str
+    seed_dataset: str
+    seed_example_id: str
     subject: str
     topic: str
     policy: str
@@ -34,26 +40,34 @@ class PlannedExample:
     max_total_turns: int
 
 
-def build_generation_plan(config: DataGenerationConfig) -> list[PlannedExample]:
+def build_generation_plan(
+    config: DataGenerationConfig,
+    *,
+    seed_sampler: Callable[[random.Random, str, str], BenchmarkSeed] | None = None,
+) -> list[PlannedExample]:
     rng = random.Random(config.run.seed)
+    sampler = seed_sampler or sample_benchmark_seed
     scenarios = _expanded(config.scenario_mix)
     difficulties = _expanded(config.difficulty_mix)
+    domains = _expanded(config.domain_mix)
     policies = _expanded(config.policy_mix)
     rng.shuffle(scenarios)
     rng.shuffle(difficulties)
+    rng.shuffle(domains)
     rng.shuffle(policies)
 
     plan: list[PlannedExample] = []
-    for idx, (scenario_name, difficulty, policy) in enumerate(
-        zip(scenarios, difficulties, policies), start=1
+    for idx, (scenario_name, difficulty, task_domain, policy) in enumerate(
+        zip(scenarios, difficulties, domains, policies), start=1
     ):
         scenario_name, policy = _coerce_allowed_policy(
             scenario_name, policy, policies, idx - 1
         )
         spec = scenario_spec(scenario_name)
-        subject, topic = rng.choice(MATH_TOPICS[difficulty])
+        seed = sampler(rng, difficulty, task_domain)
+        domain_tag = "coding" if task_domain == "coding" else "math"
         example_id = f"dg_{idx:04d}"
-        tags = ["multi_turn", "sft", "math", scenario_name, *spec.tags]
+        tags = ["multi_turn", "sft", domain_tag, scenario_name, *spec.tags]
         plan.append(
             PlannedExample(
                 example_id=example_id,
@@ -62,8 +76,13 @@ def build_generation_plan(config: DataGenerationConfig) -> list[PlannedExample]:
                 scenario=scenario_name,
                 difficulty_level=difficulty,
                 metadata_difficulty=DIFFICULTY_TO_METADATA[difficulty],
-                subject=subject,
-                topic=topic,
+                task_domain=task_domain,
+                problem_statement=seed.problem_statement,
+                reference_solution=seed.reference_solution,
+                seed_dataset=seed.seed_dataset,
+                seed_example_id=seed.seed_example_id,
+                subject=seed.subject,
+                topic=seed.topic,
                 policy=policy,
                 split=spec.split,
                 coercion_level=spec.coercion_level,

@@ -1,14 +1,20 @@
 from __future__ import annotations
 
 import json
+import random
 import sys
 import types
+from collections import Counter
 from pathlib import Path
+
+import pytest
+from pydantic import ValidationError
 
 from training.convert import convert
 from training.data_generation import generate_dataset, llm_judge, validate_dataset
 from training.data_generation.export_reviewed import export_reviewed
 from training.data_generation.generate_dataset import generate
+from training.data_generation.benchmark_seeds import BenchmarkSeed
 from training.data_generation.planning import build_generation_plan
 from training.data_generation.planning import save_generation_plan
 from training.data_generation.run_pipeline import run_pipeline
@@ -17,6 +23,17 @@ from training.data_generation.validators import validate_conversation
 
 
 CONFIG_PATH = Path("training/data_generation/configs/batch.yaml")
+
+
+def _stub_benchmark_seed_sampler(_rng: random.Random, difficulty: str, task_domain: str) -> BenchmarkSeed:
+    return BenchmarkSeed(
+        problem_statement=f"Stub problem ({task_domain}, {difficulty}).",
+        reference_solution="Stub reference solution.",
+        seed_dataset="stub",
+        seed_example_id="stub-0",
+        subject="Algebra",
+        topic="Linear equations",
+    )
 
 
 def _conversation(
@@ -96,6 +113,14 @@ def _planned_conversation(planned) -> dict:
     payload["metadata"]["tags"] = planned.tags
     payload["turn_context"]["learner_profile"] = {"level": planned.difficulty_level}
     payload["turn_context"]["rubric_constraints"]["tutor_answer_policy"] = planned.policy
+    tc = payload["turn_context"]["task_context"]
+    tc["problem_statement"] = planned.problem_statement
+    tc["reference_solution"] = planned.reference_solution
+    tc["seed_dataset"] = planned.seed_dataset
+    tc["seed_example_id"] = planned.seed_example_id
+    payload["messages"][0]["content"] = (
+        f"{planned.problem_statement}\n\nI'm stuck—can you help me approach this?"
+    )
     return payload
 
 
@@ -138,6 +163,10 @@ feedback:
 difficulty_mix:
   high_school_low: {total_examples}
 
+domain_mix:
+  math: {total_examples}
+  coding: 0
+
 scenario_mix:
   legitimate_scaffold: {total_examples}
 
@@ -161,7 +190,7 @@ validation:
 
 def test_batch_config_loads_and_plan_counts() -> None:
     config = load_config(CONFIG_PATH)
-    plan = build_generation_plan(config)
+    plan = build_generation_plan(config, seed_sampler=_stub_benchmark_seed_sampler)
 
     total = config.run.total_examples
     assert config.feedback.enabled is True
@@ -171,14 +200,18 @@ def test_batch_config_loads_and_plan_counts() -> None:
     assert sum(config.scenario_mix.values()) == total
     assert sum(config.difficulty_mix.values()) == total
     assert sum(config.policy_mix.values()) == total
+    assert sum(config.domain_mix.values()) == total
 
     scenario_counts = {}
     difficulty_counts = {}
+    domain_counts = Counter()
     for item in plan:
         scenario_counts[item.scenario] = scenario_counts.get(item.scenario, 0) + 1
         difficulty_counts[item.difficulty_level] = difficulty_counts.get(item.difficulty_level, 0) + 1
+        domain_counts[item.task_domain] += 1
     assert scenario_counts == config.scenario_mix
     assert difficulty_counts == config.difficulty_mix
+    assert dict(domain_counts) == dict(config.domain_mix)
 
 
 def test_validation_rejects_first_assistant_answer_leakage(tmp_path: Path) -> None:
@@ -374,6 +407,11 @@ def test_generation_retries_after_judge_rejection(monkeypatch, tmp_path: Path) -
         max_candidate_examples=2,
         max_regeneration_attempts=1,
     )
+    monkeypatch.setattr(
+        generate_dataset,
+        "build_generation_plan",
+        lambda cfg: build_generation_plan(cfg, seed_sampler=_stub_benchmark_seed_sampler),
+    )
     judge_calls = 0
 
     def fake_generate_conversation_with_openai(*, planned, **_kwargs):
@@ -413,6 +451,11 @@ def test_generation_refills_quota_with_replacement_examples(monkeypatch, tmp_pat
         max_candidate_examples=4,
         max_regeneration_attempts=0,
     )
+    monkeypatch.setattr(
+        generate_dataset,
+        "build_generation_plan",
+        lambda cfg: build_generation_plan(cfg, seed_sampler=_stub_benchmark_seed_sampler),
+    )
 
     def fake_generate_conversation_with_openai(*, planned, **_kwargs):
         return _planned_conversation(planned), {"latency_s": 0.0, "usage": None}
@@ -443,6 +486,9 @@ def test_generation_refills_quota_with_replacement_examples(monkeypatch, tmp_pat
     assert plan[2]["scenario"] == plan[0]["scenario"]
     assert plan[2]["difficulty_level"] == plan[0]["difficulty_level"]
     assert plan[2]["policy"] == plan[0]["policy"]
+    assert plan[2]["task_domain"] == plan[0]["task_domain"]
+    assert plan[2]["problem_statement"] == plan[0]["problem_statement"]
+    assert plan[2]["reference_solution"] == plan[0]["reference_solution"]
 
 
 def test_generation_stops_at_safety_cap_when_candidates_fail(
@@ -454,6 +500,11 @@ def test_generation_stops_at_safety_cap_when_candidates_fail(
         total_examples=1,
         max_candidate_examples=2,
         max_regeneration_attempts=0,
+    )
+    monkeypatch.setattr(
+        generate_dataset,
+        "build_generation_plan",
+        lambda cfg: build_generation_plan(cfg, seed_sampler=_stub_benchmark_seed_sampler),
     )
 
     def fake_generate_conversation_with_openai(*, planned, **_kwargs):
@@ -488,7 +539,7 @@ def test_final_validation_can_skip_llm_judge(monkeypatch, tmp_path: Path) -> Non
     raw_dir = run_dir / "raw"
     raw_dir.mkdir(parents=True)
     config = load_config(config_path)
-    plan = build_generation_plan(config)
+    plan = build_generation_plan(config, seed_sampler=_stub_benchmark_seed_sampler)
     save_generation_plan(plan, run_dir / "generation_plan.json")
     (run_dir / "config.yaml").write_text(config_path.read_text(encoding="utf-8"), encoding="utf-8")
     (raw_dir / "dg_0001.json").write_text(
@@ -505,3 +556,89 @@ def test_final_validation_can_skip_llm_judge(monkeypatch, tmp_path: Path) -> Non
 
     assert rc == 0
     assert len(list((run_dir / "valid").glob("*.json"))) == 1
+
+
+def test_domain_mix_unknown_key_rejected(tmp_path: Path) -> None:
+    bad = tmp_path / "bad.yaml"
+    run_out = tmp_path / "out"
+    bad.write_text(
+        f"""run:
+  name: bad
+  total_examples: 1
+  seed: 1
+  output_dir: {run_out}
+
+generator:
+  provider: openai
+  model: m
+  temperature: 0.0
+  max_retries: 0
+
+judge:
+  provider: openai
+  model: j
+  temperature: 0.0
+
+feedback:
+  enabled: false
+  max_regeneration_attempts: 0
+
+difficulty_mix:
+  high_school_low: 1
+
+domain_mix:
+  physics: 1
+
+scenario_mix:
+  legitimate_scaffold: 1
+
+policy_mix:
+  confirm_after_student: 1
+
+turns:
+  min_total_turns: 6
+  max_total_turns: 20
+
+validation:
+  reject_schema_errors: true
+  reject_answer_leakage: false
+  reject_math_errors: false
+  reject_duplicate_near_matches: false
+""",
+        encoding="utf-8",
+    )
+    with pytest.raises(ValidationError, match="domain_mix"):
+        load_config(bad)
+
+
+def test_build_prompt_includes_planned_seed_fields() -> None:
+    from training.data_generation.openai_client import _build_prompt
+    from training.data_generation.planning import PlannedExample
+
+    planned = PlannedExample(
+        example_id="dg_0001",
+        filename="dg_0001.json",
+        conversation_id="mt_dg_0001",
+        scenario="legitimate_scaffold",
+        difficulty_level="high_school_low",
+        metadata_difficulty="high_school_intro",
+        task_domain="math",
+        problem_statement="What is 2+2?",
+        reference_solution="4",
+        seed_dataset="stub/math",
+        seed_example_id="42",
+        subject="Arithmetic",
+        topic="Addition",
+        policy="confirm_after_student",
+        split="exemplary_legitimate",
+        coercion_level="none",
+        expected_behavior="scaffold and hint",
+        tags=["multi_turn", "sft", "math"],
+        guidance="Scaffold gently.",
+        min_total_turns=6,
+        max_total_turns=20,
+    )
+    text = _build_prompt(planned)
+    assert "What is 2+2?" in text
+    assert "reference_solution" in text
+    assert "stub/math" in text

@@ -15,6 +15,7 @@ from training.data_generation.taxonomy import (
     MATH_TOPICS,
     SCENARIOS,
     SPLITS,
+    TASK_DOMAINS,
 )
 
 
@@ -79,6 +80,7 @@ class DataGenerationConfig(BaseModel):
     judge: JudgeConfig
     feedback: FeedbackConfig = Field(default_factory=FeedbackConfig)
     difficulty_mix: dict[str, int]
+    domain_mix: dict[str, int]
     scenario_mix: dict[str, int]
     policy_mix: dict[str, int]
     turns: TurnsConfig
@@ -91,6 +93,14 @@ class DataGenerationConfig(BaseModel):
         if unknown:
             raise ValueError(f"unknown difficulty keys: {sorted(unknown)}")
         return _validate_count_map(value, "difficulty_mix")
+
+    @field_validator("domain_mix")
+    @classmethod
+    def validate_domain_keys(cls, value: dict[str, int]) -> dict[str, int]:
+        unknown = set(value) - set(TASK_DOMAINS)
+        if unknown:
+            raise ValueError(f"unknown domain_mix keys: {sorted(unknown)}")
+        return _validate_count_map(value, "domain_mix")
 
     @field_validator("scenario_mix")
     @classmethod
@@ -113,6 +123,7 @@ class DataGenerationConfig(BaseModel):
         total = self.run.total_examples
         for name, mix in [
             ("difficulty_mix", self.difficulty_mix),
+            ("domain_mix", self.domain_mix),
             ("scenario_mix", self.scenario_mix),
             ("policy_mix", self.policy_mix),
         ]:

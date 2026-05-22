@@ -1,3 +1,9 @@
+"""Export validated generated examples for hand-review / SFT conversion.
+
+Benchmark fields such as ``reference_solution`` under ``turn_context.task_context``
+stay in exported JSON; ``training.convert`` only serializes chat ``messages`` into
+JSONL unless you extend the converter.
+"""
 from __future__ import annotations
 
 import argparse

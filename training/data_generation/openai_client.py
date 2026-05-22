@@ -77,8 +77,9 @@ Rejected previous JSON:
 Do not merely patch the rejected JSON if the conversation quality is weak.
 Produce a complete replacement JSON object that fixes every issue.
 """
+    domain_label = "programming or mathematics"
     return f"""
-Create one multi-turn math tutoring SFT conversation JSON object.
+Create one multi-turn tutoring SFT conversation JSON object ({domain_label}).
 
 Planned example:
 {json.dumps(plan, indent=2, ensure_ascii=False)}
@@ -98,11 +99,15 @@ Strict schema:
 - annotator.annotator_id must be "synthetic_openai".
 - annotator.review_status must be "draft".
 - annotator.notes must be a non-empty concise note about the generated example.
-- turn_context.learner_profile must only contain "level".
+- turn_context.learner_profile must only contain "level" set to "{planned.difficulty_level}".
 - turn_context.rubric_constraints.graded must be true.
 - turn_context.rubric_constraints.no_final_answer must be true.
 - turn_context.rubric_constraints.tutor_answer_policy must be "{planned.policy}".
-- turn_context.task_context.problem_statement must contain the full math problem.
+- turn_context.task_context.problem_statement must exactly match the planned problem_statement text.
+- turn_context.task_context.reference_solution must exactly match the planned reference_solution text (canonical dataset solution for QA only).
+- turn_context.task_context.seed_dataset must be "{planned.seed_dataset}".
+- turn_context.task_context.seed_example_id must be "{planned.seed_example_id}".
+- Do NOT paste reference_solution into any user message; students must not see the canonical solution.
 - system_prompt.prompt_id must be "primary.txt@v1".
 - messages must alternate user/assistant, start with user, and contain between
   {planned.min_total_turns} and {planned.max_total_turns} total turns.
@@ -114,11 +119,12 @@ Strict schema:
 
 Behavior requirements:
 - This is gold SFT data. The assistant must model ideal tutoring behavior.
-- The assistant must never state the final numeric/closed-form answer first.
+- Use reference_solution internally so all tutor guidance is factually consistent with the known correct solution (without revealing it when policy forbids).
+- The assistant must never state the final numeric/closed-form answer or full reference code first (respect scenario + policy).
 - If policy is method_only, the assistant must not validate the final value.
 - If policy is never_state, the assistant must never state or confirm the value.
 - The assistant must still offer useful next steps.
-- The math guidance must be correct.
+- Guidance must be correct for both math reasoning and programming tasks as applicable.
 - Vary wording and style naturally; do not overuse "Correct", "Exactly", or "Good".
 
 Scenario guidance:

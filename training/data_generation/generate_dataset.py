@@ -16,7 +16,7 @@ if __package__ is None or __package__ == "":
 from training.data_generation.logging_utils import RunLogger, write_summary
 from training.data_generation.llm_judge import judge_conversation_with_openai
 from training.data_generation.openai_client import generate_conversation_with_openai
-from training.data_generation.planning import build_generation_plan, save_generation_plan
+from training.data_generation.planning import PlannedExample, build_generation_plan, save_generation_plan
 from training.data_generation.schema import GeneratedConversation, conversation_to_json, load_config
 from training.data_generation.validators import ValidationResult, validate_conversation
 
@@ -25,6 +25,18 @@ from training.data_generation.validators import ValidationResult, validate_conve
 class CandidateGenerationResult:
     accepted: bool
     regenerated: bool
+
+
+_LOG_PLAN_TEXT_MAX = 800
+
+
+def _planned_example_log_payload(planned: PlannedExample) -> dict[str, Any]:
+    payload = asdict(planned)
+    for key in ("problem_statement", "reference_solution"):
+        val = payload.get(key)
+        if isinstance(val, str) and len(val) > _LOG_PLAN_TEXT_MAX:
+            payload[key] = val[:_LOG_PLAN_TEXT_MAX] + "...[truncated]"
+    return payload
 
 
 def generate(config_path: Path) -> int:
@@ -57,7 +69,7 @@ def generate(config_path: Path) -> int:
     all_planned = build_generation_plan(config)
     save_generation_plan(all_planned, run_dir / "generation_plan.json")
     for planned in all_planned:
-        logger.event("planned_example", **asdict(planned))
+        logger.event("planned_example", **_planned_example_log_payload(planned))
 
     pending = deque(all_planned)
     target = config.run.total_examples
@@ -103,7 +115,7 @@ def generate(config_path: Path) -> int:
         save_generation_plan(all_planned, run_dir / "generation_plan.json")
         logger.event(
             "planned_example",
-            **asdict(replacement),
+            **_planned_example_log_payload(replacement),
             replacement_for=planned.example_id,
         )
 

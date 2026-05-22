@@ -18,6 +18,23 @@ DIFFICULTY_TO_METADATA = {
     "undergraduate": "undergrad",
 }
 
+TASK_DOMAINS = frozenset({"math", "coding"})
+
+CODING_TOPICS = {
+    "high_school_low": [
+        ("Computer Science", "Python fundamentals and short programs"),
+        ("Computer Science", "Basic algorithms and data manipulation"),
+    ],
+    "high_school_high": [
+        ("Computer Science", "Functions and unit-level programming tasks"),
+        ("Computer Science", "Algorithms and correctness reasoning"),
+    ],
+    "undergraduate": [
+        ("Computer Science", "Multi-step programming and contest-style problems"),
+        ("Computer Science", "Algorithms and data structures"),
+    ],
+}
+
 MATH_TOPICS = {
     "high_school_low": [
         ("Arithmetic", "Ratios and rates in a word problem"),

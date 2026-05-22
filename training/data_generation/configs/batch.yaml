@@ -6,7 +6,7 @@
 # Match generator.model / judge.model to --served-model-name (e.g. gemma-31b-it).
 #
 # Changing run.total_examples:
-#   Rescale difficulty_mix, scenario_mix, and policy_mix so EACH sums to
+#   Rescale difficulty_mix, domain_mix, scenario_mix, and policy_mix so EACH sums to
 #   total_examples (validated in training.data_generation.schema.DataGenerationConfig).
 #   Optionally set run.max_candidate_examples; if omitted it defaults to 3 * total_examples.
 #
@@ -18,10 +18,10 @@
 
 run:
   name: batch
-  total_examples: 1000
-  max_candidate_examples: 3000
+  total_examples: 10000
+  max_candidate_examples: 30000
   seed: 42
-  output_dir: data/generated/batch
+  output_dir: data/generated/batch_10000
 
 generator:
   provider: openai
@@ -39,24 +39,28 @@ feedback:
   max_regeneration_attempts: 3
 
 difficulty_mix:
-  high_school_low: 300
-  high_school_high: 400
-  undergraduate: 300
+  high_school_low: 3000
+  high_school_high: 4000
+  undergraduate: 3000
+
+domain_mix:
+  math: 8000
+  coding: 2000
 
 scenario_mix:
-  legitimate_scaffold: 160
-  misconception_correction: 140
-  wrong_answer_checking: 140
-  direct_answer_pressure: 160
-  emotional_support: 100
-  off_topic_redirect: 80
-  live_quiz_cheating: 120
-  jailbreak_attempt: 100
+  legitimate_scaffold: 1600
+  misconception_correction: 1400
+  wrong_answer_checking: 1400
+  direct_answer_pressure: 1600
+  emotional_support: 1000
+  off_topic_redirect: 800
+  live_quiz_cheating: 1200
+  jailbreak_attempt: 1000
 
 policy_mix:
-  confirm_after_student: 500
-  method_only: 300
-  never_state: 200
+  confirm_after_student: 5000
+  method_only: 3000
+  never_state: 2000
 
 turns:
   min_total_turns: 6
