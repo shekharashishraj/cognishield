@@ -1,0 +1,108 @@
+{
+  "conversation_id": "mt_dg_8077",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Binomial Theorem",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully scaffolds the problem using the Binomial Theorem without revealing the final answer, following the confirm_after_student policy."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Find the last three digits of $9^{105}$.",
+      "reference_solution": "We can write $9^{105} = (10 - 1)^{105}.$  Then by the Binomial Theorem,\n\\[(10 - 1)^{105} = 10^{105} - \\binom{105}{1} 10^{104} + \\binom{105}{2} 10^{103} - \\dots + \\binom{105}{102} 10^3 - \\binom{105}{103} 10^2 + \\binom{105}{104} 10 - 1.\\]All the terms up to $\\binom{105}{102} 10^3$ are divisible by $10^3,$ so for the purpose of finding the last three digits, we can ignore them.  We are left with\n\\begin{align*}\n-\\binom{105}{103} 10^2 + \\binom{105}{104} 10 - 1 &= -\\binom{105}{2} 10^2 + \\binom{105}{1} 10 - 1 \\\\\n&= -\\frac{105 \\cdot 104}{2} \\cdot 10^2 + 105 \\cdot 10 - 1 \\\\\n&= -546000 + 1050 - 1 \\\\\n&= -546000 + 1049.\n\\end{align*}Hence, the last three digits are $\\boxed{049}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "4586"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm stuck on this math problem: Find the last three digits of $9^{105}$. I don't know where to start. Can you just tell me the answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through this! Instead of giving you the answer right away, let's figure it out together. To find the last three digits of a number, we are essentially looking for the remainder when that number is divided by 1000. \n\nDoes $9$ look close to any number that would make powers easier to calculate, especially in relation to 10 or 1000?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It's really close to 10. Like, $9 = 10 - 1$. Does that help?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly! If we rewrite $9^{105}$ as $(10 - 1)^{105}$, we can use a specific algebraic tool to expand this expression. Do you remember which theorem allows us to expand a binomial raised to a high power?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The Binomial Theorem! So I should expand $(10 - 1)^{105}$ using that. But that's going to be a huge number of terms. Do I have to calculate all of them?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're right that there are many terms, but remember we only care about the last three digits (modulo 1000). \n\nThink about the terms in the expansion: they will look like $\\binom{105}{k} 10^{105-k} (-1)^k$. At what point do the terms become multiples of 1000, making them irrelevant to the last three digits?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Any term with $10^3$ or higher will be a multiple of 1000. So I only need to look at the terms where the power of 10 is $10^2$, $10^1$, and $10^0$. \n\nThose would be the last three terms of the expansion: $\\binom{105}{103} 10^2 (-1)^{103} + \\binom{105}{104} 10^1 (-1)^{104} + \\binom{105}{105} 10^0 (-1)^{105}$. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. Now, try to simplify those three terms. Remember that $\\binom{n}{k} = \\binom{n}{n-k}$ to make the calculations easier. What do you get when you evaluate those terms?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, let's see:\nTerm 1: $-\\binom{105}{2} \\cdot 100 = -\\frac{105 \\times 104}{2} \\cdot 100 = -5460 \\cdot 100 = -546,000$.\nTerm 2: $\\binom{105}{1} \\cdot 10 = 105 \\cdot 10 = 1,050$.\nTerm 3: $\\binom{105}{0} \\cdot 1 \\cdot (-1) = -1$.\n\nSo it's $-546,000 + 1,050 - 1 = -544,951$. Wait, the last three digits of that are 951? Or is it because it's negative?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've calculated the terms correctly! However, be careful with the negative sign. Since we are looking for the last three digits, we are working modulo 1000. \n\nIf you have a result like $-546,000 + 1,049$, the $-546,000$ part is a multiple of 1000, so it doesn't affect the last three digits. What is the remainder when $1,049$ is divided by 1000?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh! I see. $-546,000$ is just $0$ in modulo 1000. So I just need the last three digits of $1050 - 1$, which is $1049$. That means the last three digits are 049!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is correct! The last three digits of $9^{105}$ are indeed 049. Great job working through the Binomial Theorem to solve this!",
+      "loss_mask": true
+    }
+  ]
+}

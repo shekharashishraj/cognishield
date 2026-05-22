@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_dg_1956",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Multi-step programming and contest-style problems: List Manipulation",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The student incorrectly attempts to use a loop with pop/insert which is inefficient and logically flawed for large shifts. The tutor guides them toward Python's slicing syntax."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to rotate a given list by specified number of items to the right direction. https://www.geeksforgeeks.org/python-program-right-rotate-list-n/",
+      "reference_solution": "def rotate_right(list, m):\n  result =  list[-m:] + list[:-m]\n  return result",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "743"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: Write a function to rotate a given list by specified number of items to the right direction. https://www.geeksforgeeks.org/python-program-right-rotate-list-n/ \n\nCan you just give me the code? I have a deadline in an hour.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code directly, but I can certainly help you work through the logic so you can finish it quickly! To start, if you have a list and you want to move elements from the end to the front, how do you think you should approach moving those elements?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I thought I could just use a for loop and call .pop() on the last element and then .insert(0, element) for however many times 'm' is. Like this:\n\nfor i in range(m):\n    item = my_list.pop()\n    my_list.insert(0, item)\n\nIs that the right way to do it?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic actually works for small lists! However, using `.insert(0, ...)` inside a loop can be very slow because every time you insert at the front, Python has to shift every other element in the list one position to the right. This makes the complexity O(m * n).\n\nDo you know of a way to grab a 'chunk' of the list at once instead of moving items one by one?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I didn't realize insert was that slow. I guess I could use slicing? But I'm not sure how to slice from the end. I know `list[0:2]` gets the start, but how do I get the last 'm' elements?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're on the right track with slicing! In Python, you can use negative indices to count from the end of the list. For example, `list[-1]` is the last element. \n\nIf you wanted to get a slice starting from 'm' positions from the end all the way to the very end, what would that slice look like?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Would it be `list[-m:]`? And then I guess the remaining part of the list would be everything from the start up to that point, which is `list[:-m]`? So I could just add them together: `list[-m:] + list[:-m]`?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is exactly right. You've identified both the tail end that needs to move to the front and the remaining head of the list. Now, try wrapping that logic into the function requested in the problem statement and see if it passes your test cases.",
+      "loss_mask": true
+    }
+  ]
+}

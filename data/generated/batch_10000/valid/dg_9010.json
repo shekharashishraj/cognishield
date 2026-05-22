@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_9010",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "High-quality scaffolding for a nested list coordinate search problem. Tutor guides the student through iteration and complex sorting requirements."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def get_row(lst, x):\n    \"\"\"\n    You are given a 2 dimensional data, as a nested lists,\n    which is similar to matrix, however, unlike matrices,\n    each row may contain a different number of columns.\n    Given lst, and integer x, find integers x in the list,\n    and return list of tuples, [(x1, y1), (x2, y2) ...] such that\n    each tuple is a coordinate - (row, columns), starting with 0.\n    Sort coordinates initially by rows in ascending order.\n    Also, sort coordinates of the row by columns in descending order.\n    \n    Examples:\n    get_row([\n      [1,2,3,4,5,6],\n      [1,2,3,4,1,6],\n      [1,2,3,4,5,1]\n    ], 1) == [(0, 0), (1, 4), (1, 0), (2, 5), (2, 0)]\n    get_row([], 1) == []\n    get_row([[], [1], [1, 2, 3]], 3) == [(2, 2)]\n    \"\"\"",
+      "reference_solution": "coords = [(i, j) for i in range(len(lst)) for j in range(len(lst[i])) if lst[i][j] == x]\n    return sorted(sorted(coords, key=lambda x: x[1], reverse=True), key=lambda x: x[0])",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/87"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this Python problem. Can you just give me the code for it? Here is the prompt:\n\ndef get_row(lst, x):\n    \"\"\"\n    You are given a 2 dimensional data, as a nested lists,\n    which is similar to matrix, however, unlike matrices,\n    each row may contain a different number of columns.\n    Given lst, and integer x, find integers x in the list,\n    and return list of tuples, [(x1, y1), (x2, y2) ...] such that\n    each tuple is a coordinate - (row, columns), starting with 0.\n    Sort coordinates initially by rows in ascending order.\n    Also, sort coordinates of the row by columns in descending order.\n    \n    Examples:\n    get_row([\n      [1,2,3,4,5,6],\n      [1,2,3,4,1,6],\n      [1,2,3,4,5,1]\n    ], 1) == [(0, 0), (1, 4), (1, 0), (2, 5), (2, 0)]\n    get_row([], 1) == []\n    get_row([[], [1], [1, 2, 3]], 3) == [(2, 2)]\n    \"\"\"",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the full code right away, but I'd be happy to help you build it step-by-step! Let's start with the first part: how would you go about finding the coordinates (row, column) of every instance of `x` in a nested list where the rows might have different lengths?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I would use a nested loop? Like, loop through the main list, then loop through each sublist inside it. I can use `enumerate` to keep track of the indices.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great approach. Using `enumerate` is perfect for tracking the indices. Once you have those loops, how will you store the coordinates you find so that you can sort them later?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'll put them into a list of tuples, like `(row_index, col_index)`. But the sorting part is confusing. It says sort by rows ascending, but columns descending. Does that mean I sort it twice?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've hit on the trickiest part of the problem! You can indeed sort the list multiple times. In Python, the `sorted()` function is 'stable', meaning it preserves the relative order of elements that have the same key. \n\nIf you want the final result to be sorted primarily by rows (ascending) and secondarily by columns (descending), which sort should you perform first?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If it's a stable sort, I should probably sort by the secondary criteria first. So, I'd sort by the column index in descending order first, and then sort by the row index in ascending order?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. By sorting the columns in descending order first, those relative positions are maintained when you perform the final sort on the rows. \n\nDo you know how to use a `lambda` function with `sorted()` to specify which part of the tuple to sort by?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Yeah, I think it's `sorted(coords, key=lambda item: item[1], reverse=True)` for the columns. And for the rows, it would just be `sorted(coords, key=lambda item: item[0])`. \n\nSo my plan is: \n1. Create an empty list.\n2. Use nested enumerate loops to find `x` and append `(r, c)` to the list.\n3. Sort by `item[1]` reverse=True.\n4. Sort the result of that by `item[0]`.\n5. Return it.\n\nDoes that sound right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic is perfectly sound. You've correctly identified the iteration method and the specific ordering required for the stable sort. Go ahead and implement that—let me know if you run into any bugs while coding it!",
+      "loss_mask": true
+    }
+  ]
+}

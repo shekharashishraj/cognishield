@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_4849",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Basic algorithms and data manipulation - Digit Analysis",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student initially fails to handle division by zero when a number contains the digit 0. Tutor scaffolds the solution by guiding them to check for zero before performing the modulo operation."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to find numbers within a given range from startnum ti endnum where every number is divisible by every digit it contains. https://www.w3resource.com/python-exercises/lambda/python-lambda-exercise-24.php",
+      "reference_solution": "def divisible_by_digits(startnum, endnum):\n    return [n for n in range(startnum, endnum+1) \\\n                if not any(map(lambda x: int(x) == 0 or n%int(x) != 0, str(n)))]",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "745"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this homework: Write a function to find numbers within a given range from startnum ti endnum where every number is divisible by every digit it contains. https://www.w3resource.com/python-exercises/lambda/python-lambda-exercise-24.php. Can you just give me the code? I'm in a rush.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code for you, but I can certainly help you build it step-by-step! To start, how do you plan to access the individual digits of a number so you can check if the number is divisible by them?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I can convert the number to a string and then loop through it. Like this:\n\nfor digit in str(num):\n    if num % int(digit) == 0:\n        # do something\n\nIs that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Converting the number to a string is a great way to isolate the digits. However, think about the range of numbers you might encounter. Is there any specific digit that would cause a problem when you try to perform `num % int(digit)`?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, I didn't think about that. If the number is 102, one of the digits is 0. I can't divide by zero, so the program will crash. Should I just skip numbers that contain a 0?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's exactly the issue! Since a number cannot be divisible by 0, any number containing the digit 0 cannot satisfy the condition 'divisible by every digit it contains.' So, you need to handle that case. How would you integrate a check for zero into your loop or condition?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could add an if statement. Like `if int(digit) != 0 and num % int(digit) == 0:`. But wait, the problem says it must be divisible by *every* digit. If I use an if statement like that, it might just skip the zero and say the number is valid even though it has a zero in it.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've spotted a crucial detail. If you simply skip the zero, you're ignoring a digit that fails the requirement. To solve this, you need a way to ensure that if *any* digit is 0, or if *any* digit doesn't divide the number evenly, the whole number is rejected. Have you heard of the `all()` or `any()` functions in Python? They are very useful for these kinds of checks.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I've seen `all()`. So I could do something like `all(int(d) != 0 and num % int(d) == 0 for d in str(num))`. Would that work for the logic?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is sound. It ensures that every single digit is non-zero and that the number is divisible by that digit. Now, how would you wrap this logic into a function that handles the range from `startnum` to `endnum` and returns a list of all the matching numbers?",
+      "loss_mask": true
+    }
+  ]
+}

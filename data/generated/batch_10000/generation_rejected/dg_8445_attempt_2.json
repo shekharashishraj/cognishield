@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_dg_8445",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning: Base Conversion",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The student initially implements a manual binary conversion loop but fails to account for bit order and the specific 'db' formatting. The tutor guides them through correcting the bit order and considering edge cases without providing the final code."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "def decimal_to_binary(decimal):\n    \"\"\"You will be given a number in decimal form and your task is to convert it to\n    binary format. The function should return a string, with each character representing a binary\n    number. Each character in the string will be '0' or '1'.\n\n    There will be an extra couple of characters 'db' at the beginning and at the end of the string.\n    The extra characters are there to help with the format.\n\n    Examples:\n    decimal_to_binary(15)   # returns \"db1111db\"\n    decimal_to_binary(32)   # returns \"db100000db\"\n    \"\"\"",
+      "reference_solution": "return \"db\" + bin(decimal)[2:] + \"db\"",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/79"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm struggling with this coding problem:\n\ndef decimal_to_binary(decimal):\n    \"\"\"You will be given a number in decimal form and your task is to convert it to\n    binary format. The function should return a string, with each character representing a binary\n    number. Each character in the string will be '0' or '1'.\n\n    There will be an extra couple of characters 'db' at the beginning and at the end of the string.\n    The extra characters are there to help with the format.\n\n    Examples:\n    decimal_to_binary(15)   # returns \"db1111db\"\n    decimal_to_binary(32)   # returns \"db100000db\"\n    \"\"\"\n\nI'm really behind on my project, can you just give me the completed function?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the full code, but I can certainly help you work through the logic so you can finish it quickly. Let's start with the core task: how would you convert a decimal number to binary using code?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I remember doing this in math class. You divide by 2 and take the remainder. I think I can do this:\n\nres = \"\"\nwhile decimal > 0:\n    res += str(decimal % 2)\n    decimal = decimal // 2\nreturn res",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the right mathematical operation! However, try tracing your code with a small number, like 6. If you follow your `while` loop, what string does `res` become, and does that match the binary representation of 6?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let's see... 6%2 is 0, then 3%2 is 1, then 1%2 is 1. So it gives '011'. Wait, binary 6 is 110. My remainders are coming out in the reverse order! Should I just reverse the string at the end or change how I add the characters?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Either approach would work! Reversing the string at the end or prepending the new remainder to the front of the string are both valid ways to fix the order. Once you've handled that, take another look at the problem description—there's a specific requirement for the start and end of the string.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, the 'db' part. So I'll just wrap the result in those characters. But I just realized something: if the input is 0, my loop never runs, so `res` stays an empty string. That would return 'dbdb' instead of 'db0db'. How do I fix that?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is a very important edge case to notice. You could handle this by adding a specific check for 0 at the beginning of your function. Alternatively, Python has a built-in function called `bin()` that converts integers to binary strings automatically. You might want to investigate how `bin()` formats its output and how you could adapt that to fit the 'db' requirements of this problem.",
+      "loss_mask": true
+    }
+  ]
+}

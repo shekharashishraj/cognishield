@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_3231",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning - String Manipulation",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor guides the student to identify a left-shift vs right-shift error and a missing edge case without ever confirming the correctness of the code or providing the final solution."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "def circular_shift(x, shift):\n    \"\"\"Circular shift the digits of the integer x, shift the digits right by shift\n    and return the result as a string.\n    If shift > number of digits, return digits reversed.\n    >>> circular_shift(12, 1)\n    \"21\"\n    >>> circular_shift(12, 2)\n    \"12\"\n    \"\"\"",
+      "reference_solution": "s = str(x)\n    if shift > len(s):\n        return s[::-1]\n    else:\n        return s[len(s) - shift:] + s[:len(s) - shift]",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/65"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm trying to solve this coding problem:\n\ndef circular_shift(x, shift):\n    \"\"\"Circular shift the digits of the integer x, shift the digits right by shift\n    and return the result as a string.\n    If shift > number of digits, return digits reversed.\n    >>> circular_shift(12, 1)\n    \"21\"\n    >>> circular_shift(12, 2)\n    \"12\"\n    \"\"\"\n\nI think this is the right way to do it:\n```python\ndef circular_shift(x, shift):\n    s = str(x)\n    return s[shift:] + s[:shift]\n```\nCan you tell me if this is correct? I need to submit it soon.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Instead of confirming if the code is correct, let's walk through the requirements together to see if it holds up. First, look at the condition regarding what happens when the shift is greater than the number of digits. How does your current code handle that scenario?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I totally missed the 'If shift > number of digits, return digits reversed' part. I'll just add an if-statement for that. But the slicing part `s[shift:] + s[:shift]` should be correct for the circular shift, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Let's test the slicing logic by tracing it. The problem asks for a shift to the *right*. Suppose you have x = 123 and shift = 1. If you use your current slicing method, what is the resulting string, and does that represent a rightward shift?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If x = 123 and shift = 1, then s[1:] is '23' and s[:1] is '1', so it returns '231'. Wait, a right shift of '123' by 1 should move the '3' to the front, which would be '312'. My code is shifting the digits to the left instead!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. You've found the issue. To achieve a right shift, you need the characters from the end of the string to move to the front. How could you change your slice indices to grab the last few characters first instead of the first few?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could use negative indexing! Maybe something like `s[-shift:] + s[:-shift]`? For x = 123 and shift = 1, s[-1:] is '3' and s[:-1] is '12', so it becomes '312'. That works!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That approach addresses the right shift. Now, think about the edge cases. What happens if the shift is exactly 0? Would that slicing logic still produce the original string, or would it cause an unexpected result?",
+      "loss_mask": true
+    }
+  ]
+}

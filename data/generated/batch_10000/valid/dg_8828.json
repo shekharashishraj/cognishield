@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_8828",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Multi-step programming and contest-style problems",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully scaffolds the logic for calculating jumps in a 2D plane without revealing the final code, guiding the student through the edge cases and the greedy approach."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to check for the number of jumps required of given length to reach a point of form (d, 0) from origin in a 2d plane.",
+      "reference_solution": "def min_Jumps(steps, d): \n    (a, b) = steps\n    temp = a \n    a = min(a, b) \n    b = max(temp, b) \n    if (d >= b): \n        return (d + b - 1) / b \n    if (d == 0): \n        return 0\n    if (d == a): \n        return 1\n    else:\n        return 2",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "617"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm stuck on this programming problem: 'Write a function to check for the number of jumps required of given length to reach a point of form (d, 0) from origin in a 2d plane.' I'm not even sure how to start. Can you just give me the code?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through this! Instead of giving you the full code right away, let's break down the logic so you can implement it yourself. First, let's clarify the movement: you have two possible jump lengths (let's call them 'a' and 'b'). To reach the point (d, 0) in the fewest jumps, which jump length would you generally want to use as much as possible?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I'd want to use the larger jump length to cover the distance 'd' faster.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great starting point. If the distance 'd' is very large—specifically, larger than or equal to your maximum jump length—how would you calculate the number of jumps needed using that larger length? Keep in mind that you might have a remainder if 'd' isn't perfectly divisible.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If d is 10 and the max jump is 3, I'd need 4 jumps (3+3+3+1). So I could use division and round up? Like (d + max_jump - 1) // max_jump?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. That formula correctly handles the ceiling of the division. Now, let's consider the cases where 'd' is smaller than the maximum jump length. What happens if 'd' is 0? Or what if 'd' exactly matches one of your jump lengths?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If d is 0, the answer is 0 because we are already there. If d matches one of the jump lengths, it's just 1 jump. But what if d is smaller than the max jump but doesn't match the smaller jump either?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's the tricky part. Think about the 2D plane. If you can't reach 'd' in one jump, can you use two jumps (perhaps jumping 'out' and 'back' or at an angle) to land exactly on (d, 0)? If 'd' is less than the max jump and not equal to the min jump, what's the minimum number of jumps that could potentially get you there?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, since it's a 2D plane, I could jump in a triangle shape or something to land on the x-axis. So if it's not 0 or 1, the answer would be 2?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got it. Now you have all the logic: the case for d=0, the case for d being equal to a jump length, the case for d being larger than the max jump, and the fallback for other small distances. Try putting this into a function and let me know if you run into any bugs!",
+      "loss_mask": true
+    }
+  ]
+}

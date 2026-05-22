@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_dg_7344",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Multi-step programming and contest-style problems",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts a regex solution but fails to handle the end-of-string anchor and non-greedy matching. Tutor guides them to discover these gaps."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Write a function that matches a string that has an 'a' followed by anything, ending in 'b'.",
+      "reference_solution": "import re\ndef text_starta_endb(text):\n        patterns = 'a.*?b$'\n        return re.search(patterns,  text)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "794"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Write a function that matches a string that has an 'a' followed by anything, ending in 'b'. I think the regex should be 'a.*b'. Is this correct? Just tell me if it works so I can move on.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't simply tell you if it's correct, as that would bypass the learning process. Instead, let's test your logic. If you had a string like 'a followed by some text and then a b, then some more text', would your current pattern 'a.*b' match the requirement that the string must *end* in 'b'?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, 'a.*b' looks for 'a', then any characters, then 'b'. Since it finds a 'b', it should match. Does it matter if there is stuff after the 'b'?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's the key detail. The problem specifies that the string must *end* in 'b'. In regular expressions, if you don't specify where the match must stop, the engine will return a match as long as the pattern exists anywhere in the string. How do you tell a regex engine that the match must occur at the very end of the input string?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I remember now. I should use the dollar sign. So maybe 'a.*b$'? Is that it?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've correctly identified the anchor for the end of the string. Now, consider a case where you have multiple 'b's in the string, like 'abcb'. The `.*` operator is 'greedy', meaning it tries to match as much as possible. While 'a.*b$' works for basic cases, think about how the regex engine behaves with long strings. Would you prefer it to match the shortest possible sequence or the longest one? And how does that affect the efficiency or behavior of your search?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I want it to be efficient. How do I make it non-greedy?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "To make a quantifier non-greedy (or 'lazy'), you can add a specific character immediately after the quantifier. Do you recall which character transforms `*` into a non-greedy version?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Is it a question mark? So the pattern would be 'a.*?b$'. Does this finally satisfy the problem statement?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've now incorporated the starting character, a non-greedy match for the middle, and the end-of-string anchor. Try implementing this inside a Python function using the `re` module and test it with a few strings—some that end in 'b' and some that have 'b' in the middle but end with something else—to verify it behaves as expected.",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_2006",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Binary Search and List Insertion",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student confuses left-insertion with right-insertion. Tutor guides them to test with duplicate values to discover the difference."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to locate the right insertion point for a specified value in sorted order.",
+      "reference_solution": "import bisect\ndef right_insertion(a, x):\n    return bisect.bisect_right(a, x)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "786"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: \"Write a function to locate the right insertion point for a specified value in sorted order.\" I think the answer is just to use `bisect.bisect_left(a, x)`. Is that right? Please just tell me if it's correct so I can move on.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't simply confirm if that's correct, but I can help you figure it out! To start, could you explain why you chose `bisect_left` for this specific requirement?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, `bisect` is for finding where to put things in a sorted list, and `bisect_left` finds the index. Since the list is sorted, that should be the spot where the value goes.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're right that the `bisect` module is the correct tool for this. However, the problem specifically asks for the *right* insertion point. Think about what happens if the value you are inserting already exists in the list. Where would `bisect_left` place the new element relative to the existing one?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If the value is already there, `bisect_left` puts it before the existing one, right? So it's at the leftmost possible position.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Now, compare that to the requirement of finding the *right* insertion point. If you have duplicate values, should the new element go before or after the existing ones to be at the 'right' insertion point?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. If it's the 'right' point, it should go after the existing duplicates. So `bisect_left` is actually the wrong function. Is there a different function in that module that does the opposite?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've spotted the issue! Since you've already identified that `bisect_left` targets the leftmost position, take a look at the other available functions in the `bisect` module. Based on the naming convention you've already seen, which one do you think would handle the rightmost position?",
+      "loss_mask": true
+    }
+  ]
+}

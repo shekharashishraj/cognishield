@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_5987",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Function Parity",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student incorrectly identifies the composition as odd by counting the number of odd functions. Tutor guides them to test with -x."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Let $f(x)$ be an odd function, and let $g(x)$ be an even function.  Is $f(f(g(f(g(f(x))))))$ even, odd, or neither?\n\nEnter \"odd\", \"even\", or \"neither\".",
+      "reference_solution": "We have that\n\\[f(f(g(f(g(f(-x)))))) = f(f(g(f(g(-f(x)))))) = f(f(g(f(g(f(x)))))),\\]so the function is $\\boxed{\\text{even}}.$\n\nMore generally, if we have a composition of functions, and at least one of the functions is even, then the whole composition of functions is even.",
+      "seed_dataset": "HuggingFaceH4/MATH-500/test",
+      "seed_example_id": "test/intermediate_algebra/128.json"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Let $f(x)$ be an odd function, and let $g(x)$ be an even function. Is $f(f(g(f(g(f(x))))))$ even, odd, or neither?\n\nI think the answer is 'odd' because there are more odd functions than even functions in the composition. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see your logic—you're counting the occurrences of each type of function. However, parity in compositions doesn't always work like a simple count. To be sure, could you try applying the definition of even and odd functions by substituting $-x$ into the expression and seeing what happens?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, let me try. If I put in $-x$, the innermost function is $f(-x)$. Since $f$ is odd, $f(-x) = -f(x)$. Then that goes into $g$, so it's $g(-f(x))$. Since $g$ is even, $g(-f(x)) = g(f(x))$. Wait, does that mean it's already becoming the same as the original?",
+      "loss_mask": true
+    },
+    {
+      "role": "assistant",
+      "content": "You've made a great start. You correctly found that $g(f(-x)) = g(f(x))$. Now, look at the rest of the composition. If the inner part $g(f(-x))$ has already simplified back to $g(f(x))$, what happens when you wrap the remaining functions around it?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If the inside is already $g(f(x))$, then the rest is just $f(f(g(f(g( \text{that part} )))))$. So it would be $f(f(g(f(g(g(f(x)))))))$? No, I mean, the whole thing just becomes $f(f(g(f(g(f(x))))))$ again. Does that mean it's even?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've correctly observed that substituting $-x$ into the entire composition results in the exact same output as substituting $x$. Based on the definitions of even and odd functions, what does that tell you about the parity of the overall function?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If $H(-x) = H(x)$, then $H$ is an even function. So the answer is 'even'. I guess my counting method was wrong!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. You've correctly applied the definition. As a general rule for the future, think about what happens when an even function is placed anywhere in a composition chain—how does that affect the symmetry of the final result?",
+      "loss_mask": true
+    }
+  ]
+}

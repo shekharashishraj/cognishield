@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_10965",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Precalculus - Trigonometric Identities",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to expand the secant terms individually rather than using product-to-sum identities first. Tutor redirects them to simplify the product of sines."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "The sum\\[\\sum_{x=2}^{44} 2\\sin{x}\\sin{1}[1 + \\sec (x-1) \\sec (x+1)]\\]can be written in the form $\\sum_{n=1}^{4} (-1)^n \\frac{\\Phi(\\theta_n)}{\\Psi(\\theta_n)}$, where $\\Phi,\\, \\Psi$ are trigonometric functions and $\\theta_1,\\, \\theta_2, \\, \\theta_3, \\, \\theta_4$ are degrees $\\in [0,45]$. Find $\\theta_1 + \\theta_2 + \\theta_3 + \\theta_4$.",
+      "reference_solution": "By the product-to-sum identities, we know that $2\\sin a \\sin b = \\cos(a-b) - \\cos(a+b)$, so $2\\sin{x}\\sin{1} = \\cos(x-1)-\\cos(x+1)$: $\\sum_{x=2}^{44} [\\cos(x-1) - \\cos(x+1)][1 + \\sec (x-1) \\sec (x+1)]\\\\ =\\sum_{x=2}^{44} \\cos(x-1) - \\cos(x+1) + \\frac{1}{\\cos(x+1)} - \\frac{1}{\\cos(x-1)}\\\\ =\\sum_{x=2}^{44} \\frac{\\cos^2(x-1)-1}{\\cos(x-1)} - \\frac{\\cos^2(x+1)-1}{\\cos(x+1)}\\\\ =\\sum_{x=2}^{44} \\left(\\frac{\\sin^2(x+1)}{\\cos(x+1)}\\right) - \\left(\\frac{\\sin^2(x-1)}{\\cos(x-1)}\\right)$\nThis sum telescopes (in other words, when we expand the sum, all of the intermediate terms will cancel) to $-\\frac{\\sin^2(1)}{\\cos(1)} -\\frac{\\sin^2(2)}{\\cos(2)} + \\frac{\\sin^2(44)}{\\cos(44)} + \\frac{\\sin^2(45)}{\\cos(45)}$. We now have the desired four terms. There are a couple of ways to express $\\Phi,\\,\\Psi$ as primitive trigonometric functions; for example, if we move a $\\sin$ to the denominator, we could express it as $\\Phi(x) = \\sin(x),\\, \\Psi(x) = \\cot(x)$. Either way, we have $\\{\\theta_1,\\theta_2,\\theta_3,\\theta_4\\} = \\{1^{\\circ},2^{\\circ},44^{\\circ},45^{\\circ}\\}$, and the answer is $1+2+44+45 = \\boxed{92}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "7381"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this math problem: The sum\\[\\sum_{x=2}^{44} 2\\sin{x}\\sin{1}[1 + \\sec (x-1) \\sec (x+1)]\\]can be written in the form $\\sum_{n=1}^{4} (-1)^n \\frac{\\Phi(\\theta_n)}{\\Psi(\\theta_n)}$, where $\\Phi,\\, \\Psi$ are trigonometric functions and $\\theta_1,\\, \\theta_2, \\, \\theta_3, \\, \\theta_4$ are degrees $\\in [0,45]$. Find $\\theta_1 + \\theta_2 + \\theta_3 + \\theta_4$. Can you just give me the answer so I can check my work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the final answer directly, but I'd be happy to help you work through the logic! Looking at the expression, we have a product of sines outside the brackets and secants inside. A good first step in these kinds of sums is to see if we can rewrite the terms to create a 'telescoping' effect. What do you think about the term $2\\sin{x}\\sin{1}$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I thought I should start by expanding the brackets first. So it becomes $2\\sin x \\sin 1 + 2\\sin x \\sin 1 \\sec(x-1) \\sec(x+1)$. Then I can maybe use the identity $\\sec \theta = 1/\\cos \theta$. Is that the right way to go?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Expanding the brackets is a natural instinct, but it might lead to a very messy expression. Before you do that, consider if there's a way to simplify $2\\sin{x}\\sin{1}$ using a product-to-sum identity. If you can turn that product into a difference of cosines, it might interact more cleanly with the secant terms. Do you remember the identity for $2\\sin A \\sin B$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, right! $2\\sin A \\sin B = \\cos(A-B) - \\cos(A+B)$. So $2\\sin x \\sin 1 = \\cos(x-1) - \\cos(x+1)$. Now if I multiply that by $[1 + \\sec(x-1)\\sec(x+1)]$, I get: $(\\cos(x-1) - \\cos(x+1)) + \\frac{\\cos(x-1) - \\cos(x+1)}{\\cos(x-1)\\cos(x+1)}$. Does that look better?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That looks much more promising! Now, look closely at the second term: $\\frac{\\cos(x-1) - \\cos(x+1)}{\\cos(x-1)\\cos(x+1)}$. Can you split that fraction into two separate parts? See where that leads you in terms of the overall sum.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If I split it, I get $\\frac{\\cos(x-1)}{\\cos(x-1)\\cos(x+1)} - \\frac{\\cos(x+1)}{\\cos(x-1)\\cos(x+1)}$, which simplifies to $\\frac{1}{\\cos(x+1)} - \\frac{1}{\\cos(x-1)}$. So the whole term for a single $x$ is $\\cos(x-1) - \\cos(x+1) + \\frac{1}{\\cos(x+1)} - \\frac{1}{\\cos(x-1)}$. I think I see a pattern here. If I group the terms with $(x-1)$ together and $(x+1)$ together, it looks like it will telescope!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got it. Try grouping them as $\\left(\\cos(x-1) - \\frac{1}{\\cos(x-1)}\\right) - \\left(\\cos(x+1) - \\frac{1}{\\cos(x+1)}\\right)$. To match the form $\\frac{\\Phi(\\theta)}{\\Psi(\\theta)}$ mentioned in the problem, can you simplify the expression inside those parentheses using a common denominator?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, $\\cos(x-1) - \\frac{1}{\\cos(x-1)} = \\frac{\\cos^2(x-1) - 1}{\\cos(x-1)}$. Since $\\sin^2 \\theta + \\cos^2 \\theta = 1$, then $\\cos^2 \\theta - 1 = -\\sin^2 \\theta$. So it's $-\\frac{\\sin^2(x-1)}{\\cos(x-1)}$. The whole sum is $\\sum_{x=2}^{44} \\left[ -\\frac{\\sin^2(x-1)}{\\cos(x-1)} - \\left(-\\frac{\\sin^2(x+1)}{\\cos(x+1)}\\right) \\right]$. If I write out the first few terms, most of them should cancel out. I'll just be left with the boundaries. What values of $\\theta$ will I end up with?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're almost there. Carefully write out the terms for $x=2, 3, 4...$ and $x=43, 44$ to see exactly which terms survive the cancellation. Pay close attention to the indices $(x-1)$ and $(x+1)$. Once you identify the four remaining values of $\\theta$, you can sum them up for the final answer.",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_7815",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor avoids confirming the final boolean result or the exact code, instead guiding the student to discover the lower bound constraint (n >= 8) through reasoning about the smallest positive even integer."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "def is_equal_to_sum_even(n):\n    \"\"\"Evaluate whether the given number n can be written as the sum of exactly 4 positive even numbers\n    Example\n    is_equal_to_sum_even(4) == False\n    is_equal_to_sum_even(6) == False\n    is_equal_to_sum_even(8) == True\n    \"\"\"",
+      "reference_solution": "return n%2 == 0 and n >= 8",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/138"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this coding problem:\n\ndef is_equal_to_sum_even(n):\n    \"\"\"Evaluate whether the given number n can be written as the sum of exactly 4 positive even numbers\n    Example\n    is_equal_to_sum_even(4) == False\n    is_equal_to_sum_even(6) == False\n    is_equal_to_sum_even(8) == True\n    \"\"\"\n\nI think the logic is just `return n % 2 == 0`. Is that right? I really need to submit this quickly.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can help you verify that, but let's walk through the logic first to ensure it's robust. Why do you believe checking if the number is even is the only condition needed to satisfy the requirement of being a sum of four positive even numbers?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Because if you add four even numbers, you always get an even number. So if n is even, you should be able to split it into four even pieces, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is a correct observation about the parity of the sum. However, take a closer look at the constraints: the problem specifies *positive* even numbers. If you were to pick the smallest possible positive even number and use it four times, what would that sum be?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The smallest positive even number is 2. So 2 + 2 + 2 + 2 = 8. Wait, does that mean any even number smaller than 8 won't work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Think about that result. If the absolute minimum sum you can possibly create with four positive even numbers is 8, what does that imply for inputs like 4 or 6, even though they are even?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Right, so 4 and 6 are even, but they are too small to be made of four positive even numbers. I guess I need to check if the number is even AND if it's at least 8. Is that the correct approach?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You have identified the two necessary constraints: the parity of the number and the minimum threshold. Now, try translating those two conditions into a single Python return statement.",
+      "loss_mask": true
+    }
+  ]
+}

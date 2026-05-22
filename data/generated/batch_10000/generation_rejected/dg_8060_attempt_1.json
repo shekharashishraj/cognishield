@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_8060",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Counting & Probability",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully scaffolds the student through the complement counting method and the derivation of a Fibonacci-style recurrence without revealing the final answer."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "How many 10-digit positive integers have all digits either 1 or 2, and have two consecutive 1's?",
+      "reference_solution": "We take as our universe the set of 10-digit integers whose digits are all either 1 or 2, of which there are $2^{10}$, and we count the complement. The complement is the set of 10-digit positive integers composed of the digits 1 and 2 with no two consecutive 1s. Counting such numbers is a popular combinatorial problem: we approach it via a recursion.\nThere are two \"good\" one-digit numbers (1 and 2) and three good two-digit numbers (12, 21 and 22). Each such $n$-digit number is formed either by gluing \"2\" on to the end of a good $(n - 1)$-digit number or by gluing \"21\" onto the end of a good $(n - 2)$-digit number. This is a bijection between the good $n$-digit numbers and the union of the good $(n-1)$- and $(n - 2)$-digit numbers. Thus, the number of good $n$-digit numbers is the sum of the number of good $(n-1)$- and $(n - 2)$-digit numbers. The resulting recursion is exactly that of the Fibonacci numbers with initial values $F_1 = 2$ and $F_2 = 3$.\nThus, our final answer is $2^{10} - F_{10} = 1024 - 144 = \\boxed{880}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "1116"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm stuck on this math problem: How many 10-digit positive integers have all digits either 1 or 2, and have two consecutive 1's? I don't know where to start.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Hello! This is an interesting counting problem. When you're asked to find the number of items that satisfy a specific condition (like 'having two consecutive 1s'), it's sometimes easier to think about the opposite. Do you think it would be simpler to count the numbers that *do* have consecutive 1s, or the numbers that *do not*?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess it might be easier to count the ones that don't have any consecutive 1s and then subtract that from the total?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great strategy! That's called counting the complement. To do this, you'll first need the total number of 10-digit integers that use only the digits 1 and 2. How would you calculate that total?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Since there are 10 positions and each can be either 1 or 2, it should be 2^10, which is 1024. Now I just need to find how many have no two consecutive 1s.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Correct. Now let's focus on the 'good' numbers (those with no consecutive 1s). Since 10 digits is a bit large to list, try looking for a pattern. How many 'good' 1-digit numbers are there? And how many 'good' 2-digit numbers?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "For 1-digit: 1 and 2, so that's 2. For 2-digits: 12, 21, and 22. That's 3. I don't see the pattern yet though.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're on the right track. Let's think about how to build a 'good' n-digit number from smaller ones. If a good n-digit number ends in a 2, what can we say about the first (n-1) digits? And if it ends in a 1, what must the digit before it be, and what can we say about the first (n-2) digits?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If it ends in 2, the previous (n-1) digits just have to be a 'good' sequence. If it ends in 1, the digit before it must be a 2 to avoid having '11'. Then the digits before that 2 must be a 'good' sequence of length (n-2). So the number of good n-digit strings is the sum of good (n-1) and (n-2) strings?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly! You've just derived a recurrence relation. This looks very similar to a famous sequence of numbers. Given your starting values for 1-digit and 2-digit numbers, how can you use this rule to find the number of good 10-digit numbers, and what is your final plan to get the answer to the original question?",
+      "loss_mask": true
+    }
+  ]
+}

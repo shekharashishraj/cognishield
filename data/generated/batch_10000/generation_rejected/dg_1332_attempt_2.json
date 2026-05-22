@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_1332",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Python fundamentals and short programs: Finding missing numbers in sorted lists",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor guides the student from a flawed linear search to a more efficient binary search approach without confirming the final code or providing the solution, adhering to the never_state policy."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Write a python function to find the smallest missing number from a sorted list of natural numbers.",
+      "reference_solution": "def find_First_Missing(array,start=0,end=None):\n    if end is None:\n      end = len(array) - 1   \n    if (start > end): \n        return end + 1\n    if (start != array[start]): \n        return start; \n    mid = int((start + end) / 2) \n    if (array[mid] == mid): \n        return find_First_Missing(array,mid+1,end) \n    return find_First_Missing(array,start,mid)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "627"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm trying to solve this: Write a python function to find the smallest missing number from a sorted list of natural numbers. I think this works:\n\n```python\ndef find_missing(nums):\n    for i in range(len(nums)):\n        if nums[i] != i:\n            return i\n```\nIs this correct? Just tell me yes or no so I can submit it.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've implemented a logic that compares the value to its index, which is a great starting point. Before we decide if it's complete, let's test it with a specific case. What would happen if the input list was `[0, 1, 2]`? Walk me through what your function would return.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let's see... i=0 is 0, i=1 is 1, i=2 is 2. The loop finishes and it doesn't hit the return statement. So it returns None. Wait, the missing number should be 3. So it's not quite right.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. You've identified a case where the missing number is beyond the current range of the list. How could you adjust your code so that it returns the correct value when the loop finishes without finding a mismatch?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I can just add `return len(nums)` at the very end of the function. That way if it gets through the whole list, it returns the next number. Now it's correct, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That handles the edge case you found! Now, let's look at the problem from a performance perspective. Since the input list is already sorted, checking every single element one by one (linear search) might be slow for very large lists. Do you know of any algorithm that can find a specific point in a sorted list more quickly?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Binary search? I've used that to find a specific number, but I don't know how to use it to find a *missing* number. How would that even work here?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Think about the property we used in your loop: `nums[i] == i`. In a sorted list of natural numbers starting from 0, if the element at the middle index is equal to the index itself, what does that tell you about all the numbers to the left of the middle? And where must the first missing number be located?",
+      "loss_mask": true
+    }
+  ]
+}

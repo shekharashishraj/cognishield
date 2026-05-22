@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_dg_4494",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Number Theory - Divisors",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student initially confuses divisors of n with divisors of n^2 and forgets the 'do not divide n' constraint. Tutor guides them through complementary counting."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Let $n=2^{31}3^{19}.$ How many positive integer divisors of $n^2$ are less than $n$ but do not divide $n$?",
+      "reference_solution": "We know that $n^2 = 2^{62}3^{38}$ must have $(62+1)\\times (38+1)$ factors by its prime factorization. If we group all of these factors (excluding $n$) into pairs that multiply to $n^2$, then one factor per pair is less than $n$, and so there are $\\frac{63\\times 39-1}{2} = 1228$ factors of $n^2$ that are less than $n$. There are $32\\times20-1 = 639$ factors of $n$, which clearly are less than $n$, but are still factors of $n$. Therefore, using complementary counting, there are $1228-639=\\boxed{589}$ factors of $n^2$ that do not divide $n$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "5255"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Let $n=2^{31}3^{19}.$ How many positive integer divisors of $n^2$ are less than $n$ but do not divide $n$? I think the answer is 639. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "To help you figure out if that's correct, could you walk me through how you arrived at 639? I'd like to see your reasoning first.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, I found the number of divisors of $n$. Since $n = 2^{31} \times 3^{19}$, the number of divisors is $(31+1)(19+1) = 32 \times 20 = 640$. Then I subtracted 1 because the problem says 'less than $n$', so $640 - 1 = 639$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see what you did there. You correctly found the number of divisors of $n$ that are less than $n$. However, take another look at the problem statement. Are we looking for divisors of $n$, or divisors of $n^2$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, it says divisors of $n^2$. But the divisors of $n$ are also divisors of $n^2$, right? So why wouldn't it be 639?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're right that every divisor of $n$ is also a divisor of $n^2$. But the problem specifically asks for divisors of $n^2$ that **do not** divide $n$. Your current count consists entirely of divisors that *do* divide $n$. How does that change your approach?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I see. So I need to find all the divisors of $n^2$ that are less than $n$, and then subtract the ones that are also divisors of $n$. How do I find all divisors of $n^2$ that are less than $n$ without listing them all?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Think about the symmetry of divisors. If $d$ is a divisor of $n^2$, then $n^2/d$ is also a divisor. If $d < n$, what can you say about $n^2/d$? How can you use this pairing to count the divisors of $n^2$ that are smaller than $n$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If $d < n$, then $n^2/d > n$. So they come in pairs! One is smaller than $n$ and one is larger than $n$. Except for $n$ itself, which is $n^2/n$. So I can just find the total number of divisors of $n^2$, subtract 1 (for $n$), and divide by 2. Let me try that. $n^2 = 2^{62} \times 3^{38}$, so total divisors are $63 \times 39 = 2457$. Then $(2457 - 1) / 2 = 1228$. Now I just subtract my previous 639 from this?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is sound. You've identified the total number of divisors of $n^2$ that are less than $n$, and you've identified how many of those also divide $n$. Following through with that subtraction should lead you to the final result.",
+      "loss_mask": true
+    }
+  ]
+}

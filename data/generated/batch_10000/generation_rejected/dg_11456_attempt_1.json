@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_11456",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Python fundamentals and short programs - Bitwise Operations",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student fails to handle the wrap-around bits in a left rotation; tutor guides them to consider the bits shifted out of the 32-bit range."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to that rotate left bits by d bits a given number. We assume that the number is 32 bit.",
+      "reference_solution": "def left_rotate(n,d):   \n    INT_BITS = 32\n    return (n << d)|(n >> (INT_BITS - d))",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "799"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: Write a function to that rotate left bits by d bits a given number. We assume that the number is 32 bit. I think the answer is just `def left_rotate(n, d): return n << d`. Is this right? Please just tell me if it's correct so I can finish my homework.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't simply tell you if it's correct, but I can help you figure it out! Before we look at the code, could you explain your reasoning? What happens to the bits that are pushed off the left side when you use the `<<` operator in a 32-bit system?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, the `<<` operator moves everything to the left. So if I shift by d, the bits move d places. Isn't that what rotating left means?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "There is a key difference between a 'logical shift' and a 'rotation'. In a shift, bits that move past the boundary are lost. In a rotation, those bits are supposed to 'wrap around' to the other side. If a bit is pushed out of the 32nd position on the left, where should it reappear in a left rotation?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. It should go to the right side. So if I shift left by 2, the two leftmost bits should become the two rightmost bits. But how do I actually get them over there using code?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're on the right track. You already have the part that moves the bits left. Now you need a second operation to capture those 'overflow' bits and move them to the far right. If you have a 32-bit number and you shift it left by `d`, how many positions to the right would you need to shift the original number to move those leftmost `d` bits into the rightmost positions?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If the total is 32 and I'm moving d bits, I guess I should shift right by 32 minus d? So maybe something like `(n << d) | (n >> (32 - d))`?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic aligns perfectly with how bitwise rotation works. You've combined the left-shifted part and the wrapped-around part using the OR operator. Try implementing that in your function and test it with a small example to see if it behaves as expected!",
+      "loss_mask": true
+    }
+  ]
+}

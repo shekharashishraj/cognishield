@@ -1,0 +1,109 @@
+{
+  "conversation_id": "mt_dg_3474",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Prealgebra - Area of Composite Figures",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully guides the student from a common misconception (treating the trapezoid as a rectangle) to the correct decomposition method without revealing the final answer prematurely."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "$ABCD$ is a rectangle whose area is 12 square units. How many square units are contained in the area of trapezoid $EFBA$?\n\n[asy]\n\nsize(4cm,4cm);\n\nfor(int i=0; i < 4; ++i){\nfor(int k=0; k < 5; ++k){\ndraw((0,i)--(4,i));\ndraw((k,0)--(k,3));\n} }\n\ndraw((0,0)--(1,3));\ndraw((3,3)--(4,0));\n\nlabel(\"$A$\",(0,0),SW);\nlabel(\"$B$\",(4,0),SE);\nlabel(\"$C$\",(4,3),NE);\nlabel(\"$D$\",(0,3),NW);\nlabel(\"$E$\",(1,3),N);\nlabel(\"$F$\",(3,3),N);\n\n[/asy]",
+      "reference_solution": "$\\text{\\emph{Strategy: Add areas.}}$\n\nEach small square has an area of 1. Separate $EFBA$ into rectangle I and right triangles II and III, as shown. The area of rectangle I is 6; triangle II is 1/2 of rectangle $AGED$, so its area is 1.5. The same is true of triangle III. Thus, $6 + 1.5 + 1.5 = 9$. The area of trapezoid $EFBA$ is $\\boxed{9}$ square units.\n\n[asy]\n\nsize(4cm,4cm);\n\nfill((0,0)--(1,3)--(1,0)--cycle,lightblue);\nfill((1,0)--(1,3)--(3,3)--(3,0)--cycle,lightgray);\nfill((3,0)--(4,0)--(3,3)--cycle,lightblue);\n\nfor(int i=0; i < 4; ++i){\nfor(int k=0; k < 5; ++k){\ndraw((0,i)--(4,i));\ndraw((k,0)--(k,3));\n} }\n\ndraw((0,0)--(1,3));\ndraw((3,3)--(4,0));\n\nlabel(\"$A$\",(0,0),SW);\nlabel(\"$B$\",(4,0),SE);\nlabel(\"$C$\",(4,3),NE);\nlabel(\"$D$\",(0,3),NW);\nlabel(\"$E$\",(1,3),N);\nlabel(\"$F$\",(3,3),N);\n\nlabel(\"II\",(0.5,0.5));\nlabel(\"I\",(1.5,1.5));\nlabel(\"III\",(3.4,0.5));\n\n[/asy]",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "6132"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: $ABCD$ is a rectangle whose area is 12 square units. How many square units are contained in the area of trapezoid $EFBA$?\n\n[asy]\n\nsize(4cm,4cm);\n\nfor(int i=0; i < 4; ++i){\nfor(int k=0; k < 5; ++k){\ndraw((0,i)--(4,i));\ndraw((k,0)--(k,3));\n} }\n\ndraw((0,0)--(1,3));\ndraw((3,3)--(4,0));\n\nlabel(\"$A$\",(0,0),SW);\nlabel(\"$B$\",(4,0),SE);\nlabel(\"$C$\",(4,3),NE);\nlabel(\"$D$\",(0,3),NW);\nlabel(\"$E$\",(1,3),N);\nlabel(\"$F$\",(3,3),N);\n\n[/asy]\n\nI think the answer is 6. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't tell you if that's correct just yet. Could you walk me through how you arrived at 6? I'd like to see your reasoning first.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, the whole rectangle ABCD is 12. The trapezoid EFBA looks like it takes up about half of the space, so I just did 12 divided by 2.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see. Estimating by eye can be a good starting point, but for this problem, we should use the grid and the given area to be precise. Let's look at the dimensions. If the area of rectangle $ABCD$ is 12, and you look at the grid provided in the asy code, can you determine the length and width of the rectangle $ABCD$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The grid shows the rectangle is 4 units wide and 3 units high. 4 times 3 is 12, so that matches.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Perfect. Now, let's focus on the trapezoid $EFBA$. Instead of guessing the fraction of the total area, try breaking the trapezoid down into simpler shapes—like rectangles and triangles—using the grid lines. What shapes do you see inside $EFBA$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I see a rectangle in the middle and two triangles on the sides. The middle rectangle goes from x=1 to x=3, so it's 2 units wide and 3 units high. That area is 6. Then there are the two triangles on the ends.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the middle part exactly. Now, let's look at those two triangles. What are the dimensions of the triangle on the left (the one with vertices at $A$, $E$, and the point $(1,0)$)?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The left triangle has a base of 1 and a height of 3. So the area is (1/2) * 1 * 3 = 1.5. The right triangle is the same, so that's another 1.5.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're on the right track! Now that you have the area of the central rectangle and the areas of the two side triangles, what is the total area of the trapezoid $EFBA$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "6 + 1.5 + 1.5 = 9. So the area is 9 square units.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is correct! By decomposing the figure into a rectangle and two triangles, you found the precise area. Great job working through that.",
+      "loss_mask": true
+    }
+  ]
+}

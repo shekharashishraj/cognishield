@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_2400",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Precalculus - Trigonometric Sums",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to use the identity sin^2(x) + cos^2(x) = 1 by pairing terms, but fails to realize the angles do not complement each other in a way that simplifies the sum directly. Tutor redirects to power-reduction formulas."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Compute\n\\[\\sin^2 4^\\circ + \\sin^2 8^\\circ + \\sin^2 12^\\circ + \\dots + \\sin^2 176^\\circ.\\]",
+      "reference_solution": "From the double-angle formula,\n\\[\\sin^2 x = \\frac{1 - \\cos 2x}{2}.\\]Then the sum becomes\n\\begin{align*}\n&\\frac{1 - \\cos 8^\\circ}{2} + \\frac{1 - \\cos 16^\\circ}{2} + \\frac{1 - \\cos 24^\\circ}{2} + \\dots + \\frac{1 - \\cos 352^\\circ}{2} \\\\\n&= 22 - \\frac{1}{2} (\\cos 8^\\circ + \\cos 16^\\circ + \\cos 24^\\circ + \\dots + \\cos 352^\\circ).\n\\end{align*}Consider the sum $x = \\cos 0^\\circ + \\cos 8^\\circ + \\cos 16^\\circ + \\dots + \\cos 352^\\circ.$  This is the real part of\n\\[z = \\operatorname{cis} 0^\\circ + \\operatorname{cis} 8^\\circ + \\operatorname{cis} 16^\\circ + \\dots + \\operatorname{cis} 352^\\circ.\\]Then\n\\begin{align*}\nz \\operatorname{cis} 8^\\circ &= \\operatorname{cis} 8^\\circ + \\operatorname{cis} 16^\\circ + \\operatorname{cis} 24^\\circ + \\dots + \\operatorname{cis} 360^\\circ \\\\\n&= \\operatorname{cis} 8^\\circ + \\operatorname{cis} 16^\\circ + \\operatorname{cis} 24^\\circ + \\dots + \\operatorname{cis} 0^\\circ \\\\\n&= z,\n\\end{align*}so $z (\\operatorname{cis} 8^\\circ - 1) = 0.$  Hence, $z = 0,$ which means $x = 0.$  Therefore,\n\\[\\cos 8^\\circ + \\cos 16^\\circ + \\cos 24^\\circ + \\dots + \\cos 352^\\circ = -\\cos 0 = -1,\\]so\n\\[22 - \\frac{1}{2} (\\cos 8^\\circ + \\cos 16^\\circ + \\cos 24^\\circ + \\dots + \\cos 352^\\circ) = 22 + \\frac{1}{2} = \\boxed{\\frac{45}{2}}.\\]",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "6864"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: Compute\n\\[\\sin^2 4^\\circ + \\sin^2 8^\\circ + \\sin^2 12^\\circ + \\dots + \\sin^2 176^\\circ.\\]\nCan you just give me the answer? I have a test tomorrow.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the final answer directly, but I can definitely help you master the method so you're ready for your test! Let's look at the structure of the sum. You have a series of $\\sin^2$ terms with angles increasing by $4^\\circ$. Do you have any initial ideas on how to simplify a sum of squared trigonometric functions?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I thought I could use $\\sin^2 \\theta + \\cos^2 \\theta = 1$. Maybe I can pair $\\sin^2 4^\\circ$ with $\\sin^2 176^\\circ$? Since $176 = 180 - 4$, then $\\sin 176^\\circ = \\sin 4^\\circ$, so $\\sin^2 176^\\circ = \\sin^2 4^\\circ$. Wait, that doesn't make 1. Maybe I pair it with something that adds to $90^\\circ$? Like $\\sin^2 4^\\circ + \\sin^2 86^\\circ = 1$. Let me see if $86$ is in the list.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're thinking in the right direction by looking for pairs! It's true that $\\sin^2 \\theta + \\sin^2(90^\\circ - \\theta) = 1$. However, let's check the sequence of angles: $4, 8, 12, \\dots, 176$. Are all the 'complementary' angles (like $86^\\circ$) actually present in this specific list?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The angles are multiples of 4. $86 / 4 = 21.5$. Oh, so $86^\\circ$ isn't in the list. That means the pairing method won't work because the angles don't hit the $90^\\circ$ complements. What else can I do? I'm really stuck.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Since the complementary angles aren't all there, we need a different strategy to handle those squares. Is there a trigonometric identity that allows you to rewrite $\\sin^2 \\theta$ in terms of a first-power cosine function? Think about the double-angle formulas.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh! $\\cos(2\\theta) = 1 - 2\\sin^2 \\theta$. So $\\sin^2 \\theta = \\frac{1 - \\cos(2\\theta)}{2}$. If I apply that to every term, the sum becomes $\\sum \\frac{1 - \\cos(2\\theta)}{2}$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great pivot! Now, try applying that to the whole sum. First, determine how many terms are in the sequence from $4^\\circ$ to $176^\\circ$, and then see what the resulting sum of cosines looks like. What do you get when you expand the first few terms using that identity?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "There are $176/4 = 44$ terms. So the sum is $\\frac{44}{2} - \\frac{1}{2}(\\cos 8^\\circ + \\cos 16^\\circ + \\dots + \\cos 352^\\circ)$. That's $22 - \\frac{1}{2}(\\text{sum of cosines})$. Now I just need to find the sum of the cosines. Is there a trick for that?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've simplified it significantly! To handle the sum $\\cos 8^\\circ + \\cos 16^\\circ + \\dots + \\cos 352^\\circ$, consider the symmetry of the unit circle or imagine these as the real parts of complex numbers (roots of unity). If you added $\\cos 0^\\circ$ to that sum, would the total be easier to calculate?",
+      "loss_mask": true
+    }
+  ]
+}

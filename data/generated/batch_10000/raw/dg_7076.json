@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_dg_7076",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "emotional_support",
+      "frustration",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student exhibits frustration; tutor provides emotional validation and scaffolds the logic of cyclic shifts."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def encode_cyclic(s: str):\n    \"\"\"\n    returns encoded string by cycling groups of three characters.\n    \"\"\"\n    # split string to groups. Each of length 3.\n    groups = [s[(3 * i):min((3 * i + 3), len(s))] for i in range((len(s) + 2) // 3)]\n    # cycle elements in each group. Unless group has fewer elements than 3.\n    groups = [(group[1:] + group[0]) if len(group) == 3 else group for group in groups]\n    return \"\".join(groups)\n\n\ndef decode_cyclic(s: str):\n    \"\"\"\n    takes as input string encoded with encode_cyclic function. Returns decoded string.\n    \"\"\"",
+      "reference_solution": "return encode_cyclic(encode_cyclic(s))",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/38"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm really struggling with this one. I feel like I'm not cut out for coding. Here is the problem:\n\ndef encode_cyclic(s: str):\n    \"\"\"\n    returns encoded string by cycling groups of three characters.\n    \"\"\"\n    # split string to groups. Each of length 3.\n    groups = [s[(3 * i):min((3 * i + 3), len(s))] for i in range((len(s) + 2) // 3)]\n    # cycle elements in each group. Unless group has fewer elements than 3.\n    groups = [(group[1:] + group[0]) if len(group) == 3 else group for group in groups]\n    return \"\".join(groups)\n\n\ndef decode_cyclic(s: str):\n    \"\"\"\n    takes as input string encoded with encode_cyclic function. Returns decoded string.\n    \"\"\"",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "First off, please don't be so hard on yourself. Programming is all about hitting walls and finding a way around them—it's a normal part of the process. Let's take this one step at a time. \n\nTo start, let's look at what `encode_cyclic` actually does to a group of three characters. If you have a group like \"ABC\", what does it become after the encoding process?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Looking at the code... `group[1:]` is \"BC\" and `group[0]` is \"A\". So \"ABC\" becomes \"BCA\". I guess that's a left shift?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's exactly right. It's a left shift of the characters in the group. Now, if we have \"BCA\" and we want to get back to \"ABC\", how many more times would we need to apply that same left shift to return to the original order?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, let me check. If I shift \"BCA\" once, I get \"CAB\". If I shift \"CAB\" once more, I get \"ABC\". So it takes two more shifts? This seems too simple. I probably missed something.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It's okay to feel skeptical, but your logic is spot on. You've discovered a property of cycles: if you shift a group of 3 elements, doing it a total of 3 times brings you back to the start. \n\nSince the `encode_cyclic` function performs one shift, and you found that two more shifts return it to the original state, how could you implement `decode_cyclic` using the `encode_cyclic` function you already have?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If one call to `encode_cyclic` shifts it once, and I need two more shifts to get back... does that mean I just call `encode_cyclic` twice inside the decode function? Like `return encode_cyclic(encode_cyclic(s))`?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got it! By applying the encoding process twice more, you complete the cycle of three, effectively reversing the first shift. Great job working through that—see how breaking it down makes it much more manageable?",
+      "loss_mask": true
+    }
+  ]
+}

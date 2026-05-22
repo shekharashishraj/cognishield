@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_dg_7936",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Recurrence Relations",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student initially confuses the pattern with Pascal's Triangle, leading to a $2^{n-1}$ hypothesis. Tutor redirects them to calculate the actual sums of the first few rows to find the correct recurrence."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Consider the triangular array of numbers with 0, 1, 2, 3, $\\dots$ along the sides and interior numbers obtained by adding the two adjacent numbers in the previous row.  Rows 1 through 6 are shown.\n\n\\[\n\\begin{array}{ccccccccccc}\n& & & & & 0 & & & & & \\\\\n& & & & 1 & & 1 & & & & \\\\\n& & & 2 & & 2 & & 2 & & & \\\\\n& & 3 & & 4 & & 4 & & 3 & & \\\\\n& 4 & & 7 & & 8 & & 7 & & 4 & \\\\\n5 & & 11 & & 15 & & 15 & & 11 & & 5\n\\end{array}\n\\]Find the sum of the numbers in the 100th row.  Your answer should use exponential notation, in simplest form.",
+      "reference_solution": "Let $f(n)$ denote the sum of the numbers in the $n$th row.  We start by looking at an example.\n\nSuppose we take the 5th row, make a copy of every number, and send each copy to the fifth row.\n\n[asy]\nunitsize (1 cm);\n\npair A, B;\nint i;\n\nfor (i = 1; i <= 5; ++i) {\n  A = (2*i - 1,1);\n\\tB = (2*i - 2,0);\n\\tdraw(interp(A,B,0.2)--interp(A,B,0.7),Arrow(6));\n\\tA = (2*i - 1,1);\n\\tB = (2*i,0);\n\\tdraw(interp(A,B,0.2)--interp(A,B,0.7),Arrow(6));\n}\n\nlabel(\"$4$\", (1,1));\nlabel(\"$7$\", (3,1));\nlabel(\"$8$\", (5,1));\nlabel(\"$7$\", (7,1));\nlabel(\"$4$\", (9,1));\nlabel(\"$4$\", (0,0));\nlabel(\"$4 + 7$\", (2,0));\nlabel(\"$7 + 8$\", (4,0));\nlabel(\"$8 + 7$\", (6,0));\nlabel(\"$7 + 4$\", (8,0));\nlabel(\"$4$\", (10,0));\n[/asy]\n\nCurrently, the sum of the numbers in the fifth row is exactly double the sum of the numbers in the fourth row, because it contains two copies of every number in the fourth row.  To make it look like the fifth row in the actual triangle, all we must do is add 1 to the first and last numbers in the row.  Thus, $f(5) = 2f(4) + 2.$\n\nMore generally,\n\\[f(n) = 2f(n - 1) + 2\\]for any $n \\ge 2.$\n\nLet $g(n) = f(n) + 2.$  Then $f(n) = g(n) - 2,$ so\n\\[g(n) - 2 = 2(g(n - 1) - 2) + 2.\\]This simplifies to $g(n) = 2g(n - 1).$  Since $g(1) = 2,$ it follows that $g(n) = 2^n.$  Then $f(n) = 2^n - 2.$  In particular, $f(100) = \\boxed{2^{100} - 2}.$",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "2343"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: Consider the triangular array of numbers with 0, 1, 2, 3, $\\dots$ along the sides and interior numbers obtained by adding the two adjacent numbers in the previous row.  Rows 1 through 6 are shown.\n\n\\[\n\\begin{array}{ccccccccccc}\n& & & & & 0 & & & & & \\\\\n& & & & 1 & & 1 & & & & \\\\\n& & & 2 & & 2 & & 2 & & & \\\\\n& & 3 & & 4 & & 4 & & 3 & & \\\\\n& 4 & & 7 & & 8 & & 7 & & 4 & \\\\\n5 & & 11 & & 15 & & 15 & & 11 & & 5\n\\end{array}\n\\]Find the sum of the numbers in the 100th row.  Your answer should use exponential notation, in simplest form.\n\nIt looks like Pascal's triangle, so is the sum just $2^{99}$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It's definitely tempting to relate this to Pascal's triangle because of the additive structure! However, if you look closely at the edges, this triangle starts differently. In Pascal's triangle, the edges are always 1s. Here, the edges are $0, 1, 2, 3, \\dots$\n\nTo see if $2^{99}$ is correct, why don't we start by calculating the actual sums of the first few rows provided in the image? That will help us see if the $2^{n-1}$ pattern actually holds here.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, let me check. \nRow 1: 0 (Sum = 0)\nRow 2: 1, 1 (Sum = 2)\nRow 3: 2, 2, 2 (Sum = 6)\nRow 4: 3, 4, 4, 3 (Sum = 14)\nRow 5: 4, 7, 8, 7, 4 (Sum = 30)\nRow 6: 5, 11, 15, 15, 11, 5 (Sum = 62)\n\nWait, these aren't powers of 2. $2, 6, 14, 30, 62...$ they are all very close to powers of 2, though!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Great observation. You're right that they are very close. If you compare the sum of row $n$ to the power $2^n$, do you notice a consistent relationship?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let's see: \nRow 2: $2^2 = 4$, sum is 2. (4 - 2)\nRow 3: $2^3 = 8$, sum is 6. (8 - 2)\nRow 4: $2^4 = 16$, sum is 14. (16 - 2)\nRow 5: $2^5 = 32$, sum is 30. (32 - 2)\nRow 6: $2^6 = 64$, sum is 62. (64 - 2)\n\nIt looks like the sum of the $n$th row is always $2^n - 2$!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've found a pattern that fits the data perfectly! To be absolutely sure, can you think of why the sum of row $n$ would be related to the sum of row $n-1$ in this way? For example, if you double the sum of the previous row, how does that compare to the current row's sum?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If I double the sum of row 4 (14 * 2 = 28), I get 28, but row 5 is 30. That's a difference of 2. \nIf I double row 5 (30 * 2 = 60), I get 60, but row 6 is 62. Also a difference of 2.\n\nSo the recurrence is $S_n = 2S_{n-1} + 2$. \n\nIf the formula $S_n = 2^n - 2$ is correct, then for the 100th row, the sum should be $2^{100} - 2$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. You've identified the recurrence relation and verified it against the pattern. Since you've confirmed the formula $S_n = 2^n - 2$ holds for the given rows and follows the additive logic of the triangle, your result for the 100th row is correct.",
+      "loss_mask": true
+    }
+  ]
+}

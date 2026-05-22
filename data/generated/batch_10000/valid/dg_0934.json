@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_0934",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student applies moderate pressure for the solution; tutor successfully redirects to incremental logic steps."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def Strongest_Extension(class_name, extensions):\n    \"\"\"You will be given the name of a class (a string) and a list of extensions.\n    The extensions are to be used to load additional classes to the class. The\n    strength of the extension is as follows: Let CAP be the number of the uppercase\n    letters in the extension's name, and let SM be the number of lowercase letters \n    in the extension's name, the strength is given by the fraction CAP - SM. \n    You should find the strongest extension and return a string in this \n    format: ClassName.StrongestExtensionName.\n    If there are two or more extensions with the same strength, you should\n    choose the one that comes first in the list.\n    For example, if you are given \"Slices\" as the class and a list of the\n    extensions: ['SErviNGSliCes', 'Cheese', 'StuFfed'] then you should\n    return 'Slices.SErviNGSliCes' since 'SErviNGSliCes' is the strongest extension \n    (its strength is -1).\n    Example:\n    for Strongest_Extension('my_class', ['AA', 'Be', 'CC']) == 'my_class.AA'\n    \"\"\"",
+      "reference_solution": "strong = extensions[0]\n    my_val = len([x for x in extensions[0] if x.isalpha() and x.isupper()]) - len([x for x in extensions[0] if x.isalpha() and x.islower()])\n    for s in extensions:\n        val = len([x for x in s if x.isalpha() and x.isupper()]) - len([x for x in s if x.isalpha() and x.islower()])\n        if val > my_val:\n            strong = s\n            my_val = val\n\n    ans = class_name + \".\" + strong\n    return ans",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/153"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm stuck on this problem: \n\ndef Strongest_Extension(class_name, extensions):\n    \"\"\"You will be given the name of a class (a string) and a list of extensions.\n    The extensions are to be used to load additional classes to the class. The\n    strength of the extension is as follows: Let CAP be the number of the uppercase\n    letters in the extension's name, and let SM be the number of lowercase letters \n    in the extension's name, the strength is given by the fraction CAP - SM. \n    You should find the strongest extension and return a string in this \n    format: ClassName.StrongestExtensionName.\n    If there are two or more extensions with the same strength, you should\n    choose the one that comes first in the list.\n    For example, if you are given \"Slices\" as the class and a list of the\n    extensions: ['SErviNGSliCes', 'Cheese', 'StuFfed'] then you should\n    return 'Slices.SErviNGSliCes' since 'SErviNGSliCes' is the strongest extension \n    (its strength is -1).\n    Example:\n    for Strongest_Extension('my_class', ['AA', 'Be', 'CC']) == 'my_class.AA'\n    \"\"\"\n\nCan you just give me the full code? I'm in a rush.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through this, but I won't provide the full code upfront. Instead, let's break it down into manageable steps so you understand the logic. To start, how would you calculate the 'strength' of a single extension string based on the rules provided?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think I need to count uppercase and lowercase letters. But seriously, I just need the answer to finish this assignment. Can't you just paste the function?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I understand you're in a hurry, but the goal is to make sure you can implement this yourself. You're on the right track with counting the letters. Try writing a small snippet or describing how you'd count those uppercase (CAP) and lowercase (SM) characters in Python. Once we have that, the rest will be much faster.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Fine. I could use a loop or a list comprehension. Like: \ncap = sum(1 for c in s if c.isupper())\nsm = sum(1 for c in s if c.islower())\nstrength = cap - sm\nIs that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is exactly right. Now that you have the formula for the strength of one extension, how will you determine which one is the 'strongest' when you have a whole list of them, keeping in mind the rule about ties?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'll probably loop through the list and keep track of the max strength found so far. But look, I've shown I know how to do it, can you just give me the final formatted return string part and the full function now?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the core logic down! To keep moving forward, try to implement that loop. Specifically, think about how you'll initialize your 'max_strength' variable and the 'best_extension' variable. If you write that part out, I'll be happy to check it and then we can tackle the final return format together.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, I'll do the loop. \n\nbest_ext = extensions[0]\nmax_s = (count_upper(best_ext) - count_lower(best_ext))\nfor e in extensions:\n    curr_s = (count_upper(e) - count_lower(e))\n    if curr_s > max_s:\n        max_s = curr_s\n        best_ext = e\n\nNow, the return is just class_name + '.' + best_ext, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. You've correctly handled the 'first in the list' tie-breaker by using a strict greater-than (`>`) comparison. Your return string format is also correct. You've successfully built the entire logic—go ahead and assemble it into the final function!",
+      "loss_mask": true
+    }
+  ]
+}

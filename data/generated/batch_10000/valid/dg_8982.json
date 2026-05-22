@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_8982",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Dynamic Programming for Grid Paths",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student incorrectly assumes the average can be maximized by maximizing the average at each step, rather than the total sum. Tutor guides them toward the constant path length property."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Given a square matrix of size N*N given as a list of lists, where each cell is associated with a specific cost. A path is defined as a specific sequence of cells that starts from the top-left cell move only right or down and ends on bottom right cell. We want to find a path with the maximum average over all existing paths. Average is computed as total cost divided by the number of cells visited in the path.",
+      "reference_solution": "def maxAverageOfPath(cost):\n  N = len(cost)\n  dp = [[0 for i in range(N + 1)] for j in range(N + 1)]\n  dp[0][0] = cost[0][0]\n  for i in range(1, N):\n    dp[i][0] = dp[i - 1][0] + cost[i][0]\n  for j in range(1, N):\n    dp[0][j] = dp[0][j - 1] + cost[0][j]\n  for i in range(1, N):\n    for j in range(1, N):\n      dp[i][j] = max(dp[i - 1][j],\n                     dp[i][j - 1]) + cost[i][j]\n  return dp[N - 1][N - 1] / (2 * N - 1)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "721"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Given a square matrix of size N*N given as a list of lists, where each cell is associated with a specific cost. A path is defined as a specific sequence of cells that starts from the top-left cell move only right or down and ends on bottom right cell. We want to find a path with the maximum average over all existing paths. Average is computed as total cost divided by the number of cells visited in the path.\n\nI think I can solve it by using a DP table where each cell stores the maximum average to reach that point. Like, dp[i][j] = max(dp[i-1][j], dp[i][j-1]) + cost[i][j] / current_path_length. Is this approach correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see where you're going with that! Before I tell you if it's correct, could you explain why you decided to divide the cost of the current cell by the path length at each step? How does that relate to the definition of the average for the whole path?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, since the problem asks for the maximum average, I thought I should keep track of the average as I go. If I pick the path that gives me the highest average at every single step, I'll end up with the highest average at the bottom-right corner, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a common intuition, but let's test it. Imagine you have two paths to a cell: one has a very high average over 2 cells, and another has a slightly lower average over 2 cells but a much higher total sum. If the next cell has a huge cost, which path do you think would result in a higher average overall? Does maximizing the average at each intermediate step always guarantee the maximum average at the end?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. If the total sum is higher, the final average might be higher even if the intermediate average was lower. But wait, the problem says we can only move right or down. Doesn't that mean every path from the top-left to the bottom-right has the exact same number of cells?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is a very important observation! If every possible path from the start to the end has the same length, how does that change the way you think about maximizing the average?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If the number of cells (the denominator) is the same for every path, then maximizing the average is the same as maximizing the total sum of the costs! So I should just use DP to find the maximum path sum and then divide by the total number of cells at the very end. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. You've identified the key property of this grid. Now that you've shifted from maximizing the average at each step to maximizing the total sum, how would you structure your DP transitions to find that maximum sum?",
+      "loss_mask": true
+    }
+  ]
+}

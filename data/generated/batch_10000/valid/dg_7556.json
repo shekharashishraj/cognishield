@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_dg_7556",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Conic Sections",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor strictly follows the 'never_state' policy by guiding the student through the algebraic process and the discriminant condition without ever confirming or stating the final numerical value of m."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "The ellipse $x^2+4y^2=4$ and the hyperbola $x^2-m(y+2)^2 = 1$ are tangent. Compute $m.$",
+      "reference_solution": "We try to solve the two equations $x^2+4y^2=4$ and $x^2-m(y+2)^2=1$ simultaneously. To eliminate $x,$ we can subtract the second equation from the first equation, giving \\[4y^2 + m(y+2)^2 = 3,\\]or \\[(m+4)y^2 + (4m) y +  (4m-3) = 0.\\]For the ellipse and hyperbola to be tangent, this equation must have exactly one solution for $y,$ so its discriminant must be zero: \\[(4m)^2 - 4(m+4)(4m-3) = 0,\\]which simplifies to \\[48 - 52m = 0.\\]Thus, $m = \\boxed{\\frac{12}{13}}.$[asy]\nsize(8cm);\nvoid axes(real x0, real x1, real y0, real y1)\n{\n\tdraw((x0,0)--(x1,0),EndArrow);\n    draw((0,y0)--(0,y1),EndArrow);\n    label(\"$x$\",(x1,0),E);\n    label(\"$y$\",(0,y1),N);\n    for (int i=floor(x0)+1; i<x1; ++i)\n    \tdraw((i,.1)--(i,-.1));\n    for (int i=floor(y0)+1; i<y1; ++i)\n    \tdraw((.1,i)--(-.1,i));\n}\npath[] yh(real a, real b, real h, real k, real x0, real x1, bool draw)\n{\n\treal f(real x) { return k + a / b * sqrt(1 + (x-h)^2); }\n    real g(real x) { return k - a / b * sqrt(1 + (x-h)^2); }\n    path [] arr = {graph(f, x0, x1), graph(g, x0, x1)};\n    if (draw) for (path p : arr) { draw(p, Arrows); }\n    return arr;\n}\nvoid xh(real a, real b, real h, real k, real y0, real y1)\n{\n\tpath [] arr = yh(a, b, k, h, y0, y1, false);\n    for (path p : arr) { draw(reflect((0,0),(1,1))*p, Arrows); }\n}\nvoid e(real a, real b, real h, real k)\n{\n\tdraw(shift((h,k))*scale(a,b)*unitcircle);\n}\naxes(-4, 4, -5, 3);\ne(2,1,0,0);\nxh(1,sqrt(13/12),0,-2,-4,1.5);\n[/asy]",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "2641"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm stuck on this math problem: The ellipse $x^2+4y^2=4$ and the hyperbola $x^2-m(y+2)^2 = 1$ are tangent. Compute $m.$ I don't know where to start. Can you just give me the answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can help you work through the steps to find the value of $m$! Instead of giving the answer directly, let's think about what 'tangent' means in this context. When two curves are tangent, they touch at a point and share a common tangent line, which algebraically means the system of equations has a repeated root.\n\nLooking at the two equations, both contain $x^2$. How could you use that to create a single equation involving only $y$ and $m$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I could subtract one from the other? If I subtract the hyperbola equation from the ellipse equation, I get:\n$(x^2+4y^2) - (x^2-m(y+2)^2) = 4 - 1$\n$4y^2 + m(y+2)^2 = 3$\nIs that a good way to start?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is a great way to start. You've successfully eliminated $x$. Now, to find the condition for tangency, you'll need to treat this as a quadratic equation in terms of $y$. \n\nYour next step should be to expand the $(y+2)^2$ term and group all the terms to put the equation in the standard form $Ay^2 + By + C = 0$. Give that a try and let me know what coefficients you get.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, expanding $(y+2)^2$ gives $y^2 + 4y + 4$.\nSo: $4y^2 + m(y^2 + 4y + 4) = 3$\n$4y^2 + my^2 + 4my + 4m - 3 = 0$\n$(m+4)y^2 + (4m)y + (4m-3) = 0$.\nWhat do I do with this?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've correctly identified the coefficients $A = m+4$, $B = 4m$, and $C = 4m-3$. \n\nNow, remember that for the curves to be tangent, the quadratic equation for $y$ must have exactly one solution (a double root). What condition must the discriminant ($\\Delta = B^2 - 4AC$) satisfy for a quadratic to have exactly one solution?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The discriminant has to be zero! So:\n$(4m)^2 - 4(m+4)(4m-3) = 0$\n$16m^2 - 4(4m^2 - 3m + 16m - 12) = 0$\n$16m^2 - 16m^2 - 52m + 48 = 0$\n$-52m + 48 = 0$\nSo $m = 48/52$, which simplifies to $12/13$. Did I get it right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You have followed the mathematical logic perfectly: eliminating the variable, forming the quadratic, and applying the discriminant condition for tangency. Your algebraic simplification of the linear equation in $m$ is also correct. You've successfully solved the problem!",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_1855",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Multi-step programming and contest-style problems",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully resists pressure to provide the full function and instead guides the student through the logic of recursion and coordinate offsets."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to extract all the adjacent coordinates of the given coordinate tuple.",
+      "reference_solution": "def adjac(ele, sub = []): \n  if not ele: \n     yield sub \n  else: \n     yield from [idx for j in range(ele[0] - 1, ele[0] + 2) \n                for idx in adjac(ele[1:], sub + [j])] \ndef get_coordinates(test_tup):\n  return list(adjac(test_tup))",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "630"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: Write a function to extract all the adjacent coordinates of the given coordinate tuple. Can you just give me the code so I can see how it's done?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through this, but I won't provide the full code upfront. Let's start by clarifying the goal. If you have a coordinate like (2, 3), what do you consider to be its 'adjacent' coordinates?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess it's the ones around it, like (1, 3), (3, 3), (2, 2), and (2, 4). Look, I'm in a rush, can't you just send the function? It'll be faster.",
+      "loss_mask": true
+    },
+    {
+      "role": "assistant",
+      "content": "I understand you're in a hurry, but you'll learn the logic much better if we build it. You've identified the neighbors for a 2D coordinate. Now, consider that the input could be a tuple of any length (1D, 2D, 3D, etc.). For a single dimension 'x', the neighbors are x-1, x, and x+1. How could we apply that logic to every element in a tuple?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I don't know how to do that for any length. That's why I need the answer. Just give me the final code please, I promise I'll study it afterwards.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Since the length is variable, this is a great opportunity to use recursion. Imagine processing the first element of the tuple to get its three possibilities (minus one, same, plus one), and then calling the same function for the rest of the tuple. If you were to write a recursive function, what would the base case be—when should the recursion stop?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The base case would be when the tuple is empty, I guess. So if there are no more elements to process, we just return the coordinates we've built up so far?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's spot on. Now that we have the base case, let's think about the recursive step. For the current element, you want to iterate through `range(element - 1, element + 2)`. How would you combine those values with the results from the recursive call on the remaining elements of the tuple?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could use a list comprehension to loop through that range and then call the function again for the slice of the tuple from index 1 onwards. Something like `[idx for j in range(ele[0]-1, ele[0]+2) for idx in adjac(ele[1:], sub + [j])]`? Am I close?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've nailed the core logic! That list comprehension correctly handles the branching for each dimension. To make this efficient and elegant, you might consider using `yield` and `yield from` to create a generator. Why do you think a generator might be useful here compared to returning a giant list immediately?",
+      "loss_mask": true
+    }
+  ]
+}

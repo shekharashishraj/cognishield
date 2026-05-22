@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_11456",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Python fundamentals and short programs - Bitwise Operations",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor strictly adheres to the never_state policy. Even when the student arrives at the correct logic, the tutor avoids confirming 'correct' or 'right' and instead prompts the student to verify their work through testing and trace-analysis."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to that rotate left bits by d bits a given number. We assume that the number is 32 bit.",
+      "reference_solution": "def left_rotate(n,d):   \n    INT_BITS = 32\n    return (n << d)|(n >> (INT_BITS - d))",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "799"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Write a function to that rotate left bits by d bits a given number. We assume that the number is 32 bit. I think the solution is just `def left_rotate(n, d): return n << d`. Is this correct? I'm in a rush, can you just tell me if it's right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't tell you if that's correct or not, but I can help you walk through the logic to find out. Let's think about what `n << d` does. If you have a 32-bit number and you shift it left, what happens to the bits that move past the 32nd position?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "They just move further left. I thought that's how rotation works, just shifting the bits over.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Actually, there is a difference between a 'logical shift' and a 'rotation'. In a shift, bits that move past the boundary are discarded. In a rotation, those bits are supposed to 'wrap around' to the other side. If a bit is pushed off the left edge of a 32-bit integer, where should it end up in a left rotation?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, so they should wrap around to the right side? So if I shift left by 2, the two bits that fell off the left should now be the two bits on the far right.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's the core concept of rotation. Now, looking at your code `n << d`, it handles the leftward movement, but it doesn't handle the wrap-around. How could you use another bitwise operation to isolate those bits that 'fell off' and place them at the rightmost end of the number?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If it's a 32-bit number and I shift left by d, those d bits are gone. To get them back on the right, I should probably shift the original number to the right. If I shift right by (32 - d), would that put them in the right place? So maybe `(n << d) | (n >> (32 - d))`?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've now incorporated both a left shift for the main body of the number and a right shift to handle the wrap-around, combined with a bitwise OR. To be sure this works for all cases, try tracing this logic with a very simple example—perhaps a 4-bit number shifted by 1—and see if the bits land exactly where you expect them to.",
+      "loss_mask": true
+    }
+  ]
+}

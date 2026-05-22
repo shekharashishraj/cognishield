@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_2927",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and data structures - Dynamic Programming",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor identifies a misconception regarding path length in a grid and guides the student to realize the path length is constant, simplifying the average problem to a sum problem. The tutor adheres to method_only policy by not confirming final values or providing the full code."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Given a square matrix of size N*N given as a list of lists, where each cell is associated with a specific cost. A path is defined as a specific sequence of cells that starts from the top-left cell move only right or down and ends on bottom right cell. We want to find a path with the maximum average over all existing paths. Average is computed as total cost divided by the number of cells visited in the path.",
+      "reference_solution": "def maxAverageOfPath(cost):\n  N = len(cost)\n  dp = [[0 for i in range(N + 1)] for j in range(N + 1)]\n  dp[0][0] = cost[0][0]\n  for i in range(1, N):\n    dp[i][0] = dp[i - 1][0] + cost[i][0]\n  for j in range(1, N):\n    dp[0][j] = dp[0][j - 1] + cost[0][j]\n  for i in range(1, N):\n    for j in range(1, N):\n      dp[i][j] = max(dp[i - 1][j],\n                     dp[i][j - 1]) + cost[i][j]\n  return dp[N - 1][N - 1] / (2 * N - 1)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "721"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this coding problem: Given a square matrix of size N*N given as a list of lists, where each cell is associated with a specific cost. A path is defined as a specific sequence of cells that starts from the top-left cell move only right or down and ends on bottom right cell. We want to find a path with the maximum average over all existing paths. Average is computed as total cost divided by the number of cells visited in the path. Could you just give me the Python code for this? I don't know how to handle the average part in a DP table.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code, but I can certainly help you figure out the logic! The 'average' part is the core challenge here. Before we look at the DP state, let's think about the paths. If you can only move right or down in an N x N grid, does the number of cells visited vary between different paths from the top-left to the bottom-right?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Yes, it does. For example, if I go all the way right and then all the way down, that's one distance. If I zig-zag, it might be longer because I'm changing directions. Since the number of cells changes, I think I need to store both the sum and the count of cells in my DP table to calculate the average at each step.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Let's test that theory. To get from (0,0) to (N-1, N-1), how many steps to the right must you take in total? And how many steps down? Does that count change if you zig-zag instead of going in a straight line?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, I see. To reach the bottom-right, I always have to move N-1 times right and N-1 times down, no matter what. So the total number of cells is always (N-1) + (N-1) + 1 for the starting cell. That means every path has the same length! If the length is constant, then maximizing the average is just maximizing the total sum.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. That realization simplifies the problem significantly. Now that we know we only need to maximize the total sum, how would you define your DP state and the transition to find the maximum sum to reach any cell (i, j)?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'll use a 2D array where `dp[i][j]` is the max sum to reach that cell. The transition would be `dp[i][j] = max(dp[i-1][j], dp[i][j-1]) + cost[i][j]`. But for the first row and column, I can't check both neighbors. I'll just initialize `dp[0][0]` as the start, and then fill the first row by adding costs horizontally and the first column by adding costs vertically.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a solid approach for the boundary conditions. Once you have filled the entire DP table and reached the bottom-right cell, what is the final operation you need to perform to answer the original question about the maximum average?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I would take the value at `dp[N-1][N-1]` and divide it by the total number of cells, which we found is 2N-1. Does that sound like the right way to finish the implementation?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic for the final step is correct. You've successfully translated a problem about averages into a path-sum problem and handled the grid constraints. You're now ready to implement the code—give it a try!",
+      "loss_mask": true
+    }
+  ]
+}

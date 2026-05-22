@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_9206",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Multi-step programming and contest-style problems",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student incorrectly assumes that dividing by the smallest factor repeatedly will automatically yield the largest prime factor without checking primality of the final result. Tutor guides them to implement a primality check."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def largest_prime_factor(n: int):\n    \"\"\"Return the largest prime factor of n. Assume n > 1 and is not a prime.\n    >>> largest_prime_factor(13195)\n    29\n    >>> largest_prime_factor(2048)\n    2\n    \"\"\"",
+      "reference_solution": "def is_prime(k):\n        if k < 2:\n            return False\n        for i in range(2, k - 1):\n            if k % i == 0:\n                return False\n        return True\n    largest = 1\n    for j in range(2, n + 1):\n        if n % j == 0 and is_prime(j):\n            largest = max(largest, j)\n    return largest",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/59"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: \n\ndef largest_prime_factor(n: int):\n    \"\"\"Return the largest prime factor of n. Assume n > 1 and is not a prime.\n    >>> largest_prime_factor(13195)\n    29\n    >>> largest_prime_factor(2048)\n    2\n    \"\"\"\n\nCan you just give me the code? I have a deadline in an hour.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code directly, but I can certainly help you work through the logic so you can finish it quickly! Let's start by breaking the problem down. To find the largest prime factor, what's your initial thought on how to identify the factors of n?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think I can just loop from 2 up to n, and whenever I find a number that divides n, I'll divide n by that number repeatedly until it doesn't divide anymore. The last number I divided by should be the largest prime factor, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's an interesting approach! You're describing a method similar to prime factorization. However, let's test that logic. If you divide by every number from 2 upwards, will every number that divides the remaining n necessarily be prime? Think about what happens if you encounter a composite number like 4 or 6.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, if I already divided by 2 until I couldn't anymore, then 4 won't divide the remaining n anyway. So it'll only divide by primes. So my logic is correct, the last divisor will be the answer.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've made a great point about the division process removing smaller factors. However, the problem asks for the largest prime factor of the *original* n. If you modify n as you go, you need to be careful about how you track the 'largest' value. Also, consider a more robust way to ensure a factor is prime before you consider it a candidate for the answer. How might you implement a check to verify if a number is prime?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I could write a helper function `is_prime(k)` that checks if any number from 2 up to k-1 divides k. Then I can loop through all factors of n and keep track of the maximum one that returns true for `is_prime`.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That sounds like a solid and reliable plan. It explicitly handles the primality requirement. How would you structure the main loop to find all the factors and update the largest prime factor found so far?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'll initialize `largest = 1`. Then I'll run a loop `for j in range(2, n + 1)`. Inside, I'll check `if n % j == 0 and is_prime(j)`. If both are true, I'll update `largest = j`. Finally, I'll return `largest`.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is correct and follows the requirements of the problem perfectly. You've correctly identified how to filter for prime factors and maintain the maximum. Go ahead and implement that in your code!",
+      "loss_mask": true
+    }
+  ]
+}

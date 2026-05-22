@@ -1,0 +1,91 @@
+{
+  "example_id": "dg_5071",
+  "filename": "dg_5071.json",
+  "conversation_id": "mt_dg_5071",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Rational Equations",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor correctly avoids giving the answer, guides the student through the symmetry substitution t=x-11, and helps them correct a calculation error in the final quadratic."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Let $m$ be the largest real solution to the equation\n\\[\\dfrac{3}{x-3} + \\dfrac{5}{x-5} + \\dfrac{17}{x-17} + \\dfrac{19}{x-19} = x^2 - 11x - 4\\]There are positive integers $a, b,$ and $c$ such that $m = a + \\sqrt{b + \\sqrt{c}}$. Find $a+b+c$.",
+      "reference_solution": "Adding $4$ to both sides, we have\n\\[\\left(1+\\dfrac{3}{x-3}\\right) + \\left(1+\\dfrac{5}{x-5}\\right) +\\left(1+ \\dfrac{17}{x-17} \\right)+ \\left(1+\\dfrac{19}{x-19}\\right) = x^2 - 11x \\]or \\[\\frac{x}{x-3} + \\frac{x}{x-5} + \\frac{x}{x-17}+ \\frac{x}{x-19} = x^2-11x.\\]Either $x=0$, or \\[\\frac{1}{x-3} + \\frac{1}{x-5} + \\frac{1}{x-17} + \\frac{1}{x-19} = x-11.\\]To induce some symmetry, we calculate that the average of the numbers $x-3, x-5, x-17, x-19$ is $x-11$. Then, letting $t = x-11$, we have \\[\\frac{1}{t+8} + \\frac{1}{t+6} + \\frac{1}{t-6} + \\frac{1}{t-8} = t,\\]or, combining the first and last terms and the second and third terms, \\[\\frac{2t}{t^2-64} + \\frac{2t}{t^2-36} = t.\\]Either $t=0$, or we can divide by $t$ and cross-multiply, giving \\[2(t^2-36) + 2(t^2-64) = (t^2-36)(t^2-64) \\implies 0 = t^4 - 104t^2 + 2504.\\]Completing the square, we get $(t^2-52)^2 = 200$, so $t^2 = 52 \\pm \\sqrt{200}$, and $t = \\pm \\sqrt{52 \\pm \\sqrt{200}}$. Undoing the substitution $t = x-11$, we have \\[x = 11 \\pm \\sqrt{52 \\pm \\sqrt{200}}.\\]Therefore, the largest root is $x = 11+\\sqrt{52+\\sqrt{200}}$ (which is larger than both $x=0$ and $t=0 \\implies x=11$), and the answer is $11 + 52 + 200 = \\boxed{263}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "3403"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Let $m$ be the largest real solution to the equation\n\\[\\dfrac{3}{x-3} + \\dfrac{5}{x-5} + \\dfrac{17}{x-17} + \\dfrac{19}{x-19} = x^2 - 11x - 4\\]There are positive integers $a, b,$ and $c$ such that $m = a + \\sqrt{b + \\sqrt{c}}$. Find $a+b+c$.\n\nI think the answer is 241. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't tell you if that's correct just yet. To make sure we're on the right track, could you walk me through the steps you took to arrive at 241?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, I tried to clear the denominators, but it looked like a nightmare. Then I noticed the numbers 3, 5, 17, 19. I tried adding 4 to both sides to get terms like (x/(x-3)), and then I ended up with 1/(x-3) + 1/(x-5) + 1/(x-17) + 1/(x-19) = x-11. Then I let t = x-11. After some algebra, I got t^4 - 100t^2 + 2300 = 0. Solving for t^2, I got 50 + sqrt(100), so t = sqrt(50 + 10). Then x = 11 + sqrt(60), which gave me a different sum. Wait, I might have messed up the quadratic. I just guessed 241 based on a similar problem.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your initial approach is excellent! Adding 4 to both sides to simplify the fractions and using the substitution $t = x-11$ is exactly the right way to exploit the symmetry of the equation. However, it looks like there was a slip in the algebra when you combined the terms to get the polynomial in $t$. \n\nLet's look at the step where you have $\\frac{1}{t+8} + \\frac{1}{t+6} + \\frac{1}{t-6} + \\frac{1}{t-8} = t$. Try pairing the terms (first with last, second with third) and simplifying those pairs first. What do you get for the equation in terms of $t^2$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, pairing them: $\\frac{1}{t+8} + \\frac{1}{t-8} = \\frac{2t}{t^2-64}$ and $\\frac{1}{t+6} + \\frac{1}{t-6} = \\frac{2t}{t^2-36}$. So the equation is $\\frac{2t}{t^2-64} + \\frac{2t}{t^2-36} = t$. If $t \\neq 0$, I can divide by $t$: $\\frac{2}{t^2-64} + \\frac{2}{t^2-36} = 1$. Now I'll multiply by the denominators: $2(t^2-36) + 2(t^2-64) = (t^2-36)(t^2-64)$. That's $4t^2 - 200 = t^4 - 100t^2 + 2304$. So $t^4 - 104t^2 + 2504 = 0$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's much better! You've correctly derived the polynomial $t^4 - 104t^2 + 2504 = 0$. Now, to find the largest value of $x$, you need the largest value of $t$. How would you solve this quadratic in terms of $t^2$ to get it into the form $a + \\sqrt{b + \\sqrt{c}}$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'll use the quadratic formula for $t^2$: $t^2 = \\frac{104 \\pm \\sqrt{104^2 - 4(2504)}}{2}$. $104^2$ is 10816. $4 \\times 2504$ is 10016. So $t^2 = \\frac{104 \\pm \\sqrt{800}}{2} = 52 \\pm \\sqrt{200}$. Since I want the largest $x$, I take $t^2 = 52 + \\sqrt{200}$, so $t = \\sqrt{52 + \\sqrt{200}}$. Then $x = 11 + \\sqrt{52 + \\sqrt{200}}$. This matches the form $a + \\sqrt{b + \\sqrt{c}}$ with $a=11, b=52, c=200$. So $a+b+c = 11+52+200 = 263$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on! Your calculations are correct, and you've successfully identified the values for $a, b,$ and $c$. The sum is indeed 263.",
+      "loss_mask": true
+    }
+  ]
+}

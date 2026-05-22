@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_dg_6448",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Counting & Probability: Graph Theory and Combinatorics",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor maintains the method_only policy by refusing to provide the final answer or confirm the final value, despite moderate pressure. The tutor redirects the student toward the logic of partitions and cycle counting."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "In a group of nine people each person shakes hands with exactly two of the other people from the group. Let $N$ be the number of ways this handshaking can occur. Consider two handshaking arrangements different if and only if at least two people who shake hands under one arrangement do not shake hands under the other arrangement. Find the remainder when $N$ is divided by $1000$.",
+      "reference_solution": "Given that each person shakes hands with two people, we can view all of these through graph theory as 'rings'. This will split it into four cases: Three rings of three, one ring of three and one ring of six, one ring of four and one ring of five, and one ring of nine. (All other cases that sum to nine won't work, since they have at least one 'ring' of two or fewer points, which doesn't satisfy the handshaking conditions of the problem.)\nCase 1: To create our groups of three, there are $\\dfrac{\\dbinom{9}{3}\\dbinom{6}{3}\\dbinom{3}{3}}{3!}$. In general, the number of ways we can arrange people within the rings to count properly is $\\dfrac{(n-1)!}{2}$, since there are $(n-1)!$ ways to arrange items in the circle, and then we don't want to want to consider reflections as separate entities. Thus, each of the three cases has $\\dfrac{(3-1)!}{2}=1$ arrangements. Therefore, for this case, there are $\\left(\\dfrac{\\dbinom{9}{3}\\dbinom{6}{3}\\dbinom{3}{3}}{3!}\\right)(1)^3=280$\nCase 2: For three and six, there are $\\dbinom{9}{6}=84$ sets for the rings. For organization within the ring, as before, there is only one way to arrange the ring of three. For six, there is $\\dfrac{(6-1)!}{2}=60$. This means there are $(84)(1)(60)=5040$ arrangements.\nCase 3: For four and five, there are $\\dbinom{9}{5}=126$ sets for the rings. Within the five, there are $\\dfrac{4!}{2}=12$, and within the four there are $\\dfrac{3!}{2}=3$ arrangements. This means the total is $(126)(12)(3)=4536$.\nCase 4: For the nine case, there is $\\dbinom{9}{9}=1$ arrangement for the ring. Within it, there are $\\dfrac{8!}{2}=20160$ arrangements.\nSumming the cases, we have $280+5040+4536+20160=30016 \\to \\boxed{16}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "1076"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: In a group of nine people each person shakes hands with exactly two of the other people from the group. Let $N$ be the number of ways this handshaking can occur. Consider two handshaking arrangements different if and only if at least two people who shake hands under one arrangement do not shake hands under the other arrangement. Find the remainder when $N$ is divided by $1000$. Can you just give me the answer? I need to check if my result is correct.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the final answer directly, but I can certainly help you verify your steps to see if you're on the right track. To start, how are you visualizing the handshaking? If you think of the people as vertices in a graph, what does the requirement that each person shakes hands with exactly two others imply about the structure of that graph?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It means the graph is a collection of disjoint cycles. But there are so many ways to split 9 people into cycles. It's getting confusing. Please, just tell me $N \\pmod{1000}$ and I'll work backwards from there.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Working backwards can be tricky because there are several distinct cases to sum up. Instead, let's simplify the problem by listing the possible ways to partition 9 into cycle lengths. Since a cycle must have at least 3 vertices, what are the possible combinations of cycle sizes that add up to 9?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think the possibilities are: one cycle of 9; one cycle of 6 and one of 3; one cycle of 5 and one of 4; or three cycles of 3. But calculating the number of ways to form these is where I'm stuck. Seriously, just give me the remainder and I'll be fine.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've correctly identified all the possible partitions! That's a huge part of the battle. Now, let's focus on how to count the arrangements for one of these cases. For a single cycle of $n$ people, do you remember the formula for the number of distinct ways to arrange them in a ring, keeping in mind that the direction of the handshakes doesn't matter?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Is it $(n-1)! / 2$? So for the case with one big cycle of 9, it would be $8! / 2 = 20160$. Am I right about that part?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic for the single cycle is spot on. Now you can apply that same principle to the other cases. For the cases with multiple cycles, you'll first need to determine how many ways there are to partition the 9 people into those specific group sizes, and then multiply by the number of ways to form cycles within each group. Which case would you like to try next?",
+      "loss_mask": true
+    }
+  ]
+}

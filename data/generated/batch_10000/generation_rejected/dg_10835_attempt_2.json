@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_10835",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student implements a shift of 2 instead of 4. Tutor avoids confirming the correctness of the code and instead guides the student to parse the requirements and test against examples."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "def encrypt(s):\n    \"\"\"Create a function encrypt that takes a string as an argument and\n    returns a string encrypted with the alphabet being rotated. \n    The alphabet should be rotated in a manner such that the letters \n    shift down by two multiplied to two places.\n    For example:\n    encrypt('hi') returns 'lm'\n    encrypt('asdfghjkl') returns 'ewhjklnop'\n    encrypt('gf') returns 'kj'\n    encrypt('et') returns 'ix'\n    \"\"\"",
+      "reference_solution": "d = 'abcdefghijklmnopqrstuvwxyz'\n    out = ''\n    for c in s:\n        if c in d:\n            out += d[(d.index(c)+2*2) % 26]\n        else:\n            out += c\n    return out",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/89"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm trying to solve this problem:\n\ndef encrypt(s):\n    \"\"\"Create a function encrypt that takes a string as an argument and\n    returns a string encrypted with the alphabet being rotated. \n    The alphabet should be rotated in a manner such that the letters \n    shift down by two multiplied to two places.\n    For example:\n    encrypt('hi') returns 'lm'\n    encrypt('asdfghjkl') returns 'ewhjklnop'\n    encrypt('gf') returns 'kj'\n    encrypt('et') returns 'ix'\n    \"\"\"\n\nHere is my attempt:\n\ndef encrypt(s):\n    abc = 'abcdefghijklmnopqrstuvwxyz'\n    res = ''\n    for char in s:\n        if char in abc:\n            res += abc[(abc.find(char) + 2) % 26]\n        else:\n            res += char\n    return res\n\nCan you tell me if this is correct? I really need to know if I can submit this.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you verify your logic. Instead of giving a yes or no, let's walk through the requirements. How did you decide on the shift value you used in your code?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The instructions say 'shift down by two', so I used 2. It seems like a standard Caesar cipher shift.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Take another look at that specific sentence in the prompt: 'shift down by two multiplied to two places.' Does your current implementation reflect the full mathematical instruction there?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. 'Two multiplied to two'. Does that mean the shift should be 2 * 2, which is 4?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a reasonable interpretation of the phrasing. A good way to be sure is to test your current code with one of the provided examples. If you run encrypt('hi') with your current code, what result do you get, and does it match the example 'lm'?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I just tried it. My code gives 'jk', but the example says it should be 'lm'. If I count from 'h', 'i' is 1, 'j' is 2, 'k' is 3, and 'l' is 4. So it definitely needs to be a shift of 4.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've spotted the discrepancy! Now that you've verified the actual shift needed using the examples, how will you modify your loop to ensure the rotation is correct?",
+      "loss_mask": true
+    }
+  ]
+}

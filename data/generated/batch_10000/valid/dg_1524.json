@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_dg_1524",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks: Rolling Maximums",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to solve the rolling max problem by sorting the list first, which is a common misconception regarding sequence-dependent problems. Tutor guides them to maintain the original order."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "from typing import List, Tuple\n\n\ndef rolling_max(numbers: List[int]) -> List[int]:\n    \"\"\" From a given list of integers, generate a list of rolling maximum element found until given moment\n    in the sequence.\n    >>> rolling_max([1, 2, 3, 2, 3, 4, 2])\n    [1, 2, 3, 3, 3, 4, 4]\n    \"\"\"",
+      "reference_solution": "running_max = None\n    result = []\n\n    for n in numbers:\n        if running_max is None:\n            running_max = n\n        else:\n            running_max = max(running_max, n)\n\n        result.append(running_max)\n\n    return result",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/9"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: \n\nfrom typing import List, Tuple\n\ndef rolling_max(numbers: List[int]) -> List[int]:\n    \"\"\" From a given list of integers, generate a list of rolling maximum element found until given moment\n    in the sequence.\n    >>> rolling_max([1, 2, 3, 2, 3, 4, 2])\n    [1, 2, 3, 3, 3, 4, 4]\n    \"\"\"\n\nCan you just give me the code for this? I have a deadline in an hour.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code for you, but I can certainly help you figure it out quickly! Let's look at the example provided in the docstring. If you have [1, 2, 3, 2, 3, 4, 2], the output is [1, 2, 3, 3, 3, 4, 4]. Notice how the value only changes when a new number is larger than everything seen so far. How would you approach tracking that 'largest seen so far' as you move through the list?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. So I should probably sort the list first to find the maximums, and then put them in a new list? Like, if I sort it, the biggest numbers will be at the end.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's an interesting thought, but let's think about the requirement 'until given moment in the sequence'. If you sort the list, you change the original order of the numbers. For example, if the input is [1, 5, 2], the rolling max should be [1, 5, 5]. If you sort it to [1, 2, 5] first, would you still be able to determine what the maximum was at the second position of the *original* sequence?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, you're right. Sorting ruins the order. So I need to keep the list as it is and just iterate through it. I'll use a loop. But how do I remember the previous maximum without using a nested loop to check all previous elements every time?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've hit on a key optimization! A nested loop would work, but it's inefficient. Instead, think about using a single variable outside your loop to act as a 'memory'. As you visit each number in the list, you can compare the current number to this 'memory' variable. What should happen to that variable if the current number is larger than the current memory?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I should update the memory variable to be the current number! Then I just append that memory variable to my result list in each step of the loop. Does that sound right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is spot on. One small detail to consider: how will you initialize that memory variable before the loop starts? Since the list could contain negative numbers, initializing it to 0 might cause bugs. What's a safe way to handle the very first element of the list?",
+      "loss_mask": true
+    }
+  ]
+}

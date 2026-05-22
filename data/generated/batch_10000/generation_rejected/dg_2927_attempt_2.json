@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_2927",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and data structures - Dynamic Programming",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor guides the student to realize that path length is constant in this specific grid problem, converting a maximum average problem into a maximum sum problem solvable by DP. The tutor avoids confirming final values or providing the full code."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Given a square matrix of size N*N given as a list of lists, where each cell is associated with a specific cost. A path is defined as a specific sequence of cells that starts from the top-left cell move only right or down and ends on bottom right cell. We want to find a path with the maximum average over all existing paths. Average is computed as total cost divided by the number of cells visited in the path.",
+      "reference_solution": "def maxAverageOfPath(cost):\n  N = len(cost)\n  dp = [[0 for i in range(N + 1)] for j in range(N + 1)]\n  dp[0][0] = cost[0][0]\n  for i in range(1, N):\n    dp[i][0] = dp[i - 1][0] + cost[i][0]\n  for j in range(1, N):\n    dp[0][j] = dp[0][j - 1] + cost[0][j]\n  for i in range(1, N):\n    for j in range(1, N):\n      dp[i][j] = max(dp[i - 1][j],\n                     dp[i][j - 1]) + cost[i][j]\n  return dp[N - 1][N - 1] / (2 * N - 1)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "721"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Given a square matrix of size N*N given as a list of lists, where each cell is associated with a specific cost. A path is defined as a specific sequence of cells that starts from the top-left cell move only right or down and ends on bottom right cell. We want to find a path with the maximum average over all existing paths. Average is computed as total cost divided by the number of cells visited in the path. Can you just give me the solution code? I'm really struggling with the 'average' part.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code, but I can help you break down the logic! The 'average' part is often the trickiest bit of this problem. Before we dive into the code, let's think about the paths. If you can only move right or down in an N x N grid, does the number of cells you visit change depending on which path you take?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think so. For example, if I go all the way right and then all the way down, that's one path. If I zig-zag, it might be a different length. Since the length varies, I probably need to keep track of both the sum and the count of cells in my DP state to calculate the average at the end, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Let's double-check that assumption. To get from (0,0) to (N-1, N-1), you must move exactly N-1 times to the right and N-1 times down, regardless of the order of those moves. If you add the starting cell to those moves, what does that tell you about the total number of cells in any valid path?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait... (N-1) + (N-1) + 1 is always 2N - 1. So every single path has the exact same number of cells! If the denominator is always the same, then maximizing the average is the same as maximizing the total sum of the costs. That makes it way easier.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great realization. Now that you've simplified the goal to maximizing the total sum, how would you approach this using dynamic programming? What would your state represent, and how would you calculate the value for a cell (i, j)?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'd use a 2D array `dp` where `dp[i][j]` is the maximum sum to reach that cell. For a general cell, it would be `dp[i][j] = max(dp[i-1][j], dp[i][j-1]) + cost[i][j]`. But I'm worried about the first row and first column since they don't have both a top and a left neighbor. Should I just set the out-of-bounds values to negative infinity?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Using negative infinity is one way to handle it, but you can also initialize the first row and first column separately. Think about the first row: since you can only move right, the value of `dp[0][j]` only depends on `dp[0][j-1]`. How would you write the initialization for the first row and first column specifically?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "For the first row: `dp[0][j] = dp[0][j-1] + cost[0][j]`. For the first column: `dp[i][0] = dp[i-1][0] + cost[i][0]`. Then I'll loop through the rest of the matrix. Once I get the value at `dp[N-1][N-1]`, I just divide it by (2N-1) to get the maximum average. Does that logic cover everything?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic for the boundary conditions and the final step is sound. You've correctly identified how to handle the constraints of the grid and how to transform the average problem into a sum problem. Now you have a clear roadmap—try implementing this in Python and see if it works as expected!",
+      "loss_mask": true
+    }
+  ]
+}

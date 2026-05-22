@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_dg_9972",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Counting & Probability - Combinatorics",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student incorrectly assumes the middle digit must be 9 and fails to account for varying middle digits and zero as a trailing digit."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "We call a number a mountain number if its middle digit is larger than any other digit.  For example, 284 is a mountain number.  How many 3-digit mountain numbers are there?",
+      "reference_solution": "We will break this into three cases.\n\nCase 1: numbers of the form $xyx$ ($x \\ne 0$).\n\nAny pair of nonzero digits has a corresponding palindrome ($xyx$) mountain number, so the number of these is $\\binom{9}{2} = 36$.\n\nCase 2: numbers of the form $xyz$ ($z \\ne 0, x \\ne z$).\n\nAny group of three nonzero digits ($y > x > z > 0$) has two corresponding mountain numbers ($xyz$ and $zyx$), so the number of these is $2 \\times \\binom{9}{3} = 168$.\n\nCase 3: numbers of the form $xy0$ ($x \\ne 0, y \\ne 0$).\n\nAny pair of nonzero digits has a corresponding mountain number in the form $xy0$, so there are $\\binom{9}{2} = 36$ of these.\n\nSo the total number of mountain numbers is $36 + 168 + 36 = \\boxed{240}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "1988"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm stuck on this problem: We call a number a mountain number if its middle digit is larger than any other digit. For example, 284 is a mountain number. How many 3-digit mountain numbers are there? Can you just tell me the answer so I can check my work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through the logic to find the answer! Instead of giving it away, let's start by breaking down the requirements. For a 3-digit number to be a 'mountain number,' what must be true about the middle digit relative to the first and third digits?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The middle digit has to be the biggest. So if the middle digit is 9, then the first and last digits can be anything from 0 to 8. That would be 9 options for the first digit and 9 for the last, so 9 * 9 = 81. Since it's only 9 as the peak, is the answer 81?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've correctly identified that if the middle digit is 9, there are many possibilities. However, does the middle digit *have* to be 9 for the number to be a mountain number? Think about the example given in the problem: 284.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. The middle digit just has to be larger than the others, not necessarily 9. So it could be 8, 7, etc. But wait, the first digit can't be 0 because it's a 3-digit number. So for a middle digit $y$, the first digit $x$ can be $1$ to $y-1$, and the third digit $z$ can be $0$ to $y-1$. Does that mean I just sum $(y-1) * y$ for all possible $y$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're making great progress! You've correctly noted that the first digit $x$ must be at least 1 and the third digit $z$ can be 0. Your logic of summing the possibilities for each possible middle digit $y$ is a solid approach. To be very precise, let's test your formula $(y-1) * y$ with a small example. If $y=2$, your formula gives $1 * 2 = 2$. What are those two numbers, and do they both fit the definition?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If $y=2$, the numbers would be 120 and 121. Both have 2 as the middle digit, and 2 is larger than 1 and 0, and 2 is larger than 1 and 1. So that works! I'll just calculate the sum for $y$ from 2 to 9.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is sound. Since the middle digit must be strictly greater than the other two, $y$ must be at least 2 (because the first digit must be at least 1). Go ahead and perform that summation; it will lead you directly to the total count of mountain numbers.",
+      "loss_mask": true
+    }
+  ]
+}

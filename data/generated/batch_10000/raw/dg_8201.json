@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_8201",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Optimization",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor avoids confirming the final value even when the student arrives at it, adhering to the 'never_state' policy. It guides the student from a blind guess to a structured application of QM-AM inequality."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "For $0 \\le x \\le 40$ and $0 \\le y \\le 50,$ find the minimum value of\n\\[\\sqrt{x^2 + 400} + \\sqrt{y^2 + 900} + \\sqrt{x^2 + y^2 - 80x - 100y + 4100}.\\]",
+      "reference_solution": "Completing the square in $x$ and $y,$ the expression becomes\n\\[\\sqrt{x^2 + 400} + \\sqrt{y^2 + 900} + \\sqrt{(x - 40)^2 + (y - 50)^2} = \\sqrt{x^2 + 400} + \\sqrt{y^2 + 900} + \\sqrt{(40 - x)^2 + (50 - y)^2}.\\]By QM-AM,\n\\begin{align*}\n\\sqrt{\\frac{x^2 + 400}{2}} &\\ge \\frac{x + 20}{2}, \\\\\n\\sqrt{\\frac{y^2 + 900}{2}} &\\ge \\frac{y + 30}{2}, \\\\\n\\sqrt{\\frac{(40 - x)^2 + (50 - y)^2}{2}} &\\ge \\frac{(40 - x) + (50 - y)}{2},\n\\end{align*}so\n\\begin{align*}\n&\\sqrt{x^2 + 400} + \\sqrt{y^2 + 900} + \\sqrt{(40 - x)^2 + (50 - y)^2} \\\\\n&\\ge \\sqrt{2} \\cdot \\frac{x + 20}{2} + \\sqrt{2} \\cdot \\frac{y + 30}{2} + \\sqrt{2} \\cdot \\frac{(40 - x) + (50 - y)}{2} \\\\\n&= 70 \\sqrt{2}.\n\\end{align*}Equality occurs when $x = 20$ and $y = 30,$ so the minimum value is $\\boxed{70 \\sqrt{2}}.$",
+      "seed_dataset": "HuggingFaceH4/MATH-500/test",
+      "seed_example_id": "test/intermediate_algebra/1454.json"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this math problem: For $0 \\le x \\le 40$ and $0 \\le y \\le 50,$ find the minimum value of\n\\[\\sqrt{x^2 + 400} + \\sqrt{y^2 + 900} + \\sqrt{x^2 + y^2 - 80x - 100y + 4100}.\\]\nI tried some numbers and I think the answer is 70. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't confirm the final value for you, but I can help you verify it! Could you explain how you arrived at 70? Showing me your process will help us see if the logic holds up.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "To be honest, I just saw the constants 400 and 900 and thought $\\sqrt{400} + \\sqrt{900} = 20 + 30 = 50$, and then I guessed the last term might be 20 more. I didn't actually solve it. How should I start?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a fair guess, but we need a more rigorous approach. Let's look at the terms. The first two are straightforward, but the third term, $\\sqrt{x^2 + y^2 - 80x - 100y + 4100}$, looks a bit messy. Do you think you can rewrite the expression inside that square root by completing the square for $x$ and $y$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, let me try. For $x^2 - 80x$, I need $(80/2)^2 = 1600$. For $y^2 - 100y$, I need $(100/2)^2 = 2500$. $1600 + 2500 = 4100$, which is exactly what's there! So the third term is $\\sqrt{(x-40)^2 + (y-50)^2}$. Now the expression is $\\sqrt{x^2 + 20^2} + \\sqrt{y^2 + 30^2} + \\sqrt{(40-x)^2 + (50-y)^2}$. This looks like the distance formula. Can I use the triangle inequality?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've made great progress by simplifying that third term! While the triangle inequality is often useful for distance problems, notice that the first term only involves $x$, the second only $y$, and the third involves both. This specific structure might be better handled with an inequality that relates the quadratic mean to the arithmetic mean (QM-AM). Do you recall how that inequality works?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think it's $\\sqrt{\\frac{a^2+b^2}{2}} \\ge \\frac{a+b}{2}$. If I apply that to $\\sqrt{x^2+20^2}$, I get $\\sqrt{x^2+20^2} = \\sqrt{2} \\sqrt{\\frac{x^2+20^2}{2}} \\ge \\sqrt{2} \\frac{x+20}{2}$. Doing the same for the others: $\\sqrt{y^2+30^2} \\ge \\sqrt{2} \\frac{y+30}{2}$ and $\\sqrt{(40-x)^2 + (50-y)^2} \\ge \\sqrt{2} \\frac{(40-x)+(50-y)}{2}$. Adding them up: $\\frac{\\sqrt{2}}{2} (x+20 + y+30 + 40-x + 50-y) = \\frac{\\sqrt{2}}{2}(140) = 70\\sqrt{2}$. Is $70\\sqrt{2}$ the answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've found a very strong candidate for the minimum! To finalize your proof, you just need to ensure that this lower bound is actually achievable. For QM-AM, equality holds when the two terms being averaged are equal. Can you find values for $x$ and $y$ within the given ranges that make all three inequalities equalities simultaneously?",
+      "loss_mask": true
+    }
+  ]
+}

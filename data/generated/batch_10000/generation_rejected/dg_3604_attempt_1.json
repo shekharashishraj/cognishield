@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_3604",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Number Theory - Frobenius Coin Problem",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully guides the student through the logic of the Frobenius Coin Problem and the specific constraints of the 5-cent stamp without revealing the final sum."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Find the sum of all positive integers $n$ such that, given an unlimited supply of stamps of denominations $5,n,$ and $n+1$ cents, $91$ cents is the greatest postage that cannot be formed.",
+      "reference_solution": "By the Chicken McNugget theorem, the least possible value of $n$ such that $91$ cents cannot be formed satisfies $5n - (5 + n) = 91 \\implies n = 24$, so $n$ must be at least $24$.\nFor a value of $n$ to work, we must not only be unable to form the value $91$, but we must also be able to form the values $92$ through $96$, as with these five values, we can form any value greater than $96$ by using additional $5$ cent stamps.\nNotice that we must form the value $96$ without forming the value $91$. If we use any $5$ cent stamps when forming $96$, we could simply remove one to get $91$. This means that we must obtain the value $96$ using only stamps of denominations $n$ and $n+1$.\nRecalling that $n \\geq 24$, we can easily figure out the working $(n,n+1)$ pairs that can used to obtain $96$, as we can use at most $\\frac{96}{24}=4$ stamps without going over. The potential sets are $(24, 25), (31, 32), (32, 33), (47, 48), (48, 49), (95, 96)$, and $(96, 97)$.\nThe last two obviously do not work, since they are too large to form the values $92$ through $94$, and by a little testing, only $(24, 25)$ and $(47, 48)$ can form the necessary values, so $n \\in \\{24, 47\\}$. $24 + 47 = \\boxed{71}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "5320"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this math problem: Find the sum of all positive integers $n$ such that, given an unlimited supply of stamps of denominations $5,n,$ and $n+1$ cents, $91$ cents is the greatest postage that cannot be formed. I don't even know where to start. Can you just give me the answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through this, but I won't give you the final answer right away. Instead, let's break it down. This problem is related to the Frobenius Coin Problem (sometimes called the Chicken McNugget Theorem). Have you encountered the formula for the largest non-representable integer for two coprime integers $a$ and $b$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Yeah, I remember it's something like $ab - a - b$. But here we have three denominations: $5, n,$ and $n+1$. Does that formula still work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "The formula $ab - a - b$ is specifically for two variables. With three, it's more complex. However, we can use it to find a lower bound for $n$. If we only had denominations $5$ and $n$, the largest impossible value would be $5n - 5 - n$. Since adding a denomination ($n+1$) can only make more values possible (and thus potentially lower the 'greatest impossible value'), what does that tell you about the relationship between $5n - 5 - n$ and $91$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If $n+1$ makes it easier to form numbers, then the 'worst case' (without $n+1$) must be at least $91$. So $4n - 5 \\geq 91$? That means $4n \\geq 96$, so $n \\geq 24$. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great start. Now, for $91$ to be the *greatest* impossible value, we must be able to form every integer from $92$ onwards. Since we have a $5$-cent stamp, if we can form five consecutive integers (say $92, 93, 94, 95, 96$), we can form every integer after that by just adding $5$s. \n\nHere is the tricky part: we must be able to form $96$ without accidentally being able to form $91$. If you used a $5$-cent stamp to make $96$, what would happen if you just took that $5$-cent stamp away?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, if I can make $96$ using a $5$-cent stamp, then $96 - 5 = 91$. But the problem says $91$ *cannot* be formed! So that means I have to be able to make $96$ using only the $n$ and $n+1$ stamps. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Now you have a much smaller search space. You know $n \\geq 24$, and you know that some combination of $n$ and $n+1$ must sum exactly to $96$. Since $n$ is at least $24$, you can only use a few stamps to reach $96$. Try listing the possible values of $n$ that could allow you to form $96$ using only $n$ and $n+1$.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, if I use 4 stamps, $4n$ could be $96$ (so $n=24$), or $3n + (n+1) = 96$ (so $4n=95$, no), or $2n + 2(n+1) = 96$ (so $4n=94$, no), etc. If I use 3 stamps, $3n$ could be $96$ (so $n=32$), or $2n + (n+1) = 96$ (so $3n=95$, no), or $n + 2(n+1) = 96$ (so $3n=94$, no). \n\nI see $n=24$ and $n=32$ work for $96$. I should check others too, maybe 2 stamps or 1 stamp?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're on the right track. Keep testing for $1, 2, 3,$ and $4$ stamps. Once you have a list of candidate $n$ values that can form $96$, you need to verify which ones *also* allow you to form $92, 93, 94,$ and $95$ (using any of the three stamps) while still ensuring $91$ remains impossible. Which of your candidates should you test first?",
+      "loss_mask": true
+    }
+  ]
+}

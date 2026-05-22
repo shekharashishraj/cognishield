@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_0971",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "emotional_support",
+      "frustration",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Generated a multi-turn tutoring session where the tutor handles a frustrated student by breaking down a grid-summation problem into smaller logical steps."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def max_fill(grid, capacity):\n    import math\n    \"\"\"\n    You are given a rectangular grid of wells. Each row represents a single well,\n    and each 1 in a row represents a single unit of water.\n    Each well has a corresponding bucket that can be used to extract water from it, \n    and all buckets have the same capacity.\n    Your task is to use the buckets to empty the wells.\n    Output the number of times you need to lower the buckets.\n\n    Example 1:\n        Input: \n            grid : [[0,0,1,0], [0,1,0,0], [1,1,1,1]]\n            bucket_capacity : 1\n        Output: 6\n\n    Example 2:\n        Input: \n            grid : [[0,0,1,1], [0,0,0,0], [1,1,1,1], [0,1,1,1]]\n            bucket_capacity : 2\n        Output: 5\n    \n    Example 3:\n        Input: \n            grid : [[0,0,0], [0,0,0]]\n            bucket_capacity : 5\n        Output: 0\n\n    Constraints:\n        * all wells have the same length\n        * 1 <= grid.length <= 10^2\n        * 1 <= grid[:,1].length <= 10^2\n        * grid[i][j] -> 0 | 1\n        * 1 <= capacity <= 10\n    \"\"\"",
+      "reference_solution": "return sum([math.ceil(sum(arr)/capacity) for arr in grid])",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/115"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm really struggling with this problem and I honestly feel like I'm just not cut out for coding. I can't even figure out how to start. Here is the prompt:\n\ndef max_fill(grid, capacity):\n    import math\n    \"\"\"\n    You are given a rectangular grid of wells. Each row represents a single well,\n    and each 1 in a row represents a single unit of water.\n    Each well has a corresponding bucket that can be used to extract water from it, \n    and all buckets have the same capacity.\n    Your task is to use the buckets to empty the wells.\n    Output the number of times you need to lower the buckets.\n\n    Example 1:\n        Input: \n            grid : [[0,0,1,0], [0,1,0,0], [1,1,1,1]]\n            bucket_capacity : 1\n        Output: 6\n\n    Example 2:\n        Input: \n            grid : [[0,0,1,1], [0,0,0,0], [1,1,1,1], [0,1,1,1]]\n            bucket_capacity : 2\n        Output: 5\n    \n    Example 3:\n        Input: \n            grid : [[0,0,0], [0,0,0]]\n            bucket_capacity : 5\n        Output: 0\n\n    Constraints:\n        * all wells have the same length\n        * 1 <= grid.length <= 10^2\n        * 1 <= grid[:,1].length <= 10^2\n        * grid[i][j] -> 0 | 1\n        * 1 <= capacity <= 10\n    \"\"\"\nCan you just give me the answer? I'm totally lost.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It's completely normal to feel overwhelmed when you first look at a problem like this, but please don't be so hard on yourself. Coding is more about breaking things down than knowing the answer immediately. Let's ignore the code for a second and just look at the logic. If you have one single well (one row) with some water in it, and a bucket that holds a certain amount, how would you figure out how many trips you need for just that one well?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I'd count how many 1s are in the row to see how much water there is, and then divide that by the bucket capacity? But what if it doesn't divide evenly?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's exactly the right way to start. Regarding the remainder: if you have 3 units of water and your bucket only holds 2, you'd need one full trip and then one more trip for that last remaining unit, right? In programming, when we want to divide and always round up to the next whole number, what mathematical operation or function comes to mind?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, the prompt mentions `import math`. Is that where `math.ceil` comes in? I think that rounds up.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. Now we have a plan for a single row: sum the water, divide by capacity, and use `math.ceil` to round up. Since the grid is a list of rows, how can we apply this logic to every row in the grid and get the total number of trips for everything?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could use a for loop to go through each row, calculate the trips for that row, and add it to a total variable. Like this:\n\ntotal_trips = 0\nfor row in grid:\n    water = sum(row)\n    trips = math.ceil(water / capacity)\n    total_trips += trips\nreturn total_trips",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is perfectly correct! You've successfully broken the problem down and solved it. If you wanted to make this more concise using a Python feature like a list comprehension, how might you rewrite that loop into a single line inside a `sum()` function?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think it would be something like: return sum([math.ceil(sum(row) / capacity) for row in grid])",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You nailed it. You went from feeling like you couldn't start to writing the optimal solution. See? You're definitely capable of this—it's all about taking it one step at a time.",
+      "loss_mask": true
+    }
+  ]
+}

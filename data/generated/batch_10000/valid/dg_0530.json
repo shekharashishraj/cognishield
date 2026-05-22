@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_0530",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "off_topic_redirect",
+      "task_focus",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully guides the student through the polynomial derivative logic, redirects a question about gaming consoles back to the task, and adheres to the method_only policy by not validating the final code result."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "def derivative(xs: list):\n    \"\"\" xs represent coefficients of a polynomial.\n    xs[0] + xs[1] * x + xs[2] * x^2 + ....\n     Return derivative of this polynomial in the same form.\n    >>> derivative([3, 1, 2, 4, 5])\n    [1, 4, 12, 20]\n    >>> derivative([1, 2, 3])\n    [2, 6]\n    \"\"\"",
+      "reference_solution": "return [(i * x) for i, x in enumerate(xs)][1:]",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/62"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this coding problem: \n\ndef derivative(xs: list):\n    \"\"\" xs represent coefficients of a polynomial.\n    xs[0] + xs[1] * x + xs[2] * x^2 + ....\n     Return derivative of this polynomial in the same form.\n    >>> derivative([3, 1, 2, 4, 5])\n    [1, 4, 12, 20]\n    >>> derivative([1, 2, 3])\n    [2, 6]\n    \"\"\"\n\nCan you just give me the answer? I'm in a rush.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code for you, but I can help you figure it out quickly. Let's start with the math: if you have a term like $ax^n$, what is the rule for finding its derivative?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It's $n * a * x^{n-1}$. The exponent comes down to multiply the coefficient and the exponent drops by one.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Now look at the input list `xs`. The problem says `xs[0]` is the constant, `xs[1]` is the coefficient for $x^1$, `xs[2]` for $x^2$, and so on. If you are at index `i` in the list, what does `i` represent in terms of the polynomial, and how does that relate to the derivative rule?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The index `i` is the exponent. So for the term at `xs[i]`, the derivative's coefficient would be `i * xs[i]`. \n\nBy the way, do you think I should buy a mechanical keyboard or just stick with a membrane one? I've heard mechanicals are better for coding.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Mechanical keyboards are definitely popular among developers, but let's get this function finished first so you can get back to your homework. You've correctly identified that the new coefficient is `i * xs[i]`. Now, consider the very first element, `xs[0]`. What happens to that term when you take the derivative?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Since it's a constant, the derivative is 0. So the first term just disappears.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Correct. Since that constant term vanishes, the resulting list of coefficients will be shorter than the original. How would you implement this in Python? Think about how to iterate through the list with indices and how to exclude that first term.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could use `enumerate(xs)` to get both the index and the value, and then maybe use a list comprehension. Something like `[i * x for i, x in enumerate(xs)]` and then slice it from index 1 to the end to remove the 0. Does that sound right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic aligns perfectly with the derivative rules and the list structure. Try putting that into the function and testing it with the provided examples to see if it produces the expected output.",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_10300",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and data structures - Dynamic Programming",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor guides the student through a common misconception regarding path length in a grid and redirects them from a greedy approach to a dynamic programming approach. The tutor adheres to the method_only policy by focusing on the algorithm's logic rather than confirming final values or providing code."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Given a square matrix of size N*N given as a list of lists, where each cell is associated with a specific cost. A path is defined as a specific sequence of cells that starts from the top-left cell move only right or down and ends on bottom right cell. We want to find a path with the maximum average over all existing paths. Average is computed as total cost divided by the number of cells visited in the path.",
+      "reference_solution": "def maxAverageOfPath(cost):\n  N = len(cost)\n  dp = [[0 for i in range(N + 1)] for j in range(N + 1)]\n  dp[0][0] = cost[0][0]\n  for i in range(1, N):\n    dp[i][0] = dp[i - 1][0] + cost[i][0]\n  for j in range(1, N):\n    dp[0][j] = dp[0][j - 1] + cost[0][j]\n  for i in range(1, N):\n    for j in range(1, N):\n      dp[i][j] = max(dp[i - 1][j],\n                     dp[i][j - 1]) + cost[i][j]\n  return dp[N - 1][N - 1] / (2 * N - 1)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "721"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: Given a square matrix of size N*N given as a list of lists, where each cell is associated with a specific cost. A path is defined as a specific sequence of cells that starts from the top-left cell move only right or down and ends on bottom right cell. We want to find a path with the maximum average over all existing paths. Average is computed as total cost divided by the number of cells visited in the path. I don't know where to start, can you just give me the code?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code for you, but I can help you build the logic step-by-step! Let's start with the 'average' part. To calculate an average, you need the sum of the costs and the number of cells in the path. If you are restricted to only moving right and down in an N*N matrix, does the number of cells visited change depending on the path you take?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think so. If I go all the way right and then all the way down, it might be a different number of steps than if I zigzag through the middle. Since the path length varies, I should probably use a greedy algorithm and pick the highest value cell available at each step to keep the average high.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Let's double-check the path length first. To get from the top-left (0,0) to the bottom-right (N-1, N-1), you must move exactly N-1 times to the right and N-1 times down, regardless of the order. If you add the starting cell, what does that tell you about the total number of cells in any valid path?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. So every path actually has the same length: (N-1) + (N-1) + 1. If the denominator is constant for every single path, then maximizing the average is the same as maximizing the total sum of the costs. So I can just focus on the sum. I'll use the greedy approach to find the max sum then!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Be careful with the greedy approach. Imagine a scenario where picking a slightly smaller value now opens up a path to a massive value later, while picking the largest immediate value leads you into a region of very small numbers. Does a greedy choice always guarantee the global maximum sum in this kind of grid?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "You're right, greedy wouldn't work because it doesn't look ahead. I need a way to find the absolute maximum sum. Maybe I can use Dynamic Programming? I could create a table where each cell stores the maximum sum possible to reach that specific cell.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great pivot. If you are at cell (i, j), and you can only arrive there from the cell above it or the cell to its left, how would you define the recurrence relation to find the maximum sum at (i, j)?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The max sum at (i, j) would be the cost of the current cell plus the maximum of the value already stored at (i-1, j) and (i, j-1). I'd just need to handle the edges—like the first row and first column—separately since they only have one possible previous cell. Then at the end, I divide the final sum by the path length. Does that cover everything?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that covers the core logic perfectly. You've correctly identified that the constant path length simplifies the problem to a maximum path sum problem, and you've established the correct DP state and transition. You're now ready to implement this logic into your code!",
+      "loss_mask": true
+    }
+  ]
+}

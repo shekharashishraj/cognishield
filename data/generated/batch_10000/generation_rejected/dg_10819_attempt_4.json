@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_10819",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Precalculus - Trigonometric Series",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The student initially attempts to use product-to-sum identities in the denominator, which is a common misconception. The tutor redirects them toward the method of introducing a constant in the numerator to create a telescoping sum of cotangents."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Find the least positive integer $n$ such that $\\frac 1{\\sin 45^\\circ\\sin 46^\\circ}+\\frac 1{\\sin 47^\\circ\\sin 48^\\circ}+\\cdots+\\frac 1{\\sin 133^\\circ\\sin 134^\\circ}=\\frac 1{\\sin n^\\circ}.$",
+      "reference_solution": "Each term is of the form $\\frac{1}{\\sin k^\\circ \\sin (k + 1)^\\circ}.$  To deal with this term, we look at $\\sin ((k + 1)^\\circ - k^\\circ).$  From the angle subtraction formula,\n\\[\\sin ((k + 1)^\\circ - k^\\circ) = \\sin (k + 1)^\\circ \\cos k^\\circ - \\cos (k + 1)^\\circ \\sin k^\\circ.\\]Then\n\\begin{align*}\n\\frac{\\sin 1^\\circ}{\\sin k^\\circ \\sin (k + 1)^\\circ} &= \\frac{\\sin ((k + 1)^\\circ - k^\\circ)}{\\sin k^\\circ \\sin (k + 1)^\\circ} \\\\\n&= \\frac{\\sin (k + 1)^\\circ \\cos k^\\circ - \\cos (k + 1)^\\circ \\sin k^\\circ}{\\sin k^\\circ \\sin (k + 1)^\\circ} \\\\\n&= \\frac{\\cos k^\\circ}{\\sin k^\\circ} - \\frac{\\cos (k + 1)^\\circ}{\\sin (k + 1)^\\circ} \\\\\n&= \\cot k^\\circ - \\cot (k + 1)^\\circ.\n\\end{align*}Hence,\n\\[\\frac{1}{\\sin k^\\circ \\sin (k + 1)^\\circ} = \\frac{1}{\\sin 1^\\circ} (\\cot k^\\circ - \\cot (k + 1)^\\circ).\\]Then\n\\begin{align*}\n&\\frac{1}{\\sin 45^\\circ \\sin 46^\\circ} + \\frac{1}{\\sin 47^\\circ \\sin 48^\\circ} + \\dots + \\frac{1}{\\sin 133^\\circ \\sin 134^\\circ} \\\\\n&= \\frac{1}{\\sin 1^\\circ} (\\cot 45^\\circ - \\cot 46^\\circ + \\cot 47^\\circ - \\cot 48^\\circ + \\dots + \\cot 133^\\circ - \\cot 134^\\circ).\n\\end{align*}Since $\\cot (180^\\circ - x) = -\\cot x,$ the sum reduces to\n\\[\\frac{\\cot 45^\\circ - \\cot 90^\\circ}{\\sin 1^\\circ} = \\frac{1}{\\sin 1^\\circ}.\\]Thus, the smallest such positive integer $n$ is $\\boxed{1}.$",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "6956"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this math problem: Find the least positive integer $n$ such that $\\frac 1{\\sin 45^\\circ\\sin 46^\\circ}+\\frac 1{\\sin 47^\\circ\\sin 48^\\circ}+\\cdots+\\frac 1{\\sin 133^\\circ\\sin 134^\\circ}=\\frac 1{\\sin n^\\circ}$. I've been staring at it for an hour. Can you just tell me what $n$ is so I can move on?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the final answer directly, but I can help you find the trick to solve this! This problem looks intimidating because of the number of terms, but it's designed to simplify significantly. Usually, when you see a sum of fractions like this, the goal is to turn it into a 'telescoping sum' where most terms cancel out. Let's look at a single term first: $\\frac{1}{\\sin k^\\circ \\sin (k+1)^\\circ}$. Do you think there's a way to rewrite the numerator to create a difference of two functions?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Maybe I can use product-to-sum identities? Like $\\sin A \\sin B = \\frac{1}{2}(\\cos(A-B) - \\cos(A+B))$. For the first term, that would be $\\frac{1}{\\frac{1}{2}(\\cos 1^\\circ - \\cos 91^\\circ)}$. Would that help it telescope?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a good instinct to reach for identities, but notice that your result is still in the denominator. For a sum to telescope, we generally need the terms to be in the numerator so they can be subtracted from one another. Instead of changing the denominator, what if we introduced a constant in the numerator that relates to the difference between the two angles? What happens if you multiply the term by $\\frac{\\sin 1^\\circ}{\\sin 1^\\circ}$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, so I'd have $\\frac{1}{\\sin 1^\\circ} \\cdot \\frac{\\sin 1^\\circ}{\\sin k^\\circ \\sin (k+1)^\\circ}$. Since $1 = (k+1) - k$, I can write $\\sin 1^\\circ$ as $\\sin((k+1)^\\circ - k^\\circ)$. Using the sine subtraction formula, that's $\\frac{\\sin(k+1)^\\circ \\cos k^\\circ - \\cos(k+1)^\\circ \\sin k^\\circ}{\\sin k^\\circ \\sin (k+1)^\\circ}$. If I split the fraction, I get $\\frac{\\cos k^\\circ}{\\sin k^\\circ} - \\frac{\\cos(k+1)^\\circ}{\\sin(k+1)^\\circ}$, which is $\\cot k^\\circ - \\cot(k+1)^\\circ$. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly! Now you've transformed each term into $\\frac{1}{\\sin 1^\\circ} (\\cot k^\\circ - \\cot(k+1)^\\circ)$. Now, try applying this to the full sum: $(45, 46), (47, 48), \\dots, (133, 134)$. What does the expression inside the brackets look like when you sum them all up?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It would be $\\frac{1}{\\sin 1^\\circ} [(\\cot 45^\\circ - \\cot 46^\\circ) + (\\cot 47^\\circ - \\cot 48^\\circ) + \\dots + (\\cot 133^\\circ - \\cot 134^\\circ)]$. Wait, this doesn't telescope! The $\\cot 46^\\circ$ and $\\cot 47^\\circ$ don't cancel. Did I make a mistake in the identity?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your identity is perfectly correct. You've just noticed that this isn't a 'standard' telescoping sum where every adjacent term cancels. However, look at the angles involved. You have $\\cot 46^\\circ$ and $\\cot 134^\\circ$. Is there a relationship between $\\cot x$ and $\\cot(180^\\circ - x)$ that might help you here?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh! $\\cot(180^\\circ - x) = -\\cot x$. So $\\cot 134^\\circ = -\\cot 46^\\circ$, which means $-\\cot 134^\\circ = \\cot 46^\\circ$. If I do that for all the terms, they'll cancel in pairs! The only ones left are $\\cot 45^\\circ$ and $\\cot 90^\\circ$ (since the sequence skips by 2). But $\\cot 90^\\circ = 0$. So the whole thing simplifies to $\\frac{\\cot 45^\\circ}{\\sin 1^\\circ}$. Since $\\cot 45^\\circ = 1$, the answer is $\\frac{1}{\\sin 1^\\circ}$. That means $n=1$!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got it! By recognizing the symmetry of the cotangent function, you were able to clear out the rest of the sum. Since the result is $\\frac{1}{\\sin 1^\\circ}$, the least positive integer $n$ is indeed 1. Excellent work navigating through those trigonometric identities!",
+      "loss_mask": true
+    }
+  ]
+}

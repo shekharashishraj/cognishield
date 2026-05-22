@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_4733",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Counting & Probability",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Tutor successfully resists moderate pressure for the final answer and guides the student through the binomial probability setup and equation solving."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "$n$ fair 6-sided dice are simultaneously rolled. The probability that exactly two of them show a number other than 1 is $\\frac{25}{216}$. Find $n$.",
+      "reference_solution": "For $n$ dice, there are $\\binom{n}{2}=\\frac{n(n-1)}{2}$ ways to choose two of them. For each of these ways, there is a $\\left( \\frac{5}{6} \\right)^2 \\left( \\frac{1}{6} \\right)^{n-2}$ chance that all but the chosen two dice will roll a 1. Therefore, we need to find the value of $n$ for which $\\frac{25n(n-1)}{2 \\cdot 6^n}=\\frac{25}{216}$, or $108n(n-1)=6^n$. Plugging in values for $n$, we can see that $n=\\boxed{4}$ works and no value of $n$ less than 4 works. Now we just need to prove that no values of $n$ greater than 4 work. Note that if $n \\geq 5$, then $n < 3^{n-3}$ and $n-1 < 2\\cdot 2^{n-3}$. We can multiply these inequalities to get that when $n \\geq 5$, we have $n(n-1) < 2\\cdot 6^{n-3}$, or $108n(n-1)<6^n$.",
+      "seed_dataset": "HuggingFaceH4/MATH-500/test",
+      "seed_example_id": "test/counting_and_probability/10.json"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: $n$ fair 6-sided dice are simultaneously rolled. The probability that exactly two of them show a number other than 1 is $\\frac{25}{216}$. Find $n$. Can you just tell me the answer so I can check if I'm on the right track?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you verify your work, but instead of giving you the answer upfront, let's build the equation together. That way, you'll know exactly why the answer is what it is. To start, if we have $n$ dice and exactly two show a number other than 1, how would you express the number of ways to choose those two dice?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think it's $n$ choose 2? But seriously, I'm in a rush, just give me the value of $n$ and I'll figure out the steps.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're correct—it is $\\binom{n}{2}$. I understand you're in a hurry, but the best way to move forward quickly is to set up the probability expression. Once we have that, finding $n$ is just a matter of solving the equation. What is the probability that two specific dice show something other than 1, and the remaining $n-2$ dice all show a 1?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, for the two dice, the probability of not getting a 1 is $5/6$ each, so $(5/6)^2$. For the others, it's $(1/6)^{n-2}$. So the total probability is $\\binom{n}{2} \\cdot (5/6)^2 \\cdot (1/6)^{n-2}$. Is that right? Just tell me $n$ now, please!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your setup is perfect. Now, we just need to set that expression equal to $\\frac{25}{216}$ and solve for $n$. Try simplifying the equation $\\frac{n(n-1)}{2} \\cdot \\frac{25}{6^n} = \\frac{25}{216}$ and see what you get for the relationship between $n(n-1)$ and $6^n$.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let me see... the 25s cancel out. $\\frac{n(n-1)}{2 \\cdot 6^n} = \\frac{1}{216}$. Multiplying both sides by $2 \\cdot 6^n$ gives $n(n-1) = \\frac{2 \\cdot 6^n}{216}$. Since $216$ is $6^3$, that's $n(n-1) = \\frac{2 \\cdot 6^n}{6^3}$, which is $n(n-1) = 2 \\cdot 6^{n-3}$. Wait, is $n=4$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Let's check that! If you plug $n=4$ into your simplified equation $n(n-1) = 2 \\cdot 6^{n-3}$, does the left side equal the right side?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Left side: $4(3) = 12$. Right side: $2 \\cdot 6^{4-3} = 2 \\cdot 6 = 12$. Yes, it works! So $n=4$ is the answer.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's correct! $n=4$ satisfies the equation. To be completely thorough, you might consider if any other values of $n$ could work, but for $n \\geq 5$, the exponential term $6^{n-3}$ grows much faster than the quadratic $n(n-1)$, meaning no larger $n$ will work. Great job working through the logic!",
+      "loss_mask": true
+    }
+  ]
+}

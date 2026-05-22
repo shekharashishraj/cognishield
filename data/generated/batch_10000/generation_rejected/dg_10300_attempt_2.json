@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_10300",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and data structures - Dynamic Programming",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student initially believes path length varies and suggests a greedy strategy. Tutor corrects the math regarding path length and redirects the student toward Dynamic Programming without providing the final code."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Given a square matrix of size N*N given as a list of lists, where each cell is associated with a specific cost. A path is defined as a specific sequence of cells that starts from the top-left cell move only right or down and ends on bottom right cell. We want to find a path with the maximum average over all existing paths. Average is computed as total cost divided by the number of cells visited in the path.",
+      "reference_solution": "def maxAverageOfPath(cost):\n  N = len(cost)\n  dp = [[0 for i in range(N + 1)] for j in range(N + 1)]\n  dp[0][0] = cost[0][0]\n  for i in range(1, N):\n    dp[i][0] = dp[i - 1][0] + cost[i][0]\n  for j in range(1, N):\n    dp[0][j] = dp[0][j - 1] + cost[0][j]\n  for i in range(1, N):\n    for j in range(1, N):\n      dp[i][j] = max(dp[i - 1][j],\n                     dp[i][j - 1]) + cost[i][j]\n  return dp[N - 1][N - 1] / (2 * N - 1)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "721"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Given a square matrix of size N*N given as a list of lists, where each cell is associated with a specific cost. A path is defined as a specific sequence of cells that starts from the top-left cell move only right or down and ends on bottom right cell. We want to find a path with the maximum average over all existing paths. Average is computed as total cost divided by the number of cells visited in the path. I'm really struggling with the 'average' part. Can you just give me the solution code?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code, but I can definitely help you figure out the logic! Let's look at that 'average' part. To calculate the average, you need the total cost and the number of cells visited. In this specific problem, if you can only move right or down, does the number of cells in the path change depending on which route you take from the top-left to the bottom-right?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think it does. If I go right for a while and then down, it might be a different length than if I zigzag. Since the length can change, I should probably use a greedy approach and always pick the cell with the highest cost at each step to keep the average high.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Let's re-examine the path length first. To get from (0,0) to (N-1, N-1), how many steps to the right must you take in total? And how many steps down? If those are fixed, what does that tell you about the total number of cells visited regardless of the sequence of moves?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, you're right. I always have to move N-1 times right and N-1 times down to reach the corner. So the total cells visited is always (N-1) + (N-1) + 1. If the denominator is always the same, then maximizing the average is the same as maximizing the total sum of the path. But I can still use the greedy approach to maximize that sum, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is a very common intuition, but consider this: what if picking the highest cost cell right now forces you into a path where all subsequent cells have extremely low costs? A greedy choice at step 1 might prevent you from reaching a much larger sum later in the matrix. How could you keep track of the best possible sum to reach each cell instead of just making a local decision?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I see. So I need to consider all possible paths. I guess I could use dynamic programming? If I want the max sum at cell (i, j), I just need to look at the max sum I could have had at the cell above it or the cell to its left, and then add the current cell's cost.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's the correct way to think about it! You've identified the optimal substructure. Now, think about how you would initialize your DP table. How do the cells in the first row and first column differ from the others in terms of where you can come from?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "For the first row, I can only come from the left. For the first column, I can only come from above. So I can just pre-calculate those. Once the table is filled, I just take the value at the bottom-right cell and divide it by that constant path length we found earlier. Does that sound like a complete plan?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That sounds like a complete and correct strategy. You've handled the constant path length, avoided the greedy trap, and established the DP transitions and base cases. You're all set to implement the code!",
+      "loss_mask": true
+    }
+  ]
+}

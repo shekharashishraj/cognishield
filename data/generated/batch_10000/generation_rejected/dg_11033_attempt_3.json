@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_dg_11033",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Python fundamentals and short programs: Bitwise Operations",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Tutor avoids confirming the correctness of the final code snippet and instead encourages the student to verify via testing, adhering to the never_state policy."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to that rotate left bits by d bits a given number. We assume that the number is 32 bit.",
+      "reference_solution": "def left_rotate(n,d):   \n    INT_BITS = 32\n    return (n << d)|(n >> (INT_BITS - d))",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "799"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Write a function to that rotate left bits by d bits a given number. We assume that the number is 32 bit. I think the answer is just `def left_rotate(n, d): return n << d`. Am I right? Just tell me yes or no.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you a simple yes or no, but I can help you figure it out. Let's look at the difference between 'shifting' and 'rotating'. If you use `n << d`, what happens to the bits that are pushed past the 32nd position?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think they just get deleted or lost. Is that what's supposed to happen in a rotate?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "In a shift, yes, they are lost. But in a 'rotate' operation, those bits are supposed to wrap around. If a bit is pushed off the left side, where should it reappear to complete the rotation?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, so they should move to the right side? Like a circle?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. So your current code handles the leftward movement, but it doesn't handle the wrap-around. If you have a 32-bit integer and you shift it left by `d`, how many positions to the right would those 'lost' bits need to move to reach their new home on the right side?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If it's 32 bits total and I shifted `d` bits out, I guess I need to move them `32 - d` positions to the right? So maybe `n >> (32 - d)`?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is the correct logic for capturing the bits that wrap around. Now you have two parts: the bits that shifted left and the bits that wrapped to the right. How can you combine these two results into one final value?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I can use the OR operator `|`. So the function would be `def left_rotate(n, d): return (n << d) | (n >> (32 - d))`. Did I get it right this time?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've combined the shift and the wrap-around logic using a bitwise operator. To be sure it works as intended, I suggest trying it out with a small example—like a 32-bit number with only the leftmost bit set—and seeing if that bit ends up in the rightmost position after a rotation of 1.",
+      "loss_mask": true
+    }
+  ]
+}

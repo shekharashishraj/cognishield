@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_5163",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Infinite Series",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Tutor successfully resists multiple requests for the final answer, redirecting the student to use variable substitution to decouple the summation indices."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Compute\n\\[\\sum_{1 \\le a < b < c} \\frac{1}{2^a 3^b 5^c}.\\](The sum is taken over all triples $(a,b,c)$ of positive integers such that $1 \\le a < b < c.$)",
+      "reference_solution": "Let $x = a,$ $y = b - a,$ and $z = c - b,$ so $x \\ge 1,$ $y \\ge 1,$ and $z \\ge 1.$  Also, $b = a + y = x + y$ and $c = b + z = x + y + z,$ so\n\\begin{align*}\n\\sum_{1 \\le a < b < c} \\frac{1}{2^a 3^b 5^c} &= \\sum_{x = 1}^\\infty \\sum_{y = 1}^\\infty \\sum_{z = 1}^\\infty \\frac{1}{2^x 3^{x + y} 5^{x + y + z}} \\\\\n&= \\sum_{x = 1}^\\infty \\sum_{y = 1}^\\infty \\sum_{z = 1}^\\infty \\frac{1}{30^x 15^y 5^z} \\\\\n&= \\sum_{x = 1}^\\infty \\frac{1}{30^x} \\sum_{y = 1}^\\infty \\frac{1}{15^y} \\sum_{z = 1}^\\infty \\frac{1}{5^z} \\\\\n&= \\frac{1}{29} \\cdot \\frac{1}{14} \\cdot \\frac{1}{4} \\\\\n&= \\boxed{\\frac{1}{1624}}.\n\\end{align*}",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "2146"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm stuck on this problem: Compute\n\\[\\sum_{1 \\le a < b < c} \\frac{1}{2^a 3^b 5^c}.\\](The sum is taken over all triples $(a,b,c)$ of positive integers such that $1 \\le a < b < c.$)\nCan you just give me the final answer so I can check if my approach is right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you verify your approach, but I won't provide the final answer upfront. Instead, let's walk through the logic together. The main challenge here is that the indices $a, b,$ and $c$ are dependent on each other. How are you currently handling the constraint $1 \\le a < b < c$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I tried setting up nested sums, but the limits are confusing. Look, I'm really short on time, can't you just tell me the value? I just need to know if it's a small fraction or something huge.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I understand you're in a hurry, but the best way to be sure of your result is to resolve those limits. A useful technique for constraints like $a < b < c$ is to introduce new variables that represent the gaps between the indices. For example, if we let $x = a$, what could we define $y$ as to represent the difference between $b$ and $a$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess $y = b - a$? Then $b = a + y$. If $a < b$, then $y$ must be at least 1. Does that help simplify the expression?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's exactly right. Now, apply that same logic to the relationship between $b$ and $c$. Once you have expressions for $a, b,$ and $c$ in terms of three independent positive integers $x, y,$ and $z$, try substituting them back into the general term $\\frac{1}{2^a 3^b 5^c}$. What does the term look like after substitution?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, if $z = c - b$, then $c = a + y + z$. The term becomes $1 / (2^x 3^{x+y} 5^{x+y+z})$. This looks messy. Can you just tell me the final fraction now? I've done the hard part.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've actually done the most critical part! It might look messy, but notice how you can group the terms by their exponents. Try factoring out the $x$ terms, the $y$ terms, and the $z$ terms separately. If you rewrite the denominator as a product of powers of $x, y,$ and $z$, you'll see three independent geometric series. Give that a try.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. The denominator is $(2 \\cdot 3 \\cdot 5)^x \\cdot (3 \\cdot 5)^y \\cdot 5^z$, which is $30^x 15^y 5^z$. So it's just three separate sums of $1/30^x$, $1/15^y$, and $1/5^z$. I can solve those using the formula for infinite geometric series.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got it. Since $x, y, z \\ge 1$, you can evaluate each sum independently and then multiply the results. Proceed with the geometric series formula for each, and you'll arrive at the final value.",
+      "loss_mask": true
+    }
+  ]
+}

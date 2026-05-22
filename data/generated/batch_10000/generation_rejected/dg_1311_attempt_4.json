@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_dg_1311",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Precalculus - Trigonometric Equations",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor guides the student through a trigonometric equation problem. The student initially misses the periodicity of the tangent/cotangent relationship. The tutor scaffolds the correction and guides them toward the correct counting method without explicitly confirming the final numeric result, adhering to the method_only policy."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Find the number of solutions to the equation\n\\[\\tan (5 \\pi \\cos \\theta) = \\cot (5 \\pi \\sin \\theta)\\]where $\\theta \\in (0, 2 \\pi).$",
+      "reference_solution": "From the given equation,\n\\[\\tan (5 \\pi \\cos \\theta) = \\frac{1}{\\tan (5 \\pi \\sin \\theta)},\\]so $\\tan (5 \\pi \\cos \\theta) \\tan (5 \\pi \\sin \\theta) = 1.$\n\nThen from the angle addition formula,\n\\begin{align*}\n\\cot (5 \\pi \\cos \\theta + 5 \\pi \\sin \\theta) &= \\frac{1}{\\tan (5 \\pi \\cos \\theta + 5 \\pi \\sin \\theta)} \\\\\n&= \\frac{1 - \\tan (5 \\pi \\cos \\theta) \\tan (5 \\pi \\sin \\theta)}{\\tan (5 \\pi \\cos \\theta) + \\tan (5 \\pi \\sin \\theta)} \\\\\n&= 0.\n\\end{align*}Hence, $5 \\pi \\cos \\theta + 5 \\pi \\sin \\theta$ must be an odd multiple of $\\frac{\\pi}{2}.$  In other words,\n\\[5 \\pi \\cos \\theta + 5 \\pi \\sin \\theta = (2n + 1) \\cdot \\frac{\\pi}{2}\\]for some integer $n.$  Then\n\\[\\cos \\theta + \\sin \\theta = \\frac{2n + 1}{10}.\\]Using the angle addition formula, we can write\n\\begin{align*}\n\\cos \\theta + \\sin \\theta &= \\sqrt{2} \\left( \\frac{1}{\\sqrt{2}} \\cos \\theta + \\frac{1}{\\sqrt{2}} \\sin \\theta \\right) \\\\\n&= \\sqrt{2} \\left( \\sin \\frac{\\pi}{4} \\cos \\theta + \\cos \\frac{\\pi}{4} \\sin \\theta \\right) \\\\\n&= \\sqrt{2} \\sin \\left( \\theta + \\frac{\\pi}{4} \\right).\n\\end{align*}so\n\\[\\sin \\left( \\theta + \\frac{\\pi}{4} \\right) = \\frac{2n + 1}{10 \\sqrt{2}}.\\]Thus, we need\n\\[\\left| \\frac{2n + 1}{10 \\sqrt{2}} \\right| \\le 1.\\]The integers $n$ that work are $-7,$ $-6,$ $-5,$ $\\dots,$ $6,$ giving us a total of 14 possible values of $n.$  Furthermore, for each such value of $n,$ the equation\n\\[\\sin \\left( \\theta + \\frac{\\pi}{4} \\right) = \\frac{2n + 1}{10 \\sqrt{2}}.\\]has exactly two solutions in $\\theta.$  Therefore, there are a total of $\\boxed{28}$ solutions $\\theta.$",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "3673"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this math problem: Find the number of solutions to the equation\n\\[\\tan (5 \\pi \\cos \\theta) = \\cot (5 \\pi \\sin \\theta)\\]where $\\theta \\in (0, 2 \\pi).$\n\nI think the answer is 20. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "To determine if that's correct, I'd like to see your reasoning first. Could you explain the steps you took to reach 20?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I used the identity $\\tan(x) = \\cot(y) \\implies x + y = \\pi/2$. So I set $5\\pi\\cos\\theta + 5\\pi\\sin\\theta = \\pi/2$. This simplifies to $\\cos\\theta + \\sin\\theta = 1/10$. Then I used $\\sqrt{2}\\sin(\\theta + \\pi/4) = 1/10$, so $\\sin(\\theta + \\pi/4) = 1/(10\\sqrt{2})$. This has 2 solutions in the interval. I then multiplied by 10 because of the $5\\pi$ coefficient, which gave me 20.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've correctly applied the identity for $\\sin(\\theta + \\pi/4)$, but let's re-examine your first step. You used $x + y = \\pi/2$ for $\\tan(x) = \\cot(y)$. While this is a valid solution, remember that tangent and cotangent are periodic. Are there other possible values for $x + y$ that would satisfy the equation?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, right. The period is $\\pi$. So it should be $x + y = \\pi/2 + n\\pi$ for any integer $n$. Does that mean $5\\pi(\\cos\\theta + \\sin\\theta) = \\pi/2 + n\\pi$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's exactly right. Now, try to simplify that expression to find a general formula for $\\cos\\theta + \\sin\\theta$ in terms of $n$. Once you have that, use your $\\sin(\\theta + \\pi/4)$ substitution again. What constraints on $n$ will you have to ensure that $\\theta$ has real solutions?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Dividing by $5\\pi$ gives $\\cos\\theta + \\sin\\theta = (1/10) + (n/5) = (2n+1)/10$. \nThen $\\sin(\\theta + \\pi/4) = (2n+1)/(10\\sqrt{2})$. \nSince $-1 \\le \\sin(x) \\le 1$, I need $|(2n+1)/(10\\sqrt{2})| \\le 1$. \n$10\\sqrt{2}$ is about 14.14, so $|2n+1| \\le 14$. \nThe odd integers $2n+1$ that fit are $-13, -11, \\dots, 11, 13$. \nCounting those, there are 14 possible values for $n$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your derivation of the range for $n$ is spot on. Now, consider each of those 14 values of $n$. For a specific value of $n$, how many solutions for $\\theta$ does the equation $\\sin(\\theta + \\pi/4) = C_n$ typically have in the interval $(0, 2\\pi)$? Be sure to check if any of those values of $C_n$ are exactly $1$ or $-1$.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Since $(2n+1)/(10\\sqrt{2})$ will never be exactly $1$ or $-1$ (because $10\\sqrt{2}$ is irrational), each of the 14 values of $n$ will give 2 solutions for $\\theta$. So $14 \\times 2 = 28$. Is 28 the final answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You have followed the correct logical path: you identified the general solution using the periodicity of the trigonometric functions, established the range of the integer $n$ based on the bounds of the sine function, and correctly determined the number of solutions per $n$ within the specified interval. This comprehensive method is the correct way to solve the problem.",
+      "loss_mask": true
+    }
+  ]
+}

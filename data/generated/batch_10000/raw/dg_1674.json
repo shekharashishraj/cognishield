@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_1674",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "High-quality scaffolding for Roman numeral conversion. Tutor guides student through data structure selection and the greedy subtraction logic."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def int_to_mini_roman(number):\n    \"\"\"\n    Given a positive integer, obtain its roman numeral equivalent as a string,\n    and return it in lowercase.\n    Restrictions: 1 <= num <= 1000\n\n    Examples:\n    >>> int_to_mini_roman(19) == 'xix'\n    >>> int_to_mini_roman(152) == 'clii'\n    >>> int_to_mini_roman(426) == 'cdxxvi'\n    \"\"\"",
+      "reference_solution": "num = [1, 4, 5, 9, 10, 40, 50, 90,  \n           100, 400, 500, 900, 1000] \n    sym = [\"I\", \"IV\", \"V\", \"IX\", \"X\", \"XL\",  \n           \"L\", \"XC\", \"C\", \"CD\", \"D\", \"CM\", \"M\"] \n    i = 12\n    res = ''\n    while number: \n        div = number // num[i] \n        number %= num[i] \n        while div: \n            res += sym[i] \n            div -= 1\n        i -= 1\n    return res.lower()",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/156"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm stuck on this coding problem:\n\ndef int_to_mini_roman(number):\n    \"\"\"\n    Given a positive integer, obtain its roman numeral equivalent as a string,\n    and return it in lowercase.\n    Restrictions: 1 <= num <= 1000\n\n    Examples:\n    >>> int_to_mini_roman(19) == 'xix'\n    >>> int_to_mini_roman(152) == 'clii'\n    >>> int_to_mini_roman(426) == 'cdxxvi'\n    \"\"\"\nCan you just give me the code for this? I have a deadline soon.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you get this working! Instead of giving you the full code right away, let's break it down so you understand how to handle the Roman numeral logic. \n\nTo start, how do you think we should store the relationship between the integer values (like 1000, 900, 500) and their corresponding Roman symbols (M, CM, D)?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Maybe a dictionary? Like {'M': 1000, 'D': 500}?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "A dictionary is a great intuition. However, since we need to check the largest possible Roman numeral first (a 'greedy' approach), we need to ensure we iterate through the values in descending order. \n\nWould a list of tuples or two parallel lists be easier for you to iterate through from largest to smallest?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Two lists would work. One for the numbers and one for the symbols. But wait, how do I handle things like 4 (IV) or 9 (IX)? They aren't just adding symbols, they are subtracting.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's the trickiest part of Roman numerals! The easiest way to handle those 'subtraction' cases (like 4, 9, 40, 90, etc.) is to treat them as their own unique symbols. \n\nIf you include 'IV' as a symbol for 4 and 'IX' for 9 in your lists, does that simplify the logic for you?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, that makes sense! So I'd have lists like `vals = [1000, 900, 500, 400, ...]` and `syms = ['M', 'CM', 'D', 'CD', ...]`. Then I just loop through them and see how many times the value fits into the number, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. You've got the right logic. Once you find how many times a value fits, you append that symbol to your result string and then update your remaining number. \n\nOne last detail from the prompt: what does the problem ask regarding the case of the final string?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It says it needs to be in lowercase. So I'll just use `.lower()` at the end. I think I can finish it now!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Sounds like a plan! Go ahead and implement it. If you run into any bugs or want me to review your logic once you've written it, just let me know.",
+      "loss_mask": true
+    }
+  ]
+}

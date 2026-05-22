@@ -1,0 +1,109 @@
+{
+  "conversation_id": "mt_dg_2933",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Precalculus: Trigonometry",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student makes a common mistake by applying the angle bisector theorem to the angle itself rather than the sides, and then incorrectly calculates the cosine. Tutor guides them to Law of Cosines first."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "In triangle $ABC,$ $AB = 3,$ $AC = 6,$ $BC = 8,$ and $D$ lies on $\\overline{BC}$ such that $\\overline{AD}$ bisects $\\angle BAC.$  Find $\\cos \\angle BAD.$",
+      "reference_solution": "By the Law of Cosines,\n\\[\\cos A = \\frac{3^2 + 6^2 - 8^2}{2 \\cdot 3 \\cdot 6} = -\\frac{19}{36}.\\][asy]\nunitsize (1 cm);\n\npair A, B, C, D;\n\nB = (0,0);\nC = (8,0);\nA = intersectionpoint(arc(B,3,0,180),arc(C,6,0,180));\nD = interp(B,C,3/9);\n\ndraw(A--B--C--cycle);\ndraw(A--D);\n\nlabel(\"$A$\", A, N);\nlabel(\"$B$\", B, SW);\nlabel(\"$C$\", C, SE);\nlabel(\"$D$\", D, S);\n[/asy]\n\nThen\n\\[\\cos \\angle BAD = \\cos \\frac{A}{2} = \\sqrt{\\frac{1 + \\cos A}{2}} = \\boxed{\\frac{\\sqrt{34}}{12}}.\\]",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "3962"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: In triangle $ABC,$ $AB = 3,$ $AC = 6,$ $BC = 8,$ and $D$ lies on $\\overline{BC}$ such that $\\overline{AD}$ bisects $\\angle BAC.$ Find $\\cos \\angle BAD.$ I think the answer is 1/2. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't tell you if that's correct just yet. Could you walk me through the steps you took to arrive at 1/2? I'd like to see your reasoning first.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, since $AD$ bisects the angle, I thought maybe the angle $\\angle BAD$ was $60^\\circ$ because the sides are 3 and 6, and that's a 1:2 ratio. So $\\cos(60^\\circ) = 1/2$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see where you're coming from, but remember that the ratio of the side lengths doesn't directly determine the measure of the angle in that way. The angle bisector divides the opposite side $BC$ in a specific ratio, but it doesn't automatically make the angle a specific value like $60^\\circ$. To find $\\cos \\angle BAD$, we first need to find the measure of the full angle $\\angle BAC$. What tool can you use to find the cosine of $\\angle BAC$ given all three side lengths of the triangle?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I should use the Law of Cosines! So for $\\angle A$, it would be $8^2 = 3^2 + 6^2 - 2(3)(6)\\cos A$. Let me calculate... $64 = 9 + 36 - 36\\cos A$, so $64 = 45 - 36\\cos A$. That means $19 = -36\\cos A$, so $\\cos A = -19/36$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is correct. Now that you have $\\cos A$, how can you use that to find the cosine of half of that angle, $\\cos \\angle BAD$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I remember there's a half-angle formula. Is it $\\cos(A/2) = \\sqrt{(1 + \\cos A) / 2}$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that's the correct identity to use here. Go ahead and plug in your value for $\\cos A$ and simplify the expression.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, $\\cos(A/2) = \\sqrt{(1 - 19/36) / 2} = \\sqrt{(17/36) / 2} = \\sqrt{17/72}$. That simplifies to $\\sqrt{34}/12$. Is that the final answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Wait, let me double-check your subtraction in the numerator. You had $1 - 19/36$. What is $36/36 - 19/36$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, $36 - 19$ is $17$. Oh, I see, I did the subtraction right but I might have miscalculated something else. Let me re-do it: $1 - (-19/36)$? No, $\\cos A$ was $-19/36$, so $1 + (-19/36)$ is $17/36$. Then $17/36$ divided by 2 is $17/72$. $\\sqrt{17/72} = \\sqrt{17/(36 \\cdot 2)} = \\sqrt{34/144} = \\sqrt{34}/12$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your calculation for $\\sqrt{17/72}$ as $\\sqrt{34}/12$ is correct. Since you've followed the logic from the Law of Cosines through the half-angle identity and arrived at this result, you have successfully solved the problem.",
+      "loss_mask": true
+    }
+  ]
+}

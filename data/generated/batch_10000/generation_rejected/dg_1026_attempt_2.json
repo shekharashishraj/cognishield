@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_dg_1026",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Number Theory: Digit Sums",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor guides the student to bound the search space and use modular arithmetic to identify candidates, without confirming the final count."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "For each positive integer $n$, let $S(n)$ denote the sum of the digits of $n$.  For how many values of $n$ is $n+S(n)+S(S(n))=2007$?",
+      "reference_solution": "If $n\\leq 2007$, then $S(n)\\leq S(1999)=28$. If $n\\leq\n28$, then $S(n)\\leq S(28)=10$. Therefore if $n$ satisfies the required condition it must also satisfy \\[\nn\\geq 2007-28-10=1969.\n\\] In addition, $n,S(n),\\text{ and }S(S(n))$ all leave the same remainder when divided by 9. Because 2007 is a multiple of 9, it follows that $n,S(n),\\text{ and }S(S(n))$ must all be multiples of 3. The required condition is satisfied by $\\boxed{4}$ multiples of 3 between 1969 and 2007, namely 1977, 1980, 1983, and 2001.\n\nNote: There appear to be many cases to check, that is, all the multiples of 3 between 1969 and 2007. However, for $1987\\leq n\\leq 1999$, we have $n+S(n)\\geq 1990+19=2009$, so these numbers are eliminated. Thus we need only check 1971, 1974, 1977, 1980, 1983, 1986, 2001, and 2004.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "2839"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this math problem: For each positive integer $n$, let $S(n)$ denote the sum of the digits of $n$. For how many values of $n$ is $n+S(n)+S(S(n))=2007$? I think the answer is 6. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't confirm if 6 is the correct count, but I can help you verify your result. Could you explain how you found those values of $n$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I just tried some numbers near 2000. I found 1977, 1980, and 1983 work. Then I guessed there were probably a few more in the 2000s and maybe one more in the 1970s, so I guessed 6.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Testing values is a good way to start, but guessing can be risky. To be certain, we should find a range of $n$ that we need to check. Since $n$ is close to 2007, what is the maximum possible value for $S(n)$ and $S(S(n))$ for $n \\leq 2007$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, for $n \\leq 2007$, the maximum $S(n)$ is for 1999, which is $1+9+9+9=28$. Then the max $S(S(n))$ would be $S(19)$ or $S(28)$, which is 10. So $S(n) + S(S(n))$ is at most 38. That means $n$ must be at least $2007 - 38 = 1969$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great way to bound the problem. Now we only need to look at $1969 \\leq n \\leq 2007$. Checking every number would still take a while—do you know any property of digit sums that could help us skip some candidates?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh! $n$ and $S(n)$ always have the same remainder when divided by 9. So $n + S(n) + S(S(n)) \\equiv 3n \\pmod{9}$. Since 2007 is divisible by 9, we have $3n \\equiv 0 \\pmod{9}$. This means $n$ must be a multiple of 3!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Now you only have to check multiples of 3 between 1969 and 2007. While you do that, consider if there are any ranges where $n + S(n)$ already exceeds 2007, which would allow you to ignore those numbers entirely.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let's see... for $n=1989$, $S(n)=27$, so $n+S(n)=2016$. That's already over 2007. So any $n$ from 1987 to 1999 is probably too high. I'll check the others: 1971, 1974, 1977, 1980, 1983, 1986, 2001, 2004. I found 1977, 1980, 1983, and 2001 work. The others don't. So the answer is 4. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've systematically narrowed down the candidates and tested the remaining ones. Double-check your calculations for the values you rejected one last time. If your arithmetic holds, you have found all the solutions.",
+      "loss_mask": true
+    }
+  ]
+}

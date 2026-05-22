@@ -1,0 +1,108 @@
+{
+  "conversation_id": "mt_dg_9268",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Counting & Probability: Sequence and Pattern Analysis",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully resists moderate pressure to provide the final answer, instead guiding the student through the modular arithmetic patterns of the locker problem."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "A bored student walks down a hall that contains a row of closed lockers, numbered $1$ to $1024$. He opens the locker numbered 1, and then alternates between skipping and opening each locker thereafter. When he reaches the end of the hall, the student turns around and starts back. He opens the first closed locker he encounters, and then alternates between skipping and opening each closed locker thereafter. The student continues wandering back and forth in this manner until every locker is open. What is the number of the last locker he opens?",
+      "reference_solution": "On his first pass, he opens all of the odd lockers. So there are only even lockers closed. Then he opens the lockers that are multiples of $4$, leaving only lockers $2 \\pmod{8}$ and $6 \\pmod{8}$. Then he goes ahead and opens all lockers $2 \\pmod {8}$, leaving lockers either $6 \\pmod {16}$ or $14 \\pmod {16}$. He then goes ahead and opens all lockers $14 \\pmod {16}$, leaving the lockers either $6 \\pmod {32}$ or $22 \\pmod {32}$. He then goes ahead and opens all lockers $6 \\pmod {32}$, leaving $22 \\pmod {64}$ or $54 \\pmod {64}$. He then opens $54 \\pmod {64}$, leaving $22 \\pmod {128}$ or $86 \\pmod {128}$. He then opens $22 \\pmod {128}$ and leaves $86 \\pmod {256}$ and $214 \\pmod {256}$. He then opens all $214 \\pmod {256}$, so we have $86 \\pmod {512}$ and $342 \\pmod {512}$, leaving lockers $86, 342, 598$, and $854$, and he is at where he started again. He then opens $86$ and $598$, and then goes back and opens locker number $854$, leaving locker number $\\boxed{342}$ untouched. He opens that locker.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "2097"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: A bored student walks down a hall that contains a row of closed lockers, numbered $1$ to $1024$. He opens the locker numbered 1, and then alternates between skipping and opening each locker thereafter. When he reaches the end of the hall, the student turns around and starts back. He opens the first closed locker he encounters, and then alternates between skipping and opening each closed locker thereafter. The student continues wandering back and forth in this manner until every locker is open. What is the number of the last locker he opens? Can you just tell me the answer so I can see if my logic is on the right track?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the final answer right away, but I can definitely help you verify your logic as you go! Let's start by breaking down the first few passes. On the very first pass, he opens locker 1 and then skips one, then opens one. Which lockers are left closed after that first trip down the hall?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Since he starts at 1 and skips every other one, he opens all the odd numbers. So only the even lockers are left. But this is taking forever to simulate. Seriously, just give me the number and I'll try to figure out how to get there.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I understand it feels tedious, but the key is to find a pattern rather than simulating every single locker. You're correct that only even lockers remain. Now, on the way back, he opens the first closed locker he finds (which would be 1024) and then alternates. If he's opening every other even locker starting from the end, what does that mean for the lockers that remain closed after the second pass?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, if he opens 1024, 1020, 1016... those are all multiples of 4. So the lockers that are $2 \\pmod 4$ are still closed? I think so. Look, I'm really pressed for time here, just tell me the final locker number and I promise I'll work backward from it.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've nailed the pattern! The lockers remaining are indeed those that are $2 \\pmod 4$. Instead of giving you the final result, let's use that momentum. If the remaining lockers are $2, 6, 10, 14...$, and he starts another pass, he will open every other one of these. Can you determine which specific residues modulo 8 will be left after the next pass?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, if he opens 2, 10, 18... then 6, 14, 22... are left. So it's $6 \\pmod 8$? No, wait, it depends on which direction he's going. This is confusing. Just tell me the answer, please!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It is a bit tricky because of the direction! Let's slow down. On the first pass (1 to 1024), he opened $1 \\pmod 2$. On the second pass (1024 back to 1), he opened $0 \\pmod 4$. On the third pass (1 to 1024), he opens the first available closed locker, which is 2, and then every other one. That means he opens $2, 10, 18...$ which are $2 \\pmod 8$. That leaves $6 \\pmod 8$ behind. Do you see how the modulus is doubling each time?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. The modulus doubles. So it goes $2, 4, 8, 16, 32, 64, 128, 256, 512$. If the pattern keeps going, the last locker must be one of the last few remaining. Is it 342?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've identified the correct progression of the modulus! Now, check your final calculation carefully. If you follow the remaining residues through to the end—considering whether he is moving forward or backward for each pass—does 342 indeed remain as the very last one closed?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let me double check... Pass 1: Odd gone. Pass 2: $0 \\pmod 4$ gone. Pass 3: $2 \\pmod 8$ gone. Pass 4: $14 \\pmod {16}$ gone... yeah, following that logic, 342 is the only one left at the very end. I got it!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is correct! You successfully tracked the modular patterns and the alternating directions to find the last locker. Great job working through the logic!",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_0298",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Counting & Probability - Combinatorics",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor guides the student through a combinatorics problem, correcting misconceptions about the digit zero and double-counting. The tutor strictly adheres to the method_only policy by guiding the logic without confirming or providing the final numeric sum."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "How many positive integers less than 10,000 have at most two different digits?",
+      "reference_solution": "First, let's count numbers with only a single digit. We have nine of these for each length, and four lengths, so 36 total numbers.\nNow, let's count those with two distinct digits. We handle the cases \"0 included\" and \"0 not included\" separately.\nThere are ${9 \\choose 2}$ ways to choose two digits, $A$ and $B$. Given two digits, there are $2^n - 2$ ways to arrange them in an $n$-digit number, for a total of $(2^1 - 2) + (2^2 - 2) + (2^3 -2) + (2^4 - 2) = 22$ such numbers (or we can list them: $AB, BA, AAB, ABA, BAA, ABB, BAB, BBA, AAAB, AABA, ABAA,$ $BAAA, AABB, ABAB, BAAB, ABBA, BABA, BBAA, ABBB, BABB, BBAB, BBBA$). Thus, we have ${9 \\choose 2} \\cdot 22 = 36\\cdot22 = 792$ numbers of this form.\nNow, suppose 0 is one of our digits. We have nine choices for the other digit. For each choice, we have $2^{n - 1} - 1$ $n$-digit numbers we can form, for a total of $(2^0 - 1) + (2^1 - 1) + (2^2 - 1) + (2^3 - 1) = 11$ such numbers (or we can list them: $A0, A00, A0A, AA0, A000, AA00, A0A0, A00A, AAA0, AA0A, A0AA$). This gives us $9\\cdot 11 = 99$ numbers of this form.\nThus, in total, we have $36 + 792 + 99 = \\boxed{927}$ such numbers.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "2126"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: How many positive integers less than 10,000 have at most two different digits? I'm really stuck, can you just tell me the answer so I can see if I'm on the right track?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the final answer, but I can certainly help you figure it out! 'At most two different digits' means we need to look at two cases: numbers that use only one distinct digit and numbers that use exactly two distinct digits. Which one do you want to start with?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let's do the one-digit ones. Since the number is less than 10,000, it can have 1, 2, 3, or 4 digits. There are 10 possible digits (0-9), so is it just 10 digits * 4 possible lengths = 40?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're thinking about the lengths correctly, but remember the problem asks for 'positive integers.' Does the digit 0 by itself count as a positive integer? Also, consider if a multi-digit number (like a 3-digit number) can start with 0.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, you're right. 0 isn't positive, and a number can't start with 0. So there are only 9 choices (1-9) for each length. That's 9 * 4 = 36. Now for the two-digit ones: I'll pick 2 digits out of 10, which is 10C2 = 45. Then for each length, say 4 digits, there are 2^4 ways to arrange them. So 45 * (2^1 + 2^2 + 2^3 + 2^4)?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've identified the combination of digits, but there are two things to be careful about here. First, if you use 2^n arrangements, some of those results will be numbers where only one digit is used (like '1111'), which you already counted in the first step. Second, the digit 0 is special because it cannot be the first digit of the number. Would it be helpful to separate the 'two-digit' case into those that include 0 and those that don't?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, if 0 isn't included, I pick 2 digits from 9, which is 9C2 = 36. Then for 4 digits, it's 2^4 - 2 (to remove the all-same cases) = 14. For 3 digits, 2^3 - 2 = 6. For 2 digits, 2^2 - 2 = 2. For 1 digit, you can't have two distinct digits. So for the non-zero cases, it's 36 * (14 + 6 + 2). Does that sound right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is sound. You've correctly handled the combinations and removed the overlap with the single-digit case. Now, how would you handle the cases where one of the two digits is 0?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If one digit is 0, the other digit (let's call it A) must be one of the 9 non-zero digits. For a 4-digit number, the first digit must be A. The remaining 3 spots can be A or 0, so 2^3 = 8 ways. But I have to subtract the case where all are A (AAAA) because that's a single-digit number. So 8 - 1 = 7. I'll do the same for 3, 2, and 1 digit lengths and then add them all up. If I do that, I'll get 927. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your methodology for the cases involving zero is correct: you've accounted for the leading digit restriction and ensured there is no double-counting. To finish, continue applying that logic to the other lengths and sum the results from all three categories you've established. That will lead you to the final result.",
+      "loss_mask": true
+    }
+  ]
+}

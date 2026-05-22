@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_0522",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Python fundamentals and short programs",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student initially tries to use a simple loop for a fixed dimension, failing to account for the arbitrary length of the coordinate tuple. Tutor guides them toward recursion."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to extract all the adjacent coordinates of the given coordinate tuple.",
+      "reference_solution": "def adjac(ele, sub = []): \n  if not ele: \n     yield sub \n  else: \n     yield from [idx for j in range(ele[0] - 1, ele[0] + 2) \n                for idx in adjac(ele[1:], sub + [j])] \ndef get_coordinates(test_tup):\n  return list(adjac(test_tup))",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "630"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm stuck on this assignment: Write a function to extract all the adjacent coordinates of the given coordinate tuple. Can you just give me the code? I'm in a rush.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through this, but I won't provide the full code right away. Let's start by making sure we understand the goal. If you have a coordinate like (2, 3), what do you think its 'adjacent' coordinates should be?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think it means the ones around it. Like for (2, 3), it would be (1, 3), (3, 3), (2, 2), and (2, 4). I'll just use a for loop to add and subtract 1 from the x and y.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great start for a 2D coordinate! However, take a look at the problem statement again—it mentions a 'coordinate tuple'. This implies the tuple could have any number of dimensions (1D, 2D, 3D, etc.). If the input was (2, 3, 5), would your for-loop approach still work easily?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I didn't think about that. I guess I'd have to write a different loop for every possible length of the tuple? That seems impossible. Maybe I can just use a while loop?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've hit on the exact problem: hard-coding loops for each dimension doesn't scale. When we have a problem that repeats the same logic for each element of a sequence, and the depth is unknown, there's a specific programming technique that's very helpful. Do you remember learning about functions that call themselves?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Recursion! I remember that. So I should make a function that handles the first number in the tuple and then calls itself for the rest of the tuple?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. You're on the right track. To get started, think about your 'base case': when should the recursion stop? And for the recursive step, how will you keep track of the coordinates you've built up so far as you move through the tuple?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The base case would be when the tuple is empty. For the recursive step, I can pass a list that stores the values I've picked. So for the first element 'x', I'll try x-1, x, and x+1, and for each of those, I'll call the function again with the remaining tuple. Does that sound right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is spot on. You've correctly identified the base case and the recursive branching. Why don't you try sketching out the code for that? Pay close attention to how you return or 'yield' the results from the recursive calls.",
+      "loss_mask": true
+    }
+  ]
+}

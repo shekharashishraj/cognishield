@@ -1,0 +1,109 @@
+{
+  "conversation_id": "mt_dg_8844",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra: Polynomial Functional Equations",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor effectively guides the student from a wrong guess to the correct polynomial by forcing a degree analysis and coefficient matching."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Let $f(x)$ and $g(x)$ be nonzero polynomials such that\n\\[f(g(x)) = f(x) g(x).\\]If $g(2) = 37,$ find $g(x).$",
+      "reference_solution": "Let $m$ and $n$ be the degrees of $f(x)$ and $g(x),$ respectively.  Then the degree of $f(g(x))$ is $mn.$  The degree of $f(x) g(x)$ is $m + n,$ so\n\\[mn = m + n.\\]Applying Simon's Favorite Factoring Trick, we get $(m - 1)(n - 1) = 1,$ so $m = n = 2.$\n\nLet $f(x) = ax^2 + bx + c$ and $g(x) = dx^2 + ex + f.$  Then\n\\[a(dx^2 + ex + f)^2 + b(dx^2 + ex + f) + c = (ax^2 + bx + c)(dx^2 + ex + f).\\]Expanding, we get\n\\begin{align*}\n&ad^2 x^4 + 2adex^3 + (2adf + ae^2 + bd) x^2 + (2aef + be)x + af^2 + bf + c \\\\\n&\\quad = adx^4 + (ae + bd) x^3 + (af + be + cd) x^2 + (bf + ce) x + cf.\n\\end{align*}Matching coefficients, we get\n\\begin{align*}\nad^2 &= ad, \\\\\n2ade &= ae + bd, \\\\\n2adf + ae^2 + bd &= af + be + cd, \\\\\n2aef + be &= bf + ce, \\\\\naf^2 + bf + c &= cf.\n\\end{align*}Since $a$ and $d$ are nonzero, the equation $ad^2 = ad$ tells us $d = 1.$  Thus, the system becomes\n\\begin{align*}\n2ae &= ae + b, \\\\\n2af + ae^2 + b &= af + be + c, \\\\\n2aef + be &= bf + ce, \\\\\naf^2 + bf + c &= cf.\n\\end{align*}Then $b = ae.$  Substituting, the system becomes\n\\begin{align*}\n2af + ae^2 + ae &= af + ae^2 + c, \\\\\n2aef + ae^2 &= aef + ce, \\\\\naf^2 + aef + c &= cf.\n\\end{align*}Then $af + ae = c,$ so $af^2 + aef = cf$.  Hence, $c = 0,$ which means $ae + af = 0.$ Since $a$ is nonzero, $e + f = 0.$\n\nNow, from $g(2) = 37,$ $4 + 2e + f = 37.$  Hence, $e = 33$ and $f = -33.$  Therefore, $g(x) = \\boxed{x^2 + 33x - 33}.$",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "3592"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: Let $f(x)$ and $g(x)$ be nonzero polynomials such that\n\\[f(g(x)) = f(x) g(x).\\]If $g(2) = 37,$ find $g(x).$\n\nI think the answer is $g(x) = x^2 + 33x + 4$. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't tell you if that's correct just yet. To make sure we're on the right track, could you explain how you arrived at that polynomial? What was your reasoning for the degree of $g(x)$ and the coefficients?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, I guessed that $g(x)$ was a quadratic because the numbers seemed to fit. I used $g(2) = 37$ to get $4 + 66 + 4$ which is 74, wait, that's not 37. Let me try $g(x) = x^2 + 15x + 3$. Then $4 + 30 + 3 = 37$. Is $g(x) = x^2 + 15x + 3$ the answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It looks like you're focusing on the condition $g(2)=37$, but you haven't used the functional equation $f(g(x)) = f(x)g(x)$ yet. That equation is the key to finding the actual form of $g(x)$. \n\nAs a first step, try thinking about the degrees of the polynomials. If $f(x)$ has degree $m$ and $g(x)$ has degree $n$, what is the degree of the left side $f(g(x))$ and what is the degree of the right side $f(x)g(x)$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The degree of $f(g(x))$ is $m \\cdot n$. The degree of $f(x)g(x)$ is $m + n$. So $mn = m + n$. \n\nIf $m=2$, then $2n = 2+n$, which means $n=2$. So both are quadratics. I'll try $g(x) = x^2 + ex + f$. \nSince $g(2) = 4 + 2e + f = 37$, then $2e + f = 33$. \nBut how do I find $e$ and $f$ without knowing $f(x)$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've made great progress by determining that both polynomials must be quadratics! \n\nTo find $e$ and $f$, you'll need to use the coefficients. Try writing $f(x) = ax^2 + bx + c$ and $g(x) = dx^2 + ex + f$. Substitute these into $f(g(x)) = f(x)g(x)$ and compare the coefficients of the highest power of $x$. What does that tell you about $d$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The highest power on the left is $a(dx^2)^2 = ad^2x^4$. \nOn the right, it's $(ax^2)(dx^2) = adx^4$. \nSo $ad^2 = ad$. Since $a, d$ are nonzero, $d=1$. \n\nNow I have $g(x) = x^2 + ex + f$. \nIf I look at the $x^3$ terms: \nLeft side: $f(g(x)) = a(x^2+ex+f)^2 + b(x^2+ex+f) + c$. The $x^3$ term comes from $a(2 \times x^2 \times ex) = 2aex^3$. \nRight side: $(ax^2+bx+c)(x^2+ex+f)$. The $x^3$ term is $ax^2(ex) + bx(x^2) = (ae+b)x^3$. \nSo $2ae = ae + b$, which means $b = ae$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. You've found $d=1$ and $b=ae$. Now, continue this process by comparing the $x^2$ coefficients or the constant terms. See if you can find a relationship between $e$ and $f$.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Comparing constant terms: \nLeft: $f(g(0)) = f(f) = af^2 + bf + c$. \nRight: $f(0)g(0) = c \times f = cf$. \nSo $af^2 + bf + c = cf$. \nSubstitute $b=ae$: $af^2 + aef + c = cf$. \n\nAlso, looking at the $x$ coefficients: \nLeft: $2aef + be = 2aef + (ae)e = 2aef + ae^2$. \nRight: $bf + ce = (ae)f + ce = aef + ce$. \nSo $2aef + ae^2 = aef + ce$, which means $aef + ae^2 = ce$. \n\nIf I divide by $e$ (assuming $e \neq 0$), I get $af + ae = c$. \nSubstitute $c = af + ae$ into the constant equation: \n$af^2 + aef + (af + ae) = (af + ae)f$\n$af^2 + aef + af + ae = af^2 + aef$\n$af + ae = 0$\nSince $a \neq 0$, $e + f = 0$, so $f = -e$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've successfully derived $f = -e$. Now you have two equations for $e$ and $f$: one from the $g(2)=37$ condition and this new relationship $f = -e$. Can you solve for $e$ and $f$ now?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Yes! $2e + f = 33$ and $f = -e$. \nSubstituting $f$: $2e - e = 33$, so $e = 33$. \nThen $f = -33$. \nSo $g(x) = x^2 + 33x - 33$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is correct! You systematically analyzed the degrees, matched the coefficients, and used the given value to find the specific polynomial. Well done.",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_5753",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "emotional_support",
+      "frustration",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Tutor manages student frustration while adhering to method_only policy. The tutor guides the student to handle absolute values and floating point precision without confirming the final code's correctness or providing the final answer."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "def iscube(a):\n    '''\n    Write a function that takes an integer a and returns True \n    if this ingeger is a cube of some integer number.\n    Note: you may assume the input is always valid.\n    Examples:\n    iscube(1) ==> True\n    iscube(2) ==> False\n    iscube(-1) ==> True\n    iscube(64) ==> True\n    iscube(0) ==> True\n    iscube(180) ==> False\n    '''",
+      "reference_solution": "a = abs(a)\n    return int(round(a ** (1. / 3))) ** 3 == a",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/77"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm honestly so frustrated. I've been staring at this for an hour and I just can't get it. I feel like I'm not cut out for coding. Can you just give me the answer?\n\ndef iscube(a):\n    '''\n    Write a function that takes an integer a and returns True \n    if this ingeger is a cube of some integer number.\n    Note: you may assume the input is always valid.\n    Examples:\n    iscube(1) ==> True\n    iscube(2) ==> False\n    iscube(-1) ==> True\n    iscube(64) ==> True\n    iscube(0) ==> True\n    iscube(180) ==> False\n    '''",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It's completely normal to feel overwhelmed when a problem doesn't click right away; that's actually a big part of the learning process in programming. We can break this down into small, manageable pieces together. To start, if you want to check if a number is a cube, what is the inverse mathematical operation of cubing a number?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The cube root. I tried using `a**(1/3)` but it's acting weird. I'm probably just doing it wrong again.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Using the power operator is a great intuition! The 'weirdness' you're seeing often comes from two things: how Python handles negative numbers with fractional exponents and floating-point precision. Let's look at the negative numbers first. If `a` is -1, what does `(-1)**(1/3)` return in Python?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It gives me some complex number with a 'j' in it. That's not what I want. How do I avoid that?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Since we only care if the number *is* a cube, and we know that a negative number is a cube if its positive version is also a cube, we can simplify the problem. What function could you use to ensure you're always working with a positive number before calculating the root?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could use `abs(a)`. So if I do `temp = abs(a)` and then `root = temp**(1/3)`, that fixes the negative issue. But I still have the problem where `64**(1/3)` gives me something like 3.9999999999999996 instead of 4.0. I'm back to being stuck.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've actually solved the hardest conceptual part! That decimal issue is just a quirk of how computers store floating-point numbers. Since we are looking for an *integer* cube root, you can use a function to round that result to the nearest whole number. After you round it, how could you prove that the resulting integer is actually the correct cube root of your number?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I could cube the rounded number and see if it equals the original absolute value? Like `round(temp**(1/3))**3 == temp`?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic handles both the negative signs and the precision errors. Now, try incorporating that sequence—taking the absolute value, finding the root, rounding it, and then cubing it back—into your function and test it against the examples in the docstring.",
+      "loss_mask": true
+    }
+  ]
+}

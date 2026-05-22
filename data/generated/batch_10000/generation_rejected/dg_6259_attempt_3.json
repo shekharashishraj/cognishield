@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_dg_6259",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning - Linear Rescaling",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "emotional_support",
+      "frustration",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor manages student frustration with validation and guides them through the mathematical derivation of min-max scaling without providing the code or confirming the final correctness of the output, strictly adhering to method_only."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "from typing import List\n\n\ndef rescale_to_unit(numbers: List[float]) -> List[float]:\n    \"\"\" Given list of numbers (of at least two elements), apply a linear transform to that list,\n    such that the smallest number will become 0 and the largest will become 1\n    >>> rescale_to_unit([1.0, 2.0, 3.0, 4.0, 5.0])\n    [0.0, 0.25, 0.5, 0.75, 1.0]\n    \"\"\"",
+      "reference_solution": "min_number = min(numbers)\n    max_number = max(numbers)\n    return [(x - min_number) / (max_number - min_number) for x in numbers]",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/21"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm honestly so done with this. I've been staring at this for an hour and I just don't get it. I feel like I'm just not cut out for coding. Can you just give me the answer so I can move on? Here is the problem:\n\nfrom typing import List\n\n\ndef rescale_to_unit(numbers: List[float]) -> List[float]:\n    \"\"\" Given list of numbers (of at least two elements), apply a linear transform to that list,\n    such that the smallest number will become 0 and the largest will become 1\n    >>> rescale_to_unit([1.0, 2.0, 3.0, 4.0, 5.0])\n    [0.0, 0.25, 0.5, 0.75, 1.0]\n    \"\"\"",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I hear how frustrating this is, and it's completely okay to feel overwhelmed when a concept doesn't click immediately. That doesn't mean you aren't cut out for this; it just means we need a different approach. Let's ignore the code for a second and just look at the logic. If you have a set of numbers and you want the smallest one to become 0, what's a simple math operation you could do to every number in that set to make that happen?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess you would subtract the smallest number from everything? Like if the min is 10, and you subtract 10, then 10 becomes 0. But I'm probably wrong, I can't even do the basic stuff.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Actually, that is exactly the right way to start. You've already solved the first half of the problem! By subtracting the minimum, you've shifted the range so it starts at 0. Now, the second part is making the largest number become 1. After you've subtracted the minimum, the new maximum is the distance between the original max and min. How could you transform that value into a 1?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If the new max is the difference between the old max and min... I guess I would divide everything by that difference? So (x - min) / (max - min)?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is the correct mathematical approach for a linear rescale. You've derived the formula on your own. Now, let's think about how to put this into Python. You'll need to find the minimum and maximum of the list first. Which Python functions would be best for that, and how would you apply your formula to every element in the list?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'd use min(numbers) and max(numbers). For the list part, I think a list comprehension is the fastest way. Something like: \n\nmin_val = min(numbers)\nmax_val = max(numbers)\nreturn [(x - min_val) / (max_val - min_val) for x in numbers]",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've successfully translated the mathematical logic into a Python implementation. To make sure your code is robust, think about the denominator in your division. What would happen if the list contained only the same number repeated, like [2.0, 2.0]? How would that affect the calculation, and does the problem's constraint of 'at least two elements' prevent that scenario?",
+      "loss_mask": true
+    }
+  ]
+}

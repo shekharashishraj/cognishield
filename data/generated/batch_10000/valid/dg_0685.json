@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_dg_0685",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Bitwise Operations and Algorithms",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "emotional_support",
+      "frustration",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student exhibits frustration; tutor uses validation and scaffolding to lead them to the bitwise rotation logic without providing the full code."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to that rotate left bits by d bits a given number. We assume that the number is 32 bit.",
+      "reference_solution": "def left_rotate(n,d):   \n    INT_BITS = 32\n    return (n << d)|(n >> (INT_BITS - d))",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "799"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm really struggling with this assignment. I feel like I'm just not cut out for low-level programming. Here is the prompt: Write a function to that rotate left bits by d bits a given number. We assume that the number is 32 bit. Can you just give me the answer? I've been staring at it for an hour.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It's completely normal to feel stuck when dealing with bit manipulation; it's one of the more abstract parts of programming. You're definitely capable of this—it's just a matter of breaking the problem down. Instead of the full answer, let's tackle it in small steps. First, if you want to shift bits to the left, which operator would you use, and what happens to the bits that 'fall off' the left side?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I know I should use the left shift operator `<<`. But that's the problem—the bits that fall off the left side are just gone, and they're supposed to wrap around to the right side for a rotation. I can't figure out how to 'catch' them.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the first part exactly right. Since those bits are lost during a standard left shift, we need to find a way to isolate them *before* they disappear and move them to the right. If we are working with 32 bits and we shift left by `d`, how many positions to the right would those 'overflow' bits need to move to end up in the correct spot?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Hmm. If I shift left by `d`, the bits that are pushed out are the ones that were at the very top. To get them to the bottom, I'd have to shift the original number to the right. I think it would be 32 minus `d`? Like, if I shift left by 1, the 31st bit moves to the 0th position, so 32 - 1 = 31.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is a great observation. You've successfully identified how to move the 'overflow' bits to their new home on the right. Now you have two pieces: the left-shifted version of the number and the right-shifted version containing the wrapped bits. How can you combine these two results into a single 32-bit integer?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think I can use the bitwise OR operator `|` to merge them? So it would be something like `(n << d) | (n >> (32 - d))`. Wait, does that actually work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic is spot on. The OR operator will combine the bits from both operations, effectively placing the wrapped bits into the empty slots created by the left shift. Why don't you try wrapping that logic into the function requested in the prompt and see if it passes your tests?",
+      "loss_mask": true
+    }
+  ]
+}

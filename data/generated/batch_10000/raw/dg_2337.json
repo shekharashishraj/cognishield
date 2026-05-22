@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_2337",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and data structures",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student fails to track the maximum run across the whole string, only returning the final count. Tutor guides them to use a separate variable for the global maximum."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to find maximum run of uppercase characters in the given string.",
+      "reference_solution": "def max_run_uppercase(test_str):\n  cnt = 0\n  res = 0\n  for idx in range(0, len(test_str)):\n    if test_str[idx].isupper():\n      cnt += 1\n    else:\n      res = cnt\n      cnt = 0\n  if test_str[len(test_str) - 1].isupper():\n    res = cnt\n  return (res)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "806"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Write a function to find maximum run of uppercase characters in the given string. I think I have it. Is this correct?\n\n```python\ndef max_run_uppercase(test_str):\n    cnt = 0\n    for char in test_str:\n        if char.isupper():\n            cnt += 1\n        else:\n            cnt = 0\n    return cnt\n```",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "To determine if this works, let's walk through a specific example. If you passed the string \"ABCdeFGHI\" into your function, what value would it return, and what should the actual maximum run be?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Hmm. For \"ABCdeFGHI\", the runs are 'ABC' (3) and 'FGHI' (4). So the answer should be 4. My code would count 3, then reset to 0 at 'd', then count up to 4. It returns 4. So it works!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That example worked because the longest run happened to be at the very end. What would happen if the string was \"ABCDEFGHIjk\"? Try tracing your logic for that case.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, if it's \"ABCDEFGHIjk\", it would count up to 9, but then it hits 'j', and the `else` block sets `cnt` back to 0. Then it hits 'k' and stays 0. It would return 0. That's definitely wrong. I see the problem—I'm losing the record of the longest run.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. You're tracking the current run, but you aren't remembering the best one you've seen so far. How could you modify your function to keep track of the highest value `cnt` ever reached during the loop?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I should probably add another variable to store the maximum. Like this:\n\n```python\ndef max_run_uppercase(test_str):\n    cnt = 0\n    max_run = 0\n    for char in test_str:\n        if char.isupper():\n            cnt += 1\n            if cnt > max_run:\n                max_run = cnt\n        else:\n            cnt = 0\n    return max_run\n```\nDoes this look right now?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've successfully addressed the issue of tracking the global maximum! Try testing this logic with a few different strings—one with no uppercase letters, one with all uppercase, and one where the longest run is in the middle—to ensure it behaves as expected.",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_3144",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Dynamic Programming for Grid Paths",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The student incorrectly believes the path length varies, while in a grid moving only right/down, the path length is constant. The tutor corrects this misconception to simplify the problem to a max-sum path."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Given a square matrix of size N*N given as a list of lists, where each cell is associated with a specific cost. A path is defined as a specific sequence of cells that starts from the top-left cell move only right or down and ends on bottom right cell. We want to find a path with the maximum average over all existing paths. Average is computed as total cost divided by the number of cells visited in the path.",
+      "reference_solution": "def maxAverageOfPath(cost):\n  N = len(cost)\n  dp = [[0 for i in range(N + 1)] for j in range(N + 1)]\n  dp[0][0] = cost[0][0]\n  for i in range(1, N):\n    dp[i][0] = dp[i - 1][0] + cost[i][0]\n  for j in range(1, N):\n    dp[0][j] = dp[0][j - 1] + cost[0][j]\n  for i in range(1, N):\n    for j in range(1, N):\n      dp[i][j] = max(dp[i - 1][j],\n                     dp[i][j - 1]) + cost[i][j]\n  return dp[N - 1][N - 1] / (2 * N - 1)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "721"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm stuck on this problem: Given a square matrix of size N*N given as a list of lists, where each cell is associated with a specific cost. A path is defined as a specific sequence of cells that starts from the top-left cell move only right or down and ends on bottom right cell. We want to find a path with the maximum average over all existing paths. Average is computed as total cost divided by the number of cells visited in the path. Can you just give me the code for this? I'm in a rush.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through the logic to solve this! Instead of giving you the full code immediately, let's break it down together. To start, how would you approach finding the 'average' cost of a path in this grid?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, average is total cost divided by number of cells. Since different paths might have different lengths, I think I need to keep track of both the sum and the number of steps for every possible path and then find the one with the highest ratio. That sounds like it would be a lot of paths to check, though.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a very logical way to think about averages in general. However, let's look closer at the constraints of the movement. You can only move right or down from the top-left (0,0) to the bottom-right (N-1, N-1). If you follow those rules, will different paths actually have different lengths?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, let me think. To get from 0 to N-1 horizontally, I have to move right N-1 times. To get from 0 to N-1 vertically, I have to move down N-1 times. So every path is exactly (N-1) + (N-1) steps plus the starting cell? So they are all the same length?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Since every valid path visits the same number of cells, the denominator of your average is a constant. If the number of cells is always the same, what does that mean for your goal of maximizing the average?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh! If the denominator is constant, then maximizing the average is the same as just maximizing the total sum of the costs along the path. That makes it much easier. I can use dynamic programming for that, right? I'd create a 2D array to store the max sum to reach each cell.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got it. Using a 2D array to store the maximum path sum to each cell is the right approach. How would you define the transition rule to calculate the value for a cell (i, j) based on the cells you could have come from?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Since I can only come from the top or the left, the max sum at (i, j) would be the cost of the current cell plus the maximum of the values already calculated for the cell above it and the cell to its left. Then at the very end, I just divide the value at the bottom-right cell by the total path length. Does that sound right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is spot on. You have the transition rule and the final step correctly identified. Now you can proceed to implement this logic into your Python code, making sure to handle the base cases for the first row and first column where you only have one direction to come from.",
+      "loss_mask": true
+    }
+  ]
+}

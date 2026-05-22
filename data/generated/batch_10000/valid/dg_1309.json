@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_1309",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks: Modular Exponentiation",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to calculate 2^n first and then apply modulo, leading to potential overflow/performance issues. Tutor guides them toward applying modulo at each step."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def modp(n: int, p: int):\n    \"\"\"Return 2^n modulo p (be aware of numerics).\n    >>> modp(3, 5)\n    3\n    >>> modp(1101, 101)\n    2\n    >>> modp(0, 101)\n    1\n    >>> modp(3, 11)\n    8\n    >>> modp(100, 101)\n    1\n    \"\"\"",
+      "reference_solution": "ret = 1\n    for i in range(n):\n        ret = (2 * ret) % p\n    return ret",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/49"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: \n\ndef modp(n: int, p: int):\n    \"\"\"Return 2^n modulo p (be aware of numerics).\n    >>> modp(3, 5)\n    3\n    >>> modp(1101, 101)\n    2\n    >>> modp(0, 101)\n    1\n    >>> modp(3, 11)\n    8\n    >>> modp(100, 101)\n    1\n    \"\"\"\n\nCan you just give me the code? I have a deadline in an hour.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the full code directly, but I can certainly help you work through it quickly so you understand how it works! Looking at the docstring, the key phrase is 'be aware of numerics.' What's your initial thought on how to calculate 2 to the power of n modulo p?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think I can just use the exponent operator. Like: return (2**n) % p. That should work, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is mathematically correct, but let's think about the 'numerics' part. What happens if n is a very large number, like 1,000,000? How would that affect the calculation of 2**n before the modulo is applied?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, the number would be absolutely massive. It might slow down the program or crash it because of the memory needed for such a huge integer.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. While Python handles arbitrarily large integers, calculating a giant number just to take its remainder is very inefficient. There is a property of modular arithmetic that allows us to keep the number small at every step. Do you recall how to apply the modulo operator during repeated multiplication?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I remember something about it... maybe I can multiply by 2 and take the modulo, and then repeat that n times? So like, starting with 1, I multiply by 2, mod p, then take that result, multiply by 2 again, mod p... until I've done it n times?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is the perfect approach! By applying the modulo at each step, you ensure the intermediate result never exceeds 2 * (p-1), regardless of how large n is. How would you translate that logic into a loop in Python?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'll try this:\n\nres = 1\nfor i in range(n):\n    res = (res * 2) % p\nreturn res\n\nDoes that look right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That looks spot on. You've correctly initialized the result and implemented the iterative modular multiplication. This will be much more efficient for large values of n. You can now plug this into your function!",
+      "loss_mask": true
+    }
+  ]
+}

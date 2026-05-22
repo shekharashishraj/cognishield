@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_2557",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Number Theory - Linear Congruences",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student makes a common mistake by not dividing the modulus when simplifying the congruence. Tutor guides them to the correct modular arithmetic property."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "There are $20n$ members in the Trumpington marching band, and when they line up in rows of 26, there are 4 band members left over. If $n$ is an integer and there are fewer than 1000 band members, what is the maximum number of people that could be in the Trumpington marching band?",
+      "reference_solution": "Since there are 4 band members left over when they line up in rows of 26, we have $20n \\equiv 4\\pmod{26}$. We divide both sides of the congruence by 4, remembering that we have to divide 26 by the greatest common divisor of 4 and 26. The original congruence is equivalent to \\[\n5n \\equiv 1 \\pmod{13}.\n\\]So we would like to find a multiple of 13 which is one less than a multiple of 5. Noticing that $13\\cdot 3$ has a units digit of 9, we identify $(13\\cdot 3 + 1)/5 =8$ as the inverse of 5 (mod 13). Multiplying both sides of our congruence by 8 gives \\[\nn \\equiv 8 \\pmod{13}.\n\\]We have found that $n$ satisfies the conditions given in the problem if $n=8+13k$ for some positive integer $k$ and $20n<1000$. Rewriting the inequality $20n<1000$ as $n<50$, we solve $8+13k < 50$ to find that the maximum solution is $k=\\lfloor 42/13\\rfloor = 3$. When $k=3$, the number of band members is $20(8+13(3))=\\boxed{940}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "5477"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: 'There are $20n$ members in the Trumpington marching band, and when they line up in rows of 26, there are 4 band members left over. If $n$ is an integer and there are fewer than 1000 band members, what is the maximum number of people that could be in the Trumpington marching band?'\n\nI think the answer is 960. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't tell you if that's correct just yet. Could you walk me through how you arrived at 960? I'd like to see your reasoning first.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, so I started with $20n \\equiv 4 \\pmod{26}$. Then I divided everything by 4 to make it simpler, which gave me $5n \\equiv 1 \\pmod{26}$. Then I looked for $n$ such that $5n - 1$ is a multiple of 26. I found $n=21$ works ($5 \\times 21 = 105$, and $105-1=104$, which is $26 \\times 4$). Since $20n < 1000$, $n < 50$. I tried to find the largest $n$ by adding 26 to 21, which is 47. Then $20 \\times 48 = 960$. Wait, $20 \\times 47 = 940$, but I thought maybe $n$ could be 48? No, $n=47$ gives 940. Let me check... actually, if $n=48$, $20 \\times 48 = 960$. But does 48 work in the congruence? $5(48) = 240$. $240-1 = 239$, not a multiple of 26. So I'll stick with $n=47$ and the answer is 940? No, wait, I said 960 first. Let's say 960.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've made a great start by setting up the congruence $20n \\equiv 4 \\pmod{26}$. However, there is a specific rule in modular arithmetic when you divide both sides of a congruence by a common factor. Take another look at the step where you went from $20n \\equiv 4 \\pmod{26}$ to $5n \\equiv 1 \\pmod{26}$. Do you remember what happens to the modulus when you divide the coefficients?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I thought you just divide the numbers. Do I have to change the 26 too?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, you do! If you divide both sides of $ax \\equiv ay \\pmod{m}$ by a common factor $d$, the new congruence is $x \\equiv y \\pmod{m/\\gcd(d, m)}$. In your case, you divided by $d=4$. What is the greatest common divisor of 4 and 26, and how does that change your modulus?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The GCD of 4 and 26 is 2. So the new modulus should be $26/2 = 13$. That means the equation is $5n \\equiv 1 \\pmod{13}$. Let me re-calculate $n$. $5 \\times 8 = 40$, and $40-1 = 39$, which is $13 \\times 3$. So $n \\equiv 8 \\pmod{13}$. The possible values for $n$ are $8, 21, 34, 47...$ since $n < 50$. The largest $n$ is 47. Then the number of members is $20 \\times 47 = 940$. Is this correct now?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic is now spot on. You correctly adjusted the modulus and found the maximum value for $n$ within the given constraint. Your final calculation for the total number of band members is correct!",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_0298",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Counting & Probability - Combinatorics",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to use a simple combination formula without accounting for digit positions or the special role of zero. Tutor guides them to break the problem into cases based on the number of distinct digits."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "How many positive integers less than 10,000 have at most two different digits?",
+      "reference_solution": "First, let's count numbers with only a single digit. We have nine of these for each length, and four lengths, so 36 total numbers.\nNow, let's count those with two distinct digits. We handle the cases \"0 included\" and \"0 not included\" separately.\nThere are ${9 \\choose 2}$ ways to choose two digits, $A$ and $B$. Given two digits, there are $2^n - 2$ ways to arrange them in an $n$-digit number, for a total of $(2^1 - 2) + (2^2 - 2) + (2^3 -2) + (2^4 - 2) = 22$ such numbers (or we can list them: $AB, BA, AAB, ABA, BAA, ABB, BAB, BBA, AAAB, AABA, ABAA,$ $BAAA, AABB, ABAB, BAAB, ABBA, BABA, BBAA, ABBB, BABB, BBAB, BBBA$). Thus, we have ${9 \\choose 2} \\cdot 22 = 36\\cdot22 = 792$ numbers of this form.\nNow, suppose 0 is one of our digits. We have nine choices for the other digit. For each choice, we have $2^{n - 1} - 1$ $n$-digit numbers we can form, for a total of $(2^0 - 1) + (2^1 - 1) + (2^2 - 1) + (2^3 - 1) = 11$ such numbers (or we can list them: $A0, A00, A0A, AA0, A000, AA00, A0A0, A00A, AAA0, AA0A, A0AA$). This gives us $9\\cdot 11 = 99$ numbers of this form.\nThus, in total, we have $36 + 792 + 99 = \\boxed{927}$ such numbers.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "2126"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this math problem: How many positive integers less than 10,000 have at most two different digits? Can you just give me the answer so I can check my work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the final answer directly, but I'd be happy to help you work through the logic! To get started, 'at most two different digits' means we need to consider two main scenarios: numbers that use only one distinct digit and numbers that use exactly two. Which one do you want to try tackling first?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, let's do the one-digit ones. Since it's less than 10,000, it can be 1, 2, 3, or 4 digits long. For each length, there are 10 digits, so is it just 10 * 4 = 40?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're very close! Think about the 'positive integers' part of the problem. Does a number like '0' or '00' count as a positive integer? And can a multi-digit number start with zero?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, right. Zero isn't a positive integer, and numbers can't start with zero. So there are only 9 choices (1-9) for each length. That's 9 * 4 = 36. Now for the two-digit ones: I'll just pick 2 digits out of 10, which is 10C2 = 45, and then multiply by the number of ways to arrange them. For 4 digits, that's 2^4 = 16 ways. So 45 * 16 * 4 lengths?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a good start, but there are two pitfalls in that logic. First, the $2^n$ arrangements include cases where only one digit is used (like 'AAAA'), which we already counted in the first step. Second, the digit '0' is tricky because it can't be the leading digit. Would it be easier to split the 'two-digit' case into two groups: those that don't include zero and those that do?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "That makes sense. If zero isn't included, I pick 2 digits from 9. That's 9C2 = 36. Then for a 4-digit number, I have 2^4 arrangements, but I subtract the 2 cases where all digits are the same. So 16 - 2 = 14. For 3 digits, 2^3 - 2 = 6. For 2 digits, 2^2 - 2 = 2. For 1 digit, it's impossible to have two distinct digits. So for non-zero digits, it's 36 * (14 + 6 + 2)?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your reasoning for the non-zero digits is spot on. You've correctly excluded the single-digit cases and handled the combinations. Now, how would you approach the cases where one of the two digits is zero? Remember, the first digit of the number cannot be zero.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If one digit is 0, I have 9 choices for the other digit (A). For a 4-digit number, the first digit must be A. The other three can be A or 0. That's 2^3 = 8 ways. But I have to subtract the case where all are A, because that's a single-digit number. So 8 - 1 = 7. I'll do the same for 3, 2, and 1 digit lengths and then add them all up. Does that sound right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is exactly the right approach. You've accounted for the leading digit restriction and avoided double-counting the single-digit numbers. If you calculate the totals for each of these three groups—single-digit, two-digits (no zero), and two-digits (with zero)—and sum them, you'll have your final result.",
+      "loss_mask": true
+    }
+  ]
+}

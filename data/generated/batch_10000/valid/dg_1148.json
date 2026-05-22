@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_1148",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Number Theory - Inclusion-Exclusion Principle",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student applies moderate pressure for the final answer; tutor consistently redirects to the Inclusion-Exclusion Principle steps."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "A $150\\times 324\\times 375$ rectangular solid is made by gluing together $1\\times 1\\times 1$ cubes. An internal diagonal of this solid passes through the interiors of how many of the $1\\times 1\\times 1$ cubes?",
+      "reference_solution": "Consider a point travelling across the internal diagonal, and let the internal diagonal have a length of $d$. The point enters a new unit cube in the $x,y,z$ dimensions at multiples of $\\frac{d}{150}, \\frac{d}{324}, \\frac{d}{375}$ respectively. We proceed by using PIE.\nThe point enters a new cube in the $x$ dimension $150$ times, in the $y$ dimension $324$ times and in the $z$ dimension, $375$ times.\nThe point enters a new cube in the $x$ and $y$ dimensions whenever a multiple of $\\frac{d}{150}$ equals a multiple of $\\frac{d}{324}$. This occurs $\\gcd(150, 324)$ times. Similarly, a point enters a new cube in the $y,z$ dimensions $\\gcd(324, 375)$ times and a point enters a new cube in the $z,x$ dimensions $\\gcd(375, 150)$ times.\nThe point enters a new cube in the $x,y$ and $z$ dimensions whenever some multiples of $\\frac{d}{150}, \\frac{d}{324}, \\frac{d}{375}$ are equal. This occurs $\\gcd(150, 324, 375)$ times.\nThe total number of unit cubes entered is then $150+324+375-[\\gcd(150, 324)+\\gcd(324, 375)+\\gcd(375, 150))] + \\gcd(150, 324, 375) = \\boxed{768}$",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "2941"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: A $150\\times 324\\times 375$ rectangular solid is made by gluing together $1\\times 1\\times 1$ cubes. An internal diagonal of this solid passes through the interiors of how many of the $1\\times 1\\times 1$ cubes? Can you just tell me the answer so I can see if my approach is right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you verify your approach, but I won't give you the final answer right away. Let's walk through the logic together. To start, imagine a point moving along that diagonal. It enters a new unit cube every time it crosses a boundary plane in the x, y, or z direction. How many boundary crossings are there for each dimension individually?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, for the x-dimension it's 150, y is 324, and z is 375. So is it just 150 + 324 + 375? Please just give me the number, I'm in a rush.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That would be the case if the diagonal never hit more than one boundary at the exact same time. However, if the diagonal passes through an edge or a vertex, it crosses multiple boundaries simultaneously, meaning it enters fewer cubes than the simple sum suggests. To account for this, we need to use the Principle of Inclusion-Exclusion. Do you know how to find how often the diagonal hits boundaries in two dimensions at once?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think it involves the greatest common divisor? But look, I really just need the final result to check my work. Just this once!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're on the right track with the GCD! Since we are looking for where multiples of the step sizes coincide, the GCD is exactly what we need. Instead of the final number, let's try this: calculate the $\\gcd(150, 324)$, $\\gcd(324, 375)$, and $\\gcd(375, 150)$. Once you have those, we can figure out how to subtract them from your initial sum.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, $\\gcd(150, 324)$ is 6, $\\gcd(324, 375)$ is 3, and $\\gcd(375, 150)$ is 75. So I subtract those? $849 - (6 + 3 + 75) = 765$. Is that the answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've correctly identified the pairwise overlaps! However, remember that the Principle of Inclusion-Exclusion has one more step. We've added the individual dimensions and subtracted the pairwise overlaps. What happens if the diagonal hits a vertex where all three dimensions meet simultaneously?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I have to add back the triple overlap. $\\gcd(150, 324, 375)$ is 3. So $765 + 3 = 768$. Is 768 correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that is correct! You successfully applied the Principle of Inclusion-Exclusion to account for the simultaneous boundary crossings. Well done.",
+      "loss_mask": true
+    }
+  ]
+}

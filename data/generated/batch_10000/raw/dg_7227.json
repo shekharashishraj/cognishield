@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_7227",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Linear Recurrence Relations",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Generated a high-quality scaffolding conversation where the tutor guides the student to derive the summation formula for a Tribonacci-like sequence without revealing the final numerical answer."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "A sequence is defined as follows: $a_1=a_2=a_3=1$, and, for all positive integers $n$, $a_{n+3}=a_{n+2}+a_{n+1}+a_n$.  Given that $a_{28}= 6090307$, $a_{29}=11201821$, and $a_{30}=20603361$, find the remainder when $\\displaystyle \\sum_{k=1}^{28}a_k$ is divided by 1000.",
+      "reference_solution": "First we write down the equation $a_{n+3} = a_{n+2} + a_{n+1} + a_n$ for $n = 1, 2, 3, \\ldots, 27$: \\[\\begin{aligned} a_4 &= a_3+a_2+a_1, \\\\ a_5&=a_4+a_3+a_2, \\\\ a_6&=a_5+a_4+a_3, \\\\\\vdots \\\\ a_{30}&=a_{29}+a_{28}+a_{27}. \\end{aligned}\\]Let $S = a_1 + a_2 + \\ldots + a_{28}$ (the desired quantity). Summing all these equations, we see that the left-hand side and right-hand side are equivalent to \\[S + a_{29} + a_{30} - a_1 - a_2 - a_3 = (S + a_{29} - a_1-a_2) + (S - a_1) + (S-a_{28}).\\]Simplifying and solving for $S$, we obtain \\[S = \\frac{a_{28} + a_{30}}{2} = \\frac{6090307+20603361}{2} = \\frac{\\dots 3668}{2} = \\dots 834.\\]Therefore, the remainder when $S$ is divided by $1000$ is $\\boxed{834}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "2065"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm stuck on this math problem: A sequence is defined as follows: $a_1=a_2=a_3=1$, and, for all positive integers $n$, $a_{n+3}=a_{n+2}+a_{n+1}+a_n$. Given that $a_{28}= 6090307$, $a_{29}=11201821$, and $a_{30}=20603361$, find the remainder when $\\displaystyle \\sum_{k=1}^{28}a_k$ is divided by 1000. I don't want to calculate all 28 terms manually. Is there a shortcut?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Calculating 28 terms would definitely be tedious! Since the sequence is defined by a linear recurrence, there's usually a way to relate the sum of the terms to the terms themselves. \n\nTry writing out the recurrence relation $a_{n+3} = a_{n+2} + a_{n+1} + a_n$ for the first few values of $n$ (like $n=1, 2, 3$). Do you see a pattern that might emerge if you were to sum these equations together?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, so for $n=1$, $a_4 = a_3 + a_2 + a_1$. For $n=2$, $a_5 = a_4 + a_3 + a_2$. For $n=3$, $a_6 = a_5 + a_4 + a_3$. If I sum these, I get $a_4 + a_5 + a_6 = (a_3 + a_2 + a_1) + (a_4 + a_3 + a_2) + (a_5 + a_4 + a_3)$. This looks messy. How does this help me find the sum $S = \\sum_{k=1}^{28} a_k$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It does look messy at first, but notice that the terms on both sides are very similar. Let's define $S = a_1 + a_2 + \\dots + a_{28}$. \n\nIf you sum the recurrence $a_{n+3} = a_{n+2} + a_{n+1} + a_n$ from $n=1$ to $n=27$, the left side will be $a_4 + a_5 + \\dots + a_{30}$. How can you express that left side in terms of $S$ and the given values $a_{29}$ and $a_{30}$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The left side is $a_4 + a_5 + \\dots + a_{30}$. Since $S = a_1 + a_2 + a_3 + a_4 + \\dots + a_{28}$, then $a_4 + \\dots + a_{28} = S - (a_1 + a_2 + a_3)$. So the left side is $S - (a_1 + a_2 + a_3) + a_{29} + a_{30}$. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's exactly right. Now, let's look at the right side of the summation. You are summing three separate sequences: $\\sum a_{n+2}$, $\\sum a_{n+1}$, and $\\sum a_n$, all from $n=1$ to $27$. \n\nTry to express each of those three sums in terms of $S$ and the boundary terms (like $a_1, a_2, a_{28}, a_{29}$).",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let's see. \nSum 1: $\\sum_{n=1}^{27} a_n = a_1 + \\dots + a_{27} = S - a_{28}$.\nSum 2: $\\sum_{n=1}^{27} a_{n+1} = a_2 + \\dots + a_{28} = S - a_1$.\nSum 3: $\\sum_{n=1}^{27} a_{n+2} = a_3 + \\dots + a_{29} = S - a_1 - a_2 + a_{29}$.\n\nSo the whole equation is: $S - (a_1 + a_2 + a_3) + a_{29} + a_{30} = (S - a_{28}) + (S - a_1) + (S - a_1 - a_2 + a_{29})$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've set it up perfectly. Now, you just need to simplify this equation to solve for $S$. \n\nRemember that $a_1=a_2=a_3=1$. Once you isolate $S$, you can plug in the values for $a_{28}$ and $a_{30}$ to find the total sum. Since the question asks for the remainder when divided by 1000, you only need to keep track of the last few digits during your final calculation. What do you get for $S$ in terms of the known $a_n$ values?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Simplifying: $S - 3 + a_{29} + a_{30} = 3S - a_{28} - 2a_1 - a_2 + a_{29}$.\n$S - 3 + a_{29} + a_{30} = 3S - a_{28} - 3 + a_{29}$.\nThe $a_{29}$ and $-3$ cancel out from both sides!\n$a_{30} = 2S - a_{28}$, so $2S = a_{28} + a_{30}$.\n$S = (a_{28} + a_{30}) / 2$.\n\nNow I just need to calculate $(6090307 + 20603361) / 2$ and find the remainder mod 1000.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. You've derived the formula. Go ahead and perform that addition and division. To find the remainder modulo 1000, you can focus on the last few digits of the sum before dividing by 2. Let me know what you find for the final remainder!",
+      "loss_mask": true
+    }
+  ]
+}

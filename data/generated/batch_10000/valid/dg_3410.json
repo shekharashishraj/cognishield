@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_3410",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Number Theory - Linear Congruences",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to divide by 55 without considering the modulus; tutor corrects this misconception and guides them through the GCD simplification."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "What is the largest three-digit integer $n$ that satisfies $$55n\\equiv 165\\pmod{260}~?$$",
+      "reference_solution": "First, we note that $55$, $165$, and $260$ all have a common factor of $5$: \\begin{align*}\n55 &= 5\\cdot 11\\\\\n165 &= 5\\cdot 33\\\\\n260 &= 5\\cdot 52\n\\end{align*}An integer $n$ satisfies $55n\\equiv 165\\pmod{260}$ if and only if it satisfies $11n\\equiv 33\\pmod{52}$. (Make sure you see why!)\n\nNow it is clear that $n=3$ is a solution. Moreover, since $11$ and $52$ are relatively prime, the solution is unique $\\pmod{52}$. If you don't already know why this is the case, consider that we are looking for $n$ such that $11n-33=11(n-3)$ is divisible by $52$; this is true if and only if $n-3$ is divisible by $52$.\n\nHence all solutions are of the form $3+52k$, where $k$ is an integer. One such solution which is easy to compute is $3+52(20) = 1043$. The next-largest solution is $1043-52 = 991$, so the largest three-digit solution is $\\boxed{991}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "2682"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm stuck on this problem: What is the largest three-digit integer $n$ that satisfies $$55n\\equiv 165\\pmod{260}~?$$ Can you just tell me the answer so I can check my work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the final answer directly, but I'd be happy to help you work through the steps to find it! To get started, how would you normally approach a linear congruence like this one?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, I see that 165 is just 55 times 3. So I thought I could just divide both sides by 55, which gives $n \\equiv 3 \\pmod{260}$. Then the largest three-digit integer would be $260 \\times 3 + 3$, but that's more than three digits... wait, maybe it's just $260 \\times 3 + 3 - 260$? No, that's not right. Is $n=3$ the only solution?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You noticed a great relationship between 55 and 165! However, there's a subtle rule about division in modular arithmetic. You can't simply divide both sides by a number unless that number is relatively prime to the modulus. In this case, is $\\gcd(55, 260) = 1$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I forgot about that. Let me check... 55 ends in 5 and 260 ends in 0, so they are both divisible by 5. So the GCD is at least 5. Does that mean I can't divide by 55?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Since $\\gcd(55, 260) \\neq 1$, you can't just divide by 55. However, if the coefficient, the constant, and the modulus all share a common factor, you can divide the entire congruence—including the modulus—by that factor. Do you see a common factor for 55, 165, and 260?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Yes, they are all divisible by 5. So if I divide everything by 5, I get $11n \\equiv 33 \\pmod{52}$. Now, since 11 and 52 don't share any factors, can I divide by 11 now? That would give $n \\equiv 3 \\pmod{52}$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's correct! Since $\\gcd(11, 52) = 1$, you can now divide by 11. So you've found that $n \\equiv 3 \\pmod{52}$. Now, the original question asks for the largest three-digit integer $n$ that satisfies the condition. How can you use $n \\equiv 3 \\pmod{52}$ to find that?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, so $n$ must be of the form $52k + 3$. I need the largest $n < 1000$. If I try $k=19$, $52 \\times 19 + 3 = 988 + 3 = 991$. If I try $k=20$, $52 \\times 20 + 3 = 1040 + 3 = 1043$, which is four digits. So is the answer 991?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic for finding the largest three-digit integer based on that general form is spot on. Double-check your multiplication for $52 \\times 19$ one last time to be absolutely sure, and you'll have your final result!",
+      "loss_mask": true
+    }
+  ]
+}

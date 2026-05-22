@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_11456",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Python fundamentals and short programs - Bitwise Operations",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor strictly follows the never_state policy by refusing to confirm the final code as correct, instead prompting the student to verify the logic through testing."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to that rotate left bits by d bits a given number. We assume that the number is 32 bit.",
+      "reference_solution": "def left_rotate(n,d):   \n    INT_BITS = 32\n    return (n << d)|(n >> (INT_BITS - d))",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "799"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this homework: Write a function to that rotate left bits by d bits a given number. We assume that the number is 32 bit. I think the answer is `def left_rotate(n, d): return n << d`. Is this right? Please just tell me yes or no so I can finish.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you a simple yes or no, but I can help you figure it out! Let's look at your logic. If you use `n << d`, what happens to the bits that are shifted past the 32nd position?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "They just move left. I thought that's what rotating meant—shifting everything over.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "There's a key difference between a 'shift' and a 'rotation'. In a shift, bits that go off the edge are lost. In a rotation, those bits are supposed to 'wrap around' to the other side. If a bit is pushed off the left side of a 32-bit integer during a left rotation, where should it reappear?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, so they should wrap around to the right side? So if I shift left by 2, the two bits that fell off the left should now be the two bits on the far right.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's the right idea. Your current code `n << d` handles the leftward movement. How could you use another bitwise operation to capture those bits that 'fell off' and move them to the rightmost positions?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If it's a 32-bit number and I shift left by d, those d bits are gone. To get them, I should shift the original number to the right instead. If I shift right by (32 - d), would that put those bits in the right place? So maybe `(n << d) | (n >> (32 - d))`?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've combined a left shift for the main part and a right shift to handle the wrap-around, then joined them with a bitwise OR. To see if this logic holds up, why not try tracing it with a small example, like a 4-bit number instead of 32, to see if the bits end up where you expect?",
+      "loss_mask": true
+    }
+  ]
+}

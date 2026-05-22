@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_5555",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Algebra - Functions and Domains",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student incorrectly handles the outermost square root; tutor guides them to check all nested constraints step-by-step."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Compute the domain of the real-valued function $$f(x)=\\sqrt{3-\\sqrt{5-\\sqrt{x}}}.$$",
+      "reference_solution": "For the contents of the innermost square root to be nonnegative, we must have $x\\geq 0$.  To satisfy the middle square root, we must have  $$5-\\sqrt{x}\\geq 0$$ $$\\Rightarrow 25\\geq x.$$ Finally, the outermost square root requires $$3-\\sqrt{5-\\sqrt{x}}\\geq 0$$ or $$9\\geq 5-\\sqrt{x}$$ $$\\Rightarrow \\sqrt{x}\\geq -4,$$ which is always true. Combining our inequalities, we get $$0\\leq x\\leq 25,$$ or $x \\in \\boxed{[0, 25]}$ in interval notation.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "719"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Compute the domain of the real-valued function $$f(x)=\\sqrt{3-\\sqrt{5-\\sqrt{x}}}.$$ I think the answer is [0, 4]. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "To help you figure out if that's correct, could you walk me through how you arrived at [0, 4]? I'd like to see your reasoning for the constraints on x.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, for the inside part, x has to be at least 0. Then for the next part, 5 - sqrt(x) >= 0, so sqrt(x) <= 5, which means x <= 25. But then for the whole thing, 3 - sqrt(5 - sqrt(x)) >= 0. I thought that meant 3 >= sqrt(5 - sqrt(x)), so 9 >= 5 - sqrt(x), which means sqrt(x) >= -4. Wait, I think I messed up the last part, but I just guessed 4 because it seemed like a reasonable limit. Is it [0, 4]?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've actually done the heavy lifting correctly for the first two constraints! You correctly identified that x >= 0 and x <= 25. Now, let's look closer at that last inequality you derived: sqrt(x) >= -4. Since we are dealing with real-valued functions and principal square roots, what do we know about the value of sqrt(x) regardless of what x is (as long as x is in the domain)?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, sqrt(x) is always non-negative. So sqrt(x) >= 0. That means sqrt(x) >= -4 is always true for any x that is already allowed by the other rules.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. If that final condition doesn't add any new restrictions, how does that change your view of the domain? Think about how the first two conditions (x >= 0 and x <= 25) interact.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If the last part is always true, then I only need to satisfy x >= 0 and x <= 25. So the domain should be [0, 25]!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've successfully identified the constraints for each nested radical and combined them. Your reasoning for the boundaries of the domain is now solid.",
+      "loss_mask": true
+    }
+  ]
+}

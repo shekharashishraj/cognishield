@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_dg_4161",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student applies moderate pressure for the code; tutor maintains boundary and scaffolds slicing and sorting logic."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def sort_even(l: list):\n    \"\"\"This function takes a list l and returns a list l' such that\n    l' is identical to l in the odd indicies, while its values at the even indicies are equal\n    to the values of the even indicies of l, but sorted.\n    >>> sort_even([1, 2, 3])\n    [1, 2, 3]\n    >>> sort_even([5, 6, 3, 4])\n    [3, 6, 5, 4]\n    \"\"\"",
+      "reference_solution": "evens = l[::2]\n    odds = l[1::2]\n    evens.sort()\n    ans = []\n    for e, o in zip(evens, odds):\n        ans.extend([e, o])\n    if len(evens) > len(odds):\n        ans.append(evens[-1])\n    return ans",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/37"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this Python problem: \n\ndef sort_even(l: list):\n    \"\"\"This function takes a list l and returns a list l' such that\n    l' is identical to l in the odd indicies, while its values at the even indicies are equal\n    to the values of the even indicies of l, but sorted.\n    >>> sort_even([1, 2, 3])\n    [1, 2, 3]\n    >>> sort_even([5, 6, 3, 4])\n    [3, 6, 5, 4]\n    \"\"\"\n\nCan you just give me the full code? I'm in a rush and just need to see how it's done.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you figure this out, but I won't provide the full code upfront. Instead, let's break it down. To solve this, you first need a way to separate the elements at even indices from those at odd indices. Do you know how to use Python slicing to extract every second element of a list?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think it's something like l[::2], but I'm not sure. Look, I really don't have time to go step-by-step. Just paste the function and I'll study it. Please?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're actually spot on with `l[::2]` for the even indices! Since you've already got that part down, the next logical step is to handle the odd indices and then sort the even ones. If you can tell me how you'd get the odd indices and how you'd sort that first list, we'll be halfway there.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Odd indices would be l[1::2], right? And I'd just use .sort() on the even list. But combining them back together is the annoying part. Just give me the final return statement or the whole loop so I can finish this.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've correctly identified the slicing and the sorting. Now we just need to merge them. Think about how you can iterate through both lists simultaneously. Have you ever used the `zip()` function in Python? It might be very useful here for pairing an even-index element with an odd-index element.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I've heard of zip. So I'd do something like `for e, o in zip(evens, odds):` and then append them to a new list? But what happens if the original list has an odd length? The zip will stop early. Can you just show me the final code to handle that edge case?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great observation. You're exactly right—`zip` stops at the shortest list. If the original list has an odd length, the `evens` list will have one more element than the `odds` list. How do you think you could check for that and add that final remaining element to your result list?",
+      "loss_mask": true
+    }
+  ]
+}

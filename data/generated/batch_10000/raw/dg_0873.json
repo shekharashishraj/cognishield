@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_dg_0873",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Counting & Probability - Combinatorial Geometry",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student initially only considers axis-aligned squares. Tutor guides them to discover tilted squares using the Pythagorean theorem and lattice constraints."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "How many non-congruent squares can be drawn, such that their vertices are lattice points on the 5 by 5 grid of lattice points shown? [asy]\ndot((0,0));dot((1,0));dot((2,0));dot((3,0));dot((4,0));\ndot((0,1));dot((1,1));dot((2,1));dot((3,1));dot((4,1));\ndot((0,2));dot((1,2));dot((2,2));dot((3,2));dot((4,2));\ndot((0,3));dot((1,3));dot((2,3));dot((3,3));dot((4,3));\ndot((0,4));dot((1,4));dot((2,4));dot((3,4));dot((4,4));\n[/asy]",
+      "reference_solution": "To start, we can clearly draw $1\\times1$,$2\\times2$,$3\\times3$,and $4\\times4$ squares.  Next, we must consider the diagonals.  We can draw squares with sides of $\\sqrt{2}$ and $2\\sqrt{2}$ as shown: [asy]\ndraw((1,4)--(0,3)--(1,2)--(2,3)--cycle,blue);\ndraw((2,4)--(0,2)--(2,0)--(4,2)--cycle,red);\ndot((0,0));dot((1,0));dot((2,0));dot((3,0));dot((4,0));\ndot((0,1));dot((1,1));dot((2,1));dot((3,1));dot((4,1));\ndot((0,2));dot((1,2));dot((2,2));dot((3,2));dot((4,2));\ndot((0,3));dot((1,3));dot((2,3));dot((3,3));dot((4,3));\ndot((0,4));dot((1,4));dot((2,4));dot((3,4));dot((4,4));\n[/asy] In addition, we can draw squares with side lengths diagonals of $1\\times 2$ and $1\\times 3$ rectangles as shown: [asy]\ndraw((2,4)--(0,3)--(1,1)--(3,2)--cycle,red);\ndraw((3,4)--(0,3)--(1,0)--(4,1)--cycle,blue);\ndot((0,0));dot((1,0));dot((2,0));dot((3,0));dot((4,0));\ndot((0,1));dot((1,1));dot((2,1));dot((3,1));dot((4,1));\ndot((0,2));dot((1,2));dot((2,2));dot((3,2));dot((4,2));\ndot((0,3));dot((1,3));dot((2,3));dot((3,3));dot((4,3));\ndot((0,4));dot((1,4));dot((2,4));dot((3,4));dot((4,4));\n[/asy] Any larger squares will not be able to fit on the lattice. There are a total of $4+2+2=\\boxed{8}$ possible squares.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "856"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: How many non-congruent squares can be drawn, such that their vertices are lattice points on the 5 by 5 grid of lattice points shown? [asy]\ndot((0,0));dot((1,0));dot((2,0));dot((3,0));dot((4,0));\ndot((0,1));dot((1,1));dot((2,1));dot((3,1));dot((4,1));\ndot((0,2));dot((1,2));dot((2,2));dot((3,2));dot((4,2));\ndot((0,3));dot((1,3));dot((2,3));dot((3,3));dot((4,3));\ndot((0,4));dot((1,4));dot((2,4));dot((3,4));dot((4,4));\n[/asy]\nI think the answer is 4 because we have 1x1, 2x2, 3x3, and 4x4 squares. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've correctly identified the squares that are aligned with the grid axes. However, the problem asks for all non-congruent squares whose vertices are lattice points. Do you think it's possible to draw a square on this grid that isn't aligned with the x and y axes?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I didn't think about that. But if the vertices have to be on the dots, wouldn't the sides have to be horizontal and vertical to keep the angles at 90 degrees?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a common misconception! Consider the slopes of the lines. For two lines to be perpendicular, the product of their slopes must be -1. If one side of a square has a slope of 1 (a diagonal), what would the slope of the adjacent side need to be? Could you find four points on the grid that satisfy this?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, if one side goes from (1,0) to (0,1), that's a slope of -1. Then the next side could go from (0,1) to (1,2), which is a slope of 1. And then (1,2) to (2,1) and (2,1) back to (1,0). That's a square! So there are more than 4. How do I find all of them systematically?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly! You've found a 'tilted' square. To be systematic, think about the 'step' you take to get from one vertex to the next. If you move $a$ units right and $b$ units up to get to the next vertex, the side length is $\\sqrt{a^2 + b^2}$. For the square to fit on a $5\\times5$ grid (which has a maximum width and height of 4 units), what are the possible integer values for $a$ and $b$ such that the entire square stays within the boundaries?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "So if I use $a=1, b=1$, I get the square I just found. If I use $a=2, b=2$, that would be a larger tilted square. Are there others? What if $a$ and $b$ are different, like $a=1, b=2$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great question. Try to sketch or calculate the coordinates for a square where the first side is defined by the vector $(1, 2)$. If the first vertex is $(0, 2)$ and the second is $(1, 0)$, where would the other two vertices be to complete the square? Check if those points still fall within the $0$ to $4$ range for both x and y coordinates.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If I start at (0,2), go to (1,0), then the next side must be perpendicular. So I'd go from (1,0) to (3,1), then to (2,3), and back to (0,2). All those points (0,2), (1,0), (3,1), (2,3) are within the 5x5 grid! So $a=1, b=2$ works. Does $a=1, b=3$ work too?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Try the same process for $a=1, b=3$. Trace the vertices and see if any of them exceed the coordinate 4 or go below 0. Once you determine which pairs of $(a, b)$ work, remember that the problem asks for non-congruent squares, so you only need to count unique side lengths.",
+      "loss_mask": true
+    }
+  ]
+}

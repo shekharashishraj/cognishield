@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_3960",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Combinatorics: Stars and Bars with Constraints",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Tutor successfully scaffolds the complex problem of dividing a constrained sequence into two poles without revealing the final answer prematurely."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "There are two distinguishable flagpoles, and there are $19$ flags, of which $10$ are identical blue flags, and $9$ are identical green flags. Let $N$ be the number of distinguishable arrangements using all of the flags in which each flagpole has at least one flag and no two green flags on either pole are adjacent. Find the remainder when $N$ is divided by $1000$.",
+      "reference_solution": "The well known problem of ordering $x$ elements of a string of $y$ elements such that none of the $x$ elements are next to each other has ${y-x+1\\choose x}$ solutions. (1)\nWe generalize for $a$ blues and $b$ greens. Consider a string of $a+b$ elements such that we want to choose the greens such that none of them are next to each other. We would also like to choose a place where we can divide this string into two strings such that the left one represents the first pole, and the right one represents the second pole, in order up the pole according to position on the string.\nHowever, this method does not account for the fact that the first pole could end with a green, and the second pole could start with a green, since the original string assumed that no greens could be consecutive. We solve this problem by introducing an extra blue, such that we choose our divider by choosing one of these $a+1$ blues, and not including that one as a flag on either pole.\nFrom (1), we now have ${a+2\\choose b}$ ways to order the string such that no greens are next to each other, and $a+1$ ways to choose the extra blue that will divide the string into the two poles: or $(a+1){a+2\\choose b}$ orderings in total.\nHowever, we have overcounted the solutions where either pole has no flags, we have to count these separately. This is the same as choosing our extra blue as one of the two ends, and ordering the other $a$ blues and $b$ greens such that no greens are next to each other: for a total of $2{a+1\\choose b}$ such orderings.\nThus, we have $(a+1){a+2\\choose b}-2{a+1\\choose b}$ orderings that satisfy the conditions in the problem: plugging in $a=10$ and $b=9$, we get $2310 \\equiv \\boxed{310} \\pmod{1000}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "2140"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this combinatorics problem: There are two distinguishable flagpoles, and there are $19$ flags, of which $10$ are identical blue flags, and $9$ are identical green flags. Let $N$ be the number of distinguishable arrangements using all of the flags in which each flagpole has at least one flag and no two green flags on either pole are adjacent. Find the remainder when $N$ is divided by $1000$. Can you just tell me the answer or show me how to start?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through this! Instead of giving the answer right away, let's break it down. First, let's think about the constraint: 'no two green flags on either pole are adjacent.' If you had just one pole with $a$ blue flags and $b$ green flags, do you know how to count the number of ways to arrange them so no two greens are adjacent?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, that's the gap method! I place the blue flags first, which creates $a+1$ possible slots (including the ends) for the green flags. So for one pole, it would be $\\binom{a+1}{b}$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. Now, the challenge here is that we have two poles. A common strategy is to imagine the two poles as one long sequence of flags, with a 'divider' somewhere in the middle to split them. But there's a catch: if the first pole ends with a green flag and the second pole starts with one, they aren't actually adjacent on the same pole. Does that make sense? How might we handle that divider without accidentally banning those valid cases?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I see. If I just use a divider in a string of 19 flags, I'm treating the transition from pole 1 to pole 2 as if they are on the same pole. So if I have a green at the end of pole 1 and a green at the start of pole 2, the 'single string' logic would count that as invalid, but the problem says it's actually okay. How do I fix that?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "One clever trick is to add a 'virtual' flag to the mix. Imagine adding one extra blue flag to the total. Now, instead of a divider being a line, what if the divider *is* one of the blue flags? If we pick one blue flag to be the 'separator' (and remove it from the actual poles), how does that change the way we count the arrangements of the remaining flags?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If I add an extra blue flag, I now have 11 blues and 9 greens. If I arrange these 20 flags so no two greens are adjacent, there are $\\binom{11+1}{9} = \\binom{12}{9}$ ways. Then I can pick any of the 11 blue flags to be the divider. So it would be $11 \\times \\binom{12}{9}$. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the core logic! By making a blue flag the divider, you ensure that the flags immediately to the left and right of the divider are separated by that blue flag, which correctly allows both poles to potentially start or end with a green flag. However, there's one more constraint in the problem: 'each flagpole has at least one flag.' Does your current calculation $11 \\times \\binom{12}{9}$ include cases where a pole might be empty?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Yes, it does. If I pick the very first blue flag or the very last blue flag as the divider, one of the poles would be empty. Wait, if the divider is the first blue flag, then the first pole is empty. If the divider is the last blue flag, the second pole is empty. So I need to subtract those cases. If the divider is at the end, the remaining 10 blues and 9 greens must be arranged so no greens are adjacent. That's $\\binom{10+1}{9} = \\binom{11}{9}$. Since there are two ends, I subtract $2 \\times \\binom{11}{9}$. Let me calculate: $11 \\times \\binom{12}{9} - 2 \\times \\binom{11}{9} = 11 \\times 220 - 2 \\times 55 = 2420 - 110 = 2310$. The remainder when divided by 1000 is 310.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is exactly correct. You handled the boundary conditions perfectly and correctly applied the inclusion-exclusion principle for the empty poles. The final answer is indeed 310.",
+      "loss_mask": true
+    }
+  ]
+}

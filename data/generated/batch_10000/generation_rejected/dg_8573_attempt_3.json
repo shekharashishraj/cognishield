@@ -1,0 +1,118 @@
+{
+  "conversation_id": "mt_dg_8573",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Counting & Probability",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor guides the student through the combinatorial cases of the problem, focusing on the logic of 'all same' vs 'all different' for each attribute. The tutor ensures the student handles overcounting by suggesting a fixed-order approach and strictly avoids confirming the final numerical sum, adhering to the method_only policy."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Every card in a deck has a picture of one shape - circle, square, or triangle, which is painted in one of the three colors - red, blue, or green. Furthermore, each color is applied in one of three shades - light, medium, or dark. The deck has 27 cards, with every shape-color-shade combination represented. A set of three cards from the deck is called complementary if all of the following statements are true:\ni. Either each of the three cards has a different shape or all three of the card have the same shape.\nii. Either each of the three cards has a different color or all three of the cards have the same color.\niii. Either each of the three cards has a different shade or all three of the cards have the same shade.\nHow many different complementary three-card sets are there?",
+      "reference_solution": "Case 1: All three attributes are the same. This is impossible since sets contain distinct cards.\nCase 2: Two of the three attributes are the same. There are ${3\\choose 2}$ ways to pick the two attributes in question. Then there are $3$ ways to pick the value of the first attribute, $3$ ways to pick the value of the second attribute, and $1$ way to arrange the positions of the third attribute, giving us ${3\\choose 2} \\cdot 3 \\cdot 3 = 27$ ways.\nCase 3: One of the three attributes are the same. There are ${3\\choose 1}$ ways to pick the one attribute in question, and then $3$ ways to pick the value of that attribute. Then there are $3!$ ways to arrange the positions of the next two attributes, giving us ${3\\choose 1} \\cdot 3 \\cdot 3! = 54$ ways.\nCase 4: None of the three attributes are the same. We fix the order of the first attribute, and then there are $3!$ ways to pick the ordering of the second attribute and $3!$ ways to pick the ordering of the third attribute. This gives us $(3!)^2 = 36$ ways.\nAdding the cases up, we get $27 + 54 + 36 = \\boxed{117}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "2098"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm really struggling with this problem. Every card in a deck has a picture of one shape - circle, square, or triangle, which is painted in one of the three colors - red, blue, or green. Furthermore, each color is applied in one of three shades - light, medium, or dark. The deck has 27 cards, with every shape-color-shade combination represented. A set of three cards from the deck is called complementary if all of the following statements are true:\ni. Either each of the three cards has a different shape or all three of the card have the same shape.\nii. Either each of the three cards has a different color or all three of the cards have the same color.\niii. Either each of the three cards has a different shade or all three of the cards have the same shade.\nHow many different complementary three-card sets are there? Can you just give me the answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through this, but I won't provide the final number immediately. The goal is to help you master the counting technique used here. Let's start by organizing the problem. For a set to be complementary, each of the three attributes (shape, color, shade) must be either 'all the same' or 'all different' across the three cards. How would you categorize the possible types of complementary sets based on how many attributes are 'all same'?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I could group them by the number of attributes that are the same. So, cases where 0, 1, 2, or all 3 attributes are 'all same'.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is a great way to structure the problem. Let's look at the extreme cases first. What happens if all 3 attributes are 'all same'? Is that possible given the description of the deck?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If all 3 attributes (shape, color, and shade) are the same, then the three cards are identical. But the deck only has one of each combination, so the cards in a set must be distinct. So that case is impossible. 0 sets.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Now let's consider the case where exactly two attributes are 'all same' and the third is 'all different'. How would you calculate the number of ways to choose which two attributes are the same, and then how many ways to pick the values for those attributes?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, there are 3 attributes total, so picking 2 to be the same is 3C2 = 3 ways. Then for each of those two attributes, there are 3 possible values. So 3 * 3 = 9. For the last attribute, they must all be different, so there's only one way to have one of each. So 3 * 9 * 1 = 27?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic for that case is sound. Now let's tackle the case where exactly one attribute is 'all same' and the other two are 'all different'. This is where it gets trickier because you have to be careful not to overcount. How would you start counting these?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, 3C1 = 3 ways to pick the 'same' attribute, and 3 ways to pick its value. Then for the other two attributes, they must be all different. Since there are 3 values for each, is it 3! for the second attribute and 3! for the third? So 3 * 3 * 6 * 6 = 324?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've hit a common pitfall: overcounting. When you use 3! for both, you are treating the three cards as if they are in a fixed order (like Card 1, Card 2, Card 3). However, a 'set' is unordered. To fix this, try fixing the order of the first 'all different' attribute to be (Value A, Value B, Value C). Now, how many ways can the second 'all different' attribute be assigned to those cards?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, if I fix the first 'different' attribute's order, then the second 'different' attribute can be any of the 3! permutations. So it would be 3 (attribute choice) * 3 (value choice) * 1 (fixed order) * 3! (second attribute order)? That's 3 * 3 * 6 = 54.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is the correct approach. Now apply that same logic to the final case: where zero attributes are 'all same' (meaning all three attributes are 'all different'). How would you count those sets?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Following the same logic: I fix the order of the first attribute to avoid overcounting. Then the second attribute can be any of 3! permutations, and the third attribute can also be any of 3! permutations. So 1 * 6 * 6 = 36. Then I just add them all up: 27 + 54 + 36. Does that look right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your methodology for breaking the problem into disjoint cases and handling the ordering of the attributes is completely correct. By summing the results of those cases, you will arrive at the final answer. Go ahead and calculate that sum to finish the problem!",
+      "loss_mask": true
+    }
+  ]
+}

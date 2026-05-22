@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_9597",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Sophie Germain Identity",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "High-quality scaffolding example using the Sophie Germain identity. Tutor guides student through completing the square and identifying the telescoping product."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Compute\n\\[\\frac{(10^4+324)(22^4+324)(34^4+324)(46^4+324)(58^4+324)}{(4^4+324)(16^4+324)(28^4+324)(40^4+324)(52^4+324)}.\\]",
+      "reference_solution": "Each of the terms is of the form $x^4 + 324$. To factor, we write: \\[\\begin{aligned} x^4 + 324 &= (x^4 + 36x^2 + 324) - 36x^2\\\\& = (x^2+18)^2 - 36x^2 \\\\& = (x^2-6x+18)(x^2+6x+18) \\\\ &= (x(x-6)+18)(x(x+6)+18). \\end{aligned}\\]Therefore, the given expression equals \\[\\frac{(10\\cdot4+18)(10\\cdot16+18)(22\\cdot16+18)(22\\cdot28+18) \\dotsm (58\\cdot52+18)(58\\cdot64+18)}{(4\\cdot(-2)+18)(4\\cdot10+18)(16\\cdot10+18)(16\\cdot22+18) \\dotsm (52\\cdot46+18)(52\\cdot58+18)}.\\]Nearly all the terms cancel, leaving just \\[\\frac{58 \\cdot 64 + 18}{4 \\cdot (-2) + 18} = \\boxed{373}.\\]Remark. The factorization $x^4+324 = (x^2-6x+18)(x^2+6x+18)$ is a special case of the Sophie Germain identity, which is derived in the same way; it states that \\[a^4 + 4b^4 = (a^2-2ab+2b^2)(a^2+2ab+2b^2).\\]",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "2522"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this math problem: Compute\n\\[\\frac{(10^4+324)(22^4+324)(34^4+324)(46^4+324)(58^4+324)}{(4^4+324)(16^4+324)(28^4+324)(40^4+324)(52^4+324)}.\\]\nIt looks impossible to calculate by hand. Is there a trick to this?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're right that calculating these powers directly would be a nightmare! Whenever you see a pattern like this in a fraction, there is usually a way to factor the terms so that most of them cancel out. \n\nNotice that every term in the expression has the form $x^4 + 324$. If we can find a way to factor $x^4 + 324$ into two smaller polynomials, we might see a telescoping effect. Do you recall any techniques for factoring expressions that look like a sum of squares?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "A sum of squares? I know $a^2 - b^2$ is $(a-b)(a+b)$, but this is a plus sign. I'm not sure how to factor $x^4 + 324$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly, the difference of squares is the goal. We can actually 'force' a difference of squares by completing the square. \n\nThink of $x^4$ as $(x^2)^2$ and $324$ as $18^2$. If we had a middle term of $2(x^2)(18) = 36x^2$, we would have a perfect square. What happens if you add and subtract $36x^2$ from $x^4 + 324$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, so $x^4 + 36x^2 + 324 - 36x^2$. That becomes $(x^2 + 18)^2 - (6x)^2$. Now I can use the difference of squares! \n\nSo $x^4 + 324 = (x^2 + 18 - 6x)(x^2 + 18 + 6x)$. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's spot on. Now, to see the pattern across the whole fraction, it helps to rewrite those factors slightly. \n\nFor example, $x^2 - 6x + 18$ can be written as $x(x-6) + 18$, and $x^2 + 6x + 18$ can be written as $x(x+6) + 18$. \n\nTry applying this factorization to the first few terms of the numerator and denominator. What do you notice about the values being produced?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let's see. For the numerator, the first term is $10^4+324$, so it's $(10(4)+18)$ and $(10(16)+18)$. \nFor the denominator, the first term is $4^4+324$, so it's $(4(-2)+18)$ and $(4(10)+18)$. \n\nWait, the $(4 \times 10 + 18)$ in the denominator matches the $(10 \times 4 + 18)$ in the numerator! Does everything just cancel out except the very first and very last parts?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've found the key! This is a telescoping product. Most of the terms in the numerator will be cancelled by terms in the denominator. \n\nCarefully track which specific factors are left over at the very beginning of the denominator and the very end of the numerator. Once you identify those remaining terms, you can calculate the final value.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The last term in the numerator is $58^4+324$, which gives $(58 \times 52 + 18)$ and $(58 \times 64 + 18)$. \nThe first term in the denominator is $4^4+324$, which gives $(4 \times -2 + 18)$ and $(4 \times 10 + 18)$. \n\nLooking at the sequence, the $(58 \times 52 + 18)$ cancels with the last term of the denominator. So I'm left with $\\frac{58 \times 64 + 18}{4 \times -2 + 18}$. \n\n$58 \times 64 = 3712$. Then $3712 + 18 = 3730$. \nAnd $4 \times -2 = -8$, then $-8 + 18 = 10$. \n$3730 / 10 = 373$. Is that the answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your calculations are correct, and you've correctly identified the remaining terms of the telescoping product. The final result is indeed 373. Great job working through the Sophie Germain identity!",
+      "loss_mask": true
+    }
+  ]
+}

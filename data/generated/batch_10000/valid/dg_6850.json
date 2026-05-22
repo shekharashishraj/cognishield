@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_6850",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Python fundamentals and short programs",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts a greedy approach based on the smallest element, which is a common misconception. Tutor uses counter-examples to redirect them toward a Dynamic Programming approach without providing the final code or validating a final answer."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to find the size of the largest subset of a list of numbers so that every pair is divisible.",
+      "reference_solution": "def largest_subset(a):\n\tn = len(a)\n\tdp = [0 for i in range(n)]\n\tdp[n - 1] = 1; \n\tfor i in range(n - 2, -1, -1):\n\t\tmxm = 0;\n\t\tfor j in range(i + 1, n):\n\t\t\tif a[j] % a[i] == 0 or a[i] % a[j] == 0:\n\t\t\t\tmxm = max(mxm, dp[j])\n\t\tdp[i] = 1 + mxm\n\treturn max(dp)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "620"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: Write a function to find the size of the largest subset of a list of numbers so that every pair is divisible. Can you just give me the code for this? I have a deadline.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code for you, but I'd be happy to help you figure out the logic so you can implement it! Let's start by clarifying the goal. If you have a subset where every pair is divisible, what does that imply about any two numbers you pick from that subset?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It means if I pick two numbers, one has to divide the other. So I can just find the smallest number in the list and then count how many other numbers are divisible by it. That would be the largest subset, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a common first thought, but let's test it with an example. Suppose your list is [2, 4, 8, 12]. If you pick 2 as your smallest number, then 4, 8, and 12 are all divisible by 2. However, does the subset {2, 4, 8, 12} satisfy the rule that *every* pair is divisible? Think about the pair (8, 12).",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, 8 doesn't divide 12, and 12 doesn't divide 8. So {2, 4, 8, 12} doesn't work. I guess I can't just use the smallest number. Do I have to check every possible subset then?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Checking every single subset would be extremely slow because the number of subsets grows exponentially. Instead, consider this: if you know the size of the largest valid subset that can be formed using elements from a certain point in the list, can you use that to build the solution for the rest of the list? This suggests we might be able to use Dynamic Programming.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Dynamic Programming? So I should probably use an array to store the maximum subset size found so far for each element? How would I decide if I can add a number to a previously found subset?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the right idea with the array. For a specific element at index `i`, you can look at other elements at index `j`. If the element at `i` and the element at `j` satisfy the divisibility condition, then the element at `i` could potentially extend the subset that ends at `j`. How would you express that relationship mathematically using your DP array?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think if `a[i]` and `a[j]` are divisible, then `dp[i]` could be `dp[j] + 1`. I'd probably want to take the maximum of all such `dp[j]` values I find. Does that sound like the right approach?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is spot on. You'll want to iterate through the list and update your DP values based on that maximum. Once you've filled your DP array, what would be the final step to determine the size of the largest overall subset?",
+      "loss_mask": true
+    }
+  ]
+}

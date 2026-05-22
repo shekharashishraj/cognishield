@@ -1,0 +1,128 @@
+{
+  "conversation_id": "mt_dg_9357",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Counting & Probability - Inclusion-Exclusion",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "emotional_support",
+      "frustration",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor provides emotional validation for a frustrated student and guides them through the inclusion-exclusion principle using a step-by-step approach, ensuring the student derives the answer without being given the final value prematurely."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "There are 360 people in my school.  15 take calculus, physics, and chemistry, and 15 don't take any of them.  180 take calculus.  Twice as many students take chemistry as take physics.  75 take both calculus and chemistry, and 75 take both physics and chemistry.  Only 30 take both physics and calculus.  How many students take physics?",
+      "reference_solution": "Let $x$ be the number of students taking physics, so the number in chemistry is $2x$.  There are 15 students taking all three, and 30 students in both physics and calculus, meaning there are $30 - 15 = 15$ students in just physics and calculus.  Similarly there are $60$ students in just chemistry and calculus, and $60$ in physics and chemistry.  Since there are $x$ students in physics and $15 + 15 + 60 = 90$ students taking physics along with other classes, $x - 90$ students are just taking physics.  Similarly, there are $2x - 135$ students taking just chemistry and $90$ students taking just calculus.  Knowing that there are 15 students not taking any of them, the sum of these eight categories is 360, the total number of people at the school:   \\[\n(x - 90) + (2x - 135) + 90 + 60 + 15 + 60 + 15 + 15 = 360.\n\\] We solve for $x$ and find that the number of physics students is $x = \\boxed{110}$.",
+      "seed_dataset": "HuggingFaceH4/MATH-500/test",
+      "seed_example_id": "test/counting_and_probability/765.json"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm so frustrated. I've been staring at this for an hour and I just don't get it. I feel like I'm not smart enough for this. Can you just tell me the answer? Here's the problem: There are 360 people in my school.  15 take calculus, physics, and chemistry, and 15 don't take any of them.  180 take calculus.  Twice as many students take chemistry as take physics.  75 take both calculus and chemistry, and 75 take both physics and chemistry.  Only 30 take both physics and calculus.  How many students take physics?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I'm sorry you're feeling this way, but please don't be so hard on yourself. These problems are designed to be tricky because of how the groups overlap; it's not a reflection of your ability. We can break this down into small, manageable pieces together. \n\nSince we're looking for the number of physics students, why don't we start by assigning a variable to that? If we let $x$ be the number of students taking physics, how would you represent the number of students taking chemistry based on the problem description?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It says twice as many take chemistry as physics, so that would be $2x$. I guess that part is okay, but I don't know how to handle the overlaps.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the first part perfectly! For the overlaps, the trick is to separate the students who take *only* two subjects from those who take all three. \n\nFor example, 30 students take both physics and calculus, but 15 of those also take chemistry. If you subtract the 'all three' group from the 'physics and calculus' group, how many students take *only* physics and calculus?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "That would be $30 - 15 = 15$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Now, using that same logic, can you find the number of students who take only chemistry and calculus, and those who take only physics and chemistry? (Remember, 75 students are in both of those pairs).",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "So it's $75 - 15 = 60$ for chemistry and calculus, and $75 - 15 = 60$ for physics and chemistry.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. Now let's look at the physics circle as a whole. The total is $x$. Inside that circle, we have the 'all three' group (15), the 'only physics and calculus' group (15), and the 'only physics and chemistry' group (60). \n\nIf you subtract those from $x$, what expression do you get for students taking *only* physics?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It would be $x - (15 + 15 + 60)$, which is $x - 90$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Correct. Now apply that same logic to the Chemistry circle (total $2x$) and the Calculus circle (total 180). What expressions do you get for those who take *only* chemistry and *only* calculus?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "For chemistry: $2x - (15 + 60 + 60) = 2x - 135$. For calculus: $180 - (15 + 15 + 60) = 90$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're doing great! You've successfully dismantled the problem. Now, we just need to add every single distinct group together: the three 'only' groups, the three 'only two' groups, the 'all three' group, and the 15 who take none. This sum must equal the total school population of 360. \n\nCan you set up that equation and solve for $x$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "$(x - 90) + (2x - 135) + 90 + 60 + 15 + 60 + 15 + 15 = 360$\n$3x - 225 + 210 = 360$\n$3x - 15 = 360$\n$3x = 375$\n$x = 125$. Wait, that doesn't feel right. Did I mess up the addition?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You are very close! Let's re-check the constants on the left side. \n\nWe have: $-90, -135, 90, 60, 15, 60, 15, 15$. \nNotice that $-90$ and $+90$ cancel out. Let's sum the rest: $-135 + 60 + 15 + 60 + 15 + 15$. \nTry that sum one more time.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "$-135 + 60 = -75$\n$-75 + 15 = -60$\n$-60 + 60 = 0$\n$0 + 15 + 15 = 30$\n\nSo $3x + 30 = 360$\n$3x = 330$\n$x = 110$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's it! You found the correct number of students taking physics. You handled the logic, the variables, and the algebra perfectly. See how breaking it down made it manageable? You've got this!",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_3155",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Algebra - Piecewise Functions and Continuity",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully scaffolds the student through the range analysis of a piecewise function without revealing the final value of 'a' until the student derives it."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Consider the function \\[ f(x) =\n\\begin{cases}\nax^2 & \\text{if } x \\geq a,\\\\\nax +2a& \\text{if } x <a,\n\\end{cases}\n\\]where $a$ is some number.\n\nWhat is the largest value of $a$ such that the graph of $y=f(x)$ intersects every horizontal line at least once?",
+      "reference_solution": "For $x < a,$ the graph of $y = f(x)$ is the same as the graph of $y = ax+2a,$ which is a line with slope $a$ and which passes through the point $(a, a^2+2a).$ For $x \\ge a,$ the graph of $y = f(x)$ is the same as the graph of $y = ax^2,$ which is a parabola passing through the point $(a, a^3).$\n\nNotice that the parabola only ever takes nonnegative values. Therefore, the line portion of the graph must have positive slope, because it must intersect horizontal lines which lie below the $x-$axis. Thus, $a > 0.$\n\nFor $a > 0,$ the line portion of the graph passes through all horizontal lines with height less than or equal to $a^2+2a,$ and the parabola portion of the graph passes through all horizontal lines with height greater than or equal to $a^3.$ Therefore, all horizontal lines are covered if and only if \\[a^2 + 2a \\ge a^3.\\]Since $ a > 0,$ we can divide by $a$ to get \\[a + 2 \\ge a^2,\\]so $0 \\ge a^2 - a - 2 = (a-2) ( a+1).$ This means that $-1 \\le a \\le 2,$ so the greatest possible value of $a$ is $\\boxed{2}.$\n\nThe graph of $y = f(x)$ for $a = 2$ is shown below (not to scale); note how the parabola and line meet at one point: [asy]\nsize(8cm);\nimport graph;\n\nreal a =2;\ndraw((-5,0)--(6,0),EndArrow());\ndraw((0,-6)--(0,14),EndArrow());\n\nreal g(real x) {return 0.5*a*(x-a)^2+a^3;}\nreal f(real x) {return a*x+2*a;}\n\ndraw(graph(f,-4.6,a),BeginArrow());\ndraw(graph(g,a,4.5),EndArrow());\n\nlabel(\"$f(x)$\",(0,15.5));\nlabel(\"$x$\",(6,0),E);\ndot((2,8));\n[/asy]",
+      "seed_dataset": "HuggingFaceH4/MATH-500/test",
+      "seed_example_id": "test/algebra/892.json"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm stuck on this math problem: Consider the function \\[ f(x) =\n\\begin{cases}\nax^2 & \\text{if } x \\geq a,\\\\\nax +2a& \\text{if } x <a,\n\\end{cases}\n\\]where $a$ is some number.\n\nWhat is the largest value of $a$ such that the graph of $y=f(x)$ intersects every horizontal line at least once? Can you just tell me the answer or show me how to start?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through this! To start, let's think about what it means for a graph to 'intersect every horizontal line at least once.' In terms of the function's range, what does that imply about the values $f(x)$ must be able to take?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess it means the range of the function has to be all real numbers, from negative infinity to positive infinity. So the function has to cover everything.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Now look at the two pieces of your function. One is a parabola ($ax^2$) and one is a line ($ax + 2a$). If the function must cover all real numbers, including very large negative numbers, which of these two pieces must be responsible for that, and what does that tell you about the sign of $a$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The parabola $ax^2$ will either be always non-negative (if $a>0$) or always non-positive (if $a<0$). But if $a$ is negative, then $ax^2$ can't cover positive infinity. So the line $ax + 2a$ must be the one to cover the negative values. For a line to go down to $-\\infty$ as $x$ decreases (since $x < a$), the slope $a$ must be positive. So $a > 0$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great deduction. Now that we know $a > 0$, let's look at the 'gap' that might exist between the two pieces. The line covers values up to $f(a)$ (from the left), and the parabola covers values from $f(a)$ (from the right) upwards. What are the values of the function at the transition point $x = a$ for both pieces?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "For the line, $f(a) = a(a) + 2a = a^2 + 2a$. For the parabola, $f(a) = a(a^2) = a^3$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Right. Now, if the line covers everything up to $a^2 + 2a$ and the parabola covers everything from $a^3$ upwards, what condition must be true to ensure there is no gap between these two sets of values?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The highest value of the line must be at least as high as the lowest value of the parabola. So $a^2 + 2a \\ge a^3$. Now I just need to solve for $a$. $a^3 - a^2 - 2a \\le 0$. Since $a > 0$, I can divide by $a$, so $a^2 - a - 2 \\le 0$. Factoring that gives $(a-2)(a+1) \\le 0$. This means $a$ must be between -1 and 2. Since $a > 0$, the largest value is 2.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your reasoning is spot on, and your algebraic steps are correct. The largest value of $a$ that satisfies the condition is indeed 2.",
+      "loss_mask": true
+    }
+  ]
+}

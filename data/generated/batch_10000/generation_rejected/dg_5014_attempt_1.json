@@ -1,0 +1,101 @@
+{
+  "example_id": "dg_5014",
+  "filename": "dg_5014.json",
+  "conversation_id": "mt_dg_5014",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Geometry: Circles and Pythagorean Theorem",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The student incorrectly assumes the radius is 10 and uses the area formula directly. The tutor guides the student to recognize that the 10-foot plank is the distance from the chord midpoint to the center, not the radius."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "To be able to walk to the center $C$ of a circular fountain, a repair crew places a 16-foot plank from $A$ to $B$ and then a 10-foot plank from $D$ to $C$, where $D$ is the midpoint of $\\overline{AB}$ . What is the area of the circular base of the fountain? Express your answer in terms of $\\pi$. [asy]\n\nsize(250); import olympiad; import geometry; defaultpen(linewidth(0.8));\n\ndraw((-10,0)..(-5,0.8)..(0,1)..(5,0.8)..(10,0)^^(10,0)..(5,-0.8)..(0,-1)..(-5,-0.8)..(-10,0));\n\ndraw((-10,0)--(-10,-2)^^(10,-2)..(5,-2.8)..(0,-3)..(-5,-2.8)..(-10,-2)^^(10,-2)--(10,0));\n\ndraw(origin..(-1,5)..(-4,8));\n\ndraw(origin..(1,5)..(4,8));\n\ndraw(origin..(-0.5,5)..(-2,8));\n\ndraw(origin..(0.5,5)..(2,8));\n\ndraw(origin..(-0.2,6)..(-1,10));\n\ndraw(origin..(0.2,6)..(1,10));\n\nlabel(\"Side View\",(0,-2),3*S);\n\npair C = (25,8);\n\ndraw(Circle(C,10));\n\npair A = C + 10*dir(80);\n\npair B = C + 10*dir(20);\n\npair D = midpoint(A--B);\n\ndraw(A--B);\n\ndraw(C--D);\n\ndot(Label(\"$A$\",align=SW),A);\n\ndot(Label(\"$B$\",align=SE),B);\n\ndot(Label(\"$C$\",align=S),C);\n\ndot(Label(\"$D$\",align=S),D);\n\nfor(int i = 0; i < 5; ++i){\n\ndraw(C--(C + 5*dir(72*i)));\n\n}\n\nlabel(\"Top View\",(25,-2),3*S);\n[/asy]",
+      "reference_solution": "Since triangle $ABC$ is isosceles (both $AC$ and $BC$ are radii), $CD$ is perpendicular to $AB$. We can use the Pythagorean Theorem to find the radius: $(16/2)^2 + 10^2 = R^2$, so $R^2 = 164$. The area is $\\pi R^2 = \\boxed{164 \\pi \\mbox{ square feet}}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "3243"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: To be able to walk to the center $C$ of a circular fountain, a repair crew places a 16-foot plank from $A$ to $B$ and then a 10-foot plank from $D$ to $C$, where $D$ is the midpoint of $\\overline{AB}$. What is the area of the circular base of the fountain? Express your answer in terms of $\\pi$.\n\nI think the answer is $100\\pi$. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see how you got there, but that's not quite correct. Could you walk me through your reasoning? How did you determine the radius of the fountain?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, the problem says there is a 10-foot plank from $D$ to $C$, and $C$ is the center. So I just assumed the radius is 10, and since area is $\\pi r^2$, I got $100\\pi$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see the confusion. Point $C$ is indeed the center, but is point $D$ on the edge of the circle? Take another look at where $D$ is located relative to the plank $AB$.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, $D$ is the midpoint of the plank $AB$. $AB$ is a chord, right? So $D$ is inside the circle, not on the boundary. That means the distance $CD$ isn't the radius.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Since $D$ is the midpoint of chord $AB$ and $C$ is the center, what can you say about the relationship between the line segment $CD$ and the chord $AB$? Does that suggest a way to find the actual radius?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If $D$ is the midpoint, then $CD$ should be perpendicular to $AB$. So I can make a right triangle using $D$, $C$, and one of the endpoints of the plank, like $A$. The legs would be $CD = 10$ and $AD = 16/2 = 8$. The hypotenuse $AC$ would be the radius $R$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a perfect setup. Go ahead and calculate $R^2$ using that right triangle, and then you can find the area.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, $8^2 + 10^2 = R^2$, so $64 + 100 = 164$. So $R^2 = 164$. The area is $\\pi R^2$, which would be $164\\pi$. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that is correct! You correctly identified the relationship between the center and the chord to find the radius. Great job adjusting your approach.",
+      "loss_mask": true
+    }
+  ]
+}

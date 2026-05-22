@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_4033",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Generated a high-quality scaffolding conversation where the tutor guides the student through the logic of finding the closest pair of numbers without providing the code."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "from typing import List, Tuple\n\n\ndef find_closest_elements(numbers: List[float]) -> Tuple[float, float]:\n    \"\"\" From a supplied list of numbers (of length at least two) select and return two that are the closest to each\n    other and return them in order (smaller number, larger number).\n    >>> find_closest_elements([1.0, 2.0, 3.0, 4.0, 5.0, 2.2])\n    (2.0, 2.2)\n    >>> find_closest_elements([1.0, 2.0, 3.0, 4.0, 5.0, 2.0])\n    (2.0, 2.0)\n    \"\"\"",
+      "reference_solution": "closest_pair = None\n    distance = None\n\n    for idx, elem in enumerate(numbers):\n        for idx2, elem2 in enumerate(numbers):\n            if idx != idx2:\n                if distance is None:\n                    distance = abs(elem - elem2)\n                    closest_pair = tuple(sorted([elem, elem2]))\n                else:\n                    new_distance = abs(elem - elem2)\n                    if new_distance < distance:\n                        distance = new_distance\n                        closest_pair = tuple(sorted([elem, elem2]))\n\n    return closest_pair",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/20"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm stuck on this coding problem. Could you help me solve it? Here is the prompt:\n\nfrom typing import List, Tuple\n\n\ndef find_closest_elements(numbers: List[float]) -> Tuple[float, float]:\n    \"\"\" From a supplied list of numbers (of length at least two) select and return two that are the closest to each\n    other and return them in order (smaller number, larger number).\n    >>> find_closest_elements([1.0, 2.0, 3.0, 4.0, 5.0, 2.2])\n    (2.0, 2.2)\n    >>> find_closest_elements([1.0, 2.0, 3.0, 4.0, 5.0, 2.0])\n    (2.0, 2.0)\n    \"\"\"",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I'd be happy to help you work through this! To get started, let's think about the logic. If you had a list of numbers on a piece of paper, how would you manually find the two that are closest to each other?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I would look at every pair of numbers, subtract one from the other to see the difference, and keep track of which difference was the smallest.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great starting point. Now, how would you translate 'looking at every pair' into code? What kind of loop structure would allow you to compare every element with every other element in the list?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Maybe a nested loop? Like a for loop inside another for loop? But wouldn't that compare a number with itself?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're exactly right—a nested loop is the way to go. To avoid comparing a number with itself, what condition could you add inside the inner loop to make sure you're looking at two different elements?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could check if the indices are different. So if `i != j`, then I calculate the difference. Now, how do I keep track of the smallest difference? I can just use a variable called `min_diff` and set it to something really high at the start?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That works! Setting it to a very large number or `None` (and handling the first case separately) are both valid strategies. Once you find a difference that is smaller than your current `min_diff`, what else do you need to store besides the distance itself?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I need to store the two numbers that produced that difference. The prompt says I have to return them in order (smaller, larger). Should I use `sorted()` on the pair before saving them?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Using `sorted()` is a clean way to ensure the pair is in the correct order. Why don't you try putting these pieces together into a function? Let me know if you run into any issues with the implementation!",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_dg_6628",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Counting & Probability - Combinatorics",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor strictly follows the method_only policy. It refuses to provide the final answer and refuses to confirm the student's final guess, instead redirecting the student to perform the final subtraction step regarding the range [2004, 2047]."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Let $N$ be the number of positive integers that are less than or equal to $2003$ and whose base-$2$ representation has more $1$'s than $0$'s. Find the remainder when $N$ is divided by $1000$.",
+      "reference_solution": "In base-$2$ representation, all positive numbers have a leftmost digit of $1$. Thus there are ${n \\choose k}$ numbers that have $n+1$ digits in base $2$ notation, with $k+1$ of the digits being $1$'s.\nIn order for there to be more $1$'s than $0$'s, we must have $k+1 > \\frac{d+1}{2} \\Longrightarrow k > \\frac{d-1}{2} \\Longrightarrow k \\ge \\frac{d}{2}$. Therefore, the number of such numbers corresponds to the sum of all numbers on or to the right of the vertical line of symmetry in Pascal's Triangle, from rows $0$ to $10$ (as $2003 < 2^{11}-1$). Since the sum of the elements of the $r$th row is $2^r$, it follows that the sum of all elements in rows $0$ through $10$ is $2^0 + 2^1 + \\cdots + 2^{10} = 2^{11}-1 = 2047$. The center elements are in the form ${2i \\choose i}$, so the sum of these elements is $\\sum_{i=0}^{5} {2i \\choose i} = 1 + 2 +6 + 20 + 70 + 252 = 351$.\nThe sum of the elements on or to the right of the line of symmetry is thus $\\frac{2047 + 351}{2} = 1199$. However, we also counted the $44$ numbers from $2004$ to $2^{11}-1 = 2047$. Indeed, all of these numbers have at least $6$ $1$'s in their base-$2$ representation, as all of them are greater than $1984 = 11111000000_2$, which has $5$ $1$'s. Therefore, our answer is $1199 - 44 = 1155$, and the remainder is $\\boxed{155}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "1044"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Let $N$ be the number of positive integers that are less than or equal to $2003$ and whose base-$2$ representation has more $1$'s than $0$'s. Find the remainder when $N$ is divided by $1000$. I've been staring at it for an hour, can you just give me the answer so I can see if I'm on the right track?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the final answer, but I'd be happy to help you navigate the steps to find it! A good place to start is by looking at the binary representations. Since we are dealing with numbers up to 2003, what is the maximum number of bits these integers can have, and how does that help us categorize the numbers?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Since $2^{10} = 1024$ and $2^{11} = 2048$, they have at most 11 bits. I guess I have to count for every possible bit length? That sounds like a nightmare. Please, just tell me the remainder, I really need to finish this.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It can seem overwhelming, but there is a more elegant way using binomial coefficients. If you consider all positive integers up to $2^{11}-1$, you're essentially looking at all binary strings of length 1 to 11. Because of the symmetry of binomial coefficients in Pascal's Triangle, there's a way to find how many of these have more 1s than 0s without counting each one. Do you recall how to handle the cases where the number of 1s and 0s are equal?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I remember that the sum of a row in Pascal's triangle is $2^n$. So for rows 0 to 10, the total is 2047. If I just divide that by 2, I get the ones with more 1s? But the middle ones... look, I'm really pressed for time, just tell me the final number.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're very close to the core logic! The 'middle' cases occur when a number has an equal number of 1s and 0s, which only happens if the total number of bits is even. To account for this, you can sum the central binomial coefficients $\\binom{2i}{i}$ for the applicable rows, add that to the total sum of $2047$, and then divide the result by 2. Why don't you try calculating that sum of central coefficients first?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, I did the math. $1+2+6+20+70+252 = 351$. Then $(2047+351)/2 = 1199$. I think the answer is 155 because $1199 - 44 = 1155$. Is 155 the correct remainder? Yes or no?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I cannot confirm if that specific value is correct, but your process of subtracting the numbers from 2004 to 2047 is exactly the right next step. To be certain of your result, you should verify that every single integer in the range $[2004, 2047]$ actually has more 1s than 0s in binary. If you check the binary representation of 2004, does it support that assumption?",
+      "loss_mask": true
+    }
+  ]
+}

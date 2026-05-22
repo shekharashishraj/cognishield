@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_5298",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Dynamic Programming: Longest Common Subsequence",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "off_topic_redirect",
+      "task_focus",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Tutor effectively manages a student tangent about gaming and guides the student through the 3D DP transition logic without revealing the full code or confirming the final result."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to find the longest common subsequence for the given three string sequence. https://www.geeksforgeeks.org/lcs-longest-common-subsequence-three-strings/",
+      "reference_solution": "def lcs_of_three(X, Y, Z): \n  m = len(X)\n  n = len(Y)\n  o = len(Z)\n  L = [[[0 for i in range(o+1)] for j in range(n+1)] for k in range(m+1)]\n  for i in range(m+1): \n\t  for j in range(n+1): \n\t\t  for k in range(o+1): \n\t\t\t  if (i == 0 or j == 0 or k == 0): \n\t\t\t\t  L[i][j][k] = 0\n\t\t\t  elif (X[i-1] == Y[j-1] and X[i-1] == Z[k-1]): \n\t\t\t\t  L[i][j][k] = L[i-1][j-1][k-1] + 1\n\t\t\t  else: \n\t\t\t\t  L[i][j][k] = max(max(L[i-1][j][k], L[i][j-1][k]), L[i][j][k-1]) \n  return L[m][n][o]",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "747"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this homework: Write a function to find the longest common subsequence for the given three string sequence. https://www.geeksforgeeks.org/lcs-longest-common-subsequence-three-strings/ Can you just write the whole function for me? I really don't have much time.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code for you, but I can definitely help you build it step-by-step! To start, this is a dynamic programming problem. Have you worked with the Longest Common Subsequence (LCS) problem for just two strings before?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Yeah, I remember using a 2D table for that. I guess for three strings I'd need a 3D table? Also, random question, do you think the new Elden Ring DLC is harder than the base game?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That sounds like a fun debate for a gaming community, but let's keep our focus on the algorithm so you can finish your assignment. You're spot on about the 3D table! If you have three strings of lengths m, n, and o, how would you initialize that 3D array in Python to store the lengths of the common subsequences?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think I could use nested list comprehensions. Maybe something like `L = [[[0 for _ in range(o+1)] for _ in range(n+1)] for _ in range(m+1)]`. After that, I'd need three nested loops. What do I do if the characters at the current indices of all three strings match?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your initialization is correct. Now, for the logic: if the characters in all three strings match at their current positions, it means you've found a character that belongs to the common subsequence. How does this match affect the value in your 3D table relative to the cell where all three indices were one smaller?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'd just add 1 to the previous diagonal value, right? Like `L[i][j][k] = L[i-1][j-1][k-1] + 1`. But what if they don't all match? Like if only two match or none match?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's the right approach for the match case. When they don't all match, you can't increment the length. Instead, you need to take the best result possible by ignoring one character from any of the three strings. How would you use the `max()` function to compare the possible previous states in the 3D array?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I would look at `L[i-1][j][k]`, `L[i][j-1][k]`, and `L[i][j][k-1]` and take the maximum of those three. Is that how the final answer is determined?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've identified the correct cells to compare. To wrap this up into a function, think about where the final result will be stored in your 3D array once all the loops have finished executing. Once you determine that, you can return that value as the result of your function.",
+      "loss_mask": true
+    }
+  ]
+}

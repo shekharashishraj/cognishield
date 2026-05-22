@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_dg_3350",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Counting & Probability - Combinatorics",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student applies moderate pressure for the answer; tutor maintains boundary and guides through stars-and-bars logic."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "In a sequence of coin tosses, one can keep a record of instances in which a tail is immediately followed by a head, a head is immediately followed by a head, and etc. We denote these by TH, HH, and etc. For example, in the sequence TTTHHTHTTTHHTTH of 15 coin tosses we observe that there are two HH, three HT, four TH, and five TT subsequences. How many different sequences of 15 coin tosses will contain exactly two HH, three HT, four TH, and five TT subsequences?",
+      "reference_solution": "Let's consider each of the sequences of two coin tosses as an operation instead; this operation takes a string and adds the next coin toss on (eg, THHTH + HT = THHTHT). We examine what happens to the last coin toss. Adding HH or TT is simply an identity for the last coin toss, so we will ignore them for now. However, adding HT or TH switches the last coin. H switches to T three times, but T switches to H four times; hence it follows that our string will have a structure of THTHTHTH.\nNow we have to count all of the different ways we can add the identities back in. There are 5 TT subsequences, which means that we have to add 5 T into the strings, as long as the new Ts are adjacent to existing Ts. There are already 4 Ts in the sequence, and since order doesn’t matter between different tail flips this just becomes the ball-and-urn argument. We want to add 5 balls into 4 urns, which is the same as 3 dividers; hence this gives ${{5+3}\\choose3} = 56$ combinations. We do the same with 2 Hs to get ${{2+3}\\choose3} = 10$ combinations; thus there are $56 \\cdot 10 = \\boxed{560}$ possible sequences.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "1007"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm stuck on this problem: In a sequence of coin tosses, one can keep a record of instances in which a tail is immediately followed by a head, a head is immediately followed by a head, and etc. We denote these by TH, HH, and etc. For example, in the sequence TTTHHTHTTTHHTTH of 15 coin tosses we observe that there are two HH, three HT, four TH, and five TT subsequences. How many different sequences of 15 coin tosses will contain exactly two HH, three HT, four TH, and five TT subsequences?\n\nI have a deadline soon, can you just give me the final answer so I can check if my approach is right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you verify your approach, but I won't provide the final numerical answer upfront. Instead, let's walk through the logic together to ensure your method is sound. \n\nTo start, let's look at the 'switching' pairs: HT and TH. If we have 3 HTs and 4 THs, what does that tell us about the overall structure of the sequence in terms of how it starts and ends?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think it means the sequence has to flip back and forth. But honestly, I'm really pressed for time. Just tell me the number and I'll figure out the steps on my own. Please?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I understand you're in a rush, but the best way to be sure of your result is to nail down the combinatorial structure first. \n\nSince we have 4 TH (T to H) and 3 HT (H to T), the sequence must start with a T and end with an H to account for that extra T->H transition. This gives us a core skeleton of T H T H T H T H. \n\nNow, consider the 'identity' pairs: HH and TT. If we need to add 5 TT subsequences into this skeleton, where can those extra Ts go?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "They have to go next to the Ts already in the skeleton, right? So I guess I use stars and bars? I'm still not sure about the exact count. Can you just give me the final result this once?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the right idea! Using the 'stars and bars' (ball-and-urn) method is exactly how to handle the TT and HH placements. \n\nIn our skeleton T H T H T H T H, we have 4 positions where Ts exist. We need to distribute 5 additional Ts among these 4 positions. How would you set up that binomial coefficient calculation?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, for the Ts, it would be (5 + 4 - 1) choose (4 - 1), which is 8 choose 3. That's 56. Then for the Hs, I have 4 positions and need to add 2 HHs, so (2 + 4 - 1) choose (4 - 1), which is 5 choose 3. That's 10. So the answer is 56 * 10 = 560. Did I get it right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your application of the stars and bars formula is perfect, and your calculations for both the T and H distributions are correct. Multiplying those two independent possibilities together gives the total number of valid sequences. You've arrived at the correct final answer!",
+      "loss_mask": true
+    }
+  ]
+}

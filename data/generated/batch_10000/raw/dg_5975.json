@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_5975",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "emotional_support",
+      "frustration",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor provides emotional validation and breaks the problem into two distinct logical components (frequency counting and order checking) without providing the code or confirming the final logic as a 'correct' answer, adhering to method_only policy."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "def is_sorted(lst):\n    '''\n    Given a list of numbers, return whether or not they are sorted\n    in ascending order. If list has more than 1 duplicate of the same\n    number, return False. Assume no negative numbers and only integers.\n\n    Examples\n    is_sorted([5]) ➞ True\n    is_sorted([1, 2, 3, 4, 5]) ➞ True\n    is_sorted([1, 3, 2, 4, 5]) ➞ False\n    is_sorted([1, 2, 3, 4, 5, 6]) ➞ True\n    is_sorted([1, 2, 3, 4, 5, 6, 7]) ➞ True\n    is_sorted([1, 3, 2, 4, 5, 6, 7]) ➞ False\n    is_sorted([1, 2, 2, 3, 3, 4]) ➞ True\n    is_sorted([1, 2, 2, 2, 3, 4]) ➞ False\n    '''",
+      "reference_solution": "count_digit = dict([(i, 0) for i in lst])\n    for i in lst:\n        count_digit[i]+=1 \n    if any(count_digit[i] > 2 for i in lst):\n        return False\n    if all(lst[i-1] <= lst[i] for i in range(1, len(lst))):\n        return True\n    else:\n        return False",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/126"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm so tired of this. I've been staring at this problem for an hour and I still don't get it. I feel like I'm just not smart enough for this class. Can you just give me the code so I can move on?\n\ndef is_sorted(lst):\n    '''\n    Given a list of numbers, return whether or not they are sorted\n    in ascending order. If list has more than 1 duplicate of the same\n    number, return False. Assume no negative numbers and only integers.\n\n    Examples\n    is_sorted([5]) ➞ True\n    is_sorted([1, 2, 3, 4, 5]) ➞ True\n    is_sorted([1, 3, 2, 4, 5]) ➞ False\n    is_sorted([1, 2, 3, 4, 5, 6]) ➞ True\n    is_sorted([1, 2, 3, 4, 5, 6, 7]) ➞ True\n    is_sorted([1, 3, 2, 4, 5, 6, 7]) ➞ False\n    is_sorted([1, 2, 2, 3, 3, 4]) ➞ True\n    is_sorted([1, 2, 2, 2, 3, 4]) ➞ False\n    '''",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I hear how frustrated you are, and it's completely okay to feel that way. Programming is challenging because it requires a very specific way of thinking that takes time to develop—it's not about being 'smart enough,' it's just about practice. Let's try to tackle this by breaking it into two smaller goals. First, if we ignore the duplicates for a moment, how would you check if the list is sorted in ascending order?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I'd loop through it and check if the current number is bigger than the next one. But every time I try that, I get an IndexError at the end of the list. I can't even do the simple part.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "IndexErrors are something every single developer deals with; they are actually a great way to learn how lists work! To avoid stepping off the end of the list, one trick is to start your loop at the second element (index 1) and compare it to the one before it (index i-1). That way, you never go past the last index. Does that approach feel more manageable?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Yeah, that makes sense. I can just check `lst[i-1] <= lst[i]`. But the other part is what's killing me. 'If list has more than 1 duplicate of the same number, return False.' I don't even know where to start with that. Does that mean if a number appears three times, it's False?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've interpreted that correctly: two of the same number is okay (that's one duplicate), but three or more is not. To solve this, you need a way to count how many times each number appears in the list. If you had to keep a tally of items, what Python data structure would you use to map a number to its count?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "A dictionary? I could use the number as the key and increment the value every time I see it. But then I have to write two different loops? That seems like a lot of work.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It might feel like more work, but splitting the problem into a 'counting phase' and a 'checking phase' actually makes your code much easier to debug. Once you have your dictionary filled with counts, how would you check if any of those counts exceed the limit we discussed?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'd probably loop through the dictionary values and if any value is greater than 2, I'd return False. So I'll do the dictionary count first, then the sorting loop. I think I can actually write this now.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a clear, logical plan. You've taken a confusing problem and turned it into two simple tasks. Why don't you try writing the code for those two steps? I'm right here if you run into any more errors or get stuck on the syntax.",
+      "loss_mask": true
+    }
+  ]
+}

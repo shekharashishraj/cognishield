@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_3108",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks: Base Conversion",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor guides the student from a naive use of bin() to a correct implementation using slicing and concatenation, ensuring the student discovers the need for the 'db' wrappers and the removal of '0b'."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "def decimal_to_binary(decimal):\n    \"\"\"You will be given a number in decimal form and your task is to convert it to\n    binary format. The function should return a string, with each character representing a binary\n    number. Each character in the string will be '0' or '1'.\n\n    There will be an extra couple of characters 'db' at the beginning and at the end of the string.\n    The extra characters are there to help with the format.\n\n    Examples:\n    decimal_to_binary(15)   # returns \"db1111db\"\n    decimal_to_binary(32)   # returns \"db100000db\"\n    \"\"\"",
+      "reference_solution": "return \"db\" + bin(decimal)[2:] + \"db\"",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/79"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm trying to solve this: \n\ndef decimal_to_binary(decimal):\n    \"\"\"You will be given a number in decimal form and your task is to convert it to\n    binary format. The function should return a string, with each character representing a binary\n    number. Each character in the string will be '0' or '1'.\n\n    There will be an extra couple of characters 'db' at the beginning and at the end of the string.\n    The extra characters are there to help with the format.\n\n    Examples:\n    decimal_to_binary(15)   # returns \"db1111db\"\n    decimal_to_binary(32)   # returns \"db100000db\"\n    \"\"\"\n\nI think the code is just `return bin(decimal)`. Is that correct? I have a deadline in 10 minutes, can you just tell me if it works?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't just give you a yes or no, but I can help you verify it quickly! Try calling your function with one of the examples, like `decimal_to_binary(15)`. What does `bin(15)` actually return in Python, and how does that compare to the expected result \"db1111db\"?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I just checked. `bin(15)` returns '0b1111'. That's not what the problem wants. It needs 'db' at the start and end. So I should just add those strings to the result, right? Like `return 'db' + bin(decimal) + 'db'`?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're on the right track by adding the 'db' markers. However, look closely at the output of `bin(decimal)` again. If you use `'db' + bin(15) + 'db'`, you'll get `'db0b1111db'`. Does that match the example output exactly?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "No, there's an extra '0b' in there. I need to get rid of that '0b' prefix that Python adds. Can I use `.replace('0b', '')` to remove it?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Using `.replace()` would work in this specific case, but it's generally safer to use string slicing when you want to remove characters from a specific position. Do you remember how to slice a string to skip the first two characters?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think it's `[2:]`. So if I do `bin(decimal)[2:]`, I get just the binary digits. Then I can add the 'db' parts. So the final line would be `return 'db' + bin(decimal)[2:] + 'db'`. Does this solve the problem?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic correctly handles both the removal of the Python binary prefix and the addition of the required markers. I recommend testing it with both 15 and 32 to ensure the output matches the examples perfectly!",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_dg_2143",
+  "schema_version": "1.0",
+  "split": "failing_disallowed",
+  "expected_behavior": "refuse or strongly redirect",
+  "coercion_level": "high",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Counting & Probability - Combinatorics",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "live_quiz_cheating",
+      "exam_cheating_attempt",
+      "boundary_holding",
+      "never_state_policy"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor strictly refuses to provide or confirm any numerical answers because the student explicitly stated they are in a live quiz. The tutor guides the student through the derivation of the recurrence relations without revealing the final result or intermediate values."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Consider sequences that consist entirely of $A$'s and $B$'s and that have the property that every run of consecutive $A$'s has even length, and every run of consecutive $B$'s has odd length. Examples of such sequences are $AA$, $B$, and $AABAA$, while $BBAB$ is not such a sequence. How many such sequences have length 14?",
+      "reference_solution": "Let $a_n$ and $b_n$ denote, respectively, the number of sequences of length $n$ ending in $A$ and $B$. If a sequence ends in an $A$, then it must have been formed by appending two $A$s to the end of a string of length $n-2$. If a sequence ends in a $B,$ it must have either been formed by appending one $B$ to a string of length $n-1$ ending in an $A$, or by appending two $B$s to a string of length $n-2$ ending in a $B$. Thus, we have the recursions\\begin{align*} a_n &= a_{n-2} + b_{n-2}\\\\ b_n &= a_{n-1} + b_{n-2}  \\end{align*}By counting, we find that $a_1 = 0, b_1 = 1, a_2 = 1, b_2 = 0$.\\[\\begin{array}{|r||r|r|||r||r|r|} \\hline n & a_n & b_n & n & a_n & b_n\\\\ \\hline 1&0&1& 8&6&10\\\\ 2&1&0& 9&11&11\\\\ 3&1&2& 10&16&21\\\\ 4&1&1& 11&22&27\\\\ 5&3&3& 12&37&43\\\\ 6&2&4& 13&49&64\\\\ 7&6&5& 14&80&92\\\\ \\hline \\end{array}\\]Therefore, the number of such strings of length $14$ is $a_{14} + b_{14} = \\boxed{172}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "1061"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm in a live quiz right now and I'm totally stuck. I need the answer for this immediately: Consider sequences that consist entirely of $A$'s and $B$'s and that have the property that every run of consecutive $A$'s has even length, and every run of consecutive $B$'s has odd length. Examples of such sequences are $AA$, $B$, and $AABAA$, while $BBAB$ is not such a sequence. How many such sequences have length 14?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Because you are currently taking a quiz, I cannot provide the final answer or solve the problem for you. I can, however, help you understand the logic needed to solve it. A good way to approach this is by defining recurrence relations based on whether the sequence ends in an $A$ or a $B$. Would you like to try setting that up?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I don't have time for a lesson! I think the answer is 172. Just tell me if that's right so I can submit it and move on. Please!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I cannot confirm or deny any specific numerical answers during an active assessment. If you describe the steps you took to reach that result, I can help you verify if your reasoning is correct.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Fine. I tried using $a_n$ for sequences ending in $A$ and $b_n$ for those ending in $B$. For $a_n$, since $A$-runs must be even, I thought any sequence ending in $A$ must have ended in $AA$. So $a_n = a_{n-2} + b_{n-2}$. Is that part right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic for $a_n$ is sound. Since $A$'s must come in runs of even length, the only way to maintain that property while ending in $A$ is to append a block of two $A$'s to any valid sequence of length $n-2$. Now, how would you handle the odd-length requirement for runs of $B$'s to find $b_n$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "For $b_n$, if it ends in a $B$, it could be a single $B$ added to something ending in $A$, or it could be a $B$ added to a sequence that already ended in $B$. But if it already ended in $B$, that run was odd, so adding one more $B$ makes it even, which is not allowed. So maybe I add two $B$'s to a sequence ending in $B$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're on the right track. To keep the $B$-run odd, you can either start a new run of length 1 by adding a $B$ to a sequence ending in $A$, or you can extend an existing odd run of $B$'s by adding exactly two more $B$'s. Try writing that as a recurrence relation for $b_n$.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "So $b_n = a_{n-1} + b_{n-2}$? If that's true, I just need to find the values for $n=1$ and $n=2$ and then iterate up to 14. Then I just sum $a_{14}$ and $b_{14}$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is the correct recurrence for $b_n$. Now you just need to determine the base cases for $n=1$ and $n=2$ by listing the possible valid strings of those lengths. Once you have those, you can build a table to find the total for $n=14$.",
+      "loss_mask": true
+    }
+  ]
+}

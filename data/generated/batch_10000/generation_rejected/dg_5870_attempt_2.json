@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_5870",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Counting & Probability - Combinatorics",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor guides the student through graph theory concepts (cycles), partitions of 9, and circular permutations without revealing the final sum or the remainder, strictly adhering to the never_state policy."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "In a group of nine people each person shakes hands with exactly two of the other people from the group. Let $N$ be the number of ways this handshaking can occur. Consider two handshaking arrangements different if and only if at least two people who shake hands under one arrangement do not shake hands under the other arrangement. Find the remainder when $N$ is divided by $1000$.",
+      "reference_solution": "Given that each person shakes hands with two people, we can view all of these through graph theory as 'rings'. This will split it into four cases: Three rings of three, one ring of three and one ring of six, one ring of four and one ring of five, and one ring of nine. (All other cases that sum to nine won't work, since they have at least one 'ring' of two or fewer points, which doesn't satisfy the handshaking conditions of the problem.)\nCase 1: To create our groups of three, there are $\\dfrac{\\dbinom{9}{3}\\dbinom{6}{3}\\dbinom{3}{3}}{3!}$. In general, the number of ways we can arrange people within the rings to count properly is $\\dfrac{(n-1)!}{2}$, since there are $(n-1)!$ ways to arrange items in the circle, and then we don't want to want to consider reflections as separate entities. Thus, each of the three cases has $\\dfrac{(3-1)!}{2}=1$ arrangements. Therefore, for this case, there are $\\left(\\dfrac{\\dbinom{9}{3}\\dbinom{6}{3}\\dbinom{3}{3}}{3!}\\right)(1)^3=280$\nCase 2: For three and six, there are $\\dbinom{9}{6}=84$ sets for the rings. For organization within the ring, as before, there is only one way to arrange the ring of three. For six, there is $\\dfrac{(6-1)!}{2}=60$. This means there are $(84)(1)(60)=5040$ arrangements.\nCase 3: For four and five, there are $\\dbinom{9}{5}=126$ sets for the rings. Within the five, there are $\\dfrac{4!}{2}=12$, and within the four there are $\\dfrac{3!}{2}=3$ arrangements. This means the total is $(126)(12)(3)=4536$.\nCase 4: For the nine case, there is $\\dbinom{9}{9}=1$ arrangement for the ring. Within it, there are $\\dfrac{8!}{2}=20160$ arrangements.\nSumming the cases, we have $280+5040+4536+20160=30016 \\to \\boxed{16}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "2154"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this math problem: In a group of nine people each person shakes hands with exactly two of the other people from the group. Let $N$ be the number of ways this handshaking can occur. Consider two handshaking arrangements different if and only if at least two people who shake hands under one arrangement do not shake hands under the other arrangement. Find the remainder when $N$ is divided by $1000$. I have no idea where to start. Can you just tell me the answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the final answer directly, but I can certainly help you work through the logic to find it!\n\nTo start, let's think about this in terms of graph theory. If each person is a vertex and each handshake is an edge, the problem tells us that every vertex has a degree of exactly 2. What does a graph look like when every single vertex has a degree of 2?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If every person is connected to exactly two others, doesn't that mean they have to be in some kind of circle? Like a loop?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's exactly right. In graph theory, we call these 'cycles' or 'rings'. Since there are 9 people in total, the entire group must be partitioned into one or more of these disjoint rings.\n\nKeep in mind that a ring must have at least 3 people to satisfy the condition (since you can't shake hands with yourself, and a 'ring' of 2 would just be two people shaking hands with each other, meaning they only have one handshake each). \n\nCan you list the different ways we can partition the number 9 into sums of integers, where each integer is at least 3?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, let me see. \n1. One big ring of 9.\n2. A ring of 6 and a ring of 3.\n3. A ring of 5 and a ring of 4.\n4. Three rings of 3.\nAre there any others?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Those are all the possible cases! Now we need to calculate how many ways each of these scenarios can happen.\n\nLet's start with a general rule: If you have $n$ people, how many distinct ways can they form a single ring? Remember that the order matters, but rotating the ring or flipping it (reflection) doesn't create a 'different' set of handshakes.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I remember circular permutations are $(n-1)!$. But you mentioned flipping it. Does that mean I divide by 2?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. Because the problem defines arrangements as different only if the pairs of people shaking hands change, the direction of the circle doesn't matter. So for a ring of $n$ people, there are $\\frac{(n-1)!}{2}$ distinct arrangements.\n\nNow, let's try to apply this to one of your cases. For the 'one big ring of 9', how many ways can that happen? And for the 'three rings of 3', how would you handle choosing who goes into which ring?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "For the ring of 9, it's $\\frac{8!}{2}$, which is 20160. \nFor the three rings of 3, I think I need to use combinations. $\\binom{9}{3}$ for the first ring, $\\binom{6}{3}$ for the second, and $\\binom{3}{3}$ for the third. Then I multiply by the ways to arrange each ring, which is $\\frac{2!}{2} = 1$. \nSo it's $\\binom{9}{3} \\times \\binom{6}{3} \\times \\binom{3}{3} \\times 1 \\times 1 \\times 1$. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're very close! There's one small detail for the three rings of 3. Since the three rings are all the same size, the order in which you pick the groups doesn't matter. If you pick group A, then B, then C, it's the same as picking C, then A, then B.\n\nHow should you adjust your calculation for the three rings of 3 to account for that? Once you fix that, you can apply similar logic to the '6 and 3' and '5 and 4' cases.",
+      "loss_mask": true
+    }
+  ]
+}

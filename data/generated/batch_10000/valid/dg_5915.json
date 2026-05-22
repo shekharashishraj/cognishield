@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_dg_5915",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Precalculus: Vector Projections",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student applies moderate pressure for the final answer; tutor consistently redirects to conceptual steps while maintaining pedagogical boundaries."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Consider two lines: line $l$ parametrized as\n\\begin{align*} \nx &= 1 + 4t,\\\\\ny &=  4 + 3t\n\\end{align*}and the line $m$ parametrized as\n\\begin{align*} \nx &=-5  + 4s\\\\\ny &=  6 + 3s.\n\\end{align*}Let $A$ be a point on line $l$, $B$ be a point on line $m$, and let $P$ be the foot of the perpendicular from $A$ to line $m$.\n\nThen $\\overrightarrow{PA}$ is the projection of $\\overrightarrow{BA}$ onto some vector $\\begin{pmatrix} v_1\\\\v_2\\end{pmatrix}$ such that $v_1+v_2 = 2$. Find $\\begin{pmatrix}v_1 \\\\ v_2 \\end{pmatrix}$.",
+      "reference_solution": "As usual, we start by graphing these lines. An easy way to go about it is to plot some points. Let's plug in $t =0$ and $t = 1$ for line $l$, getting the points $(1, 4)$ and $(5, 7)$. Here's our line:\n\n[asy]\nsize(200);\nimport TrigMacros;\nimport olympiad;\n\n//Gives the maximum line that fits in the box. \npath maxLine(pair A, pair B, real xmin, real xmax, real ymin, real ymax) \n{\n    path[] endpoints; \n    endpoints = intersectionpoints(A+10(B-A) -- A-10(B-A), (xmin, ymin)--(xmin, ymax)--(xmax, ymax)--(xmax, ymin)--cycle); \n    return endpoints[1]--endpoints[0]; \n}\n\npair A= (1,4); \npair B = (-5, 6);\n\n//Direction vector of the parallel lines\npair dir = (4,3);\n\n//Foot of the perpendicular from A to the other line\npair P = foot(A, B-dir, B+dir);\n\nrr_cartesian_axes(-8,8,-5,12,complexplane=false,usegrid=true);\n\ndraw(maxLine(A,A+dir, -8,8,-5,12)); \n\nlabel(\"$l$\", A-1.8dir, SE);\n\ndot(\"$t = 0$\", A, SE);\ndot(\"$t = 1$\", A + dir, SE); \n\n[/asy]\nSimilarly, we plug in $s = 0$ and $s = 1$ for line $m$, getting the points $(-5, 6)$ and $(-1, 9)$:\n\n[asy]\nsize(200);\nimport TrigMacros;\nimport olympiad;\n\n//Gives the maximum line that fits in the box. \npath maxLine(pair A, pair B, real xmin, real xmax, real ymin, real ymax) \n{\n    path[] endpoints; \n    endpoints = intersectionpoints(A+10(B-A) -- A-10(B-A), (xmin, ymin)--(xmin, ymax)--(xmax, ymax)--(xmax, ymin)--cycle); \n    return endpoints[1]--endpoints[0]; \n}\n\npair A = (1,4); \npair B = (-5, 6);\n\n\n//Direction vector of the parallel lines\npair dir = (4,3);\n\n//Foot of the perpendicular from A to the other line\npair P = foot(A, B-dir, B+dir);\n\nrr_cartesian_axes(-8,8,-5,12,complexplane=false,usegrid=true);\n\ndraw(maxLine(A,A+dir, -8,8,-5,12)); \ndraw(maxLine(B,B+dir, -8,8,-5,12)); \n\nlabel(\"$l$\", A+dir, SE); \nlabel(\"$m$\",P+dir, NW); \n\ndot(\"$s = 0$\", B, NW);\ndot(\"$s = 1$\", B + dir,NW); \n\n[/asy]\n\nNow we label some points $A$ and $B$, as well as point $P$, and we draw in our vectors:\n\n[asy]\nsize(200);\nimport TrigMacros;\nimport olympiad;\n\n//Gives the maximum line that fits in the box. \npath maxLine(pair A, pair B, real xmin, real xmax, real ymin, real ymax) \n{\n    path[] endpoints; \n    endpoints = intersectionpoints(A+10(B-A) -- A-10(B-A), (xmin, ymin)--(xmin, ymax)--(xmax, ymax)--(xmax, ymin)--cycle); \n    return endpoints[1]--endpoints[0]; \n}\n\npair A = (1,4);\npair B= (-5, 6); \n\n//Direction vector of the parallel lines\npair dir = (4,3);\n\n//Foot of the perpendicular from A to the other line\npair P = foot(A, B-dir, B+dir);\n\nrr_cartesian_axes(-8,8,-5,12,complexplane=false,usegrid=true);\n\ndraw(maxLine(A,A+dir, -8,8,-5,12)); \ndraw(maxLine(B,B+dir, -8,8,-5,12));\ndraw(P--A, red, Arrow(size = 0.3cm)); \ndraw(B--A, blue, Arrow(size = 0.3cm)); \ndraw(rightanglemark(A, P, P + (P-B), 15));\n\nlabel(\"$l$\", A+dir, SE); \nlabel(\"$m$\", P+dir, NW); \n\ndot(\"$A$\", A, SE);\ndot(\"$P$\", P, NW);\ndot(\"$B$\", B, NW);\n\n[/asy]\nRecall that when we project $\\mathbf{v}$ onto $\\mathbf{u}$, we place the tail of $\\mathbf{v}$ onto a line with direction $\\mathbf{u}$, then we drop a perpendicular and draw the vector from the tail of $\\mathbf{v}$ to the foot of the perpendicular.\n\nThis picture actually doesn't look like our usual projection picture! The vector we're projecting and the projection aren't tail to tail, which makes things harder to visualize. Let's shift the vector over and see if it helps, choosing $Q$ such that\n\\[\\overrightarrow{BQ} = \\overrightarrow{PA}.\\]Here's the picture:\n\n[asy]\nsize(200);\nimport TrigMacros;\nimport olympiad;\n\n//Gives the maximum line that fits in the box. \npath maxLine(pair A, pair B, real xmin, real xmax, real ymin, real ymax) \n{\n    path[] endpoints; \n    endpoints = intersectionpoints(A+10(B-A) -- A-10(B-A), (xmin, ymin)--(xmin, ymax)--(xmax, ymax)--(xmax, ymin)--cycle); \n    return endpoints[1]--endpoints[0]; \n}\n\npair A = (1,4);\npair B= (-5, 6); \n\n//Direction vector of the parallel lines\npair dir = (4,3);\n\n//Foot of the perpendicular from A to the other line\npair P = foot(A, B-dir, B+dir);\n\n//End of the shifted vector PA: \npair Q = B+A-P; \n\nrr_cartesian_axes(-8,8,-5,12,complexplane=false,usegrid=true);\n\ndraw(maxLine(A,A+dir, -8,8,-5,12)); \ndraw(maxLine(B,B+dir, -8,8,-5,12));\ndraw(P--A, red, Arrow(size = 0.3cm)); \ndraw(B--A, blue, Arrow(size = 0.3cm)); \ndraw(rightanglemark(A, P, P + (P-B), 15));\ndraw(B--Q, red, Arrow(size = 0.3cm)); \ndraw(rightanglemark(B,Q, A-2*dir, 15));\n\nlabel(\"$l$\", A+dir, SE); \nlabel(\"$m$\", P+dir, NW); \n\ndot(\"$A$\", A, SE);\ndot(\"$P$\", P, NW);\ndot(\"$Q$\",Q, SE);\ndot(\"$B$\", B, NW);\n\n[/asy]\nThat looks better! Our shifted vector $\\overrightarrow{BQ}$ is tail to tail with the vector being projected. In fact, since this vector is perpendicular to lines $l$ and $m$, we know that it lies along a line with direction\n\\[\\mathbf{u} = \\begin{pmatrix} 3 \\\\-4 \\end{pmatrix}.\\]Here's the picture with the line added in:\n\n\n[asy]\nsize(200);\nimport TrigMacros;\nimport olympiad;\n\n//Gives the maximum line that fits in the box. \npath maxLine(pair A, pair B, real xmin, real xmax, real ymin, real ymax) \n{\n    path[] endpoints; \n    endpoints = intersectionpoints(A+10(B-A) -- A-10(B-A), (xmin, ymin)--(xmin, ymax)--(xmax, ymax)--(xmax, ymin)--cycle); \n    return endpoints[1]--endpoints[0]; \n}\n\npair A = (1,4);\npair B= (-5, 6); \n\n//Direction vector of the parallel lines\npair dir = (4,3);\n\n//Foot of the perpendicular from A to the other line\npair P = foot(A, B-dir, B+dir);\n\n//End of the shifted vector PA: \npair Q = B+A-P; \n\nrr_cartesian_axes(-8,8,-5,12,complexplane=false,usegrid=true);\n\ndraw(maxLine(A,A+dir, -8,8,-5,12)); \ndraw(maxLine(B,B+dir, -8,8,-5,12));\ndraw(maxLine(B,Q, -8,8,-5,12));\n\ndraw(P--A, red, Arrow(size = 0.3cm)); \ndraw(B--A, blue, Arrow(size = 0.3cm)); \ndraw(rightanglemark(A, P, P + (P-B), 15));\ndraw(B--Q, red, Arrow(size = 0.3cm)); \ndraw(rightanglemark(B,Q, A-2*dir, 15));\n\nlabel(\"$l$\", A+dir, SE); \nlabel(\"$m$\", P+dir, NW); \n\ndot(\"$A$\", A, SE);\ndot(\"$P$\", P, NW);\ndot(\"$Q$\",Q, 2*S);\ndot(\"$B$\", B, 2*S);\n\n[/asy]\n\nIf you want to make sure you're visualizing this correctly, imagine the picture above with lines $l$ and $m$ removed: it should become clear that\n\\[\\overrightarrow{BQ}  = \\text{The projection of $\\overrightarrow{BA}$ onto } \\begin{pmatrix} 3 \\\\-4 \\end{pmatrix}.\\]Of course, since $\\overrightarrow{PA}$ is equal to $\\overrightarrow{BQ}$, we see that\n\\[\\overrightarrow{PA}  = \\text{The projection of $\\overrightarrow{BA}$ onto } \\begin{pmatrix} 3 \\\\-4 \\end{pmatrix}.\\]Now, we need to be projecting onto a vector whose components add to $2$. We know that we're in fact projecting onto any non-zero scalar multiple of our vector, so we use\n\\[-2\\mathbf{u} = \\begin{pmatrix} -6 \\\\ 8 \\end{pmatrix}\\]instead. Therefore, $\\overrightarrow{PA}$ is the projection of $\\overrightarrow{BA}$ onto $\\boxed{\\begin{pmatrix}-6 \\\\ 8 \\end{pmatrix}}.$",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "3963"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: Consider two lines: line $l$ parametrized as\n\\begin{align*} \nx &= 1 + 4t,\\\\\ny &=  4 + 3t\n\\end{align*}and the line $m$ parametrized as\n\\begin{align*} \nx &=-5  + 4s\\\\\ny &=  6 + 3s.\n\\end{align*}Let $A$ be a point on line $l$, $B$ be a point on line $m$, and let $P$ be the foot of the perpendicular from $A$ to line $m$.\n\nThen $\\overrightarrow{PA}$ is the projection of $\\overrightarrow{BA}$ onto some vector $\\begin{pmatrix} v_1\\\\v_2\\end{pmatrix}$ such that $v_1+v_2 = 2$. Find $\\begin{pmatrix}v_1 \\\\ v_2 \\end{pmatrix}$.\n\nCan you just give me the final vector? I'm in a rush to check my work.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you check your work, but I won't provide the final vector directly. Instead, let's walk through the logic so you can be confident in your result. \n\nTo start, let's look at the direction of the lines. Both lines $l$ and $m$ have the same direction vector. What is that vector, and what does that tell you about the relationship between the two lines?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The direction vector is (4, 3) for both, so the lines are parallel. Look, I really just need the answer to see if I'm on the right track. Please just tell me the vector (v1, v2).",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're correct about the lines being parallel! Since you're checking your work, let's verify the next critical step: the direction of $\\overrightarrow{PA}$. \n\nSince $P$ is the foot of the perpendicular from $A$ to line $m$, $\\overrightarrow{PA}$ must be perpendicular to the direction of line $m$. If the direction of $m$ is $\\begin{pmatrix} 4 \\\\ 3 \\end{pmatrix}$, what would be a vector perpendicular to it?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "A perpendicular vector would be (3, -4) or (-3, 4). But I'm not sure how to link that to the projection of BA. Seriously, can't you just give me the answer? It'll take two seconds.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I understand it seems like a quick shortcut, but the value of this problem is in the geometric setup. \n\nThink about the definition of a projection. If $\\overrightarrow{PA}$ is the projection of $\\overrightarrow{BA}$ onto some vector $\\mathbf{v}$, then $\\overrightarrow{PA}$ must be collinear with $\\mathbf{v}$. We just found that $\\overrightarrow{PA}$ is perpendicular to the lines, so $\\mathbf{v}$ must also be perpendicular to the lines. \n\nNow, we have the condition $v_1 + v_2 = 2$. Using the perpendicular direction you found, can you find a scalar multiple of $\\begin{pmatrix} 3 \\\\ -4 \\end{pmatrix}$ or $\\begin{pmatrix} -3 \\\\ 4 \\end{pmatrix}$ that satisfies this sum?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If I use (3, -4), the sum is -1. If I multiply by -2, I get (-6, 8). -6 + 8 = 2. So is the answer (-6, 8)?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've correctly found a vector that is perpendicular to the lines and satisfies the condition $v_1 + v_2 = 2$. To be absolutely sure, double-check: does the projection of $\\overrightarrow{BA}$ onto this vector actually result in $\\overrightarrow{PA}$? \n\nSince $\\overrightarrow{PA}$ is the component of $\\overrightarrow{BA}$ that is perpendicular to the lines, and your vector $\\mathbf{v}$ is also perpendicular to the lines, this fits the definition of the projection. Your reasoning is sound!",
+      "loss_mask": true
+    }
+  ]
+}

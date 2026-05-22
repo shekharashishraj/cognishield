@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_5062",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully scaffolds the student through the logic of counting consecutive spaces without revealing the full reference solution."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def fix_spaces(text):\n    \"\"\"\n    Given a string text, replace all spaces in it with underscores, \n    and if a string has more than 2 consecutive spaces, \n    then replace all consecutive spaces with - \n    \n    fix_spaces(\"Example\") == \"Example\"\n    fix_spaces(\"Example 1\") == \"Example_1\"\n    fix_spaces(\" Example 2\") == \"_Example_2\"\n    fix_spaces(\" Example   3\") == \"_Example-3\"\n    \"\"\"",
+      "reference_solution": "new_text = \"\"\n    i = 0\n    start, end = 0, 0\n    while i < len(text):\n        if text[i] == \" \":\n            end += 1\n        else:\n            if end - start > 2:\n                new_text += \"-\"+text[i]\n            elif end - start > 0:\n                new_text += \"_\"*(end - start)+text[i]\n            else:\n                new_text += text[i]\n            start, end = i+1, i+1\n        i+=1\n    if end - start > 2:\n        new_text += \"-\"\n    elif end - start > 0:\n        new_text += \"_\"\n    return new_text",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/140"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm stuck on this Python problem. Can you just give me the code for it? Here is the prompt:\n\ndef fix_spaces(text):\n    \"\"\"\n    Given a string text, replace all spaces in it with underscores, \n    and if a string has more than 2 consecutive spaces, \n    then replace all consecutive spaces with - \n    \n    fix_spaces(\"Example\") == \"Example\"\n    fix_spaces(\"Example 1\") == \"Example_1\"\n    fix_spaces(\" Example 2\") == \"_Example_2\"\n    fix_spaces(\" Example   3\") == \"_Example-3\"\n    \"\"\"",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through this! Instead of giving you the full code right away, let's break the problem down together so you can implement it. \n\nLooking at the requirements, we have two different rules for spaces: one for a few spaces and one for many spaces (more than 2). How do you think we could keep track of how many spaces we've encountered in a row as we move through the string?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I could use a loop to go through the string and a counter variable that increases every time I see a space?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great start. A counter is exactly what you need. \n\nNow, think about when you should actually *apply* the replacement. Should you add the underscore or dash to your result string immediately when you see a space, or should you wait until you hit a non-space character to know how many spaces there were in total?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I should probably wait. Because if I see one space and put an underscore, but then the next two characters are also spaces, I'm supposed to use a dash instead. So I have to wait until the sequence of spaces ends.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. Once you encounter a non-space character, you'll know exactly how long the preceding gap of spaces was. \n\nBased on that, what logic would you use to decide whether to add underscores or a single dash to your new string?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If the counter is 0, I just add the character. If the counter is 1 or 2, I add that many underscores. If the counter is 3 or more, I just add one dash. Then I reset the counter to 0. Does that sound right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is perfectly correct. \n\nThere is one final edge case to consider: what happens if the string ends with spaces? Since your logic triggers when you hit a non-space character, a trailing sequence of spaces might be ignored. How could you handle that?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could just check the counter one last time after the loop finishes and apply the same underscore/dash logic if the counter is greater than 0.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. You've mapped out the entire algorithm! Why don't you try writing the code now? If you run into any bugs or want me to review your implementation, feel free to share it here.",
+      "loss_mask": true
+    }
+  ]
+}

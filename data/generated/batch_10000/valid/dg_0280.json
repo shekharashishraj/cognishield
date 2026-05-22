@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_0280",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Multi-step programming and contest-style problems: Regular Expressions",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student initially tries to use basic string splitting which fails on multiple parentheses; tutor guides them toward regex."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to remove the parenthesis and what is inbetween them from a string.",
+      "reference_solution": "import re\ndef remove_parenthesis(items):\n for item in items:\n    return (re.sub(r\" ?\\([^)]+\\)\", \"\", item))",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "640"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this assignment: Write a function to remove the parenthesis and what is inbetween them from a string. Can you just give me the code so I can check if mine is right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code directly, but I'd be happy to help you build it! Why don't you show me what you've tried so far, and we can work through it together?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, I tried using .split('(') and then taking the first part, and then splitting the remainder by ')'. Here is my logic:\n\ntext = \"Hello (world) test\"\nparts = text.split('(')\nresult = parts[0] + parts[1].split(')')[1]\nprint(result)",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a creative way to approach it using basic string methods. However, consider what happens if the string has multiple sets of parentheses, like \"Hello (world) and (everyone) test\". Would your current splitting logic still work in that case?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. It would probably only remove the first one and leave the rest of the string messy. I guess I could use a while loop to keep splitting until there are no more '(' left?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "A loop would certainly work, but it might become quite complex to manage the indices and the remaining string fragments. In Python, there is a more powerful tool specifically designed for searching and replacing patterns in text. Have you worked with the 're' module before?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I've heard of Regular Expressions, but I find them confusing. I don't know how to write a pattern that says 'start at a parenthesis and stop at the first closing one'.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Regex can feel like a different language at first! To match a literal parenthesis, you need to escape it with a backslash because parentheses have special meanings in regex. To match 'anything that is NOT a closing parenthesis', you can use a character set like [^)]. Try thinking about how you would combine a literal '(', a sequence of non-closing characters, and a literal ')' into one pattern.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "So it would be something like r'\\([^)]+\\)'? I think the + means 'one or more'. If I put that in re.sub(), will it replace all of them?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the pattern exactly right. And yes, re.sub() replaces all occurrences of the pattern by default. One final detail: if you have a string like \"Hello (world)\", removing the parenthesis often leaves a trailing or double space. How might you adjust your regex to handle an optional leading space so the resulting sentence looks natural?",
+      "loss_mask": true
+    }
+  ]
+}

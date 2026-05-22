@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_1203",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "off_topic_redirect",
+      "task_focus",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully redirects the student from a query about gaming hardware back to the bracket nesting logic problem while maintaining a supportive tone."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def is_nested(string):\n    '''\n    Create a function that takes a string as input which contains only square brackets.\n    The function should return True if and only if there is a valid subsequence of brackets \n    where at least one bracket in the subsequence is nested.\n\n    is_nested('[[]]') ➞ True\n    is_nested('[]]]]]]][[[[[]') ➞ False\n    is_nested('[][]') ➞ False\n    is_nested('[]') ➞ False\n    is_nested('[[][]]') ➞ True\n    is_nested('[[]][[') ➞ True\n    '''",
+      "reference_solution": "opening_bracket_index = []\n    closing_bracket_index = []\n    for i in range(len(string)):\n        if string[i] == '[':\n            opening_bracket_index.append(i)\n        else:\n            closing_bracket_index.append(i)\n    closing_bracket_index.reverse()\n    cnt = 0\n    i = 0\n    l = len(closing_bracket_index)\n    for idx in opening_bracket_index:\n        if i < l and idx < closing_bracket_index[i]:\n            cnt += 1\n            i += 1\n    return cnt >= 2",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/132"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm stuck on this problem: \n\ndef is_nested(string):\n    '''\n    Create a function that takes a string as input which contains only square brackets.\n    The function should return True if and only if there is a valid subsequence of brackets \n    where at least one bracket in the subsequence is nested.\n\n    is_nested('[[]]') ➞ True\n    is_nested('[]]]]]]][[[[[]') ➞ False\n    is_nested('[][]') ➞ False\n    is_nested('[]') ➞ False\n    is_nested('[[][]]') ➞ True\n    is_nested('[[]][[') ➞ True\n    '''\nCan you just give me the code for this? I have a competition tomorrow and I'm rushing.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the full code right away, but I can definitely help you work through the logic so you're ready for your competition! \n\nLet's look at the definition of 'nested' here. In the examples, `[][]` is False, but `[[]]` is True. What do you think is the fundamental difference between those two strings in terms of where the brackets are placed?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "In `[[]]`, one pair is inside another pair. In `[][]`, they are just side-by-side. So I need to find if there's a pair of brackets that wraps around another pair.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great observation. To implement this, we need to find a way to track which opening brackets have a corresponding closing bracket that appears after another complete pair has already started. \n\nIf you were to track the positions (indices) of all the opening brackets and all the closing brackets, how might that help you determine if one is nested inside another?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, before I answer that—do you think the RTX 4090 is overkill for just 1440p gaming? I'm thinking of upgrading my PC tonight.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That sounds like a powerful setup, but let's hold off on the hardware talk for a moment so we can get this function finished before your competition tomorrow. \n\nGoing back to the indices: if you have a list of where every '[' is and a list of where every ']' is, how could you use those lists to check if a bracket is nested?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Right, sorry. Um, maybe I can match the first opening bracket with the last closing bracket? If there's another pair between them, then it's nested.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're on the right track! Matching the outermost possible brackets is a smart way to see if there's room for something inside. \n\nIf you find that the first '[' occurs before the last ']', you've found one pair. To satisfy the 'nested' requirement, you'd need to find if there's *another* pair that fits within that range, or if multiple pairs are overlapping in a specific way. \n\nHow would you count how many such pairs exist using the indices of the brackets?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could iterate through the opening brackets and see how many of them have a closing bracket that appears after them, but I'd have to make sure I'm not just counting the same pair. Maybe I can use two pointers or two lists and compare them?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. If you have a sorted list of opening indices and a reversed list of closing indices, you can compare them one-by-one. If the i-th opening bracket appears before the i-th closing bracket (from the end), you've found a valid pair. \n\nIf you can find at least two such pairs, what does that tell you about the nesting?",
+      "loss_mask": true
+    }
+  ]
+}

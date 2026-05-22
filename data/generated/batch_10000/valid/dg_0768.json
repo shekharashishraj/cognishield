@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_dg_0768",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Python fundamentals and short programs",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully guides the student through string cleaning and type conversion without revealing the full reference solution."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to convert tuple string to integer tuple.",
+      "reference_solution": "def tuple_str_int(test_str):\n  res = tuple(int(num) for num in test_str.replace('(', '').replace(')', '').replace('...', '').split(', '))\n  return (res)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "785"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: 'Write a function to convert tuple string to integer tuple.' I think I have it! Is this correct?\n\ndef tuple_str_int(s):\n    return tuple(s.split(','))",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see where you're starting! Before I tell you if it's correct, could you walk me through how your code handles a string like \"(1, 2, 3)\"? What do you think the output of your function would be for that specific input?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, it splits the string at the comma, so it would give me a tuple of the numbers. Like ('(1', ' 2', ' 3)')",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've spotted exactly what happens! Looking at that output ('(1', ' 2', ' 3)'), do those look like integers, or are they still strings? Also, notice the parentheses and the spaces—do those belong in the final integer tuple?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, they are still strings. And the parentheses are still there. I need to get rid of the '(' and ')' first. Should I use .replace() for that?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great idea. Using .replace() would allow you to swap those characters for empty strings. Once you've cleaned up the parentheses and split the string into a list, what is the final step needed to ensure the elements are integers rather than strings?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I need to convert each piece to an int. I can use a loop or a list comprehension. Let me try this:\n\ndef tuple_str_int(s):\n    s = s.replace('(', '').replace(')', '')\n    parts = s.split(', ')\n    return tuple(int(x) for x in parts)",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is much stronger! You've handled the cleaning and the type conversion. Just as a final check: if the input string happened to contain an ellipsis like \"(1, 2, ...)\", how would your current code handle that '...' part?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It would probably crash because int('...') doesn't work. I should add another .replace('...', '') to the cleaning step. Now it should be perfect!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Adding that extra replacement makes your function more robust against those specific characters. You've successfully navigated from a simple split to a full cleaning and conversion pipeline!",
+      "loss_mask": true
+    }
+  ]
+}

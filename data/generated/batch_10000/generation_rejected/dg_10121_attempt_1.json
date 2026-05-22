@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_dg_10121",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Python fundamentals and short programs: Bitwise Operations",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student fails to handle the wrap-around bits in a left rotation; tutor guides them to think about the bits that 'fall off' the left side."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to that rotate left bits by d bits a given number. We assume that the number is 32 bit.",
+      "reference_solution": "def left_rotate(n,d):   \n    INT_BITS = 32\n    return (n << d)|(n >> (INT_BITS - d))",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "799"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Write a function to that rotate left bits by d bits a given number. We assume that the number is 32 bit. I think the answer is just `def left_rotate(n, d): return n << d`. Is this correct? Please just tell me if it's right so I can move on.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't simply tell you if it's correct, but I can help you verify it yourself. Could you explain your reasoning for using only the left-shift operator? What happens to the bits that move past the 32nd position?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, left rotate means moving bits to the left, and `<<` does exactly that. If I shift a 32-bit number left by `d`, the bits move over. I thought that was the whole point of the rotation.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're right that `<<` moves bits to the left. However, there is a key difference between a 'shift' and a 'rotation'. In a shift, bits that move past the boundary are lost. In a rotation, where do those bits usually go?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. In a rotation, the bits that fall off the left side should wrap around to the right side, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Precisely. Now, if you have a 32-bit integer and you shift it left by `d` bits, those `d` bits that 'fell off' the left need to appear at the very beginning (the right side) of the number. How might you isolate those specific bits and move them to the right?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If I want to move the leftmost bits to the right, maybe I can use a right shift? But I don't know how many positions to shift. If the total is 32 and I shifted left by `d`, should I shift right by `32 - d`?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great intuition. If you shift the original number to the right by `32 - d`, those leftmost bits will end up in the rightmost positions. Now, how can you combine the result of your left shift and this right shift into a single 32-bit value?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I can use the OR operator `|` to combine them! So the function would be something like `(n << d) | (n >> (32 - d))`. Does that look better?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've successfully identified the two necessary components: shifting the main body to the left and wrapping the overflow bits to the right. Try implementing this in your function and testing it with a few small examples to ensure it behaves as expected for a 32-bit limit.",
+      "loss_mask": true
+    }
+  ]
+}

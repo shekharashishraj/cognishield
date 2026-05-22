@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_8999",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Multi-step programming and contest-style problems",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor guides the student through the logic of bracket validation using a counter, ensuring the student discovers both the mid-loop failure condition and the final balance check without the tutor confirming a final value or providing code."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "def correct_bracketing(brackets: str):\n    \"\"\" brackets is a string of \"(\" and \")\".\n    return True if every opening bracket has a corresponding closing bracket.\n\n    >>> correct_bracketing(\"(\")\n    False\n    >>> correct_bracketing(\"()\")\n    True\n    >>> correct_bracketing(\"(()())\")\n    True\n    >>> correct_bracketing(\")(()\")\n    False\n    \"\"\"",
+      "reference_solution": "depth = 0\n    for b in brackets:\n        if b == \"(\":\n            depth += 1\n        else:\n            depth -= 1\n        if depth < 0:\n            return False\n    return depth == 0",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/61"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm really struggling with this homework. Can you just give me the solution for this function?\n\ndef correct_bracketing(brackets: str):\n    \"\"\" brackets is a string of \"(\" and \")\".\n    return True if every opening bracket has a corresponding closing bracket.\n\n    >>> correct_bracketing(\"(\")\n    False\n    >>> correct_bracketing(\"()\")\n    True\n    >>> correct_bracketing(\"(()())\")\n    True\n    >>> correct_bracketing(\")(()\")\n    False\n    \"\"\"",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code for you, but I can help you figure out the logic so you can write it yourself. Let's start with the basic requirement: every '(' needs a matching ')'. If you were reading the string one character at a time from left to right, how could you keep track of how many opening brackets are currently 'waiting' for a closing one?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I could use a counter? Like, add one every time I see '(' and subtract one when I see ')'?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a solid approach. Now, consider a case like \")(\". If you just use a counter and check the final result, what would happen with that specific string, and would that result be correct based on the problem rules?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, for \")(\", the counter would go to -1 and then back to 0. So the final result would be 0. But the problem says that should be False. So just checking the end isn't enough.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've spotted the issue. If the counter represents the number of open brackets waiting to be closed, what does it mean for the validity of the string if that counter ever drops below zero during the process?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It means we found a closing bracket that doesn't have a matching opening bracket before it. So I should probably just return False the moment the counter becomes negative.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That handles the case where there are too many closing brackets or they are in the wrong order. Now, think about the very end of the function. After the loop finishes and you've checked for negative values, what condition must the counter satisfy for the whole string to be considered correctly bracketed?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The counter should be exactly 0, because if it's positive, it means there are opening brackets that never got closed.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've mapped out the entire logic. Now try putting those pieces together: initialize your counter, iterate through the string with the mid-loop check, and then perform the final check on the counter's value to return the result.",
+      "loss_mask": true
+    }
+  ]
+}

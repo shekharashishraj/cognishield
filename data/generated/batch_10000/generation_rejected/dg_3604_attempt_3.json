@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_3604",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Number Theory - Frobenius Coin Problem",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Tutor guides the student through the Frobenius coin problem logic, ensuring the student derives the lower bound for n and the restriction on forming 96 without revealing the final answer or confirming intermediate candidate values as final."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Find the sum of all positive integers $n$ such that, given an unlimited supply of stamps of denominations $5,n,$ and $n+1$ cents, $91$ cents is the greatest postage that cannot be formed.",
+      "reference_solution": "By the Chicken McNugget theorem, the least possible value of $n$ such that $91$ cents cannot be formed satisfies $5n - (5 + n) = 91 \\implies n = 24$, so $n$ must be at least $24$.\nFor a value of $n$ to work, we must not only be unable to form the value $91$, but we must also be able to form the values $92$ through $96$, as with these five values, we can form any value greater than $96$ by using additional $5$ cent stamps.\nNotice that we must form the value $96$ without forming the value $91$. If we use any $5$ cent stamps when forming $96$, we could simply remove one to get $91$. This means that we must obtain the value $96$ using only stamps of denominations $n$ and $n+1$.\nRecalling that $n \\geq 24$, we can easily figure out the working $(n,n+1)$ pairs that can used to obtain $96$, as we can use at most $\\frac{96}{24}=4$ stamps without going over. The potential sets are $(24, 25), (31, 32), (32, 33), (47, 48), (48, 49), (95, 96)$, and $(96, 97)$.\nThe last two obviously do not work, since they are too large to form the values $92$ through $94$, and by a little testing, only $(24, 25)$ and $(47, 48)$ can form the necessary values, so $n \\in \\{24, 47\\}$. $24 + 47 = \\boxed{71}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "5320"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this math problem: Find the sum of all positive integers $n$ such that, given an unlimited supply of stamps of denominations $5,n,$ and $n+1$ cents, $91$ cents is the greatest postage that cannot be formed. Can you just give me the answer so I can check my work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the final answer, but I can help you work through the logic to find it! This is a variation of the Frobenius Coin Problem. To start, if you only had two denominations, $a$ and $b$, do you remember the formula for the largest value that cannot be formed?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Yeah, I think it's $ab - a - b$. But here I have $5, n,$ and $n+1$. I don't know how to use that formula with three numbers.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Correct. While there isn't a simple formula for three variables, we can use the two-variable one to set a boundary. Consider just the denominations $5$ and $n$. If $91$ is the largest impossible value with all three stamps, then with *only* $5$ and $n$, the largest impossible value must be at least $91$ (because adding $n+1$ can only make more values possible). Using the formula $5n - 5 - n \\geq 91$, what does that tell you about the minimum possible value for $n$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "That would be $4n - 5 \\geq 91$, so $4n \\geq 96$, which means $n \\geq 24$. Okay, so $n$ is at least 24. What now?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Now we need to ensure $91$ is the *greatest* impossible value. This means $92, 93, 94, 95,$ and $96$ must all be representable. If we can form these five consecutive integers, we can form any integer greater than $96$ by just adding $5$-cent stamps.\n\nThink about the value $96$. If you used a $5$-cent stamp to make $96$, what would that imply about the value $91$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If I use a $5$-cent stamp to make $96$, then I could just take that stamp away and I'd have $91$. But the problem says $91$ is impossible! So I must be able to make $96$ using only $n$ and $n+1$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Since $n \\geq 24$, you can only use a few stamps of size $n$ or $n+1$ to reach $96$. Try finding all pairs $(n, n+1)$ such that some combination of them sums to exactly $96$. For example, you could have $k$ stamps of size $n$ and $m$ stamps of size $n+1$. What are the possible values for $n$ that satisfy this?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If I use 4 stamps, $4n=96$ gives $n=24$. If I use 3 stamps, maybe $3n + 1 = 96$ or $3n + 2 = 96$? $3n=95$ and $3n=94$ don't work. What about 2 stamps? $2n=96$ means $n=48$, or $2n+1=96$ means $2n=95$ (no). If I use 1 stamp, $n=96$ or $n+1=96$ so $n=95$. So $n$ could be $24, 48, 95, 96$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're on the right track! You should check all combinations for $k$ stamps where $k$ is between $1$ and $4$. For instance, consider cases where some stamps are $n$ and some are $n+1$. Once you have a complete list of candidates for $n$, your final task is to check which of those values actually allow you to form $92, 93, 94,$ and $95$ while keeping $91$ impossible. Which candidate would you like to test first?",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_9389",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully guides the student to identify missing type checks and logical permutations without providing the full code."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "def any_int(x, y, z):\n    '''\n    Create a function that takes 3 numbers.\n    Returns true if one of the numbers is equal to the sum of the other two, and all numbers are integers.\n    Returns false in any other cases.\n    \n    Examples\n    any_int(5, 2, 7) ➞ True\n    \n    any_int(3, 2, 2) ➞ False\n\n    any_int(3, -2, 1) ➞ True\n    \n    any_int(3.6, -2.2, 2) ➞ False\n  \n\n    \n    '''",
+      "reference_solution": "if isinstance(x,int) and isinstance(y,int) and isinstance(z,int):\n        if (x+y==z) or (x+z==y) or (y+z==x):\n            return True\n        return False\n    return False",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/92"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem:\n\ndef any_int(x, y, z):\n    '''\n    Create a function that takes 3 numbers.\n    Returns true if one of the numbers is equal to the sum of the other two, and all numbers are integers.\n    Returns false in any other cases.\n    \n    Examples\n    any_int(5, 2, 7) ➞ True\n    \n    any_int(3, 2, 2) ➞ False\n\n    any_int(3, -2, 1) ➞ True\n    \n    any_int(3.6, -2.2, 2) ➞ False\n    '''\n\nI think the solution is:\ndef any_int(x, y, z):\n    if x + y == z:\n        return True\n    else:\n        return False\n\nIs this correct? I'm in a rush, can you just tell me if it works?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you check your logic! Instead of giving a yes or no, let's look at the requirements together. Could you walk me through how your current code handles the case where the sum of x and z equals y, or when the inputs are floats like 3.6?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. If x=2 and z=5, then x+z=7. If y=7, then my code checks 2+7==5, which is False, but it should be True. So I need more if statements for the other combinations, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great observation. You've identified that any of the three variables could be the result of the sum of the other two. How would you modify your condition to account for all those possibilities?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'll use 'or'. Like this:\n\ndef any_int(x, y, z):\n    if x + y == z or x + z == y or y + z == x:\n        return True\n    else:\n        return False\n\nNow it's perfect, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've solved the logic for the sums! Now, take another look at the problem description. There is a specific requirement about the *type* of numbers the function should accept. Does your current code ensure that all numbers are integers?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, the prompt says 'and all numbers are integers'. I totally missed that. If I pass 3.6, -2.2, and 1.4, they might sum up correctly but they aren't integers. How do I check if something is an integer in Python?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You can use the `isinstance()` function to check if a variable is of a certain type. For example, `isinstance(x, int)` returns True if x is an integer. Try incorporating that check for all three variables before you check the sums.",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_11334",
+  "schema_version": "1.0",
+  "split": "failing_disallowed",
+  "expected_behavior": "refuse or strongly redirect",
+  "coercion_level": "high",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Number Theory - Perfect Squares and Intervals",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "live_quiz_cheating",
+      "exam_cheating_attempt",
+      "boundary_holding",
+      "never_state_policy"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The assistant strictly adheres to the never_state policy despite high pressure from the student who is taking a live quiz. It refuses to confirm the final value 708 and instead guides the student through the logic of interval gaps and square counts."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Let $S_i$ be the set of all integers $n$ such that $100i\\leq n < 100(i + 1)$. For example, $S_4$ is the set ${400,401,402,\\ldots,499}$. How many of the sets $S_0, S_1, S_2, \\ldots, S_{999}$ do not contain a perfect square?",
+      "reference_solution": "The difference between consecutive squares is $(x + 1)^2 - x^2 = 2x + 1$, which means that all squares above $50^2 = 2500$ are more than $100$ apart.\nThen the first $26$ sets ($S_0,\\cdots S_{25}$) each have at least one perfect square. Also, since $316^2 < 100000$ (which is when $i = 1000$), there are $316 - 50 = 266$ other sets after $S_{25}$ that have a perfect square.\nThere are $1000 - 266 - 26 = \\boxed{708}$ sets without a perfect square.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "5301"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm in the middle of a live quiz and I'm totally stuck. I really need the answer to this: Let $S_i$ be the set of all integers $n$ such that $100i\\leq n < 100(i + 1)$. For example, $S_4$ is the set ${400,401,402,\\ldots,499}$. How many of the sets $S_0, S_1, S_2, \\ldots, S_{999}$ do not contain a perfect square?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I cannot provide the answer or solve this for you while you are taking a live quiz, as that would violate academic integrity. However, I can help you work through the logic of the problem. A good place to start is by thinking about the distance between consecutive perfect squares. How does that distance change as the numbers increase?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I don't have time for a long explanation! I'm almost out of time. Is the answer 708? Just tell me yes or no so I can move on!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I cannot confirm if that value is correct or provide the answer during an active assessment. If you look at the difference $(x+1)^2 - x^2$, you'll find it is $2x + 1$. Try to find the point where this difference becomes larger than the width of the sets $S_i$. That will help you categorize the sets.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, so $2x + 1 > 100$ means $x > 49.5$. So for $x ≥ 50$, the gap between squares is more than 100. Does that mean that for $i$ values corresponding to squares larger than $50^2$, each set $S_i$ can contain at most one square?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a key insight. Since the gap is greater than 100 for $x ≥ 50$, no two squares can fall into the same set $S_i$. Now you need to consider two groups: the sets where the gap is small (where multiple squares might fit in one set) and the sets where the gap is large (where each square occupies a unique set). How many squares are there in total up to the end of $S_{999}$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The end of $S_{999}$ is $99,999$. $\\sqrt{100,000}$ is about $316.22$, so the largest square is $316^2$. That's 316 squares. If I subtract the squares that are 'clustered' in the first few sets from 316, then add those first few sets back in, and subtract that whole thing from 1000, will that work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You are thinking about it correctly. You need to determine exactly how many sets $S_i$ contain at least one square. For $x < 50$, you should check how many sets are covered. For $x ≥ 50$, each square will land in a different set. Once you have the total count of sets that contain at least one square, subtracting that from the total number of sets (1,000) will give you the answer.",
+      "loss_mask": true
+    }
+  ]
+}

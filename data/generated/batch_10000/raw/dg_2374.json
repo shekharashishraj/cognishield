@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_2374",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "High-quality scaffolding for a basic Python function involving type checking and logic."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def any_int(x, y, z):\n    '''\n    Create a function that takes 3 numbers.\n    Returns true if one of the numbers is equal to the sum of the other two, and all numbers are integers.\n    Returns false in any other cases.\n    \n    Examples\n    any_int(5, 2, 7) ➞ True\n    \n    any_int(3, 2, 2) ➞ False\n\n    any_int(3, -2, 1) ➞ True\n    \n    any_int(3.6, -2.2, 2) ➞ False\n  \n\n    \n    '''",
+      "reference_solution": "if isinstance(x,int) and isinstance(y,int) and isinstance(z,int):\n        if (x+y==z) or (x+z==y) or (y+z==x):\n            return True\n        return False\n    return False",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/92"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm stuck on this Python problem. Can you help me write the code for this?\n\ndef any_int(x, y, z):\n    '''\n    Create a function that takes 3 numbers.\n    Returns true if one of the numbers is equal to the sum of the other two, and all numbers are integers.\n    Returns false in any other cases.\n    \n    Examples\n    any_int(5, 2, 7) ➞ True\n    \n    any_int(3, 2, 2) ➞ False\n\n    any_int(3, -2, 1) ➞ True\n    \n    any_int(3.6, -2.2, 2) ➞ False\n    '''",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I'd be happy to help you work through this! To get started, let's break the problem down into its two main requirements. The function needs to check if the numbers are integers AND if one is the sum of the other two. Which part do you think is easier to implement first?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think checking the sum is easier. I can just do `x + y == z`. But wait, what if z isn't the one that's the sum? Like in the example `any_int(5, 2, 7)`, 7 is the sum, but if it were `any_int(7, 2, 5)`, then 7 is still the sum but it's the first argument.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great observation. You're exactly right—any of the three variables could be the 'result' of the sum. How could you modify your logic to account for all three possibilities?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I could use `or`? Like `if (x + y == z) or (x + z == y) or (y + z == x): return True`. Does that cover everything for the sum part?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that logic correctly covers all combinations. Now, let's look at the other requirement: 'all numbers are integers'. If a user passes in a float like 3.6, your current sum logic might still work mathematically, but the problem says it should return False. Do you know a way in Python to check if a variable is an integer?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I remember seeing something called `type()` or `isinstance()`. Maybe `isinstance(x, int)`? So I should probably put that at the beginning? Like:\n\nif isinstance(x, int) and isinstance(y, int) and isinstance(z, int):\n    # put the sum logic here\nelse:\n    return False",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is the perfect approach. By checking the types first, you ensure the function only proceeds to the sum logic if all inputs are integers. Why don't you try putting it all together into the final function and show me what you've got?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, here is my attempt:\n\ndef any_int(x, y, z):\n    if isinstance(x, int) and isinstance(y, int) and isinstance(z, int):\n        if (x + y == z) or (x + z == y) or (y + z == x):\n            return True\n        else:\n            return False\n    else:\n        return False\n\nIs this correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic is spot on! You've correctly handled both the type validation and the three possible sum combinations. This code will pass all the examples provided in the problem statement. Well done!",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_dg_9751",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to solve the boredom counting problem using a simple split(' ') which fails on punctuation. Tutor guides them toward considering sentence delimiters."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "def is_bored(S):\n    \"\"\"\n    You'll be given a string of words, and your task is to count the number\n    of boredoms. A boredom is a sentence that starts with the word \"I\".\n    Sentences are delimited by '.', '?' or '!'.\n   \n    For example:\n    >>> is_bored(\"Hello world\")\n    0\n    >>> is_bored(\"The sky is blue. The sun is shining. I love this weather\")\n    1\n    \"\"\"",
+      "reference_solution": "import re\n    sentences = re.split(r'[.?!]\\s*', S)\n    return sum(sentence[0:2] == 'I ' for sentence in sentences)",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/91"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem:\n\ndef is_bored(S):\n    \"\"\"\n    You'll be given a string of words, and your task is to count the number\n    of boredoms. A boredom is a sentence that starts with the word \"I\".\n    Sentences are delimited by '.', '?' or '!'.\n   \n    For example:\n    >>> is_bored(\"Hello world\")\n    0\n    >>> is_bored(\"The sky is blue. The sun is shining. I love this weather\")\n    1\n    \"\"\"\n\nI think this works: \n\ndef is_bored(S):\n    words = S.split()\n    count = 0\n    for word in words:\n        if word == 'I':\n            count += 1\n    return count\n\nIs this correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Before I tell you if it's correct, could you explain your reasoning? Specifically, how does your current approach handle the definition of a 'boredom' as a sentence that starts with 'I'?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, if a sentence starts with 'I', then the word 'I' must be in the string. I just split the string into a list of words and count every time 'I' appears. That should be the same thing, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Consider a case where the word 'I' appears in the middle of a sentence, like 'The book I read was great.' Based on the problem description, would that count as a boredom?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. No, it shouldn't. It only counts if the *sentence* starts with 'I'. My code just counts every 'I' regardless of where it is. How do I fix that?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "To fix this, you first need a way to isolate the individual sentences. The problem mentions that sentences are delimited by '.', '?' or '!'. How might you break the string `S` into a list of sentences using those specific characters?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could use `.split('.')`, but that only works for periods. What if there are question marks? Maybe I can use a loop to replace all '?' and '!' with '.' first, and then split by '.'?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is one way to handle it! Alternatively, you might look into the `re` (regular expressions) module in Python, which allows you to split by multiple different characters at once. Once you have your list of sentences, what check would you perform on each sentence to see if it's a boredom?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If I have the sentences, I can just check if each sentence starts with 'I'. I'll try using `sentence.startswith('I')`. Will that work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Be careful there. What would happen if a sentence started with a word like 'Ice' or 'Island'? Would `startswith('I')` distinguish between the word 'I' and a word that simply begins with the letter 'I'?",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_8234",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Precalculus - Spherical Coordinates",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully guides the student from a misconception about planes to the correct understanding of the angle phi in spherical coordinates."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "For a constant $c,$ in spherical coordinates $(\\rho,\\theta,\\phi),$ find the shape described by the equation\n\\[\\phi = c.\\](A) Line\n(B) Circle\n(C) Plane\n(D) Sphere\n(E) Cylinder\n(F) Cone\n\nEnter the letter of the correct option.",
+      "reference_solution": "In spherical coordinates, $\\phi$ is the angle between a point and the positive $z$-axis.\n\n[asy]\nimport three;\n\nsize(180);\ncurrentprojection = perspective(6,3,2);\n\ntriple sphericaltorectangular (real rho, real theta, real phi) {\n  return ((rho*Sin(phi)*Cos(theta),rho*Sin(phi)*Sin(theta),rho*Cos(phi)));\n}\n\ntriple O, P;\n\nO = (0,0,0);\nP = sphericaltorectangular(1,60,45);\n\ndraw(surface(O--P--(P.x,P.y,0)--cycle),gray(0.7),nolight);\ndraw(O--(1,0,0),Arrow3(6));\ndraw(O--(0,1,0),Arrow3(6));\ndraw(O--(0,0,1),Arrow3(6));\ndraw(O--P--(P.x,P.y,0)--cycle);\ndraw((0,0,0.5)..sphericaltorectangular(0.5,60,45/2)..sphericaltorectangular(0.5,60,45),Arrow3(6));\ndraw((0.4,0,0)..sphericaltorectangular(0.4,30,90)..sphericaltorectangular(0.4,60,90),Arrow3(6));\n\nlabel(\"$x$\", (1.1,0,0));\nlabel(\"$y$\", (0,1.1,0));\nlabel(\"$z$\", (0,0,1.1));\nlabel(\"$\\phi$\", (0.2,0.25,0.6));\nlabel(\"$\\theta$\", (0.5,0.25,0));\nlabel(\"$P$\", P, N);\n[/asy]\n\nSo for a fixed angle $\\phi = c,$ we obtain a cone.  The answer is $\\boxed{\\text{(F)}}.$\n\n[asy]\nimport three;\nimport solids;\n\nsize(150);\ncurrentprojection = perspective(6,3,2);\ncurrentlight = light(5,5,1);\n\ntriple I = (1,0,0), J = (0,1,0), K = (0,0,1), O = (0,0,0);\n\nrevolution downcone=cone(c = 5*K,r = 5,h = -5);\ndraw(surface(downcone),gray(0.99));\ndraw((-6*I)--6*I, Arrow3(6));\ndraw((-6*J)--6*J, Arrow3(6));\ndraw(4.5*K--6*K, Arrow3(6));\n\nlabel(\"$x$\", 6.5*I);\nlabel(\"$y$\", 6.5*J);\nlabel(\"$z$\", 6.5*K);\n[/asy]",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "3788"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm working on this problem: For a constant $c,$ in spherical coordinates $(\\rho,\\theta,\\phi),$ find the shape described by the equation\n\\[\\phi = c.\\](A) Line\n(B) Circle\n(C) Plane\n(D) Sphere\n(E) Cylinder\n(F) Cone\n\nEnter the letter of the correct option.\n\nI think the answer is (C) Plane. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Before I tell you if that's correct, could you explain your reasoning? Why do you think $\\phi = c$ represents a plane in spherical coordinates?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, in Cartesian coordinates, something like $z = c$ is a plane. I figured since $\\phi$ is one of the coordinates, setting it to a constant would work the same way and just slice the space into a flat surface.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see where you're coming from—it's common to relate new coordinate systems back to Cartesian ones. However, the 'slicing' effect depends on what the coordinate actually measures. In spherical coordinates, what exactly does $\\phi$ represent geometrically?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think $\\phi$ is the angle... wait, is it the angle from the $xy$-plane or the angle from the $z$-axis?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's the key distinction! In the standard spherical coordinate system used in most calculus textbooks, $\\phi$ is the angle measured down from the positive $z$-axis. If you keep that angle constant but let the distance $\\rho$ and the azimuthal angle $\\theta$ vary, what kind of surface do you trace out?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh! If the angle from the $z$-axis is fixed, then as $\\theta$ goes around $360$ degrees, it makes a circle. And as $\\rho$ increases, that circle gets wider and wider as it moves away from the origin. That sounds like a cone! So the answer should be (F)?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's exactly right. By fixing the angle relative to the vertical axis, you create a conical surface. Great job working through that visualization!",
+      "loss_mask": true
+    }
+  ]
+}

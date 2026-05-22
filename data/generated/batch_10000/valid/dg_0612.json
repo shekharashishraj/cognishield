@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_dg_0612",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Precalculus - Trigonometric Functions",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Multi-turn tutoring session where student incorrectly identifies the phase shift based on the sine function's starting point. Tutor guides them to consider the direction of the curve at x=0."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Below is the graph of $y = a \\sin (bx + c) + d$ for some positive constants $a,$ $b,$ $c,$ and $d.$  Find the smallest possible value of $c.$\n\n[asy]import TrigMacros;\n\nsize(400);\n\nreal f(real x)\n{\n\treturn 2*sin(3*x + pi) + 1;\n}\n\ndraw(graph(f,-3*pi,3*pi,n=700,join=operator ..),red);\ntrig_axes(-3*pi,3*pi,-4,4,pi/2,1);\nlayer();\nrm_trig_labels(-5,5, 2);\n\nlabel(\"$1$\", (0,1), E);\nlabel(\"$2$\", (0,2), E);\nlabel(\"$3$\", (0,3), E);\nlabel(\"$-1$\", (0,-1), E);\nlabel(\"$-2$\", (0,-2), E);\nlabel(\"$-3$\", (0,-3), E);\n[/asy]",
+      "reference_solution": "We see that the graph reaches its midpoint at $x = 0.$  It is also decreasing at $x = 0.$  The graph of $y = \\sin x$ first reaches its midpoint at $x = \\pi$ for positive values of $x$ (and is decreasing at this point), so the smallest possible value of $c$ is $\\boxed{\\pi}.$",
+      "seed_dataset": "HuggingFaceH4/MATH-500/test",
+      "seed_example_id": "test/precalculus/1199.json"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm working on this problem: Below is the graph of $y = a \\sin (bx + c) + d$ for some positive constants $a,$ $b,$ $c,$ and $d.$ Find the smallest possible value of $c.$\n\n[asy]import TrigMacros;\n\nsize(400);\n\nreal f(real x)\n{\n\treturn 2*sin(3*x + pi) + 1;\n}\n\ndraw(graph(f,-3*pi,3*pi,n=700,join=operator ..),red);\ntrig_axes(-3*pi,3*pi,-4,4,pi/2,1);\nlayer();\nrm_trig_labels(-5,5, 2);\n\nlabel(\"$1$\", (0,1), E);\nlabel(\"$2$\", (0,2), E);\nlabel(\"$3$\", (0,3), E);\nlabel(\"$-1$\", (0,-1), E);\nlabel(\"$-2$\", (0,-2), E);\nlabel(\"$-3$\", (0,-3), E);\n[/asy]\n\nI think the answer is $c = 0$ because the graph passes through the midline at $x=0$. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've correctly identified that the graph is at its midline at $x=0$, which is a great starting point. However, to determine if $c=0$ is correct, we need to look at the behavior of the function at that point. Could you describe whether the function is increasing or decreasing as it passes through $x=0$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Looking at the graph, at $x=0$, the curve is going downwards. So it's decreasing. Does that change things?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that is a crucial detail. Think about the parent function $y = \\sin(x)$. At its midline point $x=0$, is the parent sine function increasing or decreasing?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The standard $\\sin(x)$ starts at 0 and goes up, so it's increasing at $x=0$. But my graph is decreasing. Maybe $a$ is negative?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Check the problem statement again regarding the constants $a, b, c,$ and $d$. Does it allow $a$ to be negative?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, it says they are all positive constants. So $a$ must be positive. If $a$ is positive and the graph is decreasing at $x=0$, then the phase shift $c$ must be shifting the 'decreasing' part of the sine wave to the y-axis. Where does $\\sin(x)$ first start decreasing at its midline for $x > 0$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. If you trace the graph of $\\sin(x)$, it increases from $0$ to $\\pi/2$, hits a peak, and then comes back down. At what value of $x$ does it cross the midline again while heading downwards?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It crosses the midline again at $x = \\pi$. So if the shift $c$ makes the function behave like $\\sin(x + c)$, and we want the behavior at $x=0$ to match the behavior of $\\sin(x)$ at $x=\\pi$, then $c$ should be $\\pi$. Is that the smallest positive value?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've found a value for $c$ that matches the behavior at the midline. To be sure it's the smallest possible positive value, consider if there are any other points where $\\sin(x)$ is at the midline and decreasing before $x = \\pi$. If not, you've found your answer.",
+      "loss_mask": true
+    }
+  ]
+}

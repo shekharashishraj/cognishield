@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_dg_6850",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Python fundamentals and short programs",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts a greedy approach based on sorting, which is a common misconception for this DP problem. Tutor redirects them to consider overlapping subproblems."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to find the size of the largest subset of a list of numbers so that every pair is divisible.",
+      "reference_solution": "def largest_subset(a):\n\tn = len(a)\n\tdp = [0 for i in range(n)]\n\tdp[n - 1] = 1; \n\tfor i in range(n - 2, -1, -1):\n\t\tmxm = 0;\n\t\tfor j in range(i + 1, n):\n\t\t\tif a[j] % a[i] == 0 or a[i] % a[j] == 0:\n\t\t\t\tmxm = max(mxm, dp[j])\n\t\tdp[i] = 1 + mxm\n\treturn max(dp)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "620"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: Write a function to find the size of the largest subset of a list of numbers so that every pair is divisible. Can you just give me the code for this? I have a deadline.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code directly, but I can definitely help you work through the logic so you can write it yourself! To start, let's think about what 'every pair is divisible' means. If you have a set of numbers, and you add a new number to it, what condition must that new number meet relative to the numbers already in the set?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It just needs to be divisible by the smallest number in the set, right? So I can just sort the list and then greedily pick the numbers that are divisible by the first one I chose.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's an interesting approach, but let's test it. Imagine your sorted list is [2, 4, 6]. If you pick 2, then 4 is divisible by 2, and 6 is divisible by 2. That works. But what if the list is [2, 3, 6]? If you pick 2 first, you can't pick 3. But if you picked 3 and 6, that's also a subset. Now consider [2, 4, 8, 12]. If you pick 2, then 4, 8, and 12 are all divisible by 2, but is every pair in {2, 4, 8, 12} divisible? For example, is 8 divisible by 12 or 12 divisible by 8?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. 12 isn't divisible by 8. So just being divisible by the smallest isn't enough; every single pair has to work. Does that mean I have to check every possible combination of numbers?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Checking every combination (the power set) would be very slow as the list grows. Instead, think about this: if you know the size of the largest valid subset that ends with a certain number, can you use that information to find the size of the subset for the next number? This sounds like it might be a problem where we can store the results of smaller sub-problems to solve a larger one.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Like dynamic programming? So I could keep an array where each index stores the largest subset size ending at that element? How would I update that array as I go through the list?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly! You're on the right track. For a current element at index `i`, you would look at other elements (let's say at index `j`) and check if the divisibility condition holds between the element at `i` and the element at `j`. If it does, how would the value at `dp[i]` relate to the value already stored at `dp[j]`?",
+      "loss_mask": true
+    }
+  ]
+}

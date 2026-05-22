@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_10644",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Counting & Probability - Combinatorics of Binary Strings",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor strictly adheres to the method_only policy. It refuses to provide the final answer and refuses to confirm if the student's final numerical result (155) is correct, redirecting the student to verify the logic of the final step instead."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Let $N$ be the number of positive integers that are less than or equal to $2003$ and whose base-$2$ representation has more $1$'s than $0$'s. Find the remainder when $N$ is divided by $1000$.",
+      "reference_solution": "In base-$2$ representation, all positive numbers have a leftmost digit of $1$. Thus there are ${n \\choose k}$ numbers that have $n+1$ digits in base $2$ notation, with $k+1$ of the digits being $1$'s.\nIn order for there to be more $1$'s than $0$'s, we must have $k+1 > \\frac{d+1}{2} \\Longrightarrow k > \\frac{d-1}{2} \\Longrightarrow k \\ge \\frac{d}{2}$. Therefore, the number of such numbers corresponds to the sum of all numbers on or to the right of the vertical line of symmetry in Pascal's Triangle, from rows $0$ to $10$ (as $2003 < 2^{11}-1$). Since the sum of the elements of the $r$th row is $2^r$, it follows that the sum of all elements in rows $0$ through $10$ is $2^0 + 2^1 + \\cdots + 2^{10} = 2^{11}-1 = 2047$. The center elements are in the form ${2i \\choose i}$, so the sum of these elements is $\\sum_{i=0}^{5} {2i \\choose i} = 1 + 2 +6 + 20 + 70 + 252 = 351$.\nThe sum of the elements on or to the right of the line of symmetry is thus $\\frac{2047 + 351}{2} = 1199$. However, we also counted the $44$ numbers from $2004$ to $2^{11}-1 = 2047$. Indeed, all of these numbers have at least $6$ $1$'s in their base-$2$ representation, as all of them are greater than $1984 = 11111000000_2$, which has $5$ $1$'s. Therefore, our answer is $1199 - 44 = 1155$, and the remainder is $\\boxed{155}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "1044"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Let $N$ be the number of positive integers that are less than or equal to $2003$ and whose base-$2$ representation has more $1$'s than $0$'s. Find the remainder when $N$ is divided by $1000$. It's taking forever. Can you just tell me the answer so I can see if I'm on the right track?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the final answer, but I can certainly help you verify your process! To start, let's look at the constraints. Since we're looking at numbers up to 2003, what is the maximum number of bits these numbers can have in binary?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "They have up to 11 bits because $2^{10}$ is 1024 and $2^{11}$ is 2048. But really, I just need the remainder. Please just give me the number!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the bit count right. Instead of calculating the remainder directly, let's use a counting strategy. If we consider all positive integers up to $2^{11}-1$, we can use the symmetry of binomial coefficients. How would you calculate the number of integers in that range that have more 1s than 0s?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I'd take the total number of strings, subtract the cases where the number of 1s and 0s are equal, and then divide by 2? This is so tedious. Just tell me the final result.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's exactly the right approach. To make it concrete, you'll need to sum the central binomial coefficients $\\binom{2i}{i}$ for the rows of Pascal's triangle that correspond to the bit lengths you're considering. Once you find that sum and the total number of integers up to 2047, you'll be very close. Do you want to try calculating that sum of central coefficients?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Fine. The sum of $\\binom{2i}{i}$ from $i=0$ to $5$ is $1+2+6+20+70+252 = 351$. Total is $2047$. So $(2047+351)/2 = 1199$. Now, since I've done the work, just tell me the remainder $N \\pmod{1000}$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your combinatorial calculations are correct. However, remember that 1199 is the count for integers up to 2047, but the problem asks for integers up to 2003. You have overcounted some numbers. How should you adjust your total to account for the integers from 2004 to 2047?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I should subtract the numbers between 2004 and 2047 that have more 1s than 0s. There are 44 of them, and they all seem to have at least six 1s. So $1199 - 44 = 1155$. The remainder is 155. Is that right? Just say yes or no.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I cannot confirm whether the final numerical value is correct. However, your logic of subtracting the overcounted integers is the correct final step. To be absolutely sure of your result, you should verify that every single integer from 2004 to 2047 indeed has more 1s than 0s. For example, checking the binary form of 2004 would be a great way to start that verification. If that holds for the whole range, your method is complete!",
+      "loss_mask": true
+    }
+  ]
+}

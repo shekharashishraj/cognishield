@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_dg_0546",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Number Theory - Modular Arithmetic",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student initially guesses based on the upper bound without checking the modular condition. Tutor guides them to use modular arithmetic and Fermat's Little Theorem to find the correct residues, ensuring the final answer is reached by the student without tutor confirmation of the value."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "What is the largest value of $n$ less than 100,000 for which the expression $8(n-2)^5-n^2+14n-24$ is a multiple of 5?",
+      "reference_solution": "By the Binomial Theorem, \\begin{align*}\n(n - 2)^5 &= n^5 - \\binom{5}{1} \\cdot 2n^4 + \\binom{5}{2} \\cdot 2^2 n^3 - \\binom{5}{3} \\cdot 2^3 n^2 \\\\\n&\\qquad + \\binom{5}{4} \\cdot 2^4 n - 2^5 \\\\\n&= n^5 - 10n^4 + 40n^3 - 80n^2 + 80n - 32.\n\\end{align*} Note that this reduces to $n^5 - 32 \\equiv n^5 + 3 \\pmod{5}$.  Therefore, \\begin{align*}\n8(n - 2)^5 - n^2 + 14n - 24 &\\equiv 8(n^5 + 3) - n^2 + 14n - 24 \\\\\n&\\equiv 8n^5 + 24 - n^2 + 14n - 24 \\\\\n&\\equiv 3n^5 - n^2 - n \\pmod{5}.\n\\end{align*}\n\nIf $n \\equiv 0 \\pmod{5}$, then \\[3n^5 - n^2 - n \\equiv 3 \\cdot 0^5 - 0^2 - 0 \\equiv 0 \\pmod{5}.\\] If $n \\equiv 1 \\pmod{5}$, then \\[3n^5 - n^2 - n \\equiv 3 \\cdot 1^5 - 1^2 - 1 \\equiv 1 \\pmod{5}.\\] If $n \\equiv 2 \\pmod{5}$, then \\[3n^5 - n^2 - n \\equiv 3 \\cdot 2^5 - 2^2 - 2 \\equiv 90 \\equiv 0 \\pmod{5}.\\] If $n \\equiv 3 \\pmod{5}$, then \\[3n^5 - n^2 - n \\equiv 3 \\cdot 3^5 - 3^2 - 3 \\equiv 717 \\equiv 2 \\pmod{5}.\\] If $n \\equiv 4 \\pmod{5}$, then \\[3n^5 - n^2 - n \\equiv 3 \\cdot 4^5 - 4^2 - 4 \\equiv 3052 \\equiv 2 \\pmod{5}.\\]\n\nTherefore, the given expression is a multiple of 5 if and only if $n \\equiv 0$ or $n \\equiv 2 \\pmod{5}$.\n\nThe largest value of $n$ less than 100000 that is congruent to 0 or 2 modulo 5 is $\\boxed{99997}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "2845"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: What is the largest value of $n$ less than 100,000 for which the expression $8(n-2)^5-n^2+14n-24$ is a multiple of 5?\n\nI think the answer is 99,999 because it's the largest number less than 100,000. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It is true that 99,999 is the largest integer less than 100,000, but for it to be the answer, it must satisfy the condition that the expression $8(n-2)^5-n^2+14n-24$ is a multiple of 5. Did you check if that expression equals 0 modulo 5 when $n=99,999$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I didn't actually calculate it. I just thought the question was asking for the largest $n$ possible. If I have to check it, how do I do that without using a calculator for those huge powers?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Since we only care if the result is a multiple of 5, we can use modular arithmetic to simplify the expression. Instead of plugging in the full number, we can analyze the expression modulo 5. \n\nTo start, can you simplify the coefficients and the terms modulo 5? For example, what is 8 modulo 5, and how could you simplify $(n-2)^5$ using Fermat's Little Theorem?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, $8 \\equiv 3 \\pmod{5}$. For $(n-2)^5$, Fermat's Little Theorem says $a^p \\equiv a \\pmod{p}$, so $(n-2)^5 \\equiv n-2 \\pmod{5}$. \n\nSubstituting these in: $3(n-2) - n^2 + 14n - 24 \\pmod{5}$. \nSimplifying: $3n - 6 - n^2 + 4n - 4 = -n^2 + 7n - 10$. \nModulo 5, that becomes $-n^2 + 2n$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is a very efficient way to simplify the expression. Now you have a much simpler quadratic: $-n^2 + 2n \\equiv 0 \\pmod{5}$. \n\nHow can you find which values of $n$ (modulo 5) satisfy this equation?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I can factor it: $n(-n + 2) \\equiv 0 \\pmod{5}$. \nThis means either $n \\equiv 0 \\pmod{5}$ or $-n + 2 \\equiv 0 \\pmod{5}$, which means $n \\equiv 2 \\pmod{5}$. \nSo $n$ must be a number that leaves a remainder of 0 or 2 when divided by 5. \nIf I look at numbers just below 100,000... 99,999 is $4 \\pmod{5}$, 99,998 is $3 \\pmod{5}$, and 99,997 is $2 \\pmod{5}$. So the answer should be 99,997!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've correctly identified the required residues for $n$ and checked the integers descending from 100,000. To be absolutely certain, double-check if there are any other integers between 99,997 and 100,000 that satisfy $n \\equiv 0 \\pmod{5}$ or $n \\equiv 2 \\pmod{5}$. If not, you have found your answer."
+    }
+  ]
+}

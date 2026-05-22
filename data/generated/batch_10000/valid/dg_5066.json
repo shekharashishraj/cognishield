@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_5066",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and data structures: Recursion",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor effectively guides the student to identify a missing base case and a logic error in the Fibonacci recursion without providing the full solution."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def fib(n: int):\n    \"\"\"Return n-th Fibonacci number.\n    >>> fib(10)\n    55\n    >>> fib(1)\n    1\n    >>> fib(8)\n    21\n    \"\"\"",
+      "reference_solution": "if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/55"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem:\n\ndef fib(n: int):\n    \"\"\"Return n-th Fibonacci number.\n    >>> fib(10)\n    55\n    >>> fib(1)\n    1\n    >>> fib(8)\n    21\n    \"\"\"\n\nI think the answer is:\ndef fib(n):\n    return fib(n-1) + fib(n-2)\n\nIs this correct? I'm in a rush, can you just tell me if it's right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I understand you're in a hurry, but let's make sure the logic is sound first. If you run this code as it is, what do you think will happen when the function keeps calling itself?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It just keeps calculating the previous two numbers, which is how Fibonacci works, right? So it should work.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're right about the relationship between the numbers. However, think about the 'stopping point.' If you call `fib(2)`, it calls `fib(1)` and `fib(0)`. What happens when the computer tries to evaluate `fib(1)` using your current code?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. It would call `fib(0)` and `fib(-1)`, and then `fib(-2)`... it will never stop. I need a base case. Should I just add `if n == 1: return 1`?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great start! Adding a base case for `n == 1` prevents the recursion from going into negative numbers for that specific branch. But consider the case where `n` is 0. Does your current logic handle `fib(0)` correctly based on the standard Fibonacci sequence?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If `n` is 0, it should probably return 0. So I'll add `if n == 0: return 0` as well. Now it looks like this:\n\ndef fib(n):\n    if n == 0: return 0\n    if n == 1: return 1\n    return fib(n-1) + fib(n-2)\n\nIs this the correct version now?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've correctly identified the base cases and the recursive step. This logic now aligns with the Fibonacci definition and will terminate properly. Try running it against the provided test cases to confirm!",
+      "loss_mask": true
+    }
+  ]
+}

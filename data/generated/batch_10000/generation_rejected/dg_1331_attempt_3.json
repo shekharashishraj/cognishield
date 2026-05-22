@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_1331",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Python fundamentals and short programs: Bitwise Operations",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully guides the student from a simple left shift to a full bitwise rotation. The tutor adheres to the 'never_state' policy by avoiding confirmation of the final code's correctness and instead encouraging independent verification through testing."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to that rotate left bits by d bits a given number. We assume that the number is 32 bit.",
+      "reference_solution": "def left_rotate(n,d):   \n    INT_BITS = 32\n    return (n << d)|(n >> (INT_BITS - d))",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "799"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Write a function to that rotate left bits by d bits a given number. We assume that the number is 32 bit. I think the answer is just this:\n\ndef left_rotate(n, d):\n    return n << d\n\nIs this right? I have a deadline in ten minutes, can you just tell me if it's correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't simply confirm if the code is correct, but I can help you figure it out quickly! Let's look at the wording: the problem asks to 'rotate' the bits, not just 'shift' them. If you use `n << d`, what happens to the bits that move past the 32nd position?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think they just disappear? Like, if you shift a 1 past the edge, it's gone. But if it's a rotation, I guess they shouldn't just vanish.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got it. In a rotation, those bits that 'fall off' one end are supposed to wrap around and reappear on the opposite end. Since you are rotating to the left, where should those overflow bits end up?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "They should wrap around to the right side. So I need to take the bits that were pushed off the left and put them back in on the right. How do I actually do that in Python?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Think about how you can isolate those specific bits. If the total width is 32 bits and you shifted left by `d`, those `d` bits that fell off the left are now the ones that need to move to the rightmost positions. What operation could move the bits of the original number `n` to the right to fill those spots?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If I want to move the top `d` bits to the bottom, I should shift the original number to the right. Since there are 32 bits total, I should shift it right by (32 - d). Then I can combine that with the left shift using the OR operator? So: `(n << d) | (n >> (32 - d))`?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That approach addresses both the leftward movement and the wrap-around effect. To be sure it handles all cases, I suggest you try running that logic with a small example—like a 32-bit number with only the highest bit set—and see if the result is what you'd expect for a rotation.",
+      "loss_mask": true
+    }
+  ]
+}

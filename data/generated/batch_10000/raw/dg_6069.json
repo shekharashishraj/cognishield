@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_6069",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Python fundamentals and short programs: Dynamic Programming",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully scaffolds the student toward a dynamic programming approach without revealing the full code."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to find the size of the largest subset of a list of numbers so that every pair is divisible.",
+      "reference_solution": "def largest_subset(a):\n\tn = len(a)\n\tdp = [0 for i in range(n)]\n\tdp[n - 1] = 1; \n\tfor i in range(n - 2, -1, -1):\n\t\tmxm = 0;\n\t\tfor j in range(i + 1, n):\n\t\t\tif a[j] % a[i] == 0 or a[i] % a[j] == 0:\n\t\t\t\tmxm = max(mxm, dp[j])\n\t\tdp[i] = 1 + mxm\n\treturn max(dp)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "620"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm stuck on this problem: Write a function to find the size of the largest subset of a list of numbers so that every pair is divisible. I don't even know where to start. Can you just give me the code?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through this, but instead of giving you the code right away, let's break it down together so you understand how it works. First, let's clarify the condition: if you have a subset, every single pair in it must have one number that divides the other. If you had a list like [2, 4, 8], would that work?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Yeah, that works because 2 divides 4, 2 divides 8, and 4 divides 8. But what if I have [2, 4, 6]? 2 divides 4 and 6, but 4 doesn't divide 6. So that wouldn't be a valid subset, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's exactly right. Now, think about how you might build the largest possible subset. If you are looking at a specific number in the list, and you want to add it to a subset you've already built, what needs to be true about that number and the numbers already in the subset?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It would need to be divisible by the numbers already there, or they would need to be divisible by it. Maybe I can just try every possible combination of numbers?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Trying every combination (brute force) would work for very small lists, but it becomes incredibly slow as the list grows. We can be more efficient. What if we sorted the list first? If the list is sorted, and you're looking at a number, you only need to check if it's divisible by the smaller numbers you've already processed. Does that spark any ideas on how to keep track of the 'best' subset found so far for each number?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Maybe I can use a list to store the size of the largest subset ending at each index? Like, for each number, I check all the numbers before it, and if the current one is divisible by a previous one, I take the size of that previous subset and add 1?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've just described the core idea of Dynamic Programming! You're keeping track of the optimal solution for sub-problems to build up to the final answer. To implement this, you'd need a loop to iterate through the numbers and another nested loop to check the previous elements. How would you write the condition inside that nested loop to update your maximum size?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think it would be something like: if a[j] % a[i] == 0, then current_max = max(current_max, dp[j]). Then after the inner loop, dp[i] = current_max + 1. Does that sound right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is the correct logic for updating the state! Once you've filled your `dp` list for all elements, how do you determine the final answer for the entire input list?",
+      "loss_mask": true
+    }
+  ]
+}

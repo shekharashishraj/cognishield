@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_9840",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Multi-step programming and contest-style problems: List Manipulation",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Generated a high-quality tutoring sequence where the student makes a common mistake with list mutation and the tutor scaffolds the solution without revealing the reference code."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Write a python function to move all zeroes to the end of the given list.",
+      "reference_solution": "def move_zero(num_list):\n    a = [0 for i in range(num_list.count(0))]\n    x = [i for i in num_list if i != 0]\n    return x + a",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "632"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Write a python function to move all zeroes to the end of the given list. I think I have it! \n\n```python\ndef move_zero(num_list):\n    for i in range(len(num_list)):\n        if num_list[i] == 0:\n            num_list.remove(0)\n            num_list.append(0)\n    return num_list\n```\nIs this correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the right intuition regarding removing and appending the zeros. Before I confirm if it's correct, could you walk me through what happens to the loop index `i` when `num_list.remove(0)` is called? Try tracing it with a small example like `[0, 0, 1]`.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let's see... if the list is `[0, 0, 1]`, at `i=0`, the first element is 0. I remove it, so the list becomes `[0, 1]`, then I append 0, so it's `[0, 1, 0]`. Then `i` becomes 1. At `i=1`, the element is 1. So it returns `[0, 1, 0]`. Wait, that's not right. It should be `[1, 0, 0]`. I missed a zero!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. You've spotted the issue. When you remove an element from a list while iterating over its indices, the remaining elements shift to the left, but your index `i` keeps moving to the right. This causes the loop to skip the element immediately following the one you removed. How do you think you could handle this without modifying the list while you are iterating through it?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Maybe I could create a new list instead of changing the original one? I could put all the non-zero numbers in one list and then add the zeros at the end. Would that work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is a very solid approach. It avoids the mutation problem entirely. How would you implement that using list comprehensions or a simple loop?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think I can do it like this:\n\n```python\ndef move_zero(num_list):\n    non_zeros = [x for x in num_list if x != 0]\n    zeros = [x for x in num_list if x == 0]\n    return non_zeros + zeros\n```\nDoes this look right now?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that logic is correct! You've successfully separated the elements and recombined them in the required order. This approach is clean and avoids the indexing pitfalls of the first attempt. Well done.",
+      "loss_mask": true
+    }
+  ]
+}

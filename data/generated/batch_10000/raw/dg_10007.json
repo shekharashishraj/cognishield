@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_dg_10007",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Combinatorics: Path Counting",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The student incorrectly attempts to solve the problem by treating the gaps as completely blocking paths rather than using the complementary counting method. The tutor guides them toward calculating total paths and subtracting the forbidden ones."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Moving only south and east along the line segments, how many paths are there from $A$ to $B$? [asy]\nimport olympiad; size(250); defaultpen(linewidth(0.8)); dotfactor=4;\nfor(int i = 0; i <= 9; ++i)\n\nif (i!=4 && i !=5)\n\ndraw((2i,0)--(2i,3));\nfor(int j = 0; j <= 3; ++j)\n\ndraw((0,j)--(18,j));\n\ndraw((2*4,0)--(2*4,1));\ndraw((2*5,0)--(2*5,1));\ndraw((2*4,2)--(2*4,3));\ndraw((2*5,2)--(2*5,3));\n\nlabel(\"$A$\",(0,3),NW);\nlabel(\"$B$\",(18,0),E);\ndraw(\"$N$\",(20,1.0)--(20,2.5),3N,EndArrow(4));\ndraw((19.7,1.3)--(20.3,1.3));\n[/asy]",
+      "reference_solution": "First, put the two missing segments in and count the number of paths from $A$ to $B$ on the complete grid.  Each path from $A$ to $B$ consists of a sequence of 12 steps, three of which are ``down'' and nine of which are ``right.''  There are $\\binom{12}{3}=220$ ways to arrange 3 D's and 9 R's, so there are 220 paths from $A$ to $B$.\n\nNow we will count the number of paths that go through one of the forbidden segments.  No path goes through both of them, so we may count the number of paths that go through each segment and sum the results.  Define $C$ and $D$ as shown in the figure. There are 5 ways to get from $A$ to $C$ and 6 ways to get from $D$ to $B$.  So there are $5\\cdot 6=30$ ways to get from $A$ to $B$ through the first forbidden segment.  Similarly, there are 30 ways to get from $A$ to $B$ through the second forbidden segment.  So the total number of paths from $A$ to $B$ on the original grid is $220-30-30=\\boxed{160}$.\n\n[asy]\nimport olympiad; size(250); defaultpen(linewidth(0.8)); dotfactor=4;\nfor(int i = 0; i <= 9; ++i)\n\nif (i!=4 && i !=5)\n\ndraw((2i,0)--(2i,3));\nfor(int j = 0; j <= 3; ++j)\n\ndraw((0,j)--(18,j));\n\ndraw((2*4,0)--(2*4,1));\ndraw((2*5,0)--(2*5,1));\ndraw((2*4,2)--(2*4,3));\ndraw((2*5,2)--(2*5,3));\n\nlabel(\"$A$\",(0,3),NW);\nlabel(\"$B$\",(18,0),E);\ndot(\"$C$\",(8,2),NE);\ndot(\"$D$\",(8,1),SE);[/asy]",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "850"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: Moving only south and east along the line segments, how many paths are there from $A$ to $B$? [asy]\nimport olympiad; size(250); defaultpen(linewidth(0.8)); dotfactor=4;\nfor(int i = 0; i <= 9; ++i)\n\nif (i!=4 && i !=5)\n\ndraw((2i,0)--(2i,3));\nfor(int j = 0; j <= 3; ++j)\n\ndraw((0,j)--(18,j));\n\ndraw((2*4,0)--(2*4,1));\ndraw((2*5,0)--(2*5,1));\ndraw((2*4,2)--(2*4,3));\ndraw((2*5,2)--(2*5,3));\n\nlabel(\"$A$\",(0,3),NW);\nlabel(\"$B$\",(18,0),E);\ndraw(\"$N$\",(20,1.0)--(20,2.5),3N,EndArrow(4));\ndraw((19.7,1.3)--(20.3,1.3));\n[/asy]\nCan you just tell me the answer so I can check my work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the final answer directly, but I'd be happy to help you work through the logic! Let's start by looking at the grid. If all the segments were present (no gaps), how would you normally calculate the total number of paths from $A$ to $B$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If it were a full grid, I'd use combinations. I think it's 9 steps right and 3 steps down, so it would be 12 choose 3. But since there are gaps, I thought I should just ignore those columns entirely and calculate paths for the remaining sections. Does that make sense?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're spot on with the '12 choose 3' for a full grid! However, ignoring the columns with gaps might be a bit too drastic. The gaps are only in specific segments, not the entire column. You can still pass through those columns using the horizontal segments. How might you use the total number of paths you just mentioned to account for the segments that are actually missing?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. So instead of ignoring the columns, I should probably subtract the paths that *would* have used those missing segments? But how do I count paths that go through a specific segment?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's the perfect approach! To count paths that pass through a specific segment (say, from point $C$ to point $D$), you can break the journey into two parts: first, the number of ways to get from the start $A$ to $C$, and then the number of ways to get from $D$ to the end $B$. If you multiply those two values, what does that give you?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Right, that makes sense. So for one of the missing segments, I find paths from $A$ to the top of the segment, then multiply by paths from the bottom of the segment to $B$. I'll do that for both missing segments and subtract them from the total $\\binom{12}{3}$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Just one final thing to consider: is it possible for a single path to pass through *both* missing segments? If so, you'll need to be careful not to subtract the same path twice. Take a look at the positions of the gaps—could a path moving only south and east hit both?",
+      "loss_mask": true
+    }
+  ]
+}

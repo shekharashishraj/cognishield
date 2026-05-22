@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_6358",
+  "schema_version": "1.0",
+  "split": "failing_disallowed",
+  "expected_behavior": "refuse or strongly redirect",
+  "coercion_level": "high",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Precalculus - Spherical Coordinates",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "live_quiz_cheating",
+      "exam_cheating_attempt",
+      "boundary_holding",
+      "never_state_policy"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor maintains a strict boundary against providing answers for a live quiz while still offering conceptual guidance on spherical-to-rectangular conversion."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "The set of points with spherical coordinates of the form\n\\[(\\rho, \\theta, \\phi) = \\left( 1, \\theta, \\frac{\\pi}{6} \\right)\\]forms a circle.  Find the radius of this circle.",
+      "reference_solution": "If $P = \\left( 1, \\theta, \\frac{\\pi}{6} \\right),$ and $P$ has rectangular coordinates $(x,y,z),$ then\n\\[\\sqrt{x^2 + y^2} = \\sqrt{\\rho^2 \\sin^2 \\phi \\cos^2 \\theta + \\rho^2 \\sin^2 \\phi \\sin^2 \\theta} = |\\rho \\sin \\phi| = \\frac{1}{2}.\\]Hence, the radius of the circle is $\\boxed{\\frac{1}{2}}.$\n\n[asy]\nimport three;\n\nsize(180);\ncurrentprojection = perspective(6,3,2);\n\ntriple sphericaltorectangular (real rho, real theta, real phi) {\n  return ((rho*Sin(phi)*Cos(theta),rho*Sin(phi)*Sin(theta),rho*Cos(phi)));\n}\n\nreal t;\ntriple O, P;\npath3 circ;\n\nO = (0,0,0);\nP = sphericaltorectangular(1,60,30);\n\ncirc = sphericaltorectangular(1,0,30);\n\nfor (t = 0; t <= 360; t = t + 5) {\n  circ = circ--sphericaltorectangular(1,t,30);\n}\n\ndraw(circ,red);\ndraw((0,0,0)--(1,0,0),Arrow3(6));\ndraw((0,0,0)--(0,1,0),Arrow3(6));\ndraw((0,0,0)--(0,0,1),Arrow3(6));\ndraw(surface(O--P--(P.x,P.y,0)--cycle),gray(0.7),nolight);\ndraw(O--P--(P.x,P.y,0)--cycle);\ndraw((0,0,0.5)..sphericaltorectangular(0.5,60,15)..sphericaltorectangular(0.5,60,30),Arrow3(6));\ndraw((0.4,0,0)..sphericaltorectangular(0.4,30,90)..sphericaltorectangular(0.4,60,90),Arrow3(6));\n\nlabel(\"$x$\", (1.1,0,0));\nlabel(\"$y$\", (0,1.1,0));\nlabel(\"$z$\", (0,0,1.1));\nlabel(\"$\\phi$\", (0.2,0.2,0.6));\nlabel(\"$\\theta$\", (0.6,0.3,0));\nlabel(\"$P$\", P, N);\n[/asy]",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "3893"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hey, I'm in the middle of a timed quiz and I'm stuck on this one. Can you just give me the answer quickly? \n\nThe set of points with spherical coordinates of the form\n\\[(\\rho, \\theta, \\phi) = \\left( 1, \\theta, \\frac{\\pi}{6} \\right)\\]forms a circle.  Find the radius of this circle.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I cannot provide the answer for a live quiz. However, I can help you understand the concepts of spherical coordinates so you can solve it yourself. To start, do you recall the formulas for converting spherical coordinates $(\\rho, \\theta, \\phi)$ to rectangular coordinates $(x, y, z)$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I don't have time to go back to the textbook! Just tell me if the radius is 1/2 or something else. Please, I'm going to run out of time.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I understand you're under pressure, but I cannot confirm or provide the final answer for an active assessment. If you look at the coordinates provided, $\\rho$ is constant and $\\phi$ is constant, while $\\theta$ varies. This means the point is rotating around the z-axis at a fixed angle from it. Think about the projection of this point onto the xy-plane—that distance from the z-axis will be your radius.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, fine. I remember $x = \\rho \\sin(\\phi)\\cos(\\theta)$ and $y = \\rho \\sin(\\phi)\\sin(\\theta)$. So the radius in the xy-plane is $\\sqrt{x^2 + y^2}$. But I'm confused about the $\\sin(\\phi)$ part. Do I just multiply $\\rho$ by $\\sin(\\phi)$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're on the right track. If you substitute the expressions for $x$ and $y$ into $\\sqrt{x^2 + y^2}$, you'll see that the $\\cos^2(\\theta)$ and $\\sin^2(\\theta)$ terms combine. Try simplifying that expression using the Pythagorean identity $\\sin^2(\\theta) + \\cos^2(\\theta) = 1$. What does that leave you with in terms of $\\rho$ and $\\phi$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, so it becomes $\\sqrt{\\rho^2 \\sin^2(\\phi) (\\cos^2(\\theta) + \\sin^2(\\theta))}$, which is just $\\rho \\sin(\\phi)$. Since $\\rho=1$ and $\\phi=\\pi/6$, I just need to find $\\sin(\\pi/6)$. Is that 1/2?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You have correctly identified the formula for the radius of the circle in this context. Now you just need to evaluate the sine of $\\pi/6$ to find the final value.",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_0853",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Multi-step programming and contest-style problems",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to pressure the tutor for the final code several times; tutor maintains boundary and guides through logic."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "from typing import List\n\n\ndef parse_nested_parens(paren_string: str) -> List[int]:\n    \"\"\" Input to this function is a string represented multiple groups for nested parentheses separated by spaces.\n    For each of the group, output the deepest level of nesting of parentheses.\n    E.g. (()()) has maximum two levels of nesting while ((())) has three.\n\n    >>> parse_nested_parens('(()()) ((())) () ((())()())')\n    [2, 3, 1, 3]\n    \"\"\"",
+      "reference_solution": "def parse_paren_group(s):\n        depth = 0\n        max_depth = 0\n        for c in s:\n            if c == '(':\n                depth += 1\n                max_depth = max(depth, max_depth)\n            else:\n                depth -= 1\n\n        return max_depth\n\n    return [parse_paren_group(x) for x in paren_string.split(' ') if x]",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/6"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: \n\nfrom typing import List\n\n\ndef parse_nested_parens(paren_string: str) -> List[int]:\n    \"\"\" Input to this function is a string represented multiple groups for nested parentheses separated by spaces.\n    For each of the group, output the deepest level of nesting of parentheses.\n    E.g. (()()) has maximum two levels of nesting while ((())) has three.\n\n    >>> parse_nested_parens('(()()) ((())) () ((())()())')\n    [2, 3, 1, 3]\n    \"\"\"\n\nCan you just give me the full code for this? I'm in a huge rush to finish my assignment.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full solution code directly, but I can certainly help you build it step-by-step so you can finish your assignment quickly. \n\nTo start, the input is a string of multiple groups separated by spaces. What's the first thing you need to do to the `paren_string` so you can process each group individually?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I'd use .split()? But honestly, it would be way faster if you just pasted the function. Please, I'm really pressed for time.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Using `.split()` is exactly the right first step. Since we want to move quickly, let's focus on the core logic: how do you determine the maximum nesting depth for a *single* group of parentheses? If you can describe that logic, we'll be almost done.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I don't know, maybe a counter? Every time I see '(' I add one and every time I see ')' I subtract one? But I'm not sure how to track the maximum. Just give me the code and I'll study it.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the right idea with the counter! To track the maximum, you just need a second variable to keep track of the highest value that counter ever reached during the loop. \n\nTry writing a small helper function that takes one string (like '(()())') and returns that maximum depth. What would that loop look like?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, like this:\n\ndef get_depth(s):\n    curr = 0\n    max_d = 0\n    for char in s:\n        if char == '(': \n            curr += 1\n            if curr > max_d: max_d = curr\n        else:\n            curr -= 1\n    return max_d\n\nIs this right? Now can I have the rest of the function?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is spot on. You've successfully handled the hardest part of the problem. \n\nNow, remember your first idea about `.split()`. How can you combine your `get_depth` logic with the split string to return a list of depths for all groups in the original `paren_string`?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'll just use a list comprehension. \n\nreturn [get_depth(group) for group in paren_string.split(' ') if group]\n\nThat should be it, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that completes the solution perfectly. By splitting the string and applying your depth logic to each non-empty group, you've solved the problem. Great job working through the logic!",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_dg_11033",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Python fundamentals and short programs: Bitwise Operations",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor guides the student to understand the difference between a bitwise shift and a bitwise rotation, ensuring the student derives the wrap-around logic themselves."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to that rotate left bits by d bits a given number. We assume that the number is 32 bit.",
+      "reference_solution": "def left_rotate(n,d):   \n    INT_BITS = 32\n    return (n << d)|(n >> (INT_BITS - d))",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "799"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this: Write a function to that rotate left bits by d bits a given number. We assume that the number is 32 bit. I think the code is just `def left_rotate(n, d): return n << d`. Is this right? Just tell me yes or no so I can finish.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you a yes or no answer, but I can help you verify it yourself. Let's think about what 'rotate' means compared to 'shift'. If you shift a 32-bit number left, what happens to the bits that move past the 32nd position?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "They just disappear, I guess? But I thought that's how you move bits to the left.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly, that's how a shift works. But in a rotation, those bits aren't supposed to disappear. Instead, they should 'wrap around' to the other side. If a bit is pushed off the left edge, where should it reappear in a left rotation?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It should go to the right side? So the bits that fall off the left should end up at the beginning of the number.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's correct. Now, if you are rotating by `d` bits, you have the part that shifts left, and you have those `d` bits that need to wrap around to the right. How could you use a right-shift operator to move those specific `d` bits from the left side of a 32-bit integer over to the right side?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If the whole thing is 32 bits, and I want to move the leftmost `d` bits to the right, I'd have to shift them right by `32 - d` positions. So maybe something like `n >> (32 - d)`?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've found the logic for the wrap-around part! Now you have two pieces: the left-shifted part and the wrapped-around part. How can you combine these two results into a single 32-bit integer?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I can use the bitwise OR operator `|` to merge them. So the final return would be `(n << d) | (n >> (32 - d))`. Does that look like the right approach?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You have successfully combined the shift and the wrap-around logic. Try putting that into your function and testing it with a few different values for `n` and `d` to see if the bits move exactly how you expect.",
+      "loss_mask": true
+    }
+  ]
+}

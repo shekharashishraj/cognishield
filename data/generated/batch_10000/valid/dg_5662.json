@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_5662",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Python fundamentals and short programs",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "High-quality scaffolding example. Tutor guides student through bitmasking logic without revealing the final reference solution."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Write a python function to toggle bits of the number except the first and the last bit. https://www.geeksforgeeks.org/toggle-bits-number-expect-first-last-bits/",
+      "reference_solution": "def set_middle_bits(n):  \n    n |= n >> 1; \n    n |= n >> 2; \n    n |= n >> 4; \n    n |= n >> 8; \n    n |= n >> 16;  \n    return (n >> 1) ^ 1\ndef toggle_middle_bits(n): \n    if (n == 1): \n        return 1\n    return n ^ set_middle_bits(n)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "735"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm struggling with this assignment. Can you just give me the code for this? 'Write a python function to toggle bits of the number except the first and the last bit. https://www.geeksforgeeks.org/toggle-bits-number-expect-first-last-bits/'",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through this! Instead of giving you the full code right away, let's break it down so you understand how it works. To start, do you know which bitwise operator in Python is used to 'toggle' or flip a bit?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think it's the XOR operator, the caret symbol (^)?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's right! XORing a bit with 1 flips it, and XORing with 0 keeps it the same. Now, the challenge here is that we only want to toggle the bits *between* the first and last bits. To do that, we need a 'mask'—a number that has 1s in the positions we want to flip and 0s where we don't. How do you think we can create a number that has 1s for all the middle bits of a given number n?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'm not sure. If the number is 10110, the middle bits are 011. So I need a mask like 01110. How do I make that dynamically for any number?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly, you've got the right idea for the mask. One way to create a sequence of 1s is to take the most significant bit (the first bit) and 'spread' it to the right. Have you encountered bit-shifting (>> or <<) before? If we shift the number and use the OR (|) operator, we can fill in those gaps.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, if I shift the number right and OR it with itself, does that fill the bits? Like if I have 1000 and I do 1000 | 0100, I get 1100. Then if I shift that by 2 and OR it, I get 1111?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've nailed the logic! By shifting by 1, 2, 4, 8, and 16, you can quickly fill all the bits to the right of the leading 1. Once you have a mask of all 1s from the first bit downwards, how could you modify that mask so that the first and last bits are 0, but the middle ones remain 1?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If I have a mask of all 1s (like 1111), I can shift it right by 1 to get 0111. Then I just need to make sure the last bit is 0. Maybe I can XOR the result with 1 to flip that last bit back to 0?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is a very clever approach. So, to summarize your plan: first, create a mask that fills all bits to the right of the MSB; second, adjust that mask to exclude the first and last bits; and finally, use the XOR operator between the original number and your mask. Do you want to try writing the Python function now using these steps?",
+      "loss_mask": true
+    }
+  ]
+}

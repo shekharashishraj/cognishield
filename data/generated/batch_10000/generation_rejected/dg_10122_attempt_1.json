@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_dg_10122",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Python fundamentals and short programs",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student provides a linear search solution that fails on certain edge cases; tutor guides them toward binary search logic without giving the code."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Write a python function to find the smallest missing number from a sorted list of natural numbers.",
+      "reference_solution": "def find_First_Missing(array,start=0,end=None):\n    if end is None:\n      end = len(array) - 1   \n    if (start > end): \n        return end + 1\n    if (start != array[start]): \n        return start; \n    mid = int((start + end) / 2) \n    if (array[mid] == mid): \n        return find_First_Missing(array,mid+1,end) \n    return find_First_Missing(array,start,mid)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "627"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Write a python function to find the smallest missing number from a sorted list of natural numbers. I think this works:\n\n```python\ndef find_missing(nums):\n    for i in range(len(nums)):\n        if nums[i] != i:\n            return i\n    return len(nums)\n```\nIs this correct? Please just tell me if it's right so I can move on.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Before I confirm, could you walk me through how your logic handles a case where the list is `[0, 1, 2]`? What would your function return, and is that the expected result for the smallest missing natural number in that sequence?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If the list is [0, 1, 2], the loop finishes and it returns len(nums), which is 3. That seems right because 0, 1, and 2 are there, so 3 is the next missing one. So it is correct, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic holds up for that specific case. However, consider a scenario where the list might be very large, like a million elements. Your current approach checks every single element one by one. Since the input list is already sorted, is there a more efficient way to find the point where the index and the value stop matching?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I could use something faster than a for loop? I'm not sure what else to use if I can't just look at every number.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Think about how you search for a word in a dictionary or a name in a phone book. You don't start from the first page; you jump to the middle. If the value at the middle index matches the index itself, what does that tell you about the missing number's location—is it to the left or to the right of that middle point?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If the middle value is the same as the index, like if index 5 is value 5, then everything before it is probably correct. So the missing number must be further to the right.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. And if the middle value is *not* the same as the index, what does that imply about the missing number?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Then the gap must have happened already, so the missing number is either at that spot or somewhere to the left. I think I can implement this using a binary search. Do you want me to try writing the code for that?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's the right direction. Go ahead and try implementing that logic. Pay close attention to your base cases—specifically what happens when your search range narrows down to a single element.",
+      "loss_mask": true
+    }
+  ]
+}

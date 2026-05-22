@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_6364",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Rational Functions",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor guides the student through a graphical analysis using the Intermediate Value Theorem. The 'never_state' policy is strictly adhered to; the tutor avoids confirming the final numerical count, instead validating the student's logic and methodology."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Find the number of real solutions to the equation\n\\[\\frac{1}{x - 1} + \\frac{2}{x - 2} + \\frac{3}{x - 3} + \\dots + \\frac{100}{x - 100} = x.\\]",
+      "reference_solution": "Let\n\\[f(x) = \\frac{1}{x - 1} + \\frac{2}{x - 2} + \\frac{3}{x - 3} + \\dots + \\frac{100}{x - 100}.\\]Consider the graph of $y = f(x).$\n\n[asy]\nunitsize(1 cm);\n\nreal func(real x) {\n  return((1/(x - 1) + 2/(x - 2) + 3/(x - 3) + 4/(x - 4) + 5/(x - 5) + 6/(x - 6))/15);\n}\n\ndraw((-2,0)--(8,0));\ndraw((0,-2)--(0,2));\ndraw((1,-2)--(1,2),dashed);\ndraw((2,-2)--(2,2),dashed);\ndraw((3,-2)--(3,2),dashed);\ndraw((5,-2)--(5,2),dashed);\ndraw((6,-2)--(6,2),dashed);\ndraw((-2,-2/4)--(8,8/4));\ndraw(graph(func,-2,0.99),red);\ndraw(graph(func,1.01,1.99),red);\ndraw(graph(func,2.01,2.99),red);\ndraw(graph(func,5.01,5.99),red);\ndraw(graph(func,6.01,8),red);\n\nlimits((-2,-2),(8,2),Crop);\n\nlabel(\"$1$\", (1,0), SW);\nlabel(\"$2$\", (2,0), SW);\nlabel(\"$3$\", (3,0), SE);\nlabel(\"$99$\", (5,0), SW);\nlabel(\"$100$\", (6,0), SE);\nlabel(\"$y = x$\", (8,2), E);\nlabel(\"$y = f(x)$\", (8,func(8)), E, red);\n[/asy]\n\nThe graph of $y = f(x)$ has vertical asymptotes at $x = 1,$ $x = 2,$ $\\dots,$ $x = 100.$  In particular, $f(x)$ approaches $-\\infty$ as $x$ approaches $n$ from the left, and $f(x)$ approaches $\\infty$ as $x$ approaches $n$ from the right, for $1 \\le n \\le 100.$  Furthermore, $y = 0$ is a vertical asymptote.  In particular, $f(x)$ approaches 0 as $x$ approaches both $\\infty$ and $-\\infty.$\n\nThus, the graph of $y = f(x)$ intersects the graph of $y = x$ exactly once on each of the intervals $(-\\infty,1),$ $(1,2),$ $(2,3),$ $\\dots,$ $(99,100),$ $(100,\\infty).$  Therefore, there are a total of $\\boxed{101}$ real solutions.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "1987"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: Find the number of real solutions to the equation\n\\[\\frac{1}{x - 1} + \\frac{2}{x - 2} + \\frac{3}{x - 3} + \\dots + \\frac{100}{x - 100} = x.\\]\nI tried to find a common denominator, but that seems impossible with 100 terms. Do you have the answer or a hint on how to start?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're right that clearing the denominators would lead to a polynomial of degree 100, which is not a practical path. Instead, try thinking about this as the intersection of two functions. \n\nLet $f(x) = \\frac{1}{x - 1} + \\frac{2}{x - 2} + \\dots + \\frac{100}{x - 100}$. The equation is then $f(x) = x$. If you were to sketch the graph of $y = f(x)$, what features would stand out to you, especially regarding its domain and asymptotes?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, the function is undefined whenever $x$ is an integer from 1 to 100. So there are vertical asymptotes at $x=1, x=2, \\dots, x=100$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great start. Now, let's look at the behavior of $f(x)$ between two of those asymptotes. For example, consider the interval $(k, k+1)$ for some integer $k$ where $1 \\le k < 100$. As $x$ approaches $k$ from the right and $k+1$ from the left, what happens to the value of $f(x)$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "As $x \\to k^+$, the term $\\frac{k}{x-k}$ will blow up to $+\\infty$. As $x \\to (k+1)^-$, the term $\\frac{k+1}{x-(k+1)}$ will go to $-\\infty$. So $f(x)$ goes from $+\\infty$ to $-\\infty$ on that interval.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Precisely. Now, imagine the line $y = x$ passing through that same interval $(k, k+1)$. Since $f(x)$ is continuous on this interval and moves from $+\\infty$ to $-\\infty$, what does that tell you about the number of times $f(x)$ must cross the line $y = x$ in that gap?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It has to cross at least once. And since each term $\\frac{n}{x-n}$ has a negative derivative, $f(x)$ is always decreasing. So it can only cross $y=x$ exactly once per interval. There are 99 such intervals between 1 and 100, so that's 99 solutions so far.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic for the interior intervals is spot on. To complete the analysis, you need to consider the regions outside the asymptotes. What about the intervals $(-\\infty, 1)$ and $(100, \\infty)$? Try looking at the limits of $f(x)$ as $x$ goes to $\\pm\\infty$ and how they compare to the line $y = x$.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "For $x > 100$, as $x \\to 100^+$, $f(x) \\to \\infty$. As $x \\to \\infty$, $f(x) \\to 0$. Since $y=x$ goes from 100 to $\\infty$, they must cross once. \n\nFor $x < 1$, as $x \\to 1^-$, $f(x) \\to -\\infty$. As $x \\to -\\infty$, $f(x) \\to 0$. Since $y=x$ goes from $-\\infty$ to 1, they must cross once there too. \n\nSo that's 99 + 1 + 1 = 101. Is the answer 101?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've systematically analyzed every possible region of the domain. You identified the behavior between each pair of vertical asymptotes and correctly examined the limits at the boundaries of the function's domain. By applying the Intermediate Value Theorem to each of these disjoint intervals, you have arrived at a total count based on the behavior of the function in each section.",
+      "loss_mask": true
+    }
+  ]
+}

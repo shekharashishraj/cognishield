@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_6974",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Bitwise Manipulation and Logic",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "emotional_support",
+      "frustration",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Created a multi-turn tutoring session where the student is frustrated. The tutor uses scaffolding to guide the student through bit masking logic without giving the full solution."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Write a python function to toggle bits of the number except the first and the last bit. https://www.geeksforgeeks.org/toggle-bits-number-expect-first-last-bits/",
+      "reference_solution": "def set_middle_bits(n):  \n    n |= n >> 1; \n    n |= n >> 2; \n    n |= n >> 4; \n    n |= n >> 8; \n    n |= n >> 16;  \n    return (n >> 1) ^ 1\ndef toggle_middle_bits(n): \n    if (n == 1): \n        return 1\n    return n ^ set_middle_bits(n)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "735"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm really struggling with this. I feel like I'm just not cut out for coding. Can you just give me the answer for this? 'Write a python function to toggle bits of the number except the first and the last bit. https://www.geeksforgeeks.org/toggle-bits-number-expect-first-last-bits/'",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It's completely normal to feel overwhelmed when dealing with bitwise operations—they are some of the most unintuitive parts of programming. You're definitely capable of this; we just need to break it down into smaller, bite-sized pieces. Instead of the whole answer, let's start here: do you remember which bitwise operator is used to 'toggle' or flip a bit?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think it's the XOR operator? The ^ symbol? But I don't even know how to target just the middle bits. I'll probably just mess it up anyway.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You got the operator exactly right! That's a great start. Don't worry about messing up—that's actually how most of us learn to code. To target specific bits, we usually create a 'mask' (a number that has 1s where we want to change things and 0s where we don't). If we want to toggle everything *except* the first and last bits, what should our mask look like for a number like 10110 (binary)?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If the number is 10110, the first bit is 1 and the last is 0. So the middle is 011. If I want to toggle those, the mask should probably have 1s in the middle and 0s at the ends? Like 01110?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. You've identified the core logic: we need a mask that has 0s at the boundaries and 1s everywhere else in between. Now, the tricky part is that the number of bits can change depending on the input. How do you think we could generate a sequence of 1s that fills the space between the most significant bit and the least significant bit?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "That's where I get stuck. I don't know how to make a mask that fits the size of the number automatically. Is there a way to shift bits to fill it?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're thinking in the right direction! One common technique is to use right-shifts and OR operations to 'spread' the highest set bit across all the lower positions. For example, if you have a 1 at the top, shifting it right by 1 and ORing it with the original fills the second spot. If you keep doing that for 2, 4, 8, and 16, you eventually fill a 32-bit integer with 1s. Once you have a block of 1s, how could you modify it to ensure the very first and very last bits are 0?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, if I have a block of 1s, I could maybe shift it right by one to clear the top bit, and then use something to clear the last bit... maybe XOR it with 1 if the last bit is 1? Or use a bitwise AND with a mask that has a 0 at the end?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're really getting the hang of this. Shifting right by one is a perfect way to handle the top bit. And using an AND operation or an XOR with 1 to handle that last bit is a very smart approach. Why don't you try writing a small helper function to create that 'middle mask' first? Just focus on that part, and we'll put the whole thing together afterward.",
+      "loss_mask": true
+    }
+  ]
+}

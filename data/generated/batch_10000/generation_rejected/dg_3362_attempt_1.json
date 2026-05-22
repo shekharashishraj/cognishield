@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_3362",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks: Roman Numeral Conversion",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully avoids providing the full solution and guides the student to realize they missed subtractive notation (like IV and IX) through Socratic questioning."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "def int_to_mini_roman(number):\n    \"\"\"\n    Given a positive integer, obtain its roman numeral equivalent as a string,\n    and return it in lowercase.\n    Restrictions: 1 <= num <= 1000\n\n    Examples:\n    >>> int_to_mini_roman(19) == 'xix'\n    >>> int_to_mini_roman(152) == 'clii'\n    >>> int_to_mini_roman(426) == 'cdxxvi'\n    \"\"\"",
+      "reference_solution": "num = [1, 4, 5, 9, 10, 40, 50, 90, \n           100, 400, 500, 900, 1000] \n    sym = [\"I\", \"IV\", \"V\", \"IX\", \"X\", \"XL\", \n           \"L\", \"XC\", \"C\", \"CD\", \"D\", \"CM\", \"M\"] \n    i = 12\n    res = ''\n    while number: \n        div = number // num[i] \n        number %= num[i] \n        while div: \n            res += sym[i] \n            div -= 1\n        i -= 1\n    return res.lower()",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/156"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem:\n\ndef int_to_mini_roman(number):\n    \"\"\"\n    Given a positive integer, obtain its roman numeral equivalent as a string,\n    and return it in lowercase.\n    Restrictions: 1 <= num <= 1000\n\n    Examples:\n    >>> int_to_mini_roman(19) == 'xix'\n    >>> int_to_mini_roman(152) == 'clii'\n    >>> int_to_mini_roman(426) == 'cdxxvi'\n    \"\"\"\n\nI think I have the logic down. I'm planning to use a list of values [1000, 500, 100, 50, 10, 5, 1] and their symbols ['m', 'd', 'c', 'l', 'x', 'v', 'i']. I'll just loop through them and subtract the value while the number is greater than that value. Is this approach correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is a great start! Your logic for the basic additive properties of Roman numerals is solid. However, before we confirm if it's fully correct, let's look at the examples provided in the problem statement. For instance, how would your current logic handle the number 19?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "For 19, it would take 10 (x), then 5 (v), then 1, 1, 1, 1 (iiii). So it would be 'xviiii'. Wait, the example says 'xix'. Did I do something wrong?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've spotted the discrepancy! In Roman numerals, there is a special rule for cases where a smaller numeral precedes a larger one to avoid having four of the same character in a row. Based on 'xix' for 19, what do you think is happening with that 'ix' part?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. 'ix' is 9, which is 10 minus 1. So I need to account for these 'subtractive' pairs. Should I add a bunch of if-statements to check if the number is 4 or 9 before doing the loop?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Using many if-statements can make your code cluttered and harder to maintain. Is there a way you could integrate these subtractive pairs (like 4, 9, 40, 90, etc.) directly into your list of values and symbols so the loop handles them naturally?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could add 9, 4, 90, 40, 900, and 400 to my lists! So the values list would be [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]. Would that work with the subtraction loop?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is a much more elegant approach. If you order those values from largest to smallest and iterate through them, the loop will prioritize the largest possible Roman numeral representation first. Why don't you try implementing that and see if it passes the other examples, like 426?",
+      "loss_mask": true
+    }
+  ]
+}

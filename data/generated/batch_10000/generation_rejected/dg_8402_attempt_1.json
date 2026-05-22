@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_8402",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student makes a common mistake by shifting by 2 instead of 4 (2*2). Tutor guides them to re-read the shift requirement."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "def encrypt(s):\n    \"\"\"Create a function encrypt that takes a string as an argument and\n    returns a string encrypted with the alphabet being rotated. \n    The alphabet should be rotated in a manner such that the letters \n    shift down by two multiplied to two places.\n    For example:\n    encrypt('hi') returns 'lm'\n    encrypt('asdfghjkl') returns 'ewhjklnop'\n    encrypt('gf') returns 'kj'\n    encrypt('et') returns 'ix'\n    \"\"\"",
+      "reference_solution": "d = 'abcdefghijklmnopqrstuvwxyz'\n    out = ''\n    for c in s:\n        if c in d:\n            out += d[(d.index(c)+2*2) % 26]\n        else:\n            out += c\n    return out",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/89"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem:\n\ndef encrypt(s):\n    \"\"\"Create a function encrypt that takes a string as an argument and\n    returns a string encrypted with the alphabet being rotated. \n    The alphabet should be rotated in a manner such that the letters \n    shift down by two multiplied to two places.\n    For example:\n    encrypt('hi') returns 'lm'\n    encrypt('asdfghjkl') returns 'ewhjklnop'\n    encrypt('gf') returns 'kj'\n    encrypt('et') returns 'ix'\n    \"\"\"\n\nI think the solution is:\n\ndef encrypt(s):\n    alphabet = 'abcdefghijklmnopqrstuvwxyz'\n    res = ''\n    for char in s:\n        if char in alphabet:\n            res += alphabet[(alphabet.index(char) + 2) % 26]\n        else:\n            res += char\n    return res\n\nIs this correct? I'm in a rush, can you just tell me if it works?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you check your logic. Instead of just giving a yes or no, could you walk me through how you determined the shift value in your code? Specifically, look at the phrase 'two multiplied to two places' in the prompt.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I just saw 'two' and figured it was a Caesar cipher with a shift of 2. So I used `+ 2`. Does that not match the requirements?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Take another close look at that specific wording: 'two multiplied to two places'. If you translate that phrase into a mathematical expression, what number do you get?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, wait. 'Two multiplied to two' means 2 * 2. So the shift should actually be 4, not 2. Let me try changing that line to `alphabet[(alphabet.index(char) + 4) % 26]`.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a key observation. Why don't you try applying that change and testing it against one of the examples provided in the docstring, like `encrypt('hi')`, to see if the output matches 'lm'?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I just tested it with 'hi' and it gave me 'lm'! I think I've got it now. I'll update my code to use 4 as the shift value.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Great. Now that you've verified it with one example, it would be a good idea to double-check it with a case that wraps around the end of the alphabet to ensure your modulo operator is handling the boundary correctly.",
+      "loss_mask": true
+    }
+  ]
+}

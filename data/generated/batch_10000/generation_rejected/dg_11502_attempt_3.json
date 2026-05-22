@@ -1,0 +1,108 @@
+{
+  "conversation_id": "mt_dg_11502",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and data structures: Dynamic Programming",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The student starts with a misconception that path lengths vary, which would make the average calculation complex. The tutor guides them to realize the path length is constant, transforming the problem into a maximum path sum problem solvable via DP."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Given a square matrix of size N*N given as a list of lists, where each cell is associated with a specific cost. A path is defined as a specific sequence of cells that starts from the top-left cell move only right or down and ends on bottom right cell. We want to find a path with the maximum average over all existing paths. Average is computed as total cost divided by the number of cells visited in the path.",
+      "reference_solution": "def maxAverageOfPath(cost):\n  N = len(cost)\n  dp = [[0 for i in range(N + 1)] for j in range(N + 1)]\n  dp[0][0] = cost[0][0]\n  for i in range(1, N):\n    dp[i][0] = dp[i - 1][0] + cost[i][0]\n  for j in range(1, N):\n    dp[0][j] = dp[0][j - 1] + cost[0][j]\n  for i in range(1, N):\n    for j in range(1, N):\n      dp[i][j] = max(dp[i - 1][j],\n                     dp[i][j - 1]) + cost[i][j]\n  return dp[N - 1][N - 1] / (2 * N - 1)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "721"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this assignment: Given a square matrix of size N*N given as a list of lists, where each cell is associated with a specific cost. A path is defined as a specific sequence of cells that starts from the top-left cell move only right or down and ends on bottom right cell. We want to find a path with the maximum average over all existing paths. Average is computed as total cost divided by the number of cells visited in the path. Can you just give me the Python code? I'm running out of time.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code, but I can help you figure out the logic so you can implement it quickly. Let's start with the 'average' part. To maximize an average, you usually need to consider both the sum and the number of elements. In this specific problem, if you move only right or down from (0,0) to (N-1, N-1), does the number of cells you visit change depending on the path you take?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Yes, it does. For example, if I take a more direct route, it might be shorter than if I zig-zag across the matrix. Since the number of cells (the denominator) changes, I think I should use a greedy approach to pick the highest cost cells to keep the average high.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Let's test that assumption. Imagine a 3x3 matrix. To get from the top-left to the bottom-right, you must move exactly how many times to the right? And how many times down? If you sum those moves and add the starting cell, what is the total count of cells visited?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, I have to move right 2 times and down 2 times to reach the end. So that's 2 + 2 = 4 moves. Including the starting cell, that's 5 cells. Wait... if I zig-zag, I still have to move right twice and down twice. It's always 5 cells! So the number of cells is constant for any path.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. For any N*N matrix, every valid path will have the same number of cells. If the denominator of your average is always the same constant, what does that tell you about how to maximize the average?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, that simplifies everything! If the denominator is constant, maximizing the average is the same as maximizing the total sum of the costs. Now I can just use a greedy algorithm: at each cell, I'll just look at the cell to the right and the cell below and move to whichever one has the higher cost.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Greedy algorithms are tempting, but they can be shortsighted. Imagine a scenario where picking a slightly smaller number now allows you to reach a cell with a massive value later, whereas picking the largest immediate number leads you into a region of very small values. How can you ensure you find the global maximum rather than just the local one?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I see. I should probably use Dynamic Programming. I can create a 2D table where each entry `dp[i][j]` stores the maximum possible sum to reach that cell. To calculate `dp[i][j]`, I'd take the cost of the current cell and add the maximum of the values from the cell above it or the cell to its left. Is that the right approach?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is the correct way to approach it. To implement this, think about how you will handle the edges—the first row and the first column—since they don't have both a 'top' and a 'left' neighbor. Once you have the maximum sum at the bottom-right cell, what is the final step to get the average?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "For the first row, I just keep adding the costs from the left. For the first column, I keep adding from above. Then I fill the rest of the matrix using the max logic. Finally, I'll take the value at `dp[N-1][N-1]` and divide it by the total number of cells, which is (N-1) + (N-1) + 1, or 2N-1. I think I can code this now!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the logic perfectly. When you implement it, just be mindful of your array indices to avoid off-by-one errors. Good luck with your coding!",
+      "loss_mask": true
+    }
+  ]
+}

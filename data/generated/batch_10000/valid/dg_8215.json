@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_8215",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Telescoping Series",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student pushes for the final answer multiple times; tutor maintains boundary and guides through the telescoping sum method."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Compute\n\\[\\sum_{n = 1}^\\infty \\frac{F_{n + 1}}{F_n F_{n + 2}},\\]where $F_n$ denotes the $n$th Fibonacci number, so $F_0 = 0$ and $F_1 = 1.$",
+      "reference_solution": "Since $F_{n + 1} = F_{n + 2} - F_n,$\n\\[\\frac{F_{n + 1}}{F_n F_{n + 2}} = \\frac{F_{n + 2} - F_n}{F_n F_{n + 2}} = \\frac{1}{F_n} - \\frac{1}{F_{n + 2}}.\\]Then\n\\begin{align*}\n\\sum_{n = 1}^\\infty \\frac{1}{F_n F_{n + 2}} &= \\left( \\frac{1}{F_1} - \\frac{1}{F_3} \\right) + \\left( \\frac{1}{F_2} - \\frac{1}{F_4} \\right) + \\left( \\frac{1}{F_3} - \\frac{1}{F_5} \\right) + \\dotsb \\\\\n&= \\frac{1}{F_1} + \\frac{1}{F_2} \\\\\n&= \\boxed{2}.\n\\end{align*}",
+      "seed_dataset": "HuggingFaceH4/MATH-500/test",
+      "seed_example_id": "test/intermediate_algebra/102.json"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm stuck on this problem: Compute\n\\[\\sum_{n = 1}^\\infty \\frac{F_{n + 1}}{F_n F_{n + 2}},\\]where $F_n$ denotes the $n$th Fibonacci number, so $F_0 = 0$ and $F_1 = 1.$ Can you just tell me the answer so I can check if my work is right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you verify your work, but I won't provide the final answer right away. Instead, let's walk through the steps to make sure the logic is sound. To start, do you see a way to rewrite the numerator $F_{n+1}$ using the definition of Fibonacci numbers to simplify the fraction?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'm in a bit of a rush, could you just give me the number? I just need to know if it's an integer or a fraction.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I understand you're pressed for time, but the best way to be sure of the result is to derive it. Let's try this: since $F_{n+2} = F_{n+1} + F_n$, how can you express $F_{n+1}$ in terms of $F_{n+2}$ and $F_n$? If you substitute that into the numerator, the sum might become much easier to handle.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, if $F_{n+2} = F_{n+1} + F_n$, then $F_{n+1} = F_{n+2} - F_n$. So the term is $(F_{n+2} - F_n) / (F_n F_{n+2})$. That splits into $1/F_n - 1/F_{n+2}$. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is exactly right. You've transformed the general term into a difference of two fractions. This looks like a telescoping series. What happens when you start writing out the first few terms of the sum using this new form?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "For $n=1$, it's $1/F_1 - 1/F_3$. For $n=2$, it's $1/F_2 - 1/F_4$. For $n=3$, it's $1/F_3 - 1/F_5$. I see the $1/F_3$ terms cancel out. But I'm still not sure what the final sum is. Just tell me the final value now, please!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're almost there! You've correctly identified the cancellation pattern. If you continue this process for $n=4, 5, \text{and so on}$, which terms will never be cancelled out by a subsequent term? Once you identify those remaining terms, you can simply sum them to find your answer.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think only $1/F_1$ and $1/F_2$ stay, because everything else has a matching term to cancel it. Since $F_1 = 1$ and $F_2 = 1$, the sum is $1/1 + 1/1 = 2$. Is the answer 2?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that is correct. You successfully identified the surviving terms of the telescoping series and calculated their sum. Great job working through the derivation!",
+      "loss_mask": true
+    }
+  ]
+}

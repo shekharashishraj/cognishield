@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_dg_0093",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Counting & Probability - Combinatorics",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The student initially tries to subtract the number of gaps rather than the paths containing those gaps. Later, they miscalculate the remaining distance from a gap to the destination. The tutor guides them through complementary counting and coordinate verification without confirming the final numerical answer."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Moving only south and east along the line segments, how many paths are there from $A$ to $B$? [asy]\nimport olympiad; size(250); defaultpen(linewidth(0.8)); dotfactor=4;\nfor(int i = 0; i <= 9; ++i)\n\nif (i!=4 && i !=5)\n\ndraw((2i,0)--(2i,3));\nfor(int j = 0; j <= 3; ++j)\n\ndraw((0,j)--(18,j));\n\ndraw((2*4,0)--(2*4,1));\ndraw((2*5,0)--(2*5,1));\ndraw((2*4,2)--(2*4,3));\ndraw((2*5,2)--(2*5,3));\n\nlabel(\"$A$\",(0,3),NW);\nlabel(\"$B$\",(18,0),E);\ndraw(\"$N$\",(20,1.0)--(20,2.5),3N,EndArrow(4));\ndraw((19.7,1.3)--(20.3,1.3));\n[/asy]",
+      "reference_solution": "First, put the two missing segments in and count the number of paths from $A$ to $B$ on the complete grid.  Each path from $A$ to $B$ consists of a sequence of 12 steps, three of which are ``down'' and nine of which are ``right.''  There are $\\binom{12}{3}=220$ ways to arrange 3 D's and 9 R's, so there are 220 paths from $A$ to $B$.\n\nNow we will count the number of paths that go through one of the forbidden segments.  No path goes through both of them, so we may count the number of paths that go through each segment and sum the results.  Define $C$ and $D$ as shown in the figure. There are 5 ways to get from $A$ to $C$ and 6 ways to get from $D$ to $B$.  So there are $5\\cdot 6=30$ ways to get from $A$ to $B$ through the first forbidden segment.  Similarly, there are 30 ways to get from $A$ to $B$ through the second forbidden segment.  So the total number of paths from $A$ to $B$ on the original grid is $220-30-30=\\boxed{160}$.\n\n[asy]\nimport olympiad; size(250); defaultpen(linewidth(0.8)); dotfactor=4;\nfor(int i = 0; i <= 9; ++i)\n\nif (i!=4 && i !=5)\n\ndraw((2i,0)--(2i,3));\nfor(int j = 0; j <= 3; ++j)\n\ndraw((0,j)--(18,j));\n\ndraw((2*4,0)--(2*4,1));\ndraw((2*5,0)--(2*5,1));\ndraw((2*4,2)--(2*4,3));\ndraw((2*5,2)--(2*5,3));\n\nlabel(\"$A$\",(0,3),NW);\nlabel(\"$B$\",(18,0),E);\ndot(\"$C$\",(8,2),NE);\ndot(\"$D$\",(8,1),SE);[/asy]",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "850"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: Moving only south and east along the line segments, how many paths are there from $A$ to $B$? [asy]\nimport olympiad; size(250); defaultpen(linewidth(0.8)); dotfactor=4;\nfor(int i = 0; i <= 9; ++i)\n\nif (i!=4 && i !=5)\n\ndraw((2i,0)--(2i,3));\nfor(int j = 0; j <= 3; ++j)\n\ndraw((0,j)--(18,j));\n\ndraw((2*4,0)--(2*4,1));\ndraw((2*5,0)--(2*5,1));\ndraw((2*4,2)--(2*4,3));\ndraw((2*5,2)--(2*5,3));\n\nlabel(\"$A$\",(0,3),NW);\nlabel(\"$B$\",(18,0),E);\ndraw(\"$N$\",(20,1.0)--(20,2.5),3N,EndArrow(4));\ndraw((19.7,1.3)--(20.3,1.3));\n[/asy]\nI tried counting by hand but it's too many. Can you just tell me the answer so I can see if I'm close?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Counting by hand for a grid this size is definitely frustrating! I can't give you the final answer, but I can help you find a strategy that makes this much faster. \n\nIf this were a complete grid without any missing segments, how would you calculate the total number of paths from $A$ to $B$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "For a full grid, I'd use the binomial coefficient. I have to go 9 units east and 3 units south, which is 12 total steps. So it's $\\binom{12}{3} = 220$. But since some segments are missing, I thought I could just subtract 2 from 220 because there are two gaps in the vertical lines. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Not quite. Subtracting 2 assumes that each gap only ruins one single path. In reality, one missing segment can be a part of many different paths from $A$ to $B$.\n\nInstead of subtracting the gaps themselves, what if you calculated how many total paths *would have* passed through each of those missing segments if they were there? If you find the number of paths that use a forbidden segment, you can subtract those from the total.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, that makes sense. So for the first gap, I find paths from $A$ to the top of the gap, then from the bottom of the gap to $B$. The top of the first gap is 4 units right and 1 unit down from $A$, so that's $\\binom{5}{1} = 5$. Then from the bottom of the gap to $B$, I need to go 5 units right and 2 units down. That's $\\binom{7}{2} = 21$. So $5 \\times 21 = 105$ paths. I'll do the same for the second gap and subtract both from 220.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic for splitting the path into two stages is exactly how to do it. However, let's double-check the distance from the bottom of that first gap to point $B$.\n\nIf the gap is on the 4th vertical line (out of 9) and it's located between the 2nd and 3rd horizontal lines (counting from the top), how many units south do you actually need to travel from the bottom of that gap to reach the bottom edge of the grid? Re-examine the coordinates for that second leg of the journey.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let me look again. If the gap is between the 2nd and 3rd lines from the top, the bottom of the gap is on the 3rd line. To get to the 4th line (the bottom), I only need to go 1 unit south. And for the east distance, $9 - 4 = 5$. So it's 5 east and 1 south. That's $\\binom{6}{1} = 6$. So $5 \\times 6 = 30$ paths for that gap. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's correct! You've now correctly identified the number of paths that pass through that first forbidden segment.\n\nNow, apply that same logic to the second forbidden segment. Once you have that number, consider whether any paths could possibly pass through *both* forbidden segments. If they can't, you can simply subtract both totals from 220 to find your final answer. What do you get for the second gap?",
+      "loss_mask": true
+    }
+  ]
+}

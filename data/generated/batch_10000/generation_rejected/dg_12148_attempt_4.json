@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_12148",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Basic algorithms and data manipulation",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "off_topic_redirect",
+      "task_focus",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Tutor adheres to 'never_state' policy by avoiding confirmation of the final expression. Off-topic movie query is redirected politely. Scaffolding is used to guide the student through bitwise logic."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to that rotate left bits by d bits a given number. We assume that the number is 32 bit.",
+      "reference_solution": "def left_rotate(n,d):   \n    INT_BITS = 32\n    return (n << d)|(n >> (INT_BITS - d))",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "799"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm struggling with this: Write a function to that rotate left bits by d bits a given number. We assume that the number is 32 bit. Can you just give me the code so I can finish this quickly?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the full code, but I can help you figure out the logic! Let's think about what 'rotate left' actually means. In a normal shift, bits that fall off the end are lost. In a rotation, they wrap around. If a bit is pushed out of the 32nd position on the left, where should it go?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It should go back to the right side, I guess. Oh, by the way, do you know if the new Marvel movie is any good? I've seen mixed reviews online.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I'm not sure about the movie, but let's stay focused on the bit rotation so we can get this solved. You're correct—the bits wrap to the right. To move the main part of the number to the left, which operator would you use, and what happens to those bits that move past the 32-bit boundary in Python?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'd use `<<`. So `n << d` does the left part. But Python integers don't have a fixed size, so they don't just 'fall off' at 32 bits; they just keep growing.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Since we are simulating a 32-bit integer, we have to manually handle those bits that 'overflow' past the 32nd position. If you shift left by `d`, those `d` bits need to be moved to the far right. How could you use a right-shift to isolate those specific bits and move them to the bottom of the number?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If the total width is 32, then shifting the original number right by `32 - d` should put those top bits at the bottom.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's the right logic for the wrap-around part. Now you have two pieces: the left-shifted part and the right-shifted wrap-around part. How do you combine these two results into a single value?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think I use the OR operator. So the expression would be `(n << d) | (n >> (32 - d))`. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've put together the components using the bitwise operators. Now, try implementing this inside a function and test it with a few examples—like a small integer and a shift of 1—to see if the result matches what you'd expect from a 32-bit rotation.",
+      "loss_mask": true
+    }
+  ]
+}

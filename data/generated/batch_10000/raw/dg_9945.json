@@ -1,0 +1,108 @@
+{
+  "conversation_id": "mt_dg_9945",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Counting & Probability",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "High-quality scaffolding for a complex probability problem. Tutor guides student through symmetry and the calculation of ties without revealing the final m+n value."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Seven teams play a soccer tournament in which each team plays every other team exactly once. No ties occur, each team has a $50\\%$ chance of winning each game it plays, and the outcomes of the games are independent. In each game, the winner is awarded a point and the loser gets 0 points. The total points are accumilated to decide the ranks of the teams. In the first game of the tournament, team $A$ beats team $B.$ The probability that team $A$ finishes with more points than team $B$ is $m/n,$ where $m$ and $n$ are relatively prime positive integers. Find $m+n.$",
+      "reference_solution": "The results of the five remaining games are independent of the first game, so by symmetry, the probability that $A$ scores higher than $B$ in these five games is equal to the probability that $B$ scores higher than $A$. We let this probability be $p$; then the probability that $A$ and $B$ end with the same score in these five games is $1-2p$.\nOf these three cases ($|A| > |B|, |A| < |B|, |A|=|B|$), the last is the easiest to calculate (see solution 2 for a way to directly calculate the other cases).\nThere are ${5\\choose k}$ ways to $A$ to have $k$ victories, and ${5\\choose k}$ ways for $B$ to have $k$ victories. Summing for all values of $k$,\n$1-2p = \\frac{1}{2^{5} \\times 2^{5}}\\left(\\sum_{k=0}^{5} {5\\choose k}^2\\right) = \\frac{1^2+5^2+10^2+10^2+5^2+1^2}{1024} = \\frac{126}{512}.$\nThus $p = \\frac 12 \\left(1-\\frac{126}{512}\\right) = \\frac{193}{512}$. The desired probability is the sum of the cases when $|A| \\ge |B|$, so the answer is $\\frac{126}{512} + \\frac{193}{512} = \\frac{319}{512}$, and $m+n = \\boxed{831}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "2133"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm stuck on this math problem: Seven teams play a soccer tournament in which each team plays every other team exactly once. No ties occur, each team has a $50\\%$ chance of winning each game it plays, and the outcomes of the games are independent. In each game, the winner is awarded a point and the loser gets 0 points. The total points are accumilated to decide the ranks of the teams. In the first game of the tournament, team $A$ beats team $B.$ The probability that team $A$ finishes with more points than team $B$ is $m/n,$ where $m$ and $n$ are relatively prime positive integers. Find $m+n.$ Can you just tell me the answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you solve this, but I won't give you the final answer right away. Let's work through it step-by-step so you understand the logic. \n\nFirst, let's look at the games. Each team plays every other team once. Since there are 7 teams, how many games does each team play in total? And more importantly, after the first game (where A beats B), how many other games will A and B each play?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If there are 7 teams, each team plays 6 games. Since A and B already played each other, they each have 5 games remaining against the other 5 teams.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's correct. Now, let's consider the points. A already has 1 point from beating B, and B has 0. For A to finish with more points than B, what needs to happen in those remaining 5 games for each team?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "A needs to end up with more points than B. Since A is already up by 1, A just needs to not lose too many games compared to B. I think A wins if A's points in the remaining games are greater than or equal to B's points in their remaining games?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. Let $X$ be the number of wins A gets in the remaining 5 games, and $Y$ be the number of wins B gets in the remaining 5 games. You're looking for the probability that $1 + X > Y$, which is the same as $X \\ge Y$.\n\nBecause the games are independent and the win probability is $50\\%$, $X$ and $Y$ are independent binomial random variables. By symmetry, what can you say about the probability $P(X > Y)$ compared to $P(Y > X)$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Since they both have the same number of games and the same win probability, $P(X > Y)$ should be equal to $P(Y > X)$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Now, remember that $P(X > Y) + P(Y > X) + P(X = Y) = 1$. If we can find the probability that they tie in these remaining games, $P(X = Y)$, we can find the other probabilities. How would you calculate the probability that $X = Y$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "To find $P(X = Y)$, I need to sum the probabilities that they both get 0 wins, both get 1 win, ..., up to both getting 5 wins. \nSo it's $\\sum_{k=0}^{5} P(X=k) \\cdot P(Y=k)$. \nSince $P(X=k) = {5\\choose k}(1/2)^5$, the sum is $\\sum_{k=0}^{5} ({5\\choose k}(1/2)^5)^2$. \nLet me calculate that: $(1^2 + 5^2 + 10^2 + 10^2 + 5^2 + 1^2) / 2^{10} = (1+25+100+100+25+1) / 1024 = 252/1024 = 63/256$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your calculation for $P(X=Y)$ is correct. Now, go back to the symmetry we discussed. We know $P(X > Y) = P(Y > X)$. Using the total probability of 1, how can you find $P(X \\ge Y)$? This is the probability we are looking for.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If $P(X=Y) = 63/256$, then $P(X > Y) + P(Y > X) = 1 - 63/256 = 193/256$. \nSince $P(X > Y) = P(Y > X)$, then $P(X > Y) = (193/256) / 2 = 193/512$. \nThen $P(X \\ge Y) = P(X > Y) + P(X = Y) = 193/512 + 63/256$. \nConverting to common denominator: $193/512 + 126/512 = 319/512$. \nSo $m=319$ and $n=512$. $m+n = 319 + 512 = 831$. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that is correct! You correctly identified the symmetry, calculated the tie probability, and summed the cases where A finishes with more points. Great job working through the logic.",
+      "loss_mask": true
+    }
+  ]
+}

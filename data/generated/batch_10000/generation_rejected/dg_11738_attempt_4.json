@@ -1,0 +1,108 @@
+{
+  "conversation_id": "mt_dg_11738",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and data structures - Dynamic Programming",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The student initially believes the path length varies, which would make the average calculation complex. The tutor guides them to realize the path length is constant (2N-1) for all valid paths, reducing the problem to a maximum path sum problem."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Given a square matrix of size N*N given as a list of lists, where each cell is associated with a specific cost. A path is defined as a specific sequence of cells that starts from the top-left cell move only right or down and ends on bottom right cell. We want to find a path with the maximum average over all existing paths. Average is computed as total cost divided by the number of cells visited in the path.",
+      "reference_solution": "def maxAverageOfPath(cost):\n  N = len(cost)\n  dp = [[0 for i in range(N + 1)] for j in range(N + 1)]\n  dp[0][0] = cost[0][0]\n  for i in range(1, N):\n    dp[i][0] = dp[i - 1][0] + cost[i][0]\n  for j in range(1, N):\n    dp[0][j] = dp[0][j - 1] + cost[0][j]\n  for i in range(1, N):\n    for j in range(1, N):\n      dp[i][j] = max(dp[i - 1][j],\n                     dp[i][j - 1]) + cost[i][j]\n  return dp[N - 1][N - 1] / (2 * N - 1)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "721"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Given a square matrix of size N*N given as a list of lists, where each cell is associated with a specific cost. A path is defined as a specific sequence of cells that starts from the top-left cell move only right or down and ends on bottom right cell. We want to find a path with the maximum average over all existing paths. Average is computed as total cost divided by the number of cells visited in the path. I'm really struggling—can you just give me the Python code for this?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code directly, but I'd be happy to help you figure out the logic! The 'maximum average' part is the trickiest bit. To start, if you were asked to find the maximum total cost instead of the average, how would you approach it?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "For maximum total cost, I'd use Dynamic Programming. But since it's the average, I think I need to store the current average in my DP table. The problem is that if I just take the max average at each step, I might miss a path that has a low average now but hits a huge number later. Maybe I should store a list of all possible averages for each cell?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've spotted a classic DP trap: the 'optimal substructure' doesn't seem to hold for averages because a local maximum average doesn't guarantee a global one. Before we try storing every possible average, let's analyze the paths. If you can only move right or down, does the number of cells you visit change depending on the path you take from (0,0) to (N-1, N-1)?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think it does. In a 3x3, I could go right-right-down-down, which is 5 cells. Or I could go right-down-right-down. Wait... that's also 5 cells. Let me check another one... down-down-right-right. That's also 5. Is it always the same?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Think about it in terms of the grid dimensions. To get from the top-left to the bottom-right, how many times *must* you move right, and how many times *must* you move down, regardless of the order?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I have to move right N-1 times and down N-1 times. So the total number of steps is (N-1) + (N-1), which is 2N-2. Including the starting cell, that's 2N-1 cells every time! So the number of cells visited is a constant for every path.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Now, if the denominator (the number of cells) is the same for every single valid path, how does that change your approach to maximizing the average?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh! If the denominator is constant, then maximizing (Total Cost / Constant) is the same as just maximizing the Total Cost. I can just solve it as a maximum path sum problem and then divide the final result by 2N-1 at the very end!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's the key insight. Now that you've simplified the problem, how would you structure your DP transition to find that maximum total sum for a cell (i, j)?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "For cell (i, j), the max sum would be its own cost plus the maximum of the sums from the cell above it (i-1, j) or the cell to its left (i, j-1). I'll just need to handle the first row and column as special cases since they only have one direction to come from.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is correct. You have the state transition and the boundary conditions. You can now proceed to implement this in Python, making sure to apply the division by the path length as the final step to return the average.",
+      "loss_mask": true
+    }
+  ]
+}

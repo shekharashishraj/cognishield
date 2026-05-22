@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_11601",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Precalculus - Matrix Algebra",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Tutor guides student to discover the cycle A^3 = -I. The tutor strictly adheres to the 'never_state' policy by not confirming the final matrix value, instead focusing on the process and logic."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Given\n\\[\\mathbf{A} = \\begin{pmatrix} 3 & 7 \\\\ -1 & -2 \\end{pmatrix},\\]compute $\\mathbf{A}^{27} + \\mathbf{A}^{31} + \\mathbf{A}^{40}.$",
+      "reference_solution": "Note that\n\\[\\mathbf{A}^2 = \\begin{pmatrix} 2 & 7 \\\\ -1 & -3 \\end{pmatrix}\\]and\n\\[\\mathbf{A}^3 = \\mathbf{A} \\mathbf{A}^2 = \\begin{pmatrix} -1 & 0 \\\\ 0 & -1 \\end{pmatrix} = -\\mathbf{I}.\\]Then\n\\begin{align*}\n\\mathbf{A}^{27} + \\mathbf{A}^{31} + \\mathbf{A}^{40} &= (\\mathbf{A}^3)^9 + (\\mathbf{A}^3)^{10} \\mathbf{A} + (\\mathbf{A}^3)^{13} \\mathbf{A} \\\\\n&= (-\\mathbf{I})^9 + (-\\mathbf{I})^{10} \\mathbf{A} + (-\\mathbf{I})^{13} \\mathbf{A} \\\\\n&= -\\mathbf{I} + \\mathbf{A} - \\mathbf{A} \\\\\n&= -\\mathbf{I} = \\boxed{\\begin{pmatrix} -1 & 0 \\\\ 0 & -1 \\end{pmatrix}}.\n\\end{align*}",
+      "seed_dataset": "HuggingFaceH4/MATH-500/test",
+      "seed_example_id": "test/precalculus/920.json"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this math problem: Given\n\\[\\mathbf{A} = \\begin{pmatrix} 3 & 7 \\\\ -1 & -2 \\end{pmatrix},\\]compute $\\mathbf{A}^{27} + \\mathbf{A}^{31} + \\mathbf{A}^{40}$. I don't want to multiply this matrix 40 times. Is there a trick to this?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You are absolutely right—calculating those powers manually would be exhausting! In linear algebra, when you see very high powers, there's usually a pattern. A common strategy is to compute the first few powers of the matrix to see if it repeats or simplifies to something like the identity matrix $\\mathbf{I}$. Why don't you start by calculating $\\mathbf{A}^2$ and see what happens?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, let me try. $\\mathbf{A}^2 = \\begin{pmatrix} 3 & 7 \\\\ -1 & -2 \\end{pmatrix} \\begin{pmatrix} 3 & 7 \\\\ -1 & -2 \\end{pmatrix} = \\begin{pmatrix} 9-7 & 21-14 \\\\ -3+2 & -7+4 \\end{pmatrix} = \\begin{pmatrix} 2 & 7 \\\\ -1 & -3 \\end{pmatrix}$. It doesn't look like the identity matrix. Did I do something wrong?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your calculation for $\\mathbf{A}^2$ is correct. It's not the identity matrix yet, but the pattern might emerge one step further. Try calculating $\\mathbf{A}^3$ by multiplying your result for $\\mathbf{A}^2$ by $\\mathbf{A}$.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let's see... $\\mathbf{A}^3 = \\begin{pmatrix} 2 & 7 \\\\ -1 & -3 \\end{pmatrix} \\begin{pmatrix} 3 & 7 \\\\ -1 & -2 \\end{pmatrix} = \\begin{pmatrix} 6-7 & 14-14 \\\\ -3+3 & -7+6 \\end{pmatrix} = \\begin{pmatrix} -1 & 0 \\\\ 0 & -1 \\end{pmatrix}$. Wait, that's just $-\\mathbf{I}$!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is the breakthrough! Since $\\mathbf{A}^3 = -\\mathbf{I}$, you can now express any power of $\\mathbf{A}$ in terms of $\\mathbf{A}^3$. Think about how to write the exponents 27, 31, and 40 using multiples of 3. How would you rewrite $\\mathbf{A}^{27}$ using your discovery?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Since $27 = 3 \\times 9$, then $\\mathbf{A}^{27} = (\\mathbf{A}^3)^9 = (-\\mathbf{I})^9$. Since 9 is odd, that's $-\\mathbf{I}$. For $\\mathbf{A}^{31}$, it's $3 \\times 10 + 1$, so $\\mathbf{A}^{31} = (\\mathbf{A}^3)^{10} \\mathbf{A} = (-\\mathbf{I})^{10} \\mathbf{A} = \\mathbf{I} \\mathbf{A} = \\mathbf{A}$. Then $\\mathbf{A}^{40} = (\\mathbf{A}^3)^{13} \\mathbf{A} = (-\\mathbf{I})^{13} \\mathbf{A} = -\\mathbf{I} \\mathbf{A} = -\\mathbf{A}$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic for breaking down the exponents is spot on. Now that you have simplified $\\mathbf{A}^{27}$, $\\mathbf{A}^{31}$, and $\\mathbf{A}^{40}$ into much simpler forms, try summing them together. What do you notice about the terms?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I have $-\\mathbf{I} + \\mathbf{A} - \\mathbf{A}$. The $\\mathbf{A}$ and $-\\mathbf{A}$ cancel out, leaving just $-\\mathbf{I}$. So the final answer is $\\begin{pmatrix} -1 & 0 \\\\ 0 & -1 \\end{pmatrix}$. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You have followed the logic perfectly from identifying the cycle to the final simplification. Review your steps one last time to ensure the signs on the powers of $-\\mathbf{I}$ are correct, and you'll have your final result!",
+      "loss_mask": true
+    }
+  ]
+}

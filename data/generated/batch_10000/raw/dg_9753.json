@@ -1,0 +1,108 @@
+{
+  "conversation_id": "mt_dg_9753",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Geometry - Cyclic Polygons",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully scaffolds the problem using Ptolemy's Theorem without revealing the final sum or intermediate values."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "A hexagon is inscribed in a circle. Five of the sides have length $81$ and the sixth, denoted by $\\overline{AB}$, has length $31$. Find the sum of the lengths of the three diagonals that can be drawn from $A$.",
+      "reference_solution": "[asy]defaultpen(fontsize(9)); pair A=expi(-pi/2-acos(475/486)), B=expi(-pi/2+acos(475/486)), C=expi(-pi/2+acos(475/486)+acos(7/18)), D=expi(-pi/2+acos(475/486)+2*acos(7/18)), E=expi(-pi/2+acos(475/486)+3*acos(7/18)), F=expi(-pi/2-acos(475/486)-acos(7/18)); draw(unitcircle);draw(A--B--C--D--E--F--A);draw(A--C..A--D..A--E); dot(A^^B^^C^^D^^E^^F); label(\"\\(A\\)\",A,(-1,-1));label(\"\\(B\\)\",B,(1,-1));label(\"\\(C\\)\",C,(1,0)); label(\"\\(D\\)\",D,(1,1));label(\"\\(E\\)\",E,(-1,1));label(\"\\(F\\)\",F,(-1,0)); label(\"31\",A/2+B/2,(0.7,1));label(\"81\",B/2+C/2,(0.45,-0.2)); label(\"81\",C/2+D/2,(-1,-1));label(\"81\",D/2+E/2,(0,-1)); label(\"81\",E/2+F/2,(1,-1));label(\"81\",F/2+A/2,(1,1)); label(\"\\(x\\)\",A/2+C/2,(-1,1));label(\"\\(y\\)\",A/2+D/2,(1,-1.5)); label(\"\\(z\\)\",A/2+E/2,(1,0)); [/asy]\nLet $x=AC=BF$, $y=AD=BE$, and $z=AE=BD$.\nPtolemy's Theorem on $ABCD$ gives $81y+31\\cdot 81=xz$, and Ptolemy on $ACDF$ gives $x\\cdot z+81^2=y^2$. Subtracting these equations give $y^2-81y-112\\cdot 81=0$, and from this $y=144$. Ptolemy on $ADEF$ gives $81y+81^2=z^2$, and from this $z=135$. Finally, plugging back into the first equation gives $x=105$, so $x+y+z=105+144+135=\\boxed{384}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "1517"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm stuck on this geometry problem: A hexagon is inscribed in a circle. Five of the sides have length $81$ and the sixth, denoted by $\\overline{AB}$, has length $31$. Find the sum of the lengths of the three diagonals that can be drawn from $A$. Can you just give me the answer or tell me how to start?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through this! Since the hexagon is inscribed in a circle, it's a cyclic hexagon. When you have a cyclic quadrilateral (which you can form by picking four vertices of the hexagon), there is a very powerful theorem relating the side lengths and the diagonals. Do you recall a theorem that applies to cyclic quadrilaterals specifically?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Is it Ptolemy's Theorem? I remember something about the product of the diagonals being equal to the sum of the products of opposite sides.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's exactly it. To use it here, I suggest labeling the vertices of the hexagon $A, B, C, D, E, F$ in order. The diagonals from $A$ would be $AC$, $AD$, and $AE$. Let's assign variables to these: let $x = AC$, $y = AD$, and $z = AE$. \n\nSince five of the sides are equal to 81, you can identify which sides are 81 and which is 31. Try applying Ptolemy's Theorem to the quadrilateral $ABCD$. What equation does that give you in terms of $x, y, z$ and the side lengths?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, for $ABCD$, the sides are $AB=31$, $BC=81$, $CD=81$, and $DA=y$. Wait, $DA$ is a diagonal of the hexagon, but a side of the quadrilateral. The diagonals of $ABCD$ are $AC=x$ and $BD$. Is $BD$ also $z$? No, $BD$ is different from $AE$. Let me check... if five sides are equal, then $BD$ should be the same length as $AC$ because they subtend the same arc? No, that's not right. $BD$ subtends arc $BCD$, and $AC$ subtends arc $ABC$. Arc $BC$ is the same, but $CD=81$ while $AB=31$. So $BD$ is not $x$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're thinking about the arcs correctly. Let's look at the symmetry. Because sides $BC=CD=DE=EF=FA=81$, the chords $AC, BD, CE, DF, EA, FB$ are actually related. \n\nSpecifically, $AC$ and $BF$ both subtend an arc consisting of one side of length 81 and one side of length 31? No, wait—look closer. $AC$ subtends arc $ABC$ (sides 31 and 81). $BF$ subtends arc $BFA$ (sides 81 and 81? No, $FA$ is 81, but $BF$ is the chord). \n\nActually, consider chords that subtend the same number of '81-length' sides. For example, $BD$ and $AE$ both subtend two sides of length 81. This means $BD = AE = z$. Similarly, $AC$ and $BF$ both subtend one side of 81 and one side of 31? No, $AC$ subtends $AB(31)$ and $BC(81)$. $BF$ subtends $FA(81)$ and $FB$ is the chord. Let's re-evaluate: $AC$ and $BF$ both subtend an arc of one 31-side and one 81-side. Thus $AC = BF = x$. \n\nNow try Ptolemy on $ABCD$ again with $BD=z$.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, so for $ABCD$: sides are $AB=31, BC=81, CD=81, DA=y$. Diagonals are $AC=x$ and $BD=z$. \nSo Ptolemy says: $(AC)(BD) = (AB)(CD) + (BC)(AD)$. \nThat's $xz = (31)(81) + (81)(y)$. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is correct. Now you have one equation. To solve for $x, y, z$, you'll need more. Try applying Ptolemy's Theorem to other quadrilaterals within the hexagon. For instance, look at $ACDF$ or $ADEF$. Which one do you think would be most helpful to try next?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let's try $ADEF$. The sides are $AD=y, DE=81, EF=81, FA=81$. The diagonals are $AE=z$ and $DF$. Since $DF$ subtends two sides of 81, $DF$ should be the same as $BD$ and $AE$, so $DF=z$. \nWait, if $DF=z$, then Ptolemy on $ADEF$ is: $(AE)(DF) = (AD)(EF) + (DE)(AF)$. \nThat's $z^2 = (y)(81) + (81)(81)$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. Now you have two equations: \n1) $xz = 81y + 31(81)$\n2) $z^2 = 81y + 81^2$\n\nYou still have three variables. Can you find one more quadrilateral to create a third equation? Perhaps $ACDF$ would work?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "For $ACDF$: sides are $AC=x, CD=81, DF=z, FA=81$. Diagonals are $AD=y$ and $CF$. $CF$ subtends two sides of 81, so $CF=z$. \nPtolemy: $(AD)(CF) = (AC)(DF) + (CD)(FA)$. \nThat's $yz = xz + 81^2$. \nWait, let me re-check the diagonals of $ACDF$. The vertices are $A, C, D, F$. The diagonals are $AD$ and $CF$. Yes, $AD=y$ and $CF=z$. \nSo $yz = xz + 81^2$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Actually, let's double-check the diagonals of $ACDF$. The vertices are $A, C, D, F$ in order around the circle. The diagonals connect opposite vertices: $A$ to $D$ and $C$ to $F$. You identified $AD=y$ and $CF=z$. \n\nWait, let's look at the sides again: $AC=x, CD=81, DF=z, FA=81$. \nUsing Ptolemy: $(AD)(CF) = (AC)(DF) + (CD)(FA)$. \n$y \times z = x \times z + 81 \times 81$. \n\nNow you have a system of three equations. I suggest subtracting the first equation from the second or third to eliminate some terms. How would you proceed to find the values of $x, y, z$?",
+      "loss_mask": true
+    }
+  ]
+}

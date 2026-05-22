@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_1331",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Python fundamentals and short programs: Bitwise Operations",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts a simple shift without handling the wrap-around for rotation. Tutor guides them to consider the bits that 'fall off' the left side."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to that rotate left bits by d bits a given number. We assume that the number is 32 bit.",
+      "reference_solution": "def left_rotate(n,d):   \n    INT_BITS = 32\n    return (n << d)|(n >> (INT_BITS - d))",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "799"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Write a function to that rotate left bits by d bits a given number. We assume that the number is 32 bit. I think the answer is just `def left_rotate(n, d): return n << d`. Is this correct? Please just tell me if it's right so I can move on.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't simply tell you if it's correct, as that wouldn't help you master the concept! Instead, let's look at what happens when you use the `<<` operator. If you shift a 32-bit number to the left, what happens to the bits that move past the 32nd position?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "They just disappear, right? Like if I have 1 at the very top and shift it left, it's gone. But the problem says 'rotate', not 'shift'. Does that mean they shouldn't disappear?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Precisely. In a 'shift', bits are lost. In a 'rotation', the bits that leave one end must reappear at the other end. If a bit is pushed off the left side, where should it go to make this a rotation?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It should go to the right side. So if I shift left by d, those d bits that fell off the left should now be at the bottom (the right side) of the number. How do I actually do that in Python?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're on the right track. To get those bits to the right side, you'll need another operation. Think about how you can move the leftmost bits to the rightmost positions using a right shift (`>>`). If the total width is 32 bits and you are rotating by `d`, how many positions to the right do those 'overflow' bits need to move?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If I shift left by d, the bits that fell off were the top d bits. To move them to the very bottom, I'd have to shift them right by 32 minus d. So maybe something like `(n << d) | (n >> (32 - d))`?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic correctly addresses both the shifting of the main body and the wrapping of the overflow bits. Try implementing that in your function and test it with a small example to see if it behaves as expected!",
+      "loss_mask": true
+    }
+  ]
+}

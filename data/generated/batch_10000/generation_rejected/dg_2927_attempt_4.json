@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_2927",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and data structures - Dynamic Programming",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor guides the student through a common misconception regarding path length in a grid. The tutor avoids confirming the final numerical value or providing the code, adhering strictly to the method_only policy."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Given a square matrix of size N*N given as a list of lists, where each cell is associated with a specific cost. A path is defined as a specific sequence of cells that starts from the top-left cell move only right or down and ends on bottom right cell. We want to find a path with the maximum average over all existing paths. Average is computed as total cost divided by the number of cells visited in the path.",
+      "reference_solution": "def maxAverageOfPath(cost):\n  N = len(cost)\n  dp = [[0 for i in range(N + 1)] for j in range(N + 1)]\n  dp[0][0] = cost[0][0]\n  for i in range(1, N):\n    dp[i][0] = dp[i - 1][0] + cost[i][0]\n  for j in range(1, N):\n    dp[0][j] = dp[0][j - 1] + cost[0][j]\n  for i in range(1, N):\n    for j in range(1, N):\n      dp[i][j] = max(dp[i - 1][j],\n                     dp[i][j - 1]) + cost[i][j]\n  return dp[N - 1][N - 1] / (2 * N - 1)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "721"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Given a square matrix of size N*N given as a list of lists, where each cell is associated with a specific cost. A path is defined as a specific sequence of cells that starts from the top-left cell move only right or down and ends on bottom right cell. We want to find a path with the maximum average over all existing paths. Average is computed as total cost divided by the number of cells visited in the path. I'm confused because the average depends on the number of cells. Can you just give me the solution code?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code, but I can help you work through the logic! You've identified the tricky part: the average depends on both the total cost and the number of cells. Let's look at the constraints on movement. If you can only move right or down in an N x N grid, does the number of cells you visit actually change depending on the path you take from the top-left to the bottom-right?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think so. If I go straight down and then straight right, it's one way. But if I zig-zag back and forth, I might end up visiting more cells before I hit the bottom-right corner. Because the path length can vary, I think I need to keep track of the count of cells in my DP state.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Let's trace a small example. Imagine a 3x3 grid. To get from (0,0) to (2,2), how many steps to the right must you take in total? And how many steps down? Does that total number of moves change if you zig-zag instead of going in a straight line?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, let me check. In a 3x3, I always have to go right twice and down twice to reach the end. That's 4 moves. Including the starting cell, that's 5 cells total. It doesn't matter if I go Right-Right-Down-Down or Right-Down-Right-Down. The total count is always the same! So the denominator for the average is constant for all paths.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a key insight. If the number of cells visited is the same for every possible path, how does that change the way you approach maximizing the average?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If the denominator is constant, then maximizing the average is the same as maximizing the total sum of the costs along the path. So I can just use a standard DP for the maximum path sum. I'll create a 2D array where `dp[i][j]` stores the maximum sum to reach cell (i, j). The transition would be `dp[i][j] = max(dp[i-1][j], dp[i][j-1]) + cost[i][j]`. I just need to handle the first row and column carefully since they only have one possible previous cell.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the right idea for the DP state and the transitions. Once you've computed the maximum sum for the bottom-right cell, what is the final step to get the maximum average as requested by the problem?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'll take the maximum sum from the bottom-right cell and divide it by the total number of cells in the path, which I found is 2N-1. Does that complete the logic?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That completes the logic perfectly. You've successfully simplified the problem by identifying the constant path length. Now you can implement this using the DP approach we discussed.",
+      "loss_mask": true
+    }
+  ]
+}

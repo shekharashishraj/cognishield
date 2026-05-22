@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_10852",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Combinatorics and Counting",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor guides the student through a case-based counting strategy, ensuring the student derives the counts for 0, 1, and 2 matching attributes without revealing the final sum."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Every card in a deck has a picture of one shape - circle, square, or triangle, which is painted in one of the three colors - red, blue, or green. Furthermore, each color is applied in one of three shades - light, medium, or dark. The deck has 27 cards, with every shape-color-shade combination represented. A set of three cards from the deck is called complementary if all of the following statements are true:\ni. Either each of the three cards has a different shape or all three of the card have the same shape.\nii. Either each of the three cards has a different color or all three of the cards have the same color.\niii. Either each of the three cards has a different shade or all three of the cards have the same shade.\nHow many different complementary three-card sets are there?",
+      "reference_solution": "Case 1: All three attributes are the same. This is impossible since sets contain distinct cards.\nCase 2: Two of the three attributes are the same. There are ${3\\choose 2}$ ways to pick the two attributes in question. Then there are $3$ ways to pick the value of the first attribute, $3$ ways to pick the value of the second attribute, and $1$ way to arrange the positions of the third attribute, giving us ${3\\choose 2} \\cdot 3 \\cdot 3 = 27$ ways.\nCase 3: One of the three attributes are the same. There are ${3\\choose 1}$ ways to pick the one attribute in question, and then $3$ ways to pick the value of that attribute. Then there are $3!$ ways to arrange the positions of the next two attributes, giving us ${3\\choose 1} \\cdot 3 \\cdot 3! = 54$ ways.\nCase 4: None of the three attributes are the same. We fix the order of the first attribute, and then there are $3!$ ways to pick the ordering of the second attribute and $3!$ ways to pick the ordering of the third attribute. This gives us $(3!)^2 = 36$ ways.\nAdding the cases up, we get $27 + 54 + 36 = \\boxed{117}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "2098"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm struggling with this problem: Every card in a deck has a picture of one shape - circle, square, or triangle, which is painted in one of the three colors - red, blue, or green. Furthermore, each color is applied in one of three shades - light, medium, or dark. The deck has 27 cards, with every shape-color-shade combination represented. A set of three cards from the deck is called complementary if all of the following statements are true:\ni. Either each of the three cards has a different shape or all three of the card have the same shape.\nii. Either each of the three cards has a different color or all three of the cards have the same color.\niii. Either each of the three cards has a different shade or all three of the cards have the same shade.\nHow many different complementary three-card sets are there? I don't know how to organize the counting.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "This is a great problem for practicing systematic counting! The key is the 'complementary' rule: for every single attribute (shape, color, and shade), the three cards must either be all the same or all different. \n\nTo organize your work, I suggest breaking the problem into cases based on how many of those three attributes are 'the same' across the three cards. For instance, what happens if all three attributes are the same for all three cards?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If all three attributes (shape, color, and shade) are the same, then the three cards are identical. But the problem says the deck has 27 cards with every combination represented, which means there's only one of each card. So you can't have a set of three identical cards. That case is impossible.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Correct. Now let's look at the next case: what if exactly two of the attributes are the same for all three cards, while the third attribute is different for each card? How would you count the number of such sets?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, so if two attributes are the same, like shape and color, there are 3 choices for the shape and 3 choices for the color, so 9 possibilities. For the third attribute, shade, they must all be different, and since there are only 3 shades, there's only 1 way to pick that set of three. So that's 9 sets. But I also have to consider which two attributes are the same. There are 3 ways to choose which two are the same (shape/color, shape/shade, or color/shade). So 3 * 9 = 27?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a perfect application of the multiplication principle. You've correctly handled the case for two matching attributes. Now, let's consider the case where exactly one attribute is the same for all three cards, and the other two attributes are different for each card. How would you approach that one?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "One attribute is the same. There are 3 attributes to choose from, and 3 possible values for that attribute. That's 3 * 3 = 9. Then the other two attributes must be all different. If we have cards 1, 2, and 3, and we've already fixed the first attribute, we need to assign the remaining two attributes. For the second attribute, there are 3! ways to assign them. For the third, there are also 3! ways. But since the set is unordered, I should fix the order of the second attribute to avoid overcounting. So it's 9 * 1 * 3! = 54?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic for avoiding overcounting by fixing the order of one of the 'all different' attributes is spot on. That gives you the count for the one-attribute-same case. There is only one scenario left: what if none of the attributes are the same for the three cards?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If none are the same, then shape, color, and shade must all be different. Using the same fixing method: fix the shapes as (Circle, Square, Triangle). Then there are 3! ways to assign colors and 3! ways to assign shades. That's 6 * 6 = 36. So I have 27, 54, and 36. Do I just add these together?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've successfully broken the problem down into all its mutually exclusive cases and calculated the counts for each. Adding those results together will give you the total number of complementary sets. Go ahead and find that final sum!",
+      "loss_mask": true
+    }
+  ]
+}

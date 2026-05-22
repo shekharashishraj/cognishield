@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_dg_6938",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning: Nested Iterative Products",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully scaffolds the student toward an optimized O(n) solution instead of an O(n^2) solution. The tutor avoids confirming final values or providing the full code, adhering to the method_only policy."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "def special_factorial(n):\n    \"\"\"The Brazilian factorial is defined as:\n    brazilian_factorial(n) = n! * (n-1)! * (n-2)! * ... * 1!\n    where n > 0\n\n    For example:\n    >>> special_factorial(4)\n    288\n\n    The function will receive an integer as input and should return the special\n    factorial of this integer.\n    \"\"\"",
+      "reference_solution": "fact_i = 1\n    special_fact = 1\n    for i in range(1, n+1):\n        fact_i *= i\n        special_fact *= fact_i\n    return special_fact",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/139"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm struggling with this Python problem. Can you just give me the code for this?\n\ndef special_factorial(n):\n    \"\"\"The Brazilian factorial is defined as:\n    brazilian_factorial(n) = n! * (n-1)! * (n-2)! * ... * 1!\n    where n > 0\n\n    For example:\n    >>> special_factorial(4)\n    288\n\n    The function will receive an integer as input and should return the special\n    factorial of this integer.\n    \"\"\"",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the full code directly, but I can help you build it step-by-step! Let's start by analyzing the pattern. If you were calculating this for n=4, you'd need 1!, 2!, 3!, and 4!. How would you normally calculate a single factorial in Python?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'd probably use a for loop or a recursive function to multiply all numbers from 1 up to n. So for the Brazilian one, I could just make a helper function `fact(k)` and then call it in another loop from 1 to n.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is a logically sound approach. However, consider the work the computer is doing. To find 4!, it calculates 1*2*3*4. To find 3!, it calculates 1*2*3. You're doing the same multiplications multiple times. Can you think of a way to use the result of (n-1)! to help you find n! without starting over from 1?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. If I already know 3! is 6, then 4! is just 6 * 4. So I can just keep a running product of the factorial as I go through the loop.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Precisely. Now, since you need the product of all those factorials, you'll need to track two different things as you iterate from 1 to n. What would those two values be?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "One would be the current factorial (like 1!, then 2!, etc.) and the other would be the total product of all those factorials combined. So it would look something like:\n\ncurr_fact = 1\ntotal_prod = 1\nfor i in range(1, n + 1):\n    curr_fact = curr_fact * i\n    total_prod = total_prod * curr_fact\n\nIs that the right way to structure it?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic for updating the variables is correct. You are calculating the factorial for the current integer `i` and then immediately incorporating that into your cumulative product. To finish the function, just ensure you return the variable that holds the final accumulated product.",
+      "loss_mask": true
+    }
+  ]
+}

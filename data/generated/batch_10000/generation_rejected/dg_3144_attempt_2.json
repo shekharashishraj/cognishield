@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_3144",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Basic algorithms and data manipulation",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The student initially believes path lengths vary in a grid restricted to right/down movements. The tutor guides them to realize path length is constant, simplifying the 'max average' problem to a 'max sum' problem using dynamic programming."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Given a square matrix of size N*N given as a list of lists, where each cell is associated with a specific cost. A path is defined as a specific sequence of cells that starts from the top-left cell move only right or down and ends on bottom right cell. We want to find a path with the maximum average over all existing paths. Average is computed as total cost divided by the number of cells visited in the path.",
+      "reference_solution": "def maxAverageOfPath(cost):\n  N = len(cost)\n  dp = [[0 for i in range(N + 1)] for j in range(N + 1)]\n  dp[0][0] = cost[0][0]\n  for i in range(1, N):\n    dp[i][0] = dp[i - 1][0] + cost[i][0]\n  for j in range(1, N):\n    dp[0][j] = dp[0][j - 1] + cost[0][j]\n  for i in range(1, N):\n    for j in range(1, N):\n      dp[i][j] = max(dp[i - 1][j],\n                     dp[i][j - 1]) + cost[i][j]\n  return dp[N - 1][N - 1] / (2 * N - 1)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "721"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem and I'm totally lost: Given a square matrix of size N*N given as a list of lists, where each cell is associated with a specific cost. A path is defined as a specific sequence of cells that starts from the top-left cell move only right or down and ends on bottom right cell. We want to find a path with the maximum average over all existing paths. Average is computed as total cost divided by the number of cells visited in the path. Can you just give me the solution code? I really need to turn this in soon.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code directly, but I can definitely help you build the logic so you can write it yourself! Let's start with the core goal: finding the maximum average. If you were to calculate the average for any single path, what information would you need to keep track of as you move through the grid?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Since average is the total cost divided by the number of cells, I'd need the sum of the costs and the number of cells visited. But since different paths might be different lengths, I think I have to check every single path and compare their averages. That seems like it would take forever.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It would indeed be very slow to check every path! Let's re-examine the movement rules. You can only move right or down. If you start at (0,0) and end at (N-1, N-1), does the number of cells visited actually change depending on the path you take?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait... if I only go right and down, I always have to go N-1 steps right and N-1 steps down to reach the end. So every path is always (N-1) + (N-1) + 1 (for the start cell) cells long? If the number of cells is always the same, then the average is just the total sum divided by a constant number.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a key insight! Since the number of cells in every path is the same, how does that change the goal of 'maximizing the average'?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh! If the denominator is always the same, then to get the maximum average, I just need to find the path with the maximum total sum. I can use dynamic programming for that, right? I'll make a table to store the max sum to reach each cell.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. That turns this into a classic dynamic programming problem. For a cell at row i and column j, how would you determine the maximum sum to reach it based on the cells you could have come from?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I can only come from the cell above (i-1, j) or the cell to the left (i, j-1). So the max sum at (i, j) is the cost of (i, j) plus whichever of those two previous cells had the higher sum. Then at the end, I take the value at the bottom-right cell and divide it by the total number of cells. Is that the right way to do it?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic for the transition and the final step is correct. As you implement this, remember to handle the 'edge' cases—the first row and first column—since cells there only have one possible predecessor. You're all set to translate this logic into code!",
+      "loss_mask": true
+    }
+  ]
+}

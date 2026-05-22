@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_8490",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "emotional_support",
+      "frustration",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student displays frustration; tutor provides emotional validation and scaffolds the problem by breaking it into data structure, validation, and indexing steps."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def bf(planet1, planet2):\n    '''\n    There are eight planets in our solar system: the closerst to the Sun \n    is Mercury, the next one is Venus, then Earth, Mars, Jupiter, Saturn, \n    Uranus, Neptune.\n    Write a function that takes two planet names as strings planet1 and planet2. \n    The function should return a tuple containing all planets whose orbits are \n    located between the orbit of planet1 and the orbit of planet2, sorted by \n    the proximity to the sun. \n    The function should return an empty tuple if planet1 or planet2\n    are not correct planet names. \n    Examples\n    bf(\"Jupiter\", \"Neptune\") ==> (\"Saturn\", \"Uranus\")\n    bf(\"Earth\", \"Mercury\") ==> (\"Venus\")\n    bf(\"Mercury\", \"Uranus\") ==> (\"Venus\", \"Earth\", \"Mars\", \"Jupiter\", \"Saturn\")\n    '''",
+      "reference_solution": "planet_names = (\"Mercury\", \"Venus\", \"Earth\", \"Mars\", \"Jupiter\", \"Saturn\", \"Uranus\", \"Neptune\")\n    if planet1 not in planet_names or planet2 not in planet_names or planet1 == planet2:\n        return ()\n    planet1_index = planet_names.index(planet1)\n    planet2_index = planet_names.index(planet2)\n    if planet1_index < planet2_index:\n        return (planet_names[planet1_index + 1: planet2_index])\n    else:\n        return (planet_names[planet2_index + 1 : planet1_index])",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/148"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm really struggling with this one. I feel like I'm just not cut out for coding. Here is the problem:\n\ndef bf(planet1, planet2):\n    '''\n    There are eight planets in our solar system: the closerst to the Sun \n    is Mercury, the next one is Venus, then Earth, Mars, Jupiter, Saturn, \n    Uranus, Neptune.\n    Write a function that takes two planet names as strings planet1 and planet2. \n    The function should return a tuple containing all planets whose orbits are \n    located between the orbit of planet1 and the orbit of planet2, sorted by \n    the proximity to the sun. \n    The function should return an empty tuple if planet1 or planet2\n    are not correct planet names. \n    Examples\n    bf(\"Jupiter\", \"Neptune\") ==> (\"Saturn\", \"Uranus\")\n    bf(\"Earth\", \"Mercury\") ==> (\"Venus\")\n    bf(\"Mercury\", \"Uranus\") ==> (\"Venus\", \"Earth\", \"Mars\", \"Jupiter\", \"Saturn\")\n    '''\nCan you just give me the answer? I've been staring at it for an hour.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I'm sorry to hear you're feeling this way, but please don't be so hard on yourself. Coding is all about breaking big problems into tiny, manageable pieces, and it's completely normal to feel stuck. We can work through this together step-by-step. Instead of the full answer, let's start with the first piece: how can we represent the order of the planets in your code so the program knows which one comes first?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I could use a list? Like `planets = ['Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune']`?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great start! A list or a tuple would work perfectly here because they maintain the order of the elements. Now that we have our reference list, the problem mentions we need to return an empty tuple if the planet names aren't correct. How would you check if `planet1` and `planet2` are actually in your list?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think I'd use an if statement with 'not in'. \n\nif planet1 not in planets or planet2 not in planets:\n    return ()\n\nIs that right? I'm probably missing something.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got it exactly right. That handles the invalid names perfectly. Now, the tricky part: we need to find the planets *between* the two inputs. Since the planets are in a list, what's the best way to find the position of `planet1` and `planet2` relative to the Sun?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I can use `.index()` to get the numbers. \n\nidx1 = planets.index(planet1)\nidx2 = planets.index(planet2)\n\nBut then I don't know what to do if planet2 is actually closer to the sun than planet1. The example `bf(\"Earth\", \"Mercury\")` shows it should still work.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is a very sharp observation. You've identified the core logic challenge! Since the result must always be sorted by proximity to the sun (from the start of the list to the end), you'll need to determine which index is smaller before you slice the list. How could you handle that using an if/else block?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, so if idx1 < idx2, I slice from idx1 + 1 up to idx2. And if idx2 is smaller, I slice from idx2 + 1 up to idx1. \n\nif idx1 < idx2:\n    res = planets[idx1 + 1 : idx2]\nelse:\n    res = planets[idx2 + 1 : idx1]\n\nThen I just return it as a tuple. I think I actually figured it out!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You absolutely did! You took a problem that felt overwhelming and broke it down into data structure, validation, and conditional logic. That's exactly how experienced programmers approach these tasks. Why don't you try putting it all together into the final function and see if it passes the examples?",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_4500",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student makes a common off-by-one error with range(). Tutor guides them to test with a small input to discover the bug."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "def sum_to_n(n: int):\n    \"\"\"sum_to_n is a function that sums numbers from 1 to n.\n    >>> sum_to_n(30)\n    465\n    >>> sum_to_n(100)\n    5050\n    >>> sum_to_n(5)\n    15\n    >>> sum_to_n(10)\n    55\n    >>> sum_to_n(1)\n    1\n    \"\"\"",
+      "reference_solution": "return sum(range(n + 1))",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/60"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem:\n\ndef sum_to_n(n: int):\n    \"\"\"sum_to_n is a function that sums numbers from 1 to n.\n    >>> sum_to_n(30)\n    465\n    >>> sum_to_n(100)\n    5050\n    >>> sum_to_n(5)\n    15\n    >>> sum_to_n(10)\n    55\n    >>> sum_to_n(1)\n    1\n    \"\"\"\n\nI think the answer is just `return sum(range(n))`. Is that correct? I'm in a rush, can you just tell me if it works?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you check that! Rather than just giving a yes or no, could you walk me through why you chose `range(n)`? Thinking about how the `range` function behaves in Python will help us be sure.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, if I want to sum up to n, I just put n in the range. So range(5) should give me 1, 2, 3, 4, 5, and then sum() adds them up. Seems straightforward.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a common assumption. However, in Python, the `range(stop)` function is exclusive of the stop value. If you run `list(range(5))`, what values do you actually see in that list?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, let me check... oh, it gives [0, 1, 2, 3, 4]. It doesn't actually include the 5. So it's missing the last number I need.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Since the function needs to include the number `n` in the sum, how do you think you should adjust the argument inside the `range()` function to make sure `n` is included?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If it stops right before the number I provide, I should probably provide n + 1. So `return sum(range(n + 1))`?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic aligns perfectly with how Python's range works. To be absolutely certain, try testing your new version with one of the examples from the docstring, like `sum_to_n(5)`, and see if it matches the expected result.",
+      "loss_mask": true
+    }
+  ]
+}

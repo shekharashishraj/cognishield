@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_dg_9562",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning: Balanced Parentheses",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "emotional_support",
+      "frustration",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor manages student frustration while guiding them through the logic of a bracket-counting algorithm without revealing the full code."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def correct_bracketing(brackets: str):\n    \"\"\" brackets is a string of \"(\" and \")\".\n    return True if every opening bracket has a corresponding closing bracket.\n\n    >>> correct_bracketing(\"(\")\n    False\n    >>> correct_bracketing(\"()\")\n    True\n    >>> correct_bracketing(\"(()())\")\n    True\n    >>> correct_bracketing(\")(()\")\n    False\n    \"\"\"",
+      "reference_solution": "depth = 0\n    for b in brackets:\n        if b == \"(\":\n            depth += 1\n        else:\n            depth -= 1\n        if depth < 0:\n            return False\n    return depth == 0",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/61"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I have to solve this problem: \n\ndef correct_bracketing(brackets: str):\n    \"\"\" brackets is a string of \"(\" and \")\".\n    return True if every opening bracket has a corresponding closing bracket.\n\n    >>> correct_bracketing(\"(\")\n    False\n    >>> correct_bracketing(\"()\")\n    True\n    >>> correct_bracketing(\"(()())\")\n    True\n    >>> correct_bracketing(\")(()\")\n    False\n    \"\"\"\n\nI've been staring at this for an hour and I just can't figure it out. I'm honestly terrible at these kinds of logic problems. Can you just give me the answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It's completely normal to feel stuck on these; logic problems like this often require a specific 'aha!' moment before the code starts to make sense. You aren't terrible at this—you're just in the middle of the learning process. Instead of giving you the answer, let's break it down together. If you were checking this by hand on a piece of paper, how would you keep track of whether the brackets are balanced as you read from left to right?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I'd count them? Like, if I see a '(', I add one, and if I see a ')', I subtract one. But then I don't know if that's enough. What if the string is just ')'?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great intuition. Counting is exactly the right approach. Now, look at your example: if the string is just ')', and you start at 0 and subtract 1, you get -1. In a validly bracketed string, can the count ever drop below zero while you are still reading the string?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "No, because you can't close a bracket that hasn't been opened yet. So if the count ever goes negative, it's immediately False. I think I get that part now. But what about the end? If I have '((', the count is 2, but that's not correct.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. You've identified the two main conditions. First, the count can't dip below zero. Second, what needs to be true about the final count once you've finished looping through the entire string for it to be considered 'correct'?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The final count has to be zero! Because every opening bracket needs a closing one to cancel it out. So I should use a variable for the depth, loop through the string, return False if it's negative, and then at the very end check if it equals zero.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've nailed the logic. That's the complete algorithm. Why don't you try writing the Python code for that now? I'm here if you run into any syntax issues.",
+      "loss_mask": true
+    }
+  ]
+}

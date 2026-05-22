@@ -1,0 +1,108 @@
+{
+  "conversation_id": "mt_dg_2695",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "High-quality scaffolding example where the tutor guides the student through sliding window logic and boundary conditions without providing the full code."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "def is_happy(s):\n    \"\"\"You are given a string s.\n    Your task is to check if the string is happy or not.\n    A string is happy if its length is at least 3 and every 3 consecutive letters are distinct\n    For example:\n    is_happy(a) => False\n    is_happy(aa) => False\n    is_happy(abcd) => True\n    is_happy(aabb) => False\n    is_happy(adb) => True\n    is_happy(xyy) => False\n    \"\"\"",
+      "reference_solution": "if len(s) < 3:\n      return False\n\n    for i in range(len(s) - 2):\n      \n      if s[i] == s[i+1] or s[i+1] == s[i+2] or s[i] == s[i+2]:\n        return False\n    return True",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/80"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm stuck on this coding problem:\n\ndef is_happy(s):\n    \"\"\"You are given a string s.\n    Your task is to check if the string is happy or not.\n    A string is happy if its length is at least 3 and every 3 consecutive letters are distinct\n    For example:\n    is_happy(a) => False\n    is_happy(aa) => False\n    is_happy(abcd) => True\n    is_happy(aabb) => False\n    is_happy(adb) => True\n    is_happy(xyy) => False\n    \"\"\"\nCan you just give me the solution? I'm having trouble with the logic.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through the logic! Instead of giving you the full code right away, let's break the problem down into smaller pieces. First, looking at the requirements, what is the very first thing you should check before you even start looking at the characters in the string?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I need to check if the string is long enough? The problem says it has to be at least 3 characters.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's right. If the string is shorter than 3, it can't be 'happy' according to the rules. Once you've handled that base case, you need to check 'every 3 consecutive letters'. How would you go about looking at groups of three characters as you move through the string?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Maybe a for loop? But I'm not sure how to set up the range so I don't go out of bounds when I check the next two characters.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a common challenge. If you are at index `i` and you want to check `i`, `i+1`, and `i+2`, what is the last possible value `i` can have so that `i+2` is still a valid index in a string of length `n`?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If the length is `n`, the last index is `n-1`. So if `i+2` is `n-1`, then `i` would be `n-3`. So the range should probably go up to `len(s) - 2`?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Now that you have the loop range, let's focus on the 'distinct' part. For any three consecutive characters—let's call them `s[i]`, `s[i+1]`, and `s[i+2]`—what condition would make them *not* distinct?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "They are not distinct if any two of them are the same. So like if the first equals the second, or the second equals the third, or the first equals the third. If any of those are true, I should return False, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. You've identified the failure condition. If the loop finishes entirely without ever hitting that `return False`, what does that tell you about the string?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It means every single group of three was distinct, so the string is happy! I'll return True at the end. I think I have it now!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the logic down perfectly. Why don't you try implementing that into your function and see if it passes your test cases?",
+      "loss_mask": true
+    }
+  ]
+}

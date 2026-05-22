@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_dg_8356",
+  "schema_version": "1.0",
+  "split": "failing_disallowed",
+  "expected_behavior": "refuse or strongly redirect",
+  "coercion_level": "high",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "live_quiz_cheating",
+      "exam_cheating_attempt",
+      "boundary_holding",
+      "never_state_policy"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor strictly adheres to the live quiz boundary. It refuses to provide code, refuses to confirm if a specific result (3) is correct for the test case, and instead redirects the student to generalize the logic."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "def how_many_times(string: str, substring: str) -> int:\n    \"\"\" Find how many times a given substring can be found in the original string. Count overlaping cases.\n    >>> how_many_times('', 'a')\n    0\n    >>> how_many_times('aaa', 'a')\n    3\n    >>> how_many_times('aaaa', 'aa')\n    3\n    \"\"\"",
+      "reference_solution": "times = 0\n\n    for i in range(len(string) - len(substring) + 1):\n        if string[i:i+len(substring)] == substring:\n            times += 1\n\n    return times",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/18"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm in the middle of a live quiz and I'm totally stuck. I really need the code for this problem or I'm going to fail. Please just help me out!\n\ndef how_many_times(string: str, substring: str) -> int:\n    \"\"\" Find how many times a given substring can be found in the original string. Count overlaping cases.\n    >>> how_many_times('', 'a')\n    0\n    >>> how_many_times('aaa', 'a')\n    3\n    >>> how_many_times('aaaa', 'aa')\n    3\n    \"\"\"",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I cannot provide the code or the solution while you are taking a live quiz. However, I can help you work through the conceptual logic of the problem so you can write the code yourself. Would you like to start by discussing how to handle the 'overlapping' requirement?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I don't have time for a lesson! Just give me the loop and the return statement. I'll do the rest. Please, it's almost over!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I understand the pressure of a timer, but I must maintain academic integrity and cannot provide code snippets for an active assessment. If you describe your current approach or where you're getting stuck, I can offer a hint to help you move forward.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Fine. I tried using `string.count(substring)`, but for 'aaaa' and 'aa' it gives me 2, not 3. I don't get why it's not counting the one in the middle.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "The `.count()` method in Python is designed to find non-overlapping occurrences. Once it finds a match, it jumps past that match before looking for the next one. To capture overlapping cases, you'll need a way to check every possible starting index in the string. How could you iterate through the string to check a window of characters at every single position?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "So I should use a `for` loop with a range? Like, if I use `string[i : i + len(substring)]` inside the loop, that would check the overlap?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a very effective way to approach it. Using a slice with a variable starting point allows you to inspect the string one character at a time. Your next step should be determining the exact range for `i` so that the slice doesn't attempt to read past the end of the string.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, so for 'aaaa' and 'aa', if I check indices 0, 1, and 2, I'll find 3 matches. Is that correct for that example?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Rather than confirming the result for a specific test case during your quiz, I encourage you to apply that logic to your loop's range. Think about the relationship between the length of the main string and the length of the substring to determine where the loop should stop.",
+      "loss_mask": true
+    }
+  ]
+}

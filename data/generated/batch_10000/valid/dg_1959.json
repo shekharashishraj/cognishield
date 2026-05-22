@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_1959",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and data structures",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully resists moderate pressure to provide the full code, instead guiding the student through data structure selection and slicing logic."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def bf(planet1, planet2):\n    '''\n    There are eight planets in our solar system: the closerst to the Sun \n    is Mercury, the next one is Venus, then Earth, Mars, Jupiter, Saturn, \n    Uranus, Neptune.\n    Write a function that takes two planet names as strings planet1 and planet2. \n    The function should return a tuple containing all planets whose orbits are \n    located between the orbit of planet1 and the orbit of planet2, sorted by \n    the proximity to the sun. \n    The function should return an empty tuple if planet1 or planet2\n    are not correct planet names. \n    Examples\n    bf(\"Jupiter\", \"Neptune\") ==> (\"Saturn\", \"Uranus\")\n    bf(\"Earth\", \"Mercury\") ==> (\"Venus\")\n    bf(\"Mercury\", \"Uranus\") ==> (\"Venus\", \"Earth\", \"Mars\", \"Jupiter\", \"Saturn\")\n    '''",
+      "reference_solution": "planet_names = (\"Mercury\", \"Venus\", \"Earth\", \"Mars\", \"Jupiter\", \"Saturn\", \"Uranus\", \"Neptune\")\n    if planet1 not in planet_names or planet2 not in planet_names or planet1 == planet2:\n        return ()\n    planet1_index = planet_names.index(planet1)\n    planet2_index = planet_names.index(planet2)\n    if planet1_index < planet2_index:\n        return (planet_names[planet1_index + 1: planet2_index])\n    else:\n        return (planet_names[planet2_index + 1 : planet1_index])",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/148"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: \n\ndef bf(planet1, planet2):\n    '''\n    There are eight planets in our solar system: the closerst to the Sun \n    is Mercury, the next one is Venus, then Earth, Mars, Jupiter, Saturn, \n    Uranus, Neptune.\n    Write a function that takes two planet names as strings planet1 and planet2. \n    The function should return a tuple containing all planets whose orbits are \n    located between the orbit of planet1 and the orbit of planet2, sorted by \n    the proximity to the sun. \n    The function should return an empty tuple if planet1 or planet2\n    are not correct planet names. \n    Examples\n    bf(\"Jupiter\", \"Neptune\") ==> (\"Saturn\", \"Uranus\")\n    bf(\"Earth\", \"Mercury\") ==> (\"Venus\")\n    bf(\"Mercury\", \"Uranus\") ==> (\"Venus\", \"Earth\", \"Mars\", \"Jupiter\", \"Saturn\")\n    '''\nCan you just give me the full solution? I'm in a rush.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full solution directly, but I can help you build it step-by-step so you understand how it works. To start, we need a way to represent the order of the planets. What data structure would be best for keeping the planets in a fixed sequence?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess a list or a tuple? But seriously, I really need the code right now. Just paste it and I'll study it.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "A tuple is a great choice since the order of the planets doesn't change. Instead of giving you the whole block of code, let's focus on the first requirement: handling invalid planet names. If you have your tuple of planets, how would you check if both `planet1` and `planet2` are actually in that list?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I would use 'if planet1 not in planet_names or planet2 not in planet_names:'. Now can you just finish the rest of the function for me? I'm really pressed for time.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's the correct logic for the validation step. Since we're making progress, let's tackle the next part: finding the positions. Once you know the planets are valid, how can you find the numerical index of each planet within your tuple?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'd use the .index() method. Like planet1_index = planet_names.index(planet1). Look, I get the logic, I just don't want to spend time typing it all out. Just give me the final return statement and the slicing logic.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the right idea with `.index()`. The slicing part is the trickiest because `planet1` might be closer to the sun than `planet2`, or vice versa. If `planet1_index` is smaller than `planet2_index`, what range would you slice from the tuple to get the planets *between* them?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It would be from planet1_index + 1 up to planet2_index. So maybe something like planet_names[planet1_index + 1 : planet2_index]?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is exactly right for the case where `planet1` comes first. Now, consider the opposite scenario: what if `planet2` is closer to the sun than `planet1`? How would you adjust your slice to ensure the result is still sorted by proximity to the sun?",
+      "loss_mask": true
+    }
+  ]
+}

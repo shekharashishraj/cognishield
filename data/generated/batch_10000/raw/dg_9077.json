@@ -1,0 +1,109 @@
+{
+  "conversation_id": "mt_dg_9077",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Optimization and Polynomials",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to solve using AM-GM incorrectly; tutor guides them toward factoring and using a single variable substitution."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Let $x$ and $y$ be real numbers such that $x + y = 3.$  Find the maximum value of\n\\[x^4 y + x^3 y + x^2 y + xy + xy^2 + xy^3 + xy^4.\\]",
+      "reference_solution": "First, we can factor out $xy,$ to get\n\\[xy (x^3 + x^2 + x + 1 + y + y^2 + y^3) = xy(x^3 + y^3 + x^2 + y^2 + x + y + 1).\\]We know $x + y = 3.$  Let $p = xy.$  Then\n\\[9 = (x + y)^2 = x^2 + 2xy + y^2 = x^2 + 2xy + y^2,\\]so $x^2 + y^2 = 9 - 2p.$\n\nAlso,\n\\[27 = (x + y)^3 = x^3 + 3x^2 y + 3xy^2 + y^3,\\]so $x^3 + y^3 = 27 - 3xy(x + y) = 27 - 9p.$\n\nThus,\n\\begin{align*}\nxy (x^3 + y^3 + x^2 + y^2 + x + y + 1) &= p (27 - 9p + 9 - 2p + 3 + 1) \\\\\n&= p(40 - 11p) \\\\\n&= -11p^2 + 40p \\\\\n&= -11 \\left( p - \\frac{20}{11} \\right)^2 + \\frac{400}{11} \\\\\n&\\le \\frac{400}{11}.\n\\end{align*}Equality occurs when $xy = p = \\frac{20}{11}.$  By Vieta's formulas, $x$ and $y$ are the roots of\n\\[t^2 - 3t + \\frac{20}{11} = 0.\\]The discriminant of this quadratic is positive, so equality is possible.  Thus, the maximum value is $\\boxed{\\frac{400}{11}}.$",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "2058"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Let $x$ and $y$ be real numbers such that $x + y = 3.$ Find the maximum value of\n\\[x^4 y + x^3 y + x^2 y + xy + xy^2 + xy^3 + xy^4.\\]\nI think the maximum occurs when $x=y=1.5$, and I calculated the value to be $15.1875$. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't tell you if that's the final answer just yet. To make sure we're on the right track, could you explain how you arrived at $x=y=1.5$? Did you use a specific theorem or a certain method to determine that the maximum occurs when the variables are equal?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I just assumed that since the expression is symmetric in $x$ and $y$, and the constraint $x+y=3$ is also symmetric, the maximum should happen when $x=y$. I plugged in $1.5$ for both and simplified the expression.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Symmetry is often a great clue in these types of problems, but it doesn't always guarantee that the extreme value occurs at the point of symmetry—especially with higher-degree polynomials. \n\nBefore we assume $x=y$, let's try to simplify the expression. Looking at the terms $x^4 y + x^3 y + x^2 y + xy + xy^2 + xy^3 + xy^4$, do you see a common factor that could be pulled out to make the expression easier to manage?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see that every term has at least one $x$ and one $y$. So I can factor out $xy$. \nThat gives me $xy(x^3 + x^2 + x + 1 + y + y^2 + y^3)$. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's exactly right. Now you have the expression $xy(x^3 + y^3 + x^2 + y^2 + x + y + 1)$. \n\nSince you know $x + y = 3$, the goal now is to express everything inside the parentheses in terms of $x+y$ and $xy$. For example, how can you rewrite $x^2 + y^2$ using only the sum $(x+y)$ and the product $xy$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I know that $(x+y)^2 = x^2 + 2xy + y^2$, so $x^2 + y^2 = (x+y)^2 - 2xy$. \nSince $x+y=3$, then $x^2 + y^2 = 9 - 2xy$. \nI can do the same for $x^3 + y^3$ using $(x+y)^3 = x^3 + 3x^2y + 3xy^2 + y^3$, which means $x^3 + y^3 = 27 - 3xy(x+y) = 27 - 9xy$. \n\nSo the whole expression inside the parentheses is $(27 - 9xy) + (9 - 2xy) + 3 + 1$. \nThat simplifies to $40 - 11xy$. \nNow the whole thing is $xy(40 - 11xy)$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've made great progress! You've reduced the problem from two variables down to a single variable. If we let $p = xy$, the expression becomes a quadratic in terms of $p$: $f(p) = p(40 - 11p)$. \n\nHow would you find the maximum value of this quadratic, and what value of $p$ achieves it?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It's a downward-opening parabola, so the maximum is at the vertex. The roots are $p=0$ and $p=40/11$, so the vertex is at $p = 20/11$. \nPlugging $p = 20/11$ back into $p(40 - 11p)$, I get $(20/11)(40 - 20) = (20/11)(20) = 400/11$. \nSo the maximum value is $400/11$. Is this correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your calculation for the maximum of the quadratic is correct. However, there is one final check you must perform before concluding. \n\nWe assumed $p = xy = 20/11$ while $x + y = 3$. Do there actually exist real numbers $x$ and $y$ that satisfy both of these conditions? How can you verify this?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I can check the discriminant of the quadratic equation $t^2 - (x+y)t + xy = 0$. \nHere it's $t^2 - 3t + 20/11 = 0$. \nThe discriminant is $D = (-3)^2 - 4(1)(20/11) = 9 - 80/11 = (99-80)/11 = 19/11$. \nSince $19/11 > 0$, there are real solutions for $x$ and $y$. So the maximum value is indeed $400/11$!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Perfect. You've verified that the value is attainable with real numbers. Your final answer of $400/11$ is correct. Great job working through the factorization and the variable substitution!",
+      "loss_mask": true
+    }
+  ]
+}

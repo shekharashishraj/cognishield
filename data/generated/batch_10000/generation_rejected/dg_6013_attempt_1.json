@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_6013",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "High-quality scaffolding for Roman numeral conversion. Tutor guides the student through data structure selection and the greedy subtraction logic without revealing the full code."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "def int_to_mini_roman(number):\n    \"\"\"\n    Given a positive integer, obtain its roman numeral equivalent as a string,\n    and return it in lowercase.\n    Restrictions: 1 <= num <= 1000\n\n    Examples:\n    >>> int_to_mini_roman(19) == 'xix'\n    >>> int_to_mini_roman(152) == 'clii'\n    >>> int_to_mini_roman(426) == 'cdxxvi'\n    \"\"\"",
+      "reference_solution": "num = [1, 4, 5, 9, 10, 40, 50, 90,  \n           100, 400, 500, 900, 1000] \n    sym = [\"I\", \"IV\", \"V\", \"IX\", \"X\", \"XL\",  \n           \"L\", \"XC\", \"C\", \"CD\", \"D\", \"CM\", \"M\"] \n    i = 12\n    res = ''\n    while number: \n        div = number // num[i] \n        number %= num[i] \n        while div: \n            res += sym[i] \n            div -= 1\n        i -= 1\n    return res.lower()",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/156"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm stuck on this coding problem. Can you just give me the solution so I can see how it's done?\n\n```python\ndef int_to_mini_roman(number):\n    \"\"\"\n    Given a positive integer, obtain its roman numeral equivalent as a string,\n    and return it in lowercase.\n    Restrictions: 1 <= num <= 1000\n\n    Examples:\n    >>> int_to_mini_roman(19) == 'xix'\n    >>> int_to_mini_roman(152) == 'clii'\n    >>> int_to_mini_roman(426) == 'cdxxvi'\n    \"\"\"\n```",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through this! Instead of giving you the full code right away, let's break it down together so you can implement it yourself. To start, how do you think we should handle the mapping between the integers (like 10, 5, 1) and their Roman numeral symbols (X, V, I)?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I could use a dictionary? Like {10: 'X', 5: 'V', 1: 'I'}. But what about the cases like 4 (IV) or 9 (IX)? They aren't just adding symbols.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "A dictionary is a great start. Regarding the 'special' cases like 4 and 9, the easiest way to handle them in code is to treat them as their own distinct symbols. If you include 4 as 'IV' and 9 as 'IX' in your mapping, you can treat them just like 5 or 10. \n\nIf you do that, in what order should you process the numbers to make sure you use the largest possible Roman numeral first?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I should probably go from largest to smallest. So if I have 19, I check for 10 first, then 9, then 5, and so on. So I could use two lists, one for the values and one for the symbols, sorted descending.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's exactly the right logic. Using two parallel lists (one for values and one for symbols) sorted from 1000 down to 1 is a very efficient approach. \n\nNow, imagine you are iterating through those lists. If your current number is 19 and your current value in the list is 10, how would you determine how many 'X's to add to your result string and what the remaining number should be?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I can use integer division to see how many times 10 goes into 19, which is 1. Then I can use the modulo operator to get the remainder, which is 9. Then I just move to the next value in my list.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. You've mapped out the entire logic: \n1. Create your mapping of values and symbols (including the subtractive pairs like 4, 9, 40, etc.).\n2. Iterate through them from largest to smallest.\n3. Use division and modulo to append the symbols and update the number.\n\nOne last detail from the problem description: what needs to happen to the final string before you return it?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, it says 'return it in lowercase'. So I just need to call .lower() on the final string. I think I can code it now!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got it. Give the implementation a try! If you run into any bugs or get an unexpected result, feel free to share your code and we can debug it together.",
+      "loss_mask": true
+    }
+  ]
+}

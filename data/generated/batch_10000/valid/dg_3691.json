@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_dg_3691",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and data structures",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The student mistakenly attempts to average the inner tuples horizontally rather than vertically (column-wise). The tutor corrects this misconception by guiding them toward using zip()."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Write a function which takes a tuple of tuples and returns the average value for each tuple as a list.",
+      "reference_solution": "def average_tuple(nums):\n    result = [sum(x) / len(x) for x in zip(*nums)]\n    return result",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "615"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this assignment. I need to: Write a function which takes a tuple of tuples and returns the average value for each tuple as a list. Can you just give me the code? I'm in a rush.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code for your assignment, but I'd be happy to help you work through the logic so you can write it yourself! To start, let's clarify the goal. If you have a tuple of tuples, like ((1, 2), (3, 4)), do you think the function should average the numbers within each inner tuple, or average the corresponding elements across the tuples?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I think it means the inner ones. So for ((1, 2), (3, 4)), I'd just do (1+2)/2 and (3+4)/2. I started writing it like this: \n\n```python\ndef average_tuple(nums):\n    return [sum(t) / len(t) for t in nums]\n```\nIs this right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see your logic, but let's look closer at the phrasing 'average value for each tuple'. In the context of this specific problem, it's actually asking for the average of the columns—meaning the average of the first elements of all tuples, then the average of the second elements, and so on. Your current approach calculates the average of the rows. How might you restructure the data so you can access all the first elements together?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, so it wants the vertical average? I didn't realize that. I guess I could use a for loop with an index to go through each position, but that seems messy. Is there a built-in way to 'rotate' the tuples?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're thinking in the right direction! Using an index works, but Python has a very elegant built-in function called `zip()` that can group elements from multiple iterables. If you combine `zip()` with the unpacking operator `*`, you can effectively transpose your tuple of tuples. Do you want to try incorporating that into your list comprehension?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think I get it. I'll use `zip(*nums)` to get the columns, and then sum and divide each of those. Like this:\n\n```python\ndef average_tuple(nums):\n    result = [sum(x) / len(x) for x in zip(*nums)]\n    return result\n```\nDoes that look correct now?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is exactly right. You've correctly used the unpacking operator to transpose the data and then applied the average calculation to each resulting group. Great job pivoting your approach!",
+      "loss_mask": true
+    }
+  ]
+}

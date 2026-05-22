@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_9903",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Multi-step programming and contest-style problems: Numerical Root Finding",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to use Newton's method without a derivative function, leading to a misconception about implementation. Tutor guides them toward the Bisection method."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "import math\n\n\ndef poly(xs: list, x: float):\n    \"\"\"\n    Evaluates polynomial with coefficients xs at point x.\n    return xs[0] + xs[1] * x + xs[1] * x^2 + .... xs[n] * x^n\n    \"\"\"\n    return sum([coeff * math.pow(x, i) for i, coeff in enumerate(xs)])\n\n\ndef find_zero(xs: list):\n    \"\"\" xs are coefficients of a polynomial.\n    find_zero find x such that poly(x) = 0.\n    find_zero returns only only zero point, even if there are many.\n    Moreover, find_zero only takes list xs having even number of coefficients\n    and largest non zero coefficient as it guarantees\n    a solution.\n    >>> round(find_zero([1, 2]), 2) # f(x) = 1 + 2x\n    -0.5\n    >>> round(find_zero([-6, 11, -6, 1]), 2) # (x - 1) * (x - 2) * (x - 3) = -6 + 11x - 6x^2 + x^3\n    1.0\n    \"\"\"",
+      "reference_solution": "begin, end = -1., 1.\n    while poly(xs, begin) * poly(xs, end) > 0:\n        begin *= 2.0\n        end *= 2.0\n    while end - begin > 1e-10:\n        center = (begin + end) / 2.0\n        if poly(xs, center) * poly(xs, begin) > 0:\n            begin = center\n        else:\n            end = center\n    return begin",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/32"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem. I need to implement `find_zero` for a polynomial. Here is the prompt:\n\nimport math\n\n\ndef poly(xs: list, x: float):\n    \"\"\"\n    Evaluates polynomial with coefficients xs at point x.\n    return xs[0] + xs[1] * x + xs[1] * x^2 + .... xs[n] * x^n\n    \"\"\"\n    return sum([coeff * math.pow(x, i) for i, coeff in enumerate(xs)])\n\n\ndef find_zero(xs: list):\n    \"\"\" xs are coefficients of a polynomial.\n    find_zero find x such that poly(x) = 0.\n    find_zero returns only only zero point, even if there are many.\n    Moreover, find_zero only takes list xs having even number of coefficients\n    and largest non zero coefficient as it guarantees\n    a solution.\n    >>> round(find_zero([1, 2]), 2) # f(x) = 1 + 2x\n    -0.5\n    >>> round(find_zero([-6, 11, -6, 1]), 2) # (x - 1) * (x - 2) * (x - 3) = -6 + 11x - 6x^2 + x^3\n    1.0\n    \"\"\"\n\nCan you just give me the code? I have a deadline in an hour.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full solution directly, but I can certainly help you build it quickly! To start, we need a way to find a root of the function. Since the problem guarantees a solution exists, we can use a numerical method. Do you have a specific root-finding algorithm in mind, or would you like a suggestion on where to start?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I remember Newton's method from calc. I'll just do `x = x - poly(xs, x) / poly_derivative(xs, x)`. But wait, I don't have a `poly_derivative` function. Can I just use `poly(xs, x + 0.001) - poly(xs, x)` as the derivative?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've correctly identified the formula for Newton's method! Using a small difference to approximate the derivative is a common technique called the finite difference method. However, Newton's method requires a very good initial guess to converge, and it can sometimes fail or oscillate. \n\nGiven that the problem guarantees a solution and provides a specific condition about the number of coefficients, there might be a more robust method that doesn't require derivatives at all. Have you encountered the Bisection method?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Bisection? That's the one where you find two points where the function has opposite signs and keep cutting the interval in half, right? But I don't know where the root is to start the interval. How do I find the initial `begin` and `end`?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly! That's the core of the Bisection method. Since we don't know where the root is, we can start with a small interval—say, [-1, 1]—and check if the function has opposite signs at the boundaries. If the signs are the same (meaning `poly(xs, begin) * poly(xs, end) > 0`), what could you do to the interval to eventually 'trap' the root?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I could just keep expanding the interval? Like doubling the range until the signs are different. So I'd do a while loop that multiplies `begin` and `end` by 2 until the product of the function values is negative. Then I can start the bisection loop.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a solid strategy for finding the initial bounding interval. Once you've found that interval where the sign changes, how would you implement the bisection logic to narrow down the root to a high precision?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'll find the midpoint `center = (begin + end) / 2`. If `poly(xs, center)` has the same sign as `poly(xs, begin)`, then the root must be in the right half, so I set `begin = center`. Otherwise, I set `end = center`. I'll repeat this until `end - begin` is very small, like `1e-10`. Does that sound right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is spot on. You've correctly handled both the interval expansion and the iterative refinement. If you implement those two phases—expanding the search area and then bisecting it—you'll have a robust solution. Why don't you try coding it and let me know if you run into any bugs?",
+      "loss_mask": true
+    }
+  ]
+}

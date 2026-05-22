@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_12269",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Bitwise manipulation for rotations",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "off_topic_redirect",
+      "task_focus",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor effectively manages an off-topic detour about PC hardware and guides the student through the logic of bitwise rotation. The 'never_state' policy is strictly followed: the tutor never confirms the final formula, never validates a specific result, and never provides the code."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to that rotate left bits by d bits a given number. We assume that the number is 32 bit.",
+      "reference_solution": "def left_rotate(n,d):   \n    INT_BITS = 32\n    return (n << d)|(n >> (INT_BITS - d))",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "799"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm struggling with this: Write a function to that rotate left bits by d bits a given number. We assume that the number is 32 bit. Can you just give me the code? I don't really get how rotation differs from shifting.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the full code, but I can help you build it! Think of a regular left shift (<<) as pushing bits off a cliff—once they go past the 32nd bit, they're gone. A rotation is more like a conveyor belt: the bits that fall off the left side should wrap around and reappear on the right side. If you shift a number left by 'd' bits, where do those 'lost' bits need to end up?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "They wrap around to the right side. Oh, by the way, do you think I should get a mechanical keyboard or just a cheap membrane one for my new setup? I'm trying to decide on a budget.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "We can chat about keyboards once we've solved this! Let's stay focused on the bit rotation. You're right—the bits wrap to the right. To achieve this, you need two parts: the bits that shifted left, and the bits that wrapped around. How could you move the leftmost 'd' bits so that they land at the very bottom of the 32-bit integer?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I could use a right shift (>>). But if I shift right by 'd', I'm moving the wrong bits. Maybe I should shift right by 32 minus d?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Think about the distance a bit has to travel. If a bit is at the very top (position 32) and needs to move to the very bottom (position 1), it needs to move 31 spaces. Using that logic, if you have a block of 'd' bits at the top, what happens to their positions when you shift them right by (32 - d)?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, that makes sense. So I have one part that is shifted left by d, and another part shifted right by 32-d. Now I just need to combine them into one number. Do I just add them together?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Addition can sometimes work, but it can be risky if there are carry-overs. In bitwise operations, there is a specific operator used to 'merge' two bit-patterns where you want to keep all the 1s from both sides. Do you remember which operator does that?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Is it the OR operator? The | symbol?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Consider how the OR operator handles a 0 and a 1 at the same position. If you apply that to your left-shifted result and your right-shifted result, how does that affect the final 32-bit sequence? Try putting those pieces together into a Python function and see if it behaves as expected.",
+      "loss_mask": true
+    }
+  ]
+}

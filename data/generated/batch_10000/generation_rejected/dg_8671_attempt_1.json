@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_8671",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Number Theory - Linear Congruences",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Generated a multi-turn dialogue where the student incorrectly divides by 55 without adjusting the modulus. The tutor guides them to the correct modular arithmetic property."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "What is the largest three-digit integer $n$ that satisfies $$55n\\equiv 165\\pmod{260}~?$$",
+      "reference_solution": "First, we note that $55$, $165$, and $260$ all have a common factor of $5$: \\begin{align*}\n55 &= 5\\cdot 11\\\\\n165 &= 5\\cdot 33\\\\\n260 &= 5\\cdot 52\n\\end{align*}An integer $n$ satisfies $55n\\equiv 165\\pmod{260}$ if and only if it satisfies $11n\\equiv 33\\pmod{52}$. (Make sure you see why!)\n\nNow it is clear that $n=3$ is a solution. Moreover, since $11$ and $52$ are relatively prime, the solution is unique $\\pmod{52}$. If you don't already know why this is the case, consider that we are looking for $n$ such that $11n-33=11(n-3)$ is divisible by $52$; this is true if and only if $n-3$ is divisible by $52$.\n\nHence all solutions are of the form $3+52k$, where $k$ is an integer. One such solution which is easy to compute is $3+52(20) = 1043$. The next-largest solution is $1043-52 = 991$, so the largest three-digit solution is $\\boxed{991}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "2682"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm working on this problem: What is the largest three-digit integer $n$ that satisfies $$55n\\equiv 165\\pmod{260}~?$$ I think the answer is 993. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't tell you if that's correct just yet. Could you walk me through how you arrived at 993? I'd like to see your reasoning first.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Sure. I saw $55n \\equiv 165 \\pmod{260}$. Since $165$ is $55 \\times 3$, I just divided both sides by 55 and got $n \\equiv 3 \\pmod{260}$. Then I looked for the largest 3-digit number that is $3 \\pmod{260}$. $260 \\times 3 = 780$, and $780 + 3 = 783$. Wait, $260 \\times 4 = 1040$, so $1040 - 260 + 3 = 783$. Actually, let me re-calculate... $260 \\times 3 + 3 = 783$. I might have messed up the 993 part, but the logic is that $n = 3 + 260k$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see where you're going. You're trying to simplify the congruence by dividing by 55. However, in modular arithmetic, you can't always divide both sides of a congruence by a number as simply as you do in regular algebra. There is a specific rule about the greatest common divisor (GCD) of the number you're dividing by and the modulus. Do you recall what happens to the modulus when you divide the coefficients?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I remember something about the GCD. If I divide by $d$, I have to divide the modulus by $\\gcd(d, m)$? Let me check. Here $d=55$ and $m=260$. The $\\gcd(55, 260)$ is 5. So the new modulus should be $260/5 = 52$. Does that mean the congruence becomes $11n \\equiv 33 \\pmod{52}$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's exactly right. You've correctly simplified the congruence. Now, how would you solve $11n \\equiv 33 \\pmod{52}$ for $n$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Since $11n \\equiv 33 \\pmod{52}$, I can see that $n=3$ works because $11 \\times 3 = 33$. So $n \\equiv 3 \\pmod{52}$. Now I need the largest three-digit integer $n$ that fits this. $52 \\times 10 = 520$, $52 \\times 20 = 1040$. So $1040 - 52 = 988$. Then $988 + 3 = 991$. Is 991 the answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've followed the logic perfectly! You found the general solution and correctly applied the constraint for the largest three-digit integer. You can be confident in that result.",
+      "loss_mask": true
+    }
+  ]
+}

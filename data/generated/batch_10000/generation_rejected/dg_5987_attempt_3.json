@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_5987",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Function Parity",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The student incorrectly attempts to determine parity by counting the number of odd/even functions in a composition. The tutor guides them through the formal substitution process to discover the correct parity without stating the answer."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Let $f(x)$ be an odd function, and let $g(x)$ be an even function.  Is $f(f(g(f(g(f(x))))))$ even, odd, or neither?\n\nEnter \"odd\", \"even\", or \"neither\".",
+      "reference_solution": "We have that\n\\[f(f(g(f(g(f(-x)))))) = f(f(g(f(g(-f(x)))))) = f(f(g(f(g(f(x)))))),\\]so the function is $\\boxed{\\text{even}}.$\n\nMore generally, if we have a composition of functions, and at least one of the functions is even, then the whole composition of functions is even.",
+      "seed_dataset": "HuggingFaceH4/MATH-500/test",
+      "seed_example_id": "test/intermediate_algebra/128.json"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Let $f(x)$ be an odd function, and let $g(x)$ be an even function.  Is $f(f(g(f(g(f(x))))))$ even, odd, or neither?\n\nI think the answer is 'odd' because there are more $f$'s than $g$'s. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see you're trying to find a pattern based on the number of functions. However, parity in function composition doesn't work like addition or multiplication. To be sure, could you try applying the formal definition of even and odd functions to the whole expression?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Right, the definition. So I should replace $x$ with $-x$ and see what happens. The innermost function is $f(x)$, and since $f$ is odd, $f(-x) = -f(x)$. So the expression becomes $f(f(g(f(g(-f(x))))))$. Now what?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's the perfect first step. Now, look at the next layer moving outward. The result $-f(x)$ is now the input for $g$. Since $g$ is an even function, how does $g(-f(x))$ compare to $g(f(x))$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Since $g$ is even, $g(-u) = g(u)$. So $g(-f(x))$ is just $g(f(x))$. That means the expression is now $f(f(g(f(g(f(x))))))$. Wait, that's exactly what I started with!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've hit the key point. You found that replacing $x$ with $-x$ in the entire composition resulted in the original expression. Looking back at the definitions of even and odd functions, which one matches this behavior?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If $H(-x) = H(x)$, then the function $H$ is even. So the answer is 'even'. I guess my counting logic was totally wrong.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've successfully navigated the composition! Your derivation shows why the formal definition is more reliable than counting. As a general rule for your future problems, consider what happens when an even function appears anywhere in a composition chain—it often 'neutralizes' the sign of everything inside it.",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_6694",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks: Sorting with custom keys",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student fails to handle the secondary sort criteria (decimal value) and uses a naive count method. Tutor guides them toward stable sorting or tuple keys."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "def sort_array(arr):\n    \"\"\"\n    In this Kata, you have to sort an array of non-negative integers according to\n    number of ones in their binary representation in ascending order.\n    For similar number of ones, sort based on decimal value.\n\n    It must be implemented like this:\n    >>> sort_array([1, 5, 2, 3, 4]) == [1, 2, 3, 4, 5]\n    >>> sort_array([-2, -3, -4, -5, -6]) == [-6, -5, -4, -3, -2]\n    >>> sort_array([1, 0, 2, 3, 4]) [0, 1, 2, 3, 4]\n    \"\"\"",
+      "reference_solution": "return sorted(sorted(arr), key=lambda x: bin(x)[2:].count('1'))",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/116"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem:\n\ndef sort_array(arr):\n    \"\"\"\n    In this Kata, you have to sort an array of non-negative integers according to\n    number of ones in their binary representation in ascending order.\n    For similar number of ones, sort based on decimal value.\n\n    It must be implemented like this:\n    >>> sort_array([1, 5, 2, 3, 4]) == [1, 2, 3, 4, 5]\n    >>> sort_array([-2, -3, -4, -5, -6]) == [-6, -5, -4, -3, -2]\n    >>> sort_array([1, 0, 2, 3, 4]) [0, 1, 2, 3, 4]\n    \"\"\"\n\nI think the solution is just `return sorted(arr, key=lambda x: bin(x).count('1'))`. Is this correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the right idea for the primary sorting criteria! To be sure, could you explain how your current code handles cases where two numbers have the same number of ones in their binary form?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, if they have the same number of ones, the `sorted()` function just keeps them in the order they were in the original list, right? So it should be fine.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a good observation about how Python's `sorted()` is stable. However, take another look at the problem statement. Does it say to keep the original order for ties, or does it specify a different rule for when the binary count is the same?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see it now: 'For similar number of ones, sort based on decimal value.' My bad. So I need to sort by the number itself if the binary count is a tie. How do I do that inside a lambda?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "One way to handle multiple sorting criteria in Python is to have the key function return a tuple. Python sorts tuples element by element—it compares the first items, and if they are equal, it moves to the second items. How could you structure a tuple to prioritize the binary count first and the decimal value second?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "So it would be something like `key=lambda x: (bin(x).count('1'), x)`? Does that work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic correctly addresses both requirements! Now, consider the edge cases mentioned in the docstring, such as negative numbers. Does `bin(x).count('1')` behave the same way for negative integers as it does for non-negative ones in Python?",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_dg_4268",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Polynomial Roots",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student initially confuses the number of roots with the degree of the polynomial and fails to utilize the integer coefficient property. Tutor guides them toward the factor theorem and integer factorization of q(100)."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "A polynomial $p(x)$ is called self-centered if it has integer coefficients and $p(100) = 100.$  If $p(x)$ is a self-centered polynomial, what is the maximum number of integer solutions $k$ to the equation $p(k) = k^3$?",
+      "reference_solution": "Let $q(x) = p(x) - x^3,$ and let $r_1,$ $r_2,$ $\\dots,$ $r_n$ be the integer roots to $p(k) = k^3.$  Then\n\\[q(x) = (x - r_1)(x - r_2) \\dotsm (x - r_n) q_0(x)\\]for some polynomial $q_0(x)$ with integer coefficients.\n\nSetting $x = 100,$ we get\n\\[q(100) = (100 - r_1)(100 - r_2) \\dotsm (100 - r_n) q_0(100).\\]Since $p(100) = 100,$\n\\[q(100) = 100 - 100^3 = -999900 = -2^2 \\cdot 3^2 \\cdot 5^2 \\cdot 11 \\cdot 101.\\]We can then write $-999900$ as a product of at most 10 different integer factors:\n\\[-999900 = (1)(-1)(2)(-2)(3)(-3)(5)(-5)(-11)(101).\\]Thus, the number of integer solutions $n$ is at most 10.\n\nAccordingly, we can take\n\\[q(x) = (x - 99)(x - 101)(x - 98)(x - 102)(x - 97)(x - 103)(x - 95)(x - 105)(x - 111)(x - 1),\\]and $p(x) = q(x) + x^3,$ so $p(k) = k^3$ has 10 integer roots, namely 99, 101, 98, 102, 97, 103, 95, 105, 111, and 1.  Thus, $\\boxed{10}$ integer roots is the maximum.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "3810"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm stuck on this problem: 'A polynomial $p(x)$ is called self-centered if it has integer coefficients and $p(100) = 100.$ If $p(x)$ is a self-centered polynomial, what is the maximum number of integer solutions $k$ to the equation $p(k) = k^3$?'\n\nI think the answer is 3 because $k^3$ is a cubic, so there can only be 3 roots. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see where you're coming from—usually, a cubic equation has at most 3 roots. However, let's look closer at the equation $p(k) = k^3$. Is $p(x)$ given as a cubic polynomial, or could it be of a higher degree? If $p(x)$ has a higher degree, how does that change the number of possible solutions for $p(k) - k^3 = 0$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, it doesn't say $p(x)$ is a cubic. It just says it's a polynomial. So it could be degree 10 or 100. But then wouldn't the answer be infinity? I can just make a polynomial with as many roots as I want.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great question. If there were no other constraints, you'd be right. But remember the 'self-centered' definition: $p(x)$ must have integer coefficients and $p(100) = 100$. \n\nTry defining a new polynomial $q(x) = p(x) - x^3$. If $k$ is an integer solution to $p(k) = k^3$, what does that tell you about $q(k)$? And more importantly, what can you say about the value of $q(100)$ based on the given information?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If $p(k) = k^3$, then $q(k) = 0$, so $k$ is a root of $q(x)$. And $q(100) = p(100) - 100^3 = 100 - 100^3$. That's a huge negative number: $100 - 1,000,000 = -999,900$. I'm not sure how this helps me find the maximum number of roots though.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the right values! Now, think about the Factor Theorem. If $r_1, r_2, \\dots, r_n$ are distinct integer roots of $q(x)$, and $q(x)$ has integer coefficients, how can we write $q(x)$ in terms of these roots? Once you have that form, what happens when you plug in $x = 100$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If they are roots, then $q(x) = (x-r_1)(x-r_2)\\dots(x-r_n)g(x)$ for some other polynomial $g(x)$ with integer coefficients. So $q(100) = (100-r_1)(100-r_2)\\dots(100-r_n)g(100)$. Since $q(100) = -999,900$, this means the product of these $(100-r_i)$ terms must be a divisor of $-999,900$. To maximize $n$, I need to break $-999,900$ into as many distinct integer factors as possible. Let me try to factor it... $999,900 = 100 \\times 9999 = 100 \\times 9 \\times 1111 = 2^2 \\times 5^2 \\times 3^2 \\times 11 \\times 101$. \n\nIf I use factors like $1, -1, 2, -2, 3, -3, 5, -5, 11, -11...$ wait, $11 \\times 101$ is too big. Let me see. I can have $1, -1, 2, -2, 3, -3, 5, -5, 11, -101$. That's 10 factors. Can I get more?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're very close! You've correctly identified that the problem reduces to finding the maximum number of distinct integer factors whose product is $-999,900$. \n\nDouble-check your list of factors. Are there any other small integers you missed, or can you rearrange the remaining prime factors (like the 101) to create more distinct terms? Once you're confident in the maximum count of distinct factors, that will be your answer.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let me re-count. I have $1, -1, 2, -2, 3, -3, 5, -5$. That's 8. Then I have $11$ and $101$. If I use $11$ and $-101$, that's 10. If I try to break $101$ down, I can't because it's prime. If I try to combine 11 and 101, I get fewer factors. So it looks like 10 is the maximum. Is the answer 10?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that is correct. By breaking $-999,900$ into the maximum number of distinct integer factors, you've found the maximum number of possible distinct integer roots $r_i$ that satisfy the condition. Well done!",
+      "loss_mask": true
+    }
+  ]
+}

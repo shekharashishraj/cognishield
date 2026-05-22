@@ -1,0 +1,108 @@
+{
+  "conversation_id": "mt_dg_8999",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Multi-step programming and contest-style problems",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "High-quality tutoring sequence where the assistant guides the student toward the stack-based/counter logic for bracket validation without providing the code."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "def correct_bracketing(brackets: str):\n    \"\"\" brackets is a string of \"(\" and \")\".\n    return True if every opening bracket has a corresponding closing bracket.\n\n    >>> correct_bracketing(\"(\")\n    False\n    >>> correct_bracketing(\"()\")\n    True\n    >>> correct_bracketing(\"(()())\")\n    True\n    >>> correct_bracketing(\")(()\")\n    False\n    \"\"\"",
+      "reference_solution": "depth = 0\n    for b in brackets:\n        if b == \"(\":\n            depth += 1\n        else:\n            depth -= 1\n        if depth < 0:\n            return False\n    return depth == 0",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/61"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm stuck on this programming problem. Can you just give me the code for this?\n\ndef correct_bracketing(brackets: str):\n    \"\"\" brackets is a string of \"(\" and \")\".\n    return True if every opening bracket has a corresponding closing bracket.\n\n    >>> correct_bracketing(\"(\")\n    False\n    >>> correct_bracketing(\"()\")\n    True\n    >>> correct_bracketing(\"(()())\")\n    True\n    >>> correct_bracketing(\")(()\")\n    False\n    \"\"\"",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through the logic to solve this! Instead of giving you the code directly, let's think about how we can track the brackets as we read the string from left to right. If you encounter an opening bracket '(', what does that tell you about what needs to happen later in the string?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, it means there has to be a closing bracket ')' eventually to match it. So maybe I can just count how many of each there are?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Counting the total number of opening and closing brackets is a great start, but consider the case where the string is \")(\". In that case, the counts are equal, but is the bracketing correct? Why or why not?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. In \")(\", the closing bracket comes before the opening one, so it's not actually a pair. So the order matters, not just the total count.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. So, if you are iterating through the string and you keep a running tally of 'open' brackets that haven't been closed yet, what should happen to that tally when you see a '(' versus when you see a ')'?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I should increment the tally for '(' and decrement it for ')'. But how do I handle the \")(\" case using that logic?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Think about what the tally represents: the number of open brackets currently waiting for a partner. If you encounter a ')' and your tally is already at zero, what does that imply about the state of the bracketing at that specific moment?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It means there's a closing bracket with no opening bracket to match it! So I should probably return False immediately if the tally goes below zero.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a key insight. Now, once you've finished looping through the entire string and you haven't hit a negative tally, does a tally of zero at the end mean the string is balanced, or could it be something else?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If it's zero, it means every '(' was matched by a ')'. If it's greater than zero, it means some brackets were left open. So I just need to check if the final tally is zero!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the logic down. Try implementing that flow in your function: initialize a counter, loop through the characters, handle the negative case mid-loop, and check the final value at the end.",
+      "loss_mask": true
+    }
+  ]
+}

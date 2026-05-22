@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_10991",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Precalculus - Complex Numbers",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor consistently refuses to provide the final numerical answer despite multiple requests from the student. The tutor redirects the student's pressure toward conceptual milestones: identifying the roots, understanding the rotation by i, and determining the selection criteria for maximizing the real part."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Let $z_1$, $z_2$, $z_3$, $\\dots$, $z_{12}$ be the 12 zeroes of the polynomial $z^{12} - 2^{36}$. For each $j$, let $w_j$ be one of $z_j$ or $iz_j$.  Find the maximum possible value of the real part of\n\\[\\sum_{j = 1}^{12} w_j.\\]",
+      "reference_solution": "The $z_j$ are equally spaced on the circle, centered at the origin, with radius $2^3 = 8.$  In other words, they are of the form\n\\[8 \\cos \\frac{2 \\pi j}{12} + 8i \\sin \\frac{2 \\pi j}{12}.\\][asy]\nunitsize(1 cm);\n\nint i;\n\ndraw(Circle((0,0),2));\ndraw((-2.2,0)--(2.2,0));\ndraw((0,-2.2)--(0,2.2));\n\nfor (i = 0; i <= 11; ++i) {\n  dot(2*dir(30*i),linewidth(4*bp));\n}\n[/asy]\n\nGeometrically, $iz_j$ is the result of rotating $z_j$ about the origin by $\\frac{\\pi}{2}$ counter-clockwise.  Thus, to maximize the real part of the sum, we should take $w_j = z_j$ for the red points, and $w_j = iz_j$ for the blue points.\n\n[asy]\nunitsize(1 cm);\n\nint i;\n\ndraw(Circle((0,0),2));\ndraw((-2.2,0)--(2.2,0));\ndraw((0,-2.2)--(0,2.2));\n\nfor (i = -1; i <= 4; ++i) {\n  dot(2*dir(30*i),red + linewidth(4*bp));\n}\n\nfor (i = 5; i <= 10; ++i) {\n  dot(2*dir(30*i),blue + linewidth(4*bp));\n}\n[/asy]\n\nThe real part of the sum is then\n\\begin{align*}\n&8 \\cos \\frac{11 \\pi}{6} + 8 \\cos 0 + 8 \\cos \\frac{\\pi}{6} + 8 \\cos \\frac{\\pi}{3} + 8 \\cos \\frac{\\pi}{2} + 8 \\cos \\frac{2 \\pi}{3} \\\\\n&- \\left( 8 \\sin \\frac{5 \\pi}{6} + 8 \\sin \\pi + 8 \\sin \\frac{7 \\pi}{6} + 8 \\sin \\frac{4 \\pi}{3} + 8 \\sin \\frac{3 \\pi}{2} + 8 \\sin \\frac{5 \\pi}{3} \\right) \\\\\n&= \\boxed{16 + 16 \\sqrt{3}}.\n\\end{align*}",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "6826"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm stuck on this problem: Let $z_1$, $z_2$, $z_3$, $\\dots$, $z_{12}$ be the 12 zeroes of the polynomial $z^{12} - 2^{36}$. For each $j$, let $w_j$ be one of $z_j$ or $iz_j$.  Find the maximum possible value of the real part of\n\\[\\sum_{j = 1}^{12} w_j.\\]\nCan you just tell me the answer so I can check if my approach is right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you verify your approach, but I won't give out the final answer directly. Instead, let's walk through the logic together. To start, what do you know about the distribution of the roots $z_j$ of the polynomial $z^{12} - 2^{36}$ in the complex plane?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "They are the 12th roots of $2^{36}$, so they lie on a circle. $2^{36}$ is $(2^3)^{12}$, so the radius is 8. They are spaced $30^\\circ$ apart. But I'm really pressed for time, can't you just give me the number?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've identified the radius and the spacing correctly. Since you're short on time, the most efficient way to the solution is to determine the optimal choice for $w_j$. For each $j$, you have to choose between $z_j$ and $iz_j$. Thinking about the real part, what happens geometrically to a complex number when you multiply it by $i$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Multiplying by $i$ is a $90^\\circ$ counter-clockwise rotation. I think I see where this is going, but I'm not sure how to pick which one to use for each $j$ to maximize the real part. Just give me the final value and I'll figure out the rest!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the final value, but I can help you nail down the selection process. If you want to maximize the real part, you want the resulting vector $w_j$ to be as far to the right as possible on the complex plane. For a given $z_j$, how would you decide whether $z_j$ or $iz_j$ has a larger real part?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I'd pick whichever one has the larger x-coordinate. So if $z_j$ is in the 4th quadrant, $iz_j$ would be in the 1st quadrant... wait, that depends on the angle. If I just had the answer, I could see which points were chosen. Please, just this once?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Visualizing the circle is the key. For each $z_j$, you are choosing between the point itself and its $90^\\circ$ rotation. Try splitting the circle into two halves: which half of the roots should stay as $z_j$, and which half should be rotated to $iz_j$ to ensure they all end up with the maximum possible positive real parts?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, so I should pick $z_j$ for the points already on the right side of the y-axis, and for the points on the left side, I should rotate them by $90^\\circ$ so they land on the right side. That makes sense. Now I just have to sum the real parts of these 12 points. I'll do the calculation now.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is a solid strategy. You'll be summing the real parts of 12 points that all lie in the right half-plane (or on the imaginary axis). Go ahead and compute those values—remember to use the radius of 8—and let me know if you hit a snag with the trigonometry!",
+      "loss_mask": true
+    }
+  ]
+}

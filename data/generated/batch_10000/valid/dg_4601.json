@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_4601",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Precalculus - Trigonometric Sums",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor effectively guides the student through the double-angle formula and complex number representation of cosine sums without prematurely revealing the final answer."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Compute\n\\[\\sin^2 4^\\circ + \\sin^2 8^\\circ + \\sin^2 12^\\circ + \\dots + \\sin^2 176^\\circ.\\]",
+      "reference_solution": "From the double-angle formula,\n\\[\\sin^2 x = \\frac{1 - \\cos 2x}{2}.\\]Then the sum becomes\n\\begin{align*}\n&\\frac{1 - \\cos 8^\\circ}{2} + \\frac{1 - \\cos 16^\\circ}{2} + \\frac{1 - \\cos 24^\\circ}{2} + \\dots + \\frac{1 - \\cos 352^\\circ}{2} \\\\\n&= 22 - \\frac{1}{2} (\\cos 8^\\circ + \\cos 16^\\circ + \\cos 24^\\circ + \\dots + \\cos 352^\\circ).\n\\end{align*}Consider the sum $x = \\cos 0^\\circ + \\cos 8^\\circ + \\cos 16^\\circ + \\dots + \\cos 352^\\circ.$  This is the real part of\n\\[z = \\operatorname{cis} 0^\\circ + \\operatorname{cis} 8^\\circ + \\operatorname{cis} 16^\\circ + \\dots + \\operatorname{cis} 352^\\circ.\\]Then\n\\begin{align*}\nz \\operatorname{cis} 8^\\circ &= \\operatorname{cis} 8^\\circ + \\operatorname{cis} 16^\\circ + \\operatorname{cis} 24^\\circ + \\dots + \\operatorname{cis} 360^\\circ \\\\\n&= \\operatorname{cis} 8^\\circ + \\operatorname{cis} 16^\\circ + \\operatorname{cis} 24^\\circ + \\dots + \\operatorname{cis} 0^\\circ \\\\\n&= z,\n\\end{align*}so $z (\\operatorname{cis} 8^\\circ - 1) = 0.$  Hence, $z = 0,$ which means $x = 0.$  Therefore,\n\\[\\cos 8^\\circ + \\cos 16^\\circ + \\cos 24^\\circ + \\dots + \\cos 352^\\circ = -\\cos 0 = -1,\\]so\n\\[22 - \\frac{1}{2} (\\cos 8^\\circ + \\cos 16^\\circ + \\cos 24^\\circ + \\dots + \\cos 352^\\circ) = 22 + \\frac{1}{2} = \\boxed{\\frac{45}{2}}.\\]",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "6864"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this math problem: Compute\n\\[\\sin^2 4^\\circ + \\sin^2 8^\\circ + \\sin^2 12^\\circ + \\dots + \\sin^2 176^\\circ.\\]\nCan you just tell me the answer or show me how to start?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through this! Instead of giving the answer right away, let's tackle it step-by-step. \n\nDealing with squared trigonometric functions in a sum can be tricky. Do you recall a trigonometric identity that allows you to rewrite $\\sin^2 x$ in terms of a first-power cosine function? That's usually a great way to simplify sums like this.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, is it the power-reduction formula? $\\sin^2 x = \\frac{1 - \\cos(2x)}{2}$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's exactly right. Now, try applying that identity to every term in your sum. What does the overall expression look like once you've made those substitutions? Also, try to determine how many terms are actually in the sequence.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, the terms go from $4^\\circ$ to $176^\\circ$ in steps of $4^\\circ$. So $176 / 4 = 44$ terms. \nIf I use the formula, I get $\\frac{1 - \\cos 8^\\circ}{2} + \\frac{1 - \\cos 16^\\circ}{2} + \\dots + \\frac{1 - \\cos 352^\\circ}{2}$. \nThis looks like $44 \\times \\frac{1}{2}$ minus $\\frac{1}{2}(\\cos 8^\\circ + \\cos 16^\\circ + \\dots + \\cos 352^\\circ)$. \nSo it's $22 - \\frac{1}{2} \\sum_{k=1}^{44} \\cos(8k^\\circ)$. How do I solve that cosine sum?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've set it up perfectly. Now we need to evaluate $S = \\cos 8^\\circ + \\cos 16^\\circ + \\dots + \\cos 352^\\circ$.\n\nA powerful technique for sums of sines or cosines with angles in arithmetic progression is to use complex numbers. Specifically, consider the sum of $z^k$ where $z = \\cos 8^\\circ + i \\sin 8^\\circ$. \n\nWhat happens if you look at the sum of the complex numbers $\\operatorname{cis}(8k^\\circ)$ from $k=0$ to $44$? How does that relate to your cosine sum?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If I add $\\cos 0^\\circ$ to my sum, I have $\\sum_{k=0}^{44} \\cos(8k^\\circ)$. \nUsing complex numbers, let $z = \\operatorname{cis} 8^\\circ$. The sum is the real part of $1 + z + z^2 + \\dots + z^{44}$. \nThis is a geometric series! The sum is $\\frac{z^{45}-1}{z-1}$. \nWait, $z^{45} = \\operatorname{cis}(45 \\times 8^\\circ) = \\operatorname{cis}(360^\\circ) = 1$. \nSo the sum of the complex numbers is $\\frac{1-1}{z-1} = 0$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. You've found that the sum of the complex numbers from $k=0$ to $44$ is $0$. \n\nSince the real part of the total complex sum is $0$, what does that tell you about the sum $\\cos 0^\\circ + \\cos 8^\\circ + \\dots + \\cos 352^\\circ$? And from there, what is the value of your specific sum $S = \\cos 8^\\circ + \\dots + \\cos 352^\\circ$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If $\\cos 0^\\circ + S = 0$, and $\\cos 0^\\circ = 1$, then $S = -1$. \nPlugging that back into my previous equation: $22 - \\frac{1}{2}(-1) = 22 + 0.5 = 22.5$. \nSo the answer is $45/2$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is correct! You correctly identified the number of terms, applied the power-reduction identity, and used the properties of roots of unity (via the geometric series of complex numbers) to evaluate the remaining sum. Great job working through the logic.",
+      "loss_mask": true
+    }
+  ]
+}

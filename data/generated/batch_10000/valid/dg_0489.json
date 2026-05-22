@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_0489",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning - Rounding Logic",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to use the built-in round() function, which fails the 'round away from zero' requirement for negative numbers. Tutor guides them to handle the .5 case explicitly."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def closest_integer(value):\n    '''\n    Create a function that takes a value (string) representing a number\n    and returns the closest integer to it. If the number is equidistant\n    from two integers, round it away from zero.\n\n    Examples\n    >>> closest_integer(\"10\")\n    10\n    >>> closest_integer(\"15.3\")\n    15\n\n    Note:\n    Rounding away from zero means that if the given number is equidistant\n    from two integers, the one you should return is the one that is the\n    farthest from zero. For example closest_integer(\"14.5\") should\n    return 15 and closest_integer(\"-14.5\") should return -15.\n    '''",
+      "reference_solution": "from math import floor, ceil\n\n    if value.count('.') == 1:\n        # remove trailing zeros\n        while (value[-1] == '0'):\n            value = value[:-1]\n\n    num = float(value)\n    if value[-2:] == '.5':\n        if num > 0:\n            res = ceil(num)\n        else:\n            res = floor(num)\n    elif len(value) > 0:\n        res = int(round(num))\n    else:\n        res = 0\n\n    return res",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/99"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem:\n\ndef closest_integer(value):\n    '''\n    Create a function that takes a value (string) representing a number\n    and returns the closest integer to it. If the number is equidistant\n    from two integers, round it away from zero.\n\n    Examples\n    >>> closest_integer(\"10\")\n    10\n    >>> closest_integer(\"15.3\")\n    15\n\n    Note:\n    Rounding away from zero means that if the given number is equidistant\n    from two integers, the one you should return is the one that is the\n    farthest from zero. For example closest_integer(\"14.5\") should\n    return 15 and closest_integer(\"-14.5\") should return -15.\n    '''\n\nI think the simplest way is just to use the built-in round() function in Python. Like this:\n\ndef closest_integer(value):\n    return int(round(float(value)))\n\nIs this correct? I'm in a bit of a rush, can you just confirm if this works?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I understand you're in a hurry, but it's important to double-check the specific rounding requirements of the problem. Before I confirm, could you walk me through how your code would handle the case of \"-14.5\"? What would `round(-14.5)` return in Python?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, let me check... okay, I just ran it in a shell. `round(-14.5)` actually returns -14. But the problem says for \"-14.5\" it should return -15 because that's farther from zero. So my code is wrong for negative numbers.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Python's `round()` function uses 'round half to even' (also known as bankers' rounding). Since the problem specifically asks to 'round away from zero' for equidistant values, you'll need a different approach for those specific cases. How might you detect if a number is exactly halfway between two integers?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could check if the string ends with '.5'. If it does, I can manually check if the number is positive or negative. If it's positive, I'll use `math.ceil()`, and if it's negative, I'll use `math.floor()`. For everything else, `round()` should be fine, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a solid plan! Checking for the '.5' suffix is a clever way to handle the string input. Just keep in mind that some strings might have trailing zeros (like \"14.50\"). How would you ensure your check for '.5' still works in those instances?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. I should probably strip any trailing zeros after the decimal point first. Then I can check if it ends in '.5'. So the logic would be: clean the string, check for '.5' to handle the 'away from zero' rule, and otherwise use the standard rounding. Does that sound like a complete solution?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That covers the core logic perfectly. You've addressed the equidistant requirement and the potential string formatting issue. Why don't you try implementing those steps into your function and see if it passes your test cases?",
+      "loss_mask": true
+    }
+  ]
+}

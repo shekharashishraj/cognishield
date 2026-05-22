@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_dg_7067",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Counting & Probability - Combinatorics",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "off_topic_redirect",
+      "task_focus",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully redirects the student from a query about a calculator app back to the recurrence relation problem without being condescending."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Call a set of integers \"spacy\" if it contains no more than one out of any three consecutive integers.  How many subsets of $\\{1, 2,\n3, \\dots, 12\\}$, including the empty set, are spacy?",
+      "reference_solution": "For each positive integer $n$, let $S_n = \\{k:1\\leq k\\leq\nn\\}$, and let $c_n$ be the number of spacy subsets of $S_n$.  Then $c_1=2$, $c_2=3$, and $c_3=4$. For $n\\geq 4$, the spacy subsets of $S_n$ can be partitioned into two types:  those that contain $n$ and those that do not.  Those that do not contain $n$ are precisely the spacy subsets of $S_{n-1}$.  Those that contain $n$ do not contain either $n-1$ or $n-2$ and are therefore in one-to-one correspondence with the spacy subsets of $S_{n-3}$.  It follows that $c_n=c_{n-3}+c_{n-1}$.  Thus the first twelve terms in the sequence $\\left(c_n\\right)$ are $2$, $3$, $4$, $6$, $9$, $13$, $19$, $28$, $41$, $60$, $88$, $129$, and there are $c_{12}=\\boxed{129}$ spacy subsets of $S_{12}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "2205"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: Call a set of integers \"spacy\" if it contains no more than one out of any three consecutive integers. How many subsets of {1, 2, 3, ..., 12}, including the empty set, are spacy? Can you just tell me the answer so I can check my work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the final answer right away, but I can help you work through the logic to find it! Let's start by simplifying the problem. Instead of looking at 12 integers, what if we only had a set of 1, 2, or 3 integers? How many 'spacy' subsets would there be for those smaller cases?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "For {1}, the subsets are {} and {1}, so that's 2. For {1, 2}, we have {}, {1}, and {2}, which is 3. For {1, 2, 3}, we have {}, {1}, {2}, and {3}. That's 4. Wait, before we continue, do you know any good apps for graphing functions on an iPad? I'm looking for something better than Desmos.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "There are several great graphing tools out there, but let's hold onto that for a moment and finish this counting problem first. You've correctly found the values for n=1, 2, and 3. Now, imagine we have a set of n integers. If we consider the n-th integer, there are two possibilities: either the n-th integer is in our spacy subset, or it isn't. How does each case relate to the smaller sets you already calculated?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If the n-th integer is NOT in the subset, then we are just looking for spacy subsets of the first n-1 integers. So that's just the count for n-1. But if the n-th integer IS in the subset, then the (n-1)-th and (n-2)-th integers can't be in it because of the 'no more than one out of three' rule. Does that mean the rest of the subset must be a spacy subset of the first n-3 integers?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is exactly right. You've just derived a recurrence relation! If we let c_n be the number of spacy subsets for a set of size n, how would you write the formula for c_n based on your reasoning?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It would be c_n = c_{n-1} + c_{n-3}. So if c_1=2, c_2=3, and c_3=4, then c_4 = c_3 + c_1 = 4 + 2 = 6. Then c_5 = c_4 + c_2 = 6 + 3 = 9. Let me keep going... c_6=13, c_7=19, c_8=28, c_9=41, c_{10}=60, c_{11}=88, c_{12}=129. Is 129 the answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your application of the recurrence relation is spot on, and your calculations for each step are correct. You've successfully found the number of spacy subsets for n=12. Great job!",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_6386",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Multi-step programming and contest-style problems",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "emotional_support",
+      "frustration",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor effectively manages a frustrated student by providing emotional validation while strictly adhering to the method_only policy."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "from typing import List, Tuple\n\n\ndef rolling_max(numbers: List[int]) -> List[int]:\n    \"\"\" From a given list of integers, generate a list of rolling maximum element found until given moment\n    in the sequence.\n    >>> rolling_max([1, 2, 3, 2, 3, 4, 2])\n    [1, 2, 3, 3, 3, 4, 4]\n    \"\"\"",
+      "reference_solution": "running_max = None\n    result = []\n\n    for n in numbers:\n        if running_max is None:\n            running_max = n\n        else:\n            running_max = max(running_max, n)\n\n        result.append(running_max)\n\n    return result",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/9"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm really struggling with this. I feel like I should know how to do this, but I'm just stuck. Can you just give me the code for this?\n\nfrom typing import List, Tuple\n\n\ndef rolling_max(numbers: List[int]) -> List[int]:\n    \"\"\" From a given list of integers, generate a list of rolling maximum element found until given moment\n    in the sequence.\n    >>> rolling_max([1, 2, 3, 2, 3, 4, 2])\n    [1, 2, 3, 3, 3, 4, 4]\n    \"\"\"",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It's completely normal to hit a wall with these kinds of problems, even when you feel you should have the answer. We can figure this out together. Instead of giving you the full code, let's break it down. To start, if you are moving through the list one by one, what information do you need to keep track of to know what the maximum is at any given moment?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I don't know, maybe the current number? But then I forget what the previous biggest number was. I'm so bad at this.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're actually on the right track! You noticed that knowing the current number isn't enough because you need the history. That's the key insight. What if you created a variable outside of your loop to store the 'highest value seen so far'? How would that help you as you iterate through the list?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, so I'd have a variable like `max_val`. Then I loop through the list, and if the current number is bigger than `max_val`, I update `max_val`. But how do I return the list of them?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. You've got the logic for updating the maximum. Now, for the output: the problem asks for a list of these rolling maximums. If you have a variable updating the current max at every step of the loop, where could you store that value at each iteration so you can return it all at the end?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could make an empty list at the start and just append the `max_val` to it inside the loop? Like this:\n\nresult = []\nfor n in numbers:\n    if n > max_val:\n        max_val = n\n    result.append(max_val)\n\nBut wait, if the list starts with a negative number, `max_val = 0` would mess it up. I'm failing at the basics again.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a very sharp observation! Noticing the edge case with negative numbers shows you're thinking like a programmer. To avoid that, instead of initializing `max_val` to 0, is there a way to initialize it using the first element of the input list, or perhaps a value that indicates 'nothing has been seen yet'?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could set it to None first, and then in the loop, if it's None, just set it to the first number I see. Let me try to put it all together into the function.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That sounds like a solid plan. Go ahead and try implementing that logic. Focus on the initialization, the comparison, and the appending process. I'm here if you run into another snag!",
+      "loss_mask": true
+    }
+  ]
+}

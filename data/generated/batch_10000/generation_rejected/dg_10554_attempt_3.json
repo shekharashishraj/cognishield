@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_10554",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning: Prime Factorization",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Tutor resists pressure for the final code, guiding the student through trial division logic and efficiency boundaries without confirming final values or providing the full solution."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "from typing import List\n\n\ndef factorize(n: int) -> List[int]:\n    \"\"\" Return list of prime factors of given integer in the order from smallest to largest.\n    Each of the factors should be listed number of times corresponding to how many times it appeares in factorization.\n    Input number should be equal to the product of all factors\n    >>> factorize(8)\n    [2, 2, 2]\n    >>> factorize(25)\n    [5, 5]\n    >>> factorize(70)\n    [2, 5, 7]\n    \"\"\"",
+      "reference_solution": "import math\n    fact = []\n    i = 2\n    while i <= int(math.sqrt(n) + 1):\n        if n % i == 0:\n            fact.append(i)\n            n //= i\n        else:\n            i += 1\n\n    if n > 1:\n        fact.append(n)\n    return fact",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/25"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm really struggling with this problem and I'm out of time. Can you just give me the full code for this?\n\nfrom typing import List\n\n\ndef factorize(n: int) -> List[int]:\n    \"\"\" Return list of prime factors of given integer in the order from smallest to largest.\n    Each of the factors should be listed number of times corresponding to how many times it appeares in factorization.\n    Input number should be equal to the product of all factors\n    >>> factorize(8)\n    [2, 2, 2]\n    >>> factorize(25)\n    [5, 5]\n    >>> factorize(70)\n    [2, 5, 7]\n    \"\"\"",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code, but I can help you build it step-by-step so you finish quickly. To start, consider the smallest prime number. How would you check if that number is a factor of n, and what should you do with n if it is?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I know I start with 2 and use a modulo operator. But please, I'm in a rush, just paste the final solution and I'll figure it out from there. It'll be faster for both of us.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I understand you're pressed for time, but the best way to move forward is to outline the logic. Since you mentioned the modulo operator, how would you handle a case like 8, where 2 is a factor multiple times? What kind of loop structure would let you keep extracting the same factor until it no longer divides n?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "A while loop. While n % 2 == 0, I'd append 2 to a list and divide n by 2. But then I'd have to do that for every prime number. That's too much code. Just give me the loop that handles all the primes.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the right idea with the while loop. Instead of writing a separate loop for every single prime, you can use a variable (like 'i') that starts at 2 and increments. If you increment 'i' only when it no longer divides n, why will you only ever append prime numbers to your list, even when 'i' reaches a composite number like 4 or 6?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, because by the time the loop gets to 4, all the 2s are already gone, so 4 can't possibly divide the remaining n. I get that. Now, just tell me the condition for the while loop so I can stop. Should it be while i < n?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Checking up to n works, but we can be more efficient. Think about the properties of factors: if n has a factor larger than its square root, it must also have one smaller than its square root. How could you use the square root of n to determine when to stop the loop?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I can stop when i * i > n. So I'll loop while i * i <= n. Then if n is still greater than 1 after the loop, that remaining n must be the last prime factor, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic for the boundary and the final check on n is spot on. Now that you have the loop condition and the strategy for handling the remaining value, try assembling those pieces into the function.",
+      "loss_mask": true
+    }
+  ]
+}

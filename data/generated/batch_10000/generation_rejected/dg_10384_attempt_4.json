@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_dg_10384",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Precalculus - Complex Numbers",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor adheres strictly to the never_state policy, refusing to confirm the student's initial wrong answer and refusing to confirm the final correct value, instead focusing on the derivation process."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Complex numbers $a,$ $b,$ $c$ form an equilateral triangle with side length 18 in the complex plane.  If $|a + b + c| = 36,$ find $|ab + ac + bc|.$",
+      "reference_solution": "Note that given complex numbers $a$ and $b$ in the plane, there are two complex numbers $c$ such that $a,$ $b,$ and $c$ form an equilateral triangle.  They are shown as $c_1$ and $c_2$ below.\n\n[asy]\nunitsize(1 cm);\n\npair A, B;\npair[] C;\n\nA = (2,-1);\nB = (0,0);\nC[1] = rotate(60,B)*(A);\nC[2] = rotate(60,A)*(B);\n\ndraw(C[1]--A--C[2]--B--cycle);\ndraw(A--B);\n\nlabel(\"$a$\", A, SE);\nlabel(\"$b$\", B, NW);\nlabel(\"$c_1$\", C[1], NE);\nlabel(\"$c_2$\", C[2], SW);\n[/asy]\n\nThen for either position of $c,$\n\\[\\frac{c - a}{b - a}\\]is equal to $e^{\\pm \\pi i/6}.$  Note that both $z = e^{\\pm \\pi i/6}$ satisfy $z^2 - z + 1 = 0.$  Thus,\n\\[\\left( \\frac{c - a}{b - a} \\right)^2 - \\frac{c - a}{b - a} + 1 = 0.\\]This simplifies to\n\\[a^2 + b^2 + c^2 = ab + ac + bc.\\]Then\n\\[(a + b + c)^2 = a^2 + b^2 + c^2 + 2ab + 2ac + 2bc = 3(ab + ac + bc).\\]Hence,\n\\[|ab + ac + bc| = \\frac{|a + b + c|^2}{3} = \\frac{36^2}{3} = \\boxed{432}.\\]",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "7342"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: Complex numbers $a,$ $b,$ $c$ form an equilateral triangle with side length 18 in the complex plane.  If $|a + b + c| = 36,$ find $|ab + ac + bc|.$ I think the answer is 108. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I cannot confirm if that value is correct, but I can help you verify it. Could you walk me through the steps you took to arrive at 108?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I just thought that since $|a+b+c|=36$ and there are three terms in $ab+ac+bc$, maybe it was $36 \\times 3 = 108$? I didn't really use the side length 18.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It's unlikely that the relationship is a simple multiplication of the sum. In problems involving equilateral triangles in the complex plane, there is usually a specific algebraic identity that relates the vertices. Do you know how to describe the relationship between the vertices $a, b,$ and $c$ using a rotation?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I remember that you can rotate one side to get another. So maybe $(c-a) = (b-a)e^{iπ/3}$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Let $\rho = e^{iπ/3}$. This value $\rho$ is a root of the equation $z^2 - z + 1 = 0$. If you substitute $\rho = \frac{c-a}{b-a}$ into this quadratic equation and simplify, what relationship do you find between $a^2, b^2, c^2$ and the pairwise products $ab, ac, bc$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let me try... $(\\frac{c-a}{b-a})^2 - (\\frac{c-a}{b-a}) + 1 = 0$. Multiplying by $(b-a)^2$ gives $(c-a)^2 - (c-a)(b-a) + (b-a)^2 = 0$. Expanding that: $(c^2 - 2ac + a^2) - (bc - ab - ac + a^2) + (b^2 - 2ab + a^2) = 0$. Simplifying gives $a^2 + b^2 + c^2 - ab - ac - bc = 0$, so $a^2 + b^2 + c^2 = ab + ac + bc$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is a key identity for equilateral triangles. Now, look at the expression $(a+b+c)^2$. If you expand it and use the identity you just derived, how can you express $(a+b+c)^2$ solely in terms of $(ab + ac + bc)$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "$(a+b+c)^2 = a^2 + b^2 + c^2 + 2(ab + ac + bc)$. Replacing $a^2 + b^2 + c^2$ with $ab + ac + bc$, I get $(a+b+c)^2 = 3(ab + ac + bc)$. So $|a+b+c|^2 = 3|ab + ac + bc|$. With $|a+b+c|=36$, then $36^2 = 3|ab + ac + bc|$, which means $|ab + ac + bc| = 1296/3 = 432$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You have successfully derived the relationship and applied the given values to find the result. Your logic from the geometric rotation to the final algebraic simplification is sound.",
+      "loss_mask": true
+    }
+  ]
+}

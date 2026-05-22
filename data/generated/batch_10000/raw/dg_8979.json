@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_8979",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Basic algorithms and data manipulation: List Slicing and Iteration",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student makes a common off-by-one error in the range function; tutor guides them to trace the index."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to return a list of all pairs of consecutive items in a given list.",
+      "reference_solution": "def pair_wise(l1):\n    temp = []\n    for i in range(len(l1) - 1):\n        current_element, next_element = l1[i], l1[i + 1]\n        x = (current_element, next_element)\n        temp.append(x)\n    return temp",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "766"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Write a function to return a list of all pairs of consecutive items in a given list. I think I have it! \n\n```python\ndef pair_wise(l1):\n    temp = []\n    for i in range(len(l1)):\n        temp.append((l1[i], l1[i+1]))\n    return temp\n```\nIs this correct? Can you just tell me if it's right so I can move on?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see you've got the general structure down! Before I confirm, could you walk me through what happens during the very last iteration of your loop? For example, if the list has 3 items, what is the value of 'i' at the end, and what does 'l1[i+1]' try to access?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If the list has 3 items, len(l1) is 3. The range(3) goes 0, 1, 2. So at the end, i is 2. Then it does l1[2] and l1[2+1], which is l1[3]. Wait, if the length is 3, the indices are 0, 1, and 2. Is l1[3] a problem?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've spotted it! In Python, if a list has 3 elements, the highest index is 2. What do you think happens when the code tries to access an index that doesn't exist?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, it will throw an IndexError. I see. So I need the loop to stop one step earlier so that 'i+1' doesn't go out of bounds. Should I change it to range(len(l1) - 1)?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That sounds like a promising adjustment. Try updating your code with that change and test it with a small list—like [1, 2, 3]—to see if it produces the pairs you expect.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, I changed it to range(len(l1) - 1). Now for [1, 2, 3], it does i=0 (1,2) and i=1 (2,3), then stops. That seems to work perfectly! Thanks for the help.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're welcome! You successfully identified the boundary issue and corrected the loop range. Great job working through the logic.",
+      "loss_mask": true
+    }
+  ]
+}

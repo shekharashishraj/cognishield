@@ -1,0 +1,108 @@
+{
+  "conversation_id": "mt_dg_11502",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and data structures: Dynamic Programming",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to use a greedy approach and mistakenly believes the path length varies, while the tutor guides them toward DP and the constant path length property."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Given a square matrix of size N*N given as a list of lists, where each cell is associated with a specific cost. A path is defined as a specific sequence of cells that starts from the top-left cell move only right or down and ends on bottom right cell. We want to find a path with the maximum average over all existing paths. Average is computed as total cost divided by the number of cells visited in the path.",
+      "reference_solution": "def maxAverageOfPath(cost):\n  N = len(cost)\n  dp = [[0 for i in range(N + 1)] for j in range(N + 1)]\n  dp[0][0] = cost[0][0]\n  for i in range(1, N):\n    dp[i][0] = dp[i - 1][0] + cost[i][0]\n  for j in range(1, N):\n    dp[0][j] = dp[0][j - 1] + cost[0][j]\n  for i in range(1, N):\n    for j in range(1, N):\n      dp[i][j] = max(dp[i - 1][j],\n                     dp[i][j - 1]) + cost[i][j]\n  return dp[N - 1][N - 1] / (2 * N - 1)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "721"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: Given a square matrix of size N*N given as a list of lists, where each cell is associated with a specific cost. A path is defined as a specific sequence of cells that starts from the top-left cell move only right or down and ends on bottom right cell. We want to find a path with the maximum average over all existing paths. Average is computed as total cost divided by the number of cells visited in the path. Can you just give me the code for this? I have a deadline.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code for you, but I can definitely help you work through the logic so you can implement it yourself! Let's start by analyzing the 'average' part of the problem. If you move only right and down from (0,0) to (N-1, N-1), does the number of cells visited change depending on the path you take?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think it does. Some paths might be shorter or longer depending on when you turn. So I should probably use a greedy approach and pick the cell with the highest value at each step to keep the average high, and maybe use a priority queue to track different path lengths.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's an interesting intuition, but let's double-check the path length. To get from the top-left to the bottom-right of an N x N matrix moving only right and down, how many steps total must you take? Try tracing it for a small 3x3 matrix.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, for a 3x3, I go right twice and down twice... that's 4 moves. Including the starting cell, that's 5 cells. Let me check another path... right, down, right, down... that's also 5 cells. Oh! So every single valid path has the exact same number of cells?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Since the number of cells visited is constant for all paths, maximizing the average is mathematically equivalent to maximizing what other value?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If the denominator is always the same, then I just need to maximize the total sum of the costs along the path. So this is actually a maximum path sum problem. I can use a greedy approach now, right? Just pick the max of the cell to the right or the cell below?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Careful there! Greedy choices often fail in pathfinding because a small value now might lead to a huge value later. For example, if you have a choice between 1 and 2, but the 1 leads to a 100 and the 2 leads to a 1, the greedy choice would miss the 100. What technique allows us to consider all possible paths efficiently by storing results of subproblems?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Dynamic Programming! I should create a 2D table where each cell stores the maximum sum to reach that point. So for cell (i, j), the value would be the cost of (i, j) plus the maximum of the value from the cell above it or the cell to its left. Does that sound right?",
+      "loss_mask": true
+    },
+    {
+      "role": "assistant",
+      "content": "That is the correct approach. Now consider the boundaries: how will you handle the first row and the first column, where you can only arrive from one direction?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "For the first row, I can only come from the left. For the first column, I can only come from above. So I'll just accumulate the sums along those edges first. Then I'll fill the rest of the table. Once I have the max sum at the bottom-right cell, I just divide it by the total number of cells (2N - 1) to get the average. I'll go try to code this now!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the logic perfectly mapped out. Go ahead and implement it—pay close attention to your loop indices to avoid off-by-one errors!",
+      "loss_mask": true
+    }
+  ]
+}

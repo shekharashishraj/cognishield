@@ -1,0 +1,108 @@
+{
+  "conversation_id": "mt_dg_0750",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Dynamic Programming for String Sequences",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student incorrectly attempts a greedy approach for LCS; tutor redirects them toward dynamic programming using a 3D table."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to find the longest common subsequence for the given three string sequence. https://www.geeksforgeeks.org/lcs-longest-common-subsequence-three-strings/",
+      "reference_solution": "def lcs_of_three(X, Y, Z): \n  m = len(X)\n  n = len(Y)\n  o = len(Z)\n  L = [[[0 for i in range(o+1)] for j in range(n+1)] for k in range(m+1)]\n  for i in range(m+1): \n\t  for j in range(n+1): \n\t\t  for k in range(o+1): \n\t\t\t  if (i == 0 or j == 0 or k == 0): \n\t\t\t\t  L[i][j][k] = 0\n\t\t\t  elif (X[i-1] == Y[j-1] and X[i-1] == Z[k-1]): \n\t\t\t\t  L[i][j][k] = L[i-1][j-1][k-1] + 1\n\t\t\t  else: \n\t\t\t\t  L[i][j][k] = max(max(L[i-1][j][k], L[i][j-1][k]), L[i][j][k-1]) \n  return L[m][n][o]",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "747"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: Write a function to find the longest common subsequence for the given three string sequence. https://www.geeksforgeeks.org/lcs-longest-common-subsequence-three-strings/ \n\nCan you just give me the code? I have a deadline in an hour.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code for you, but I can definitely help you build it step-by-step so you finish on time! To get started, how are you thinking about approaching the problem of finding a common subsequence across three different strings?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think I can just loop through the first string and for every character, check if it exists in the second and third strings. If it does, I'll add it to a result list and move the pointers forward in all three strings. That should find the longest one, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's an interesting approach, but it sounds like a 'greedy' strategy. Consider this: what happens if a character appears multiple times in the strings? If you pick the first occurrence you find, you might miss a much longer subsequence that starts slightly later. \n\nFor example, if you have 'ABC' and 'BAC', a greedy approach might pick 'A' and stop, but 'BC' is longer. Since we need the *longest* common subsequence, we need a way to explore different possibilities. Does that make sense?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. So I can't just take the first match I see. Do I need to use recursion to try every single combination of characters?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Recursion is a great way to think about it! You could check if the current characters of all three strings match; if they do, you add 1 and move forward in all three. If they don't, you'd try skipping a character in each string separately to see which path yields the best result. \n\nHowever, pure recursion would be very slow because it recalculates the same sub-problems many times. Do you know a technique to store those results so you don't have to re-calculate them?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Is that where Dynamic Programming comes in? Like using a table to store the values?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Since we have three strings, a 2D table wouldn't be enough to track the indices of all three. What kind of data structure would you use to store the lengths of the common subsequences for three different strings of lengths m, n, and o?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "A 3D array? So L[i][j][k] would store the LCS length for the prefixes of the three strings up to those indices?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. Now, think about the logic inside the loops. If the characters at the current positions in all three strings are identical, how does that affect the value of L[i][j][k] based on the previous state?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If they match, I should take the value from L[i-1][j-1][k-1] and add 1 to it. But what if they don't all match? Do I just check if two of them match?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Close! If all three don't match, we can't increment the length. Instead, we need to find the best possible value we've achieved so far by ignoring one character from any of the three strings. \n\nThink about how you would use the `max()` function to compare the results of moving back one step in X, one step in Y, or one step in Z. How would that look in your logic?",
+      "loss_mask": true
+    }
+  ]
+}

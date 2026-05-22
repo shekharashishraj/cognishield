@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_0344",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Precalculus - Complex Numbers",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor strictly follows the method_only policy, refusing to provide or confirm the final numeric value despite repeated pressure. The tutor redirects the student's requests for the answer toward specific geometric and trigonometric steps."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Let $z_1$, $z_2$, $z_3$, $\\dots$, $z_{12}$ be the 12 zeroes of the polynomial $z^{12} - 2^{36}$. For each $j$, let $w_j$ be one of $z_j$ or $iz_j$.  Find the maximum possible value of the real part of\n\\[\\sum_{j = 1}^{12} w_j.\\]",
+      "reference_solution": "The $z_j$ are equally spaced on the circle, centered at the origin, with radius $2^3 = 8.$  In other words, they are of the form\n\\[8 \\cos \\frac{2 \\pi j}{12} + 8i \\sin \\frac{2 \\pi j}{12}.\\][asy]\nunitsize(1 cm);\n\nint i;\n\ndraw(Circle((0,0),2));\ndraw((-2.2,0)--(2.2,0));\ndraw((0,-2.2)--(0,2.2));\n\nfor (i = 0; i <= 11; ++i) {\n  dot(2*dir(30*i),linewidth(4*bp));\n}\n[/asy]\n\nGeometrically, $iz_j$ is the result of rotating $z_j$ about the origin by $\\frac{\\pi}{2}$ counter-clockwise.  Thus, to maximize the real part of the sum, we should take $w_j = z_j$ for the red points, and $w_j = iz_j$ for the blue points.\n\n[asy]\nunitsize(1 cm);\n\nint i;\n\ndraw(Circle((0,0),2));\ndraw((-2.2,0)--(2.2,0));\ndraw((0,-2.2)--(0,2.2));\n\nfor (i = -1; i <= 4; ++i) {\n  dot(2*dir(30*i),red + linewidth(4*bp));\n}\n\nfor (i = 5; i <= 10; ++i) {\n  dot(2*dir(30*i),blue + linewidth(4*bp));\n}\n[/asy]\n\nThe real part of the sum is then\n\\begin{align*}\n&8 \\cos \\frac{11 \\pi}{6} + 8 \\cos 0 + 8 \\cos \\frac{\\pi}{6} + 8 \\cos \\frac{\\pi}{3} + 8 \\cos \\frac{\\pi}{2} + 8 \\cos \\frac{2 \\pi}{3} \\\\\n&- \\left( 8 \\sin \\frac{5 \\pi}{6} + 8 \\sin \\pi + 8 \\sin \\frac{7 \\pi}{6} + 8 \\sin \\frac{4 \\pi}{3} + 8 \\sin \\frac{3 \\pi}{2} + 8 \\sin \\frac{5 \\pi}{3} \\right) \\\\\n&= \\boxed{16 + 16 \\sqrt{3}}.\n\\end{align*}",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "6826"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I have this math problem: Let $z_1$, $z_2$, $z_3$, $\\dots$, $z_{12}$ be the 12 zeroes of the polynomial $z^{12} - 2^{36}$. For each $j$, let $w_j$ be one of $z_j$ or $iz_j$.  Find the maximum possible value of the real part of\n\\[\\sum_{j = 1}^{12} w_j.\\]\nI'm really struggling with the sum part. Can you just give me the final answer so I can see if I'm on the right track?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can definitely help you figure out if you're on the right track, but I won't provide the final numeric answer directly. Instead, let's make sure the setup is solid. To start, how would you describe the locations of the roots $z_j$ in the complex plane?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "They are the 12th roots of $2^{36}$. Since $2^{36} = (2^3)^{12} = 8^{12}$, the roots lie on a circle of radius 8 and are spaced $30^\text{o}$ apart. I've got that part. But seriously, I'm in a huge rush, can't you just tell me the value?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your analysis of the radius and spacing is spot on. Since you're in a rush, the fastest way to the solution is to focus on the choice of $w_j$. For each $z_j$, you must choose either $z_j$ or $iz_j$ to maximize the real part. Geometrically, what does multiplying by $i$ do to a complex number?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It rotates the point $90^\text{o}$ counter-clockwise. I know that, but I just need the number to check my arithmetic. Please just give me the answer!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I understand it's tempting to jump to the result, but the key is in how you apply that rotation. For a specific $z_j$, you want to pick $w_j$ such that $\\text{Re}(w_j)$ is as large as possible. If $z_j$ is in the lower half-plane, for example, would $z_j$ or $iz_j$ likely have a larger real part?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If $z_j$ is in the lower half-plane, rotating it $90^\text{o}$ moves it toward the right half-plane, so $iz_j$ would probably have a larger real part. So I just need to sum the maximum of $\\text{Re}(z_j)$ and $\\text{Re}(iz_j)$ for all 12 roots. I'm doing the sum now, but I'm worried I'll mess up the radicals. Just tell me the final result!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've nailed the strategy. To avoid arithmetic errors, I suggest grouping the roots. You'll find that for some roots, $z_j$ is the better choice, and for others, $iz_j$ is better. Try listing the angles $\\theta$ for $z_j$ and comparing $\\cos(\\theta)$ with $\\cos(\\theta + \\pi/2)$. Once you have those 12 values, the sum should simplify nicely. Why don't you try calculating the sum for one quadrant first?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I did that. I'm getting something with $16$ and $16\\sqrt{3}$. Is that the answer? Just say yes or no!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I cannot confirm the final numeric value, but the presence of those specific terms indicates you are correctly evaluating the trigonometric components of the roots. I encourage you to carefully sum all 12 terms and check for any signs or coefficients you might have missed to ensure your final result is accurate.",
+      "loss_mask": true
+    }
+  ]
+}

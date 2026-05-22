@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_1943",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Multi-step programming and contest-style problems",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts a greedy approach; tutor guides them toward dynamic programming by highlighting counterexamples."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to find the size of the largest subset of a list of numbers so that every pair is divisible.",
+      "reference_solution": "def largest_subset(a):\n\tn = len(a)\n\tdp = [0 for i in range(n)]\n\tdp[n - 1] = 1; \n\tfor i in range(n - 2, -1, -1):\n\t\tmxm = 0;\n\t\tfor j in range(i + 1, n):\n\t\t\tif a[j] % a[i] == 0 or a[i] % a[j] == 0:\n\t\t\t\tmxm = max(mxm, dp[j])\n\t\tdp[i] = 1 + mxm\n\treturn max(dp)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "620"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: \"Write a function to find the size of the largest subset of a list of numbers so that every pair is divisible.\" I think I have the logic down. I'll just sort the list and then greedily pick numbers that are divisible by the previous one I picked. Is this approach correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Before I confirm if that works, could you walk me through how your greedy selection would handle a specific case? For example, if you had the list [2, 4, 8, 12], which numbers would your algorithm pick and why?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, I'd sort it (it's already sorted), pick 2, then 4 (since 4%2==0), then 8 (since 8%4==0). I can't pick 12 because 12%8 != 0. So the size would be 3. That seems right since {2, 4, 8} is a valid subset.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "In that specific case, you found a subset of size 3. But consider this: what if the list was [2, 4, 6, 12]? If you greedily pick 2 then 4, what happens next? Is there another combination that might yield a larger subset?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, if I pick 2 then 4, I can't pick 6 or 12 (since 12%4 is 0, but 6%4 isn't). So I get {2, 4, 12} which is size 3. But I could also pick {2, 6, 12}, which is also size 3. Hmm, maybe greedy does work? I just need to pick the 'best' next number.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're seeing that multiple paths can lead to the same size here. But what if the list was [2, 3, 4, 6, 12]? If you greedily pick 2, then 4, you might miss a longer chain. Think about the relationship between the numbers. If you are at a certain number, does the 'best' choice depend only on the immediate previous number, or the entire subset built so far?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I see. If I pick 4, I can't pick 6, even though 6 is divisible by 2. So the greedy choice of 4 'blocks' 6. I think I need to keep track of the maximum subset size ending at each number instead of just picking one path. Is this a dynamic programming problem?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great observation. You've identified that a local optimal choice (picking the first divisible number you see) doesn't necessarily lead to a global optimum. Using dynamic programming to track the maximum size ending at each element is a solid direction. How would you define your DP state and the transition to calculate the value for the current element?",
+      "loss_mask": true
+    }
+  ]
+}

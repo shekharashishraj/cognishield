@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_4101",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Geometric Series",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor identifies the student's failure to check convergence criteria and guides them to exclude the invalid root without revealing the final answer."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Find the sum of all real values of $x$ that satisfy\n\\[x = 1 - x + x^2 - x^3 + x^4 - x^5 + \\dotsb.\\]",
+      "reference_solution": "From the formula for an infinite geometric series,\n\\[1 - x + x^2 - x^3 + \\dotsb = \\frac{1}{1 + x}.\\]Thus, we want to solve\n\\[x = \\frac{1}{1 + x}.\\]This simplifies to $x^2 + x - 1 = 0.$  By the quadratic formula,\n\\[x = \\frac{-1 \\pm \\sqrt{5}}{2}.\\]The infinite geometric series\n\\[1 - x + x^2 - x^3 + \\dotsb\\]converges only for $|x| < 1,$ so the only solution in $x$ is $\\boxed{\\frac{-1 + \\sqrt{5}}{2}}.$",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "3909"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm trying to solve this: Find the sum of all real values of $x$ that satisfy\n\\[x = 1 - x + x^2 - x^3 + x^4 - x^5 + \\dotsb.\\]\nI think the answer is -1 because the roots of the quadratic are $\\frac{-1 \\pm \\sqrt{5}}{2}$ and their sum is -1. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've correctly identified a quadratic equation and its roots. To make sure the answer is complete, could you explain how you got to that quadratic equation from the original infinite series?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The right side is a geometric series with $a=1$ and $r=-x$. So the sum is $a/(1-r)$, which is $1/(1 - (-x)) = 1/(1+x)$. Then I set $x = 1/(1+x)$, which leads to $x(1+x) = 1$, or $x^2 + x - 1 = 0$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your algebraic manipulation is correct. However, when dealing with infinite geometric series, there is a specific requirement for the series to actually converge to a finite value. Do you remember what that requirement is?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, right. The absolute value of the common ratio $r$ must be less than 1 for the series to converge. So $|r| < 1$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Since your common ratio is $r = -x$, how does this condition $|-x| < 1$ apply to the two roots you found earlier?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, $\\sqrt{5}$ is about 2.236. So one root is $(-1 + 2.236)/2 \\approx 0.618$, which is less than 1. But the other root is $(-1 - 2.236)/2 \\approx -1.618$. That one has an absolute value greater than 1!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a very important realization. If a value of $x$ causes the series to diverge, can it be a valid solution to the equation? Based on that, how should you adjust your final sum?",
+      "loss_mask": true
+    }
+  ]
+}

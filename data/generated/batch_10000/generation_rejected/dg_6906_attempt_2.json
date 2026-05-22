@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_6906",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Multi-step programming and contest-style problems",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor avoids confirming the final correctness of the proposed logic and instead guides the student to implement and test the constraints independently."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "def is_sorted(lst):\n    '''\n    Given a list of numbers, return whether or not they are sorted\n    in ascending order. If list has more than 1 duplicate of the same\n    number, return False. Assume no negative numbers and only integers.\n\n    Examples\n    is_sorted([5]) ➞ True\n    is_sorted([1, 2, 3, 4, 5]) ➞ True\n    is_sorted([1, 3, 2, 4, 5]) ➞ False\n    is_sorted([1, 2, 3, 4, 5, 6]) ➞ True\n    is_sorted([1, 2, 3, 4, 5, 6, 7]) ➞ True\n    is_sorted([1, 3, 2, 4, 5, 6, 7]) ➞ False\n    is_sorted([1, 2, 2, 3, 3, 4]) ➞ True\n    is_sorted([1, 2, 2, 2, 3, 4]) ➞ False\n    '''",
+      "reference_solution": "count_digit = dict([(i, 0) for i in lst])\n    for i in lst:\n        count_digit[i]+=1 \n    if any(count_digit[i] > 2 for i in lst):\n        return False\n    if all(lst[i-1] <= lst[i] for i in range(1, len(lst))):\n        return True\n    else:\n        return False",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/126"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem:\n\ndef is_sorted(lst):\n    '''\n    Given a list of numbers, return whether or not they are sorted\n    in ascending order. If list has more than 1 duplicate of the same\n    number, return False. Assume no negative numbers and only integers.\n\n    Examples\n    is_sorted([5]) ➞ True\n    is_sorted([1, 2, 3, 4, 5]) ➞ True\n    is_sorted([1, 3, 2, 4, 5]) ➞ False\n    is_sorted([1, 2, 3, 4, 5, 6]) ➞ True\n    is_sorted([1, 2, 3, 4, 5, 6, 7]) ➞ True\n    is_sorted([1, 3, 2, 4, 5, 6, 7]) ➞ False\n    is_sorted([1, 2, 2, 3, 3, 4]) ➞ True\n    is_sorted([1, 2, 2, 2, 3, 4]) ➞ False\n    '''\n\nI think the solution is just:\n\ndef is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] > lst[i+1]:\n            return False\n    return True\n\nIs this correct? I'm in a rush, can you just confirm if it works?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't simply confirm if the code is correct, but I can help you verify it yourself. Before we look at the logic, try walking through your code using the examples provided in the docstring. Specifically, look at the example `is_sorted([1, 2, 2, 2, 3, 4])`. What would your current function return for that input?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, for [1, 2, 2, 2, 3, 4], it would check 1<=2, 2<=2, 2<=2, 2<=3, 3<=4. All of those are true, so it would return True. But the example says it should be False. Why?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Take another look at the problem description. Is there a requirement other than the list being in ascending order?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh! 'If list has more than 1 duplicate of the same number, return False.' I totally missed that part. So it's okay to have two of the same number, but not three? Like [1, 2, 2, 3] is okay, but [1, 2, 2, 2, 3] is not?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is the correct interpretation of the duplicate constraint. Now, how do you think you could track the occurrences of each number while also ensuring the list remains sorted?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could use a dictionary to count how many times each number appears. I'll loop through the list, update the count in the dictionary, and if any count goes above 2, I'll return False. Then I can keep my existing loop to check if it's sorted. Does that approach sound right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've identified two distinct conditions that need to be satisfied. I suggest implementing those two checks in your code and testing them against all the examples provided in the prompt to see if your logic holds up.",
+      "loss_mask": true
+    }
+  ]
+}

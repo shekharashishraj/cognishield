@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_dg_7029",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Linear Diophantine Equations",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student initially attempts a naive approach and proposes an incorrect answer. Tutor guides them to express one variable in terms of the other to minimize the absolute difference."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "If $m$ and $n$ are integers such that $3m + 4n = 100$, what is the smallest possible value of $\\left| m - n \\right|$ ?",
+      "reference_solution": "From $3m + 4n = 100$ we can get that $n = 25 - \\frac{3}{4}m$.  Then we want to minimize $\\left| m - n \\right| = \\left| m - 25 + \\frac{3}{4}m \\right| =\\left|  \\frac{7}{4}m - 25 \\right| = \\left|  7m - 100 \\right|$ In other words we want $7m$ as close to $100$ as possible while still giving us integer solutions for $m$ and $n$ to the equation $3m + 4n = 100$.\n\nBy trial and error, we can find that the solution to $3m + 4n = 100$ that makes $m$ closest to $\\frac{100}{7}$ is $(m,n) = (16,13)$.  Then we have $\\left| m - n \\right| = 16-13 =\\boxed{3}$.",
+      "seed_dataset": "HuggingFaceH4/MATH-500/test",
+      "seed_example_id": "test/intermediate_algebra/991.json"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: If $m$ and $n$ are integers such that $3m + 4n = 100$, what is the smallest possible value of $\\left| m - n \\right|$ ? I think the answer is 1. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "To help you figure out if that's correct, could you walk me through how you arrived at 1? What values of $m$ and $n$ did you use?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, I just thought that since we want the smallest difference, it should be 1. Like if $m=16$ and $n=17$, then $|16-17|=1$. But wait, $3(16) + 4(17) = 48 + 68 = 116$, which is too high. Let me try $m=17, n=16$... $3(17) + 4(16) = 51 + 64 = 115$. Still too high. Maybe it is 1, I just haven't found the right pair yet.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It's a good instinct to look for values close to each other. However, since $m$ and $n$ must satisfy $3m + 4n = 100$, they are constrained. Instead of guessing pairs, try expressing $n$ in terms of $m$ using the equation. How does that change the expression $\\left| m - n \\right|$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, if $3m + 4n = 100$, then $4n = 100 - 3m$, so $n = 25 - \\frac{3}{4}m$. \nThen $|m - n| = |m - (25 - \\frac{3}{4}m)| = |m - 25 + \\frac{3}{4}m| = |\\frac{7}{4}m - 25|$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great step. Now you have the difference expressed as a function of a single variable, $m$. To make $|\\frac{7}{4}m - 25|$ as small as possible, what would you want the value of $\\frac{7}{4}m$ to be close to?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I want $\\frac{7}{4}m$ to be as close to 25 as possible. So $\\frac{7}{4}m \\approx 25$, which means $7m \\approx 100$. So $m$ should be around $100/7$, which is about 14.28.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Now remember that $m$ must be an integer, and $n$ must also be an integer. Looking at $n = 25 - \\frac{3}{4}m$, what does that tell you about the possible values for $m$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "For $n$ to be an integer, $3m$ must be divisible by 4. Since 3 and 4 have no common factors, $m$ must be a multiple of 4. The multiples of 4 near 14.28 are 12 and 16. If $m=12$, then $n = 25 - 9 = 16$, so $|12-16|=4$. If $m=16$, then $n = 25 - 12 = 13$, so $|16-13|=3$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've found two potential candidates by testing the nearest valid integers for $m$. Comparing those two results, which one gives you the smallest value for the absolute difference?",
+      "loss_mask": true
+    }
+  ]
+}

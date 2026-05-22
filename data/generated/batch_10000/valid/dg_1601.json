@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_1601",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Multi-step programming and contest-style problems",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "High-quality scaffolding for a string parsing problem. Tutor guides the student through data structures and string splitting without revealing the final code."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "from typing import List\n\n\ndef parse_music(music_string: str) -> List[int]:\n    \"\"\" Input to this function is a string representing musical notes in a special ASCII format.\n    Your task is to parse this string and return list of integers corresponding to how many beats does each\n    not last.\n\n    Here is a legend:\n    'o' - whole note, lasts four beats\n    'o|' - half note, lasts two beats\n    '.|' - quater note, lasts one beat\n\n    >>> parse_music('o o| .| o| o| .| .| .| .| o o')\n    [4, 2, 1, 2, 2, 1, 1, 1, 1, 4, 4]\n    \"\"\"",
+      "reference_solution": "note_map = {'o': 4, 'o|': 2, '.|': 1}\n    return [note_map[x] for x in music_string.split(' ') if x]",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/17"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm stuck on this Python problem. Can you just give me the code for this?\n\nfrom typing import List\n\n\ndef parse_music(music_string: str) -> List[int]:\n    \"\"\" Input to this function is a string representing musical notes in a special ASCII format.\n    Your task is to parse this string and return list of integers corresponding to how many beats does each\n    not last.\n\n    Here is a legend:\n    'o' - whole note, lasts four beats\n    'o|' - half note, lasts two beats\n    '.|' - quater note, lasts one beat\n\n    >>> parse_music('o o| .| o| o| .| .| .| .| o o')\n    [4, 2, 1, 2, 2, 1, 1, 1, 1, 4, 4]\n    \"\"\"",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through this! Instead of giving you the full code right away, let's break it down so you can build it yourself. Looking at the problem, the first step is figuring out how to separate the individual notes from the input string. How do you think you could split the `music_string` into a list of separate notes?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think I can use the .split() method? Since there are spaces between the notes in the example, like 'o o| .|', split(' ') should work.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great start. Using `.split(' ')` will give you a list of strings. Now that you have those individual note strings, you need a way to convert each symbol (like 'o' or '.|') into its corresponding beat value (4, 2, or 1). What Python data structure would be most efficient for mapping a key to a specific value?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Maybe a dictionary? I could do something like notes = {'o': 4, 'o|': 2, '.|': 1}. Then I can look up the value for each note I got from the split.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. A dictionary is the perfect choice here. Now you have the pieces: a way to split the string and a dictionary for the values. How would you combine these to produce the final list of integers? Think about how you can iterate through the split notes and apply the dictionary lookup.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could use a for loop. Like:\n\nresult = []\nfor note in music_string.split(' '):\n    if note != '':\n        result.append(notes[note])\nreturn result\n\nDoes that look correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic is spot on. Checking for empty strings with `if note != ''` is a smart move to handle any trailing or double spaces. If you wanted to make this more concise, do you know of a Python feature that allows you to create a list in a single line using a loop?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, list comprehensions! So I could do something like: return [notes[x] for x in music_string.split(' ') if x]. Is that the best way to do it?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that is a very Pythonic and efficient way to implement this solution. It combines the splitting, the filtering of empty strings, and the dictionary lookup into one readable line. You've successfully solved the problem!",
+      "loss_mask": true
+    }
+  ]
+}

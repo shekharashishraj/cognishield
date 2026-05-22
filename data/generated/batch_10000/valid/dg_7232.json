@@ -1,0 +1,101 @@
+{
+  "example_id": "dg_7232",
+  "filename": "dg_7232.json",
+  "conversation_id": "mt_dg_7232",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Counting & Probability: Binomial Distributions in Series",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The student incorrectly assumes a fixed number of games (7) and uses a simple binomial distribution, failing to account for the series ending as soon as one team wins 4 games. The tutor guides them to consider the different scenarios for the length of the series."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "The Cubs are playing the Red Sox in the World Series. To win the world series, a team must win 4 games before the other team does. If the Cubs win each game with probability $\\dfrac{3}{5}$ and there are no ties, what is the probability that the Cubs will win the World Series? Express your answer as a percent rounded to the nearest whole percent.",
+      "reference_solution": "There are four possible cases for the Cubs winning the World Series, depending on the number of games that Red Sox win before the Cubs win their fourth game: the Red Sox can win no games, one game, two games, or three games. In general, if the Red Sox win exactly $k$ games before the Cubs win their 4th game, there will be a total of $3+k$ games played before the last one (which the Cubs must win), there will be a total of $\\dbinom{3+k}{k}$ ways of selecting the games that the Red Sox win out of those, and for each of those arrangements the Cubs will win their 4 games with probability $\\left(\\dfrac{3}{5}\\right)^4$ and the Red Sox will win the $k$ games that are selected for them with probability $\\left(\\dfrac{2}{5}\\right)^k$, so we are left to evaluate the expression $\\dbinom{3+k}{k}\\left(\\dfrac{3}{5}\\right)^4\\left(\\dfrac{2}{5}\\right)^k$ for $k = 0, 1, 2, 3$. This gives us our final probability of  \\begin{align*}\n&\\dbinom{3}{0}\\left(\\dfrac{3}{5}\\right)^4\\left(\\dfrac{2}{5}\\right)^0 + \\dbinom{3+1}{1}\\left(\\dfrac{3}{5}\\right)^4\\left(\\dfrac{2}{5}\\right)^1 + \\\\\n&\\qquad\\qquad\\dbinom{3+2}{2}\\left(\\dfrac{3}{5}\\right)^4\\left(\\dfrac{2}{5}\\right)^2 + \\dbinom{3+3}{3}\\left(\\dfrac{3}{5}\\right)^4\\left(\\dfrac{2}{5}\\right)^3\n\\end{align*} which simplifies to  \\begin{align*}\n&\\ \\ \\ \\ 1\\cdot(.1296)\\cdot1+4\\cdot(.1296)\\cdot(.4)\\\\\n&+10\\cdot(.1296)\\cdot(.16)+20\\cdot(.1296)\\cdot(.064)=.7102\\ldots,\n\\end{align*} so our answer is $\\boxed{71}$ percent.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "2283"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: The Cubs are playing the Red Sox in the World Series. To win the world series, a team must win 4 games before the other team does. If the Cubs win each game with probability $\\dfrac{3}{5}$ and there are no ties, what is the probability that the Cubs will win the World Series? Express your answer as a percent rounded to the nearest whole percent.\n\nI think the answer is 65%. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't tell you if that's correct just yet. Could you walk me through how you arrived at 65%? I'd like to see your reasoning first.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, since it's a best-of-seven series, I just assumed they play 7 games. So I used the binomial distribution formula for $k \\ge 4$ wins out of $n=7$ trials with $p=0.6$. I calculated $\\binom{7}{4}(0.6)^4(0.4)^3 + \\binom{7}{5}(0.6)^5(0.4)^2 + \\binom{7}{6}(0.6)^6(0.4)^1 + \\binom{7}{7}(0.6)^7(0.4)^0$. That gave me roughly 0.71, wait, actually I might have messed up the arithmetic earlier, but I thought it was around 65% based on a quick sketch.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your approach of treating it as a binomial distribution over 7 games is actually a very common and clever way to think about this! In a 'best-of-seven' series, does the outcome change if the series ends early (say, in 4 games) versus if it goes to the full 7 games?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess not? If the Cubs win the first 4 games, they win the series. If we imagine they played the remaining 3 games anyway, they would still have at least 4 wins. So the probability should be the same, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've hit on an important theoretical point: mathematically, the probability of winning 4 or more games out of 7 is indeed the same as the probability of winning the series. However, let's double-check your calculation. You mentioned 65% earlier, but your formula $\\sum_{k=4}^{7} \\binom{7}{k}(0.6)^k(0.4)^{7-k}$ seems to point to a different value. Why don't you try calculating those four terms again carefully?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let me re-calculate.\n$\\binom{7}{4}(0.6)^4(0.4)^3 = 35 \\cdot 0.1296 \\cdot 0.064 = 0.290304$\n$\\binom{7}{5}(0.6)^5(0.4)^2 = 21 \\cdot 0.07776 \\cdot 0.16 = 0.2612736$\n$\\binom{7}{6}(0.6)^6(0.4)^1 = 7 \\cdot 0.046656 \\cdot 0.4 = 0.1306368$\n$\\binom{7}{7}(0.6)^7(0.4)^0 = 1 \\cdot 0.0279936 \\cdot 1 = 0.0279936$\nAdding those up: $0.290304 + 0.2612736 + 0.1306368 + 0.0279936 = 0.710208$. So it's 71%!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That calculation looks solid. Since the problem asks for the answer as a percent rounded to the nearest whole percent, does 71% match your final result?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Yes, it does. So the answer is 71%.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is correct! You correctly identified that the probability of winning at least 4 out of 7 games is equivalent to winning the series, and your revised calculation brought you to the right result. Well done.",
+      "loss_mask": true
+    }
+  ]
+}

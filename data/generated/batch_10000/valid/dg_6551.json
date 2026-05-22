@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_6551",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Tutor successfully resists pressure to provide the full code, guiding the student through the logic of sorting and frequency counting."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def is_sorted(lst):\n    '''\n    Given a list of numbers, return whether or not they are sorted\n    in ascending order. If list has more than 1 duplicate of the same\n    number, return False. Assume no negative numbers and only integers.\n\n    Examples\n    is_sorted([5]) ➞ True\n    is_sorted([1, 2, 3, 4, 5]) ➞ True\n    is_sorted([1, 3, 2, 4, 5]) ➞ False\n    is_sorted([1, 2, 3, 4, 5, 6]) ➞ True\n    is_sorted([1, 2, 3, 4, 5, 6, 7]) ➞ True\n    is_sorted([1, 3, 2, 4, 5, 6, 7]) ➞ False\n    is_sorted([1, 2, 2, 3, 3, 4]) ➞ True\n    is_sorted([1, 2, 2, 2, 3, 4]) ➞ False\n    '''",
+      "reference_solution": "count_digit = dict([(i, 0) for i in lst])\n    for i in lst:\n        count_digit[i]+=1 \n    if any(count_digit[i] > 2 for i in lst):\n        return False\n    if all(lst[i-1] <= lst[i] for i in range(1, len(lst))):\n        return True\n    else:\n        return False",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/126"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: \n\ndef is_sorted(lst):\n    '''\n    Given a list of numbers, return whether or not they are sorted\n    in ascending order. If list has more than 1 duplicate of the same\n    number, return False. Assume no negative numbers and only integers.\n\n    Examples\n    is_sorted([5]) ➞ True\n    is_sorted([1, 2, 3, 4, 5]) ➞ True\n    is_sorted([1, 3, 2, 4, 5]) ➞ False\n    is_sorted([1, 2, 3, 4, 5, 6]) ➞ True\n    is_sorted([1, 2, 3, 4, 5, 6, 7]) ➞ True\n    is_sorted([1, 3, 2, 4, 5, 6, 7]) ➞ False\n    is_sorted([1, 2, 2, 3, 3, 4]) ➞ True\n    is_sorted([1, 2, 2, 2, 3, 4]) ➞ False\n    '''\nCan you just give me the full code? I'm in a rush.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code directly, but I can help you build it step-by-step so you understand how it works. Looking at the requirements, there are two main conditions the list must satisfy: it must be sorted, and it cannot have more than two of the same number. Which of those two conditions would you like to tackle first?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I get the sorted part, but the duplicate part is confusing. Just give me the solution for the whole function, please. It'll be faster.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I understand you're in a hurry, but the best way to learn is to work through the logic. Let's focus on that duplicate condition. The problem says 'If list has more than 1 duplicate of the same number, return False.' This actually means a number can appear once or twice, but not three times. How do you think you could keep track of how many times each number appears in the list?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Maybe a dictionary? Like counting them? But seriously, can't you just send the code snippet?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "A dictionary is a perfect choice! You can use the numbers as keys and their counts as values. Since we're sticking to the step-by-step approach, try writing the part of the code that populates that dictionary and checks if any count exceeds 2. Once you have that, we can move to the sorting check.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, fine. I'll try. \n\ncounts = {}\nfor x in lst:\n    counts[x] = counts.get(x, 0) + 1\nfor x in counts:\n    if counts[x] > 2:\n        return False\n\nIs this right? Now can I have the rest?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is spot on! You've correctly handled the duplicate constraint. Now for the final piece: checking if the list is sorted in ascending order. Remember that duplicates are allowed (up to two), so you need to ensure each element is less than or equal to the one following it. How would you implement that check in Python?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think I can use a loop to compare lst[i] and lst[i+1]. \n\nfor i in range(len(lst) - 1):\n    if lst[i] > lst[i+1]:\n        return False\nreturn True\n\nDoes that complete it?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that completes the logic perfectly! If you combine your count check and your sorting loop into the function, it will handle all the example cases provided. Great job working through it.",
+      "loss_mask": true
+    }
+  ]
+}

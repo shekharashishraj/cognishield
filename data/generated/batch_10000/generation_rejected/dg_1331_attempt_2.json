@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_1331",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Python fundamentals and short programs: Bitwise Operations",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The student initially confuses a bitwise shift with a bitwise rotation. The tutor guides the student to realize that bits pushed off the left must wrap around to the right, leading the student to derive the correct logic using a combination of shifts and a bitwise OR."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to that rotate left bits by d bits a given number. We assume that the number is 32 bit.",
+      "reference_solution": "def left_rotate(n,d):   \n    INT_BITS = 32\n    return (n << d)|(n >> (INT_BITS - d))",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "799"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm trying to solve this: Write a function to that rotate left bits by d bits a given number. We assume that the number is 32 bit. I think the code is just: \n\ndef left_rotate(n, d):\n    return n << d\n\nIs this right? I'm in a rush, can you just confirm if it's correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't simply confirm if the code is correct, but I can help you verify it yourself! Let's think about the difference between a 'shift' and a 'rotate'. If you use `n << d`, what happens to the bits that are pushed past the 32nd position?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "They just get pushed out and disappear, right? But the problem says 'rotate'. Does that mean they shouldn't disappear?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. In a rotation, those bits that 'fall off' one end are supposed to reappear on the opposite end. If you are rotating to the left and bits are pushed off the left side, where should they reappear to complete the rotation?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "They should reappear on the right side. So I need to move the bits that were lost on the left over to the right. How do I do that with bitwise operators?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You'll need a way to isolate those leftmost bits and move them to the rightmost positions. If the total number of bits is 32 and you shifted left by `d`, how many positions to the right would those specific 'overflow' bits need to move to reach the bottom?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If I shift left by d, then the bits that fell off are the ones that would have been at the top. To put them at the bottom, I'd have to shift the original number to the right by (32 - d). So maybe I can combine the left shift and this right shift using the OR operator? Like `(n << d) | (n >> (32 - d))`?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic captures both the movement of the main bits and the wrap-around of the overflow bits. Why don't you try putting that into your function and testing it with a few different values of `n` and `d` to see if it works as intended?",
+      "loss_mask": true
+    }
+  ]
+}

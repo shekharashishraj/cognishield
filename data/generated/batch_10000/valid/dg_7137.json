@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_7137",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Geometry - Angle Bisectors and Pythagorean Theorem",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student initially makes a calculation error in the Pythagorean theorem and forgets the angle bisector theorem. Tutor guides them through step-by-step correction."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "In triangle $ABC$, $\\angle ABC = 90^\\circ$ and $AD$ is an angle bisector.  If $AB = 90,$ $BC = x$, and $AC = 2x - 6,$ then find the area of $\\triangle ADC$. Round your answer to the nearest integer.",
+      "reference_solution": "First, we shall sketch! [asy]\npair A, B, C, D;\nA = (0,90);\nB = (0,0);\nC = (56,0);\nD = (56*90/(90+106),0);\ndraw(A--B--C--cycle);\ndraw(A--D);\nlabel(\"$A$\", A, NW);\nlabel(\"$B$\", B, SW);\nlabel(\"$C$\", C, SE);\nlabel(\"$D$\", D, NE);\nlabel(\"$90$\", (A + B)/2, W);\nlabel(\"$x$\", (B + C)/2, S);\nlabel(\"$2x-6$\", (A + C)/2, NE);\ndraw(rightanglemark(A,B,C,90));\n[/asy] The first step is to find $x.$ To do this, we simply plug into the Pythagorean Theorem: \\begin{align*}\nAB^2 + BC^2 &= AC^2 \\\\\n90^2 + x^2 &= (2x - 6)^2 \\\\\n8100 + x^2 &= 4x^2 - 24x + 36 \\\\\n0 &= 3x^2 - 24x - 8064 \\\\\n0 &= x^2 - 8x - 2688 \\\\\n0 &= (x - 56)(x + 48).\n\\end{align*} The factorization is a little tricky, especially with a large constant term like $-2688,$ but it helps noticing that $2688$ is close to $52^2 = 2704,$ and the $-8x$ term indicates that our factors that multiply to $-2688$ have to be close. That helps narrow our search greatly.\n\nIn any case, clearly $x = -48$ is extraneous, so we have that $x = 56.$ Therefore, we have $AC = 106$ and $BC = 56.$ (Did you know that $28:45:53$ is a Pythagorean triple?)\n\nNow, to find the area of $\\triangle ADC$ is straightforward. First, clearly the height to base $DC$ is $90,$ so we only really need to find $DC.$ Here we use the Angle Bisector Theorem: \\begin{align*}\n\\frac{BD}{DC} &= \\frac{AB}{AC}\\\\\n\\frac{BD}{DC} &= \\frac{90}{106} = \\frac{45}{53}\\\\\n1 + \\frac{BD}{DC} &= 1 + \\frac{45}{53}\\\\\n\\frac{BD + DC}{DC} = \\frac{BC}{DC} &= \\frac{98}{53}\\\\\n\\frac{56}{DC} &= \\frac{98}{53}\\\\\nDC &= \\frac{53}{98} \\cdot 56 = \\frac{212}{7}.\n\\end{align*}\n\nOur area is $\\frac{1}{2} \\cdot 90 \\cdot \\frac{212}{7} = 1362\\frac{6}{7} \\approx \\boxed{1363}.$",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "2691"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this geometry problem: In triangle $ABC$, $\\angle ABC = 90^\\circ$ and $AD$ is an angle bisector. If $AB = 90,$ $BC = x$, and $AC = 2x - 6,$ then find the area of $\\triangle ADC$. Round your answer to the nearest integer. I think the answer is 1200. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't tell you if that's correct just yet. To make sure we're on the right track, could you walk me through how you arrived at 1200? I'd like to see your steps for finding $x$ and the area of the triangle.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Sure. First, I used the Pythagorean theorem: $90^2 + x^2 = (2x - 6)^2$. I simplified that to $8100 + x^2 = 4x^2 - 12x + 36$. Then I got $3x^2 - 12x - 8064 = 0$. Solving for $x$, I got $x = 52$. Then I just assumed $\\triangle ADC$ is about half the area of the whole triangle, so $\\frac{1}{2} \\cdot (\\frac{1}{2} \\cdot 90 \\cdot 52) \\approx 1170$, and I rounded up to 1200.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see where you're going, but there are two spots we should double-check. First, look closely at how you expanded $(2x - 6)^2$. When you square a binomial $(a-b)^2$, what is the middle term? Also, regarding the area of $\\triangle ADC$, is it necessarily half of the total area, or does the position of point $D$ depend on a specific theorem since $AD$ is an angle bisector?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh! $(2x-6)^2$ is $4x^2 - 24x + 36$, not $-12x$. Let me re-solve: $3x^2 - 24x - 8064 = 0$, which simplifies to $x^2 - 8x - 2688 = 0$. Using the quadratic formula, I get $x = 56$. Now for the area... I guess I can't just halve it. Since $AD$ is an angle bisector, I should use the Angle Bisector Theorem, right? That means $BD/DC = AB/AC$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Now that you have the correct value for $x$, you can find the lengths of $BC$ and $AC$. Once you use the Angle Bisector Theorem to find the length of $DC$, how will you use that to find the area of $\\triangle ADC$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, $BC = 56$ and $AC = 2(56) - 6 = 106$. Using the theorem: $BD/DC = 90/106 = 45/53$. Since $BD + DC = 56$, I can say $DC = 56 \\cdot (53 / (45 + 53)) = 56 \\cdot (53/98)$. That's $212/7$. The area of $\\triangle ADC$ is $\\frac{1}{2} \\cdot \\text{base} \\cdot \\text{height} = \\frac{1}{2} \\cdot (212/7) \\cdot 90$. That equals $9540/7$, which is about 1362.85. So the answer is 1363!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your reasoning is spot on, and your calculations for $x$ and $DC$ are correct. Rounding 1362.85 to the nearest integer gives 1363. You've got it!",
+      "loss_mask": true
+    }
+  ]
+}

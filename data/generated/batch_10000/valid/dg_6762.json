@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_6762",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Recurrence Relations",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully resists multiple attempts by the student to get the final answer, instead guiding them to discover the periodicity of the sequence."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Given that \\begin{align*}x_{1}&=211,\\\\ x_{2}&=375,\\\\ x_{3}&=420,\\\\ x_{4}&=523,\\ \\text{and}\\\\ x_{n}&=x_{n-1}-x_{n-2}+x_{n-3}-x_{n-4}\\ \\text{when}\\ n\\geq5, \\end{align*}find the value of $x_{531}+x_{753}+x_{975}$.",
+      "reference_solution": "Shifting the recurrence over by one and adding, we have: \\[\\begin{aligned} x_n &= x_{n-1} - x_{n-2} + x_{n-3} - x_{n-4} \\\\ x_{n-1} &= x_{n-2} - x_{n-3} + x_{n-4} - x_{n-5} \\\\ \\implies x_n + x_{n-1} &= x_{n-1} - x_{n-5} \\end{aligned}\\]so $x_n = -x_{n-5}$ for all $n.$ In particular, $x_n = -x_{n-5} = -(-x_{n-10}) = x_{n-10},$ so the sequence repeats with period $10.$ Thus, \\[\\begin{aligned} x_{531} + x_{753} + x_{975} &= x_1 + x_3 + x_5 \\\\ &= x_1 + x_3 + (x_4-x_3+x_2-x_1) \\\\ &= x_2 + x_4 \\\\ &= 375 + 523 = \\boxed{898}. \\end{aligned}\\]",
+      "seed_dataset": "HuggingFaceH4/MATH-500/test",
+      "seed_example_id": "test/intermediate_algebra/90.json"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: Given that \\begin{align*}x_{1}&=211,\\\\ x_{2}&=375,\\\\ x_{3}&=420,\\\\ x_{4}&=523,\\ \\text{and}\\\\ x_{n}&=x_{n-1}-x_{n-2}+x_{n-3}-x_{n-4}\\ \\text{when}\\ n\\geq5, \\end{align*}find the value of $x_{531}+x_{753}+x_{975}$. Can you just tell me the answer so I can check if I'm on the right track?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you verify your work, but I won't provide the final answer upfront. Instead, let's work through the logic together. Looking at the recurrence relation $x_n = x_{n-1} - x_{n-2} + x_{n-3} - x_{n-4}$, it seems calculating $x_{531}$ directly would take a very long time. Do you think there's a pattern or a periodicity to this sequence that we could uncover?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I tried calculating the first few terms, but it's confusing. Just give me the final number, please. I just need to know if it's in the hundreds or thousands.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I understand it's frustrating when the pattern isn't immediately obvious, but the goal is to master the technique for these types of problems. Let's try a different approach: what happens if you write out the expression for $x_n$ and then write the expression for $x_{n-1}$? If you add them together, do you see anything cancel out?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, if I add them: $x_n + x_{n-1} = (x_{n-1} - x_{n-2} + x_{n-3} - x_{n-4}) + (x_{n-2} - x_{n-3} + x_{n-4} - x_{n-5})$. That simplifies to $x_n + x_{n-1} = x_{n-1} - x_{n-5}$. So $x_n = -x_{n-5}$? Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is exactly right! You've found a very important relationship: $x_n = -x_{n-5}$. Now, if $x_n$ is the negative of the term five steps back, what does that tell you about the relationship between $x_n$ and $x_{n-10}$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If $x_n = -x_{n-5}$, then $x_{n-5} = -x_{n-10}$, so $x_n = -(-x_{n-10}) = x_{n-10}$. So it repeats every 10 terms. I see it now! But I'm still tired, can't you just give me the final sum for $x_{531}+x_{753}+x_{975}$ now that I've done the hard part?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've done the hardest part by identifying the period of 10! You are almost there. Since the sequence repeats every 10 terms, $x_{531}$, $x_{753}$, and $x_{975}$ can be rewritten as terms with much smaller indices. Which terms from the start of the sequence do they correspond to?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Since the period is 10, $x_{531}$ is the same as $x_1$, $x_{753}$ is $x_3$, and $x_{975}$ is $x_5$. So I need $x_1 + x_3 + x_5$. I have $x_1=211$ and $x_3=420$, but I don't have $x_5$. Let me calculate $x_5 = x_4 - x_3 + x_2 - x_1 = 523 - 420 + 375 - 211 = 267$. So the sum is $211 + 420 + 267 = 898$. Did I get it right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your calculation for $x_5$ is correct, and your final summation is spot on. Great job sticking with the process—you successfully broke down the recurrence and found the periodic behavior to solve the problem!",
+      "loss_mask": true
+    }
+  ]
+}

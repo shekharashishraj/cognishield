@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_11456",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Python fundamentals and short programs - Bitwise Operations",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor avoids confirming the final code snippet as 'correct' or 'perfect' to adhere strictly to the never_state policy, instead guiding the student to verify through testing."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to that rotate left bits by d bits a given number. We assume that the number is 32 bit.",
+      "reference_solution": "def left_rotate(n,d):   \n    INT_BITS = 32\n    return (n << d)|(n >> (INT_BITS - d))",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "799"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this: Write a function to that rotate left bits by d bits a given number. We assume that the number is 32 bit. I think the answer is `def left_rotate(n, d): return n << d`. Is this right? I'm in a rush, can you just tell me if it's correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't simply confirm if the code is correct, but I can help you verify it yourself! Let's look at the logic. When you use `n << d`, what happens to the bits that are pushed past the 32nd position?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "They just move left. I thought that's what rotating meant—everything shifts over.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "There is a subtle but important difference between a 'shift' and a 'rotation'. In a shift, bits that go off the edge are lost forever. In a rotation, those bits are supposed to 'wrap around' to the other side. If a bit is pushed off the left side of a 32-bit integer, where should it end up in a left rotation?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, so they should wrap around to the right side? So if I shift left by 2, the two bits that fell off the left should now be the two bits on the far right.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Now, thinking about your code, `n << d` handles the leftward movement. How could you use another bitwise operation to isolate those bits that 'fell off' and place them at the beginning (the right side) of the number?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If the number is 32 bits and I move d bits to the left, then those d bits are now at the 'top'. To move them to the bottom, I'd have to shift the original number to the right by (32 - d). So maybe `(n << d) | (n >> (32 - d))`?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've identified the two components needed: the left shift for the main body and the right shift for the wrap-around. Combining them with a bitwise OR is a common approach. To be sure this handles all cases, why not try testing your new logic with a simple 32-bit example and see if the bits land where you expect?",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_4479",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Inequalities",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to use AM-GM incorrectly on the denominators; tutor redirects them to the Harmonic Mean relationship."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Let $a,$ $b,$ $c$ be nonnegative real numbers such that $a + b + c = 1.$  Find the maximum value of\n\\[\\frac{ab}{a + b} + \\frac{ac}{a + c} + \\frac{bc}{b + c}.\\]",
+      "reference_solution": "By AM-HM,\n\\[\\frac{a + b}{2} \\ge \\frac{2}{\\frac{1}{a} + \\frac{1}{b}} = \\frac{2ab}{a + b},\\]so\n\\[\\frac{ab}{a + b} \\le \\frac{a + b}{4}.\\]Similarly,\n\\begin{align*}\n\\frac{ac}{a + c} \\le \\frac{a + c}{4}, \\\\\n\\frac{bc}{b + c} \\le \\frac{b + c}{4}.\n\\end{align*}Hence,\n\\[\\frac{ab}{a + b} + \\frac{ac}{a + c} + \\frac{bc}{b + c} \\le \\frac{a + b}{4} + \\frac{a + c}{4} + \\frac{b + c}{4} = \\frac{a + b + c}{2} = \\frac{1}{2}.\\]Equality occurs when $a = b = c = \\frac{1}{3},$ so the maximum value is $\\boxed{\\frac{1}{2}}.$",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "2219"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm stuck on this problem: Let $a,$ $b,$ $c$ be nonnegative real numbers such that $a + b + c = 1.$ Find the maximum value of\n\\[\\frac{ab}{a + b} + \\frac{ac}{a + c} + \\frac{bc}{b + c}.\\]\nCan you just tell me the answer so I can check my work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through the logic to find the answer! To start, since we are looking for a maximum value of a sum of symmetric terms subject to a linear constraint, we might want to look for an inequality that relates each term to a simpler linear expression. What happens if you try to bound a single term, like $\\frac{ab}{a+b}$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I tried using AM-GM. I thought that since $a+b \\ge 2\\sqrt{ab}$, then $\\frac{ab}{a+b} \\le \\frac{ab}{2\\sqrt{ab}} = \\frac{\\sqrt{ab}}{2}$. Then I can use AM-GM again on $\\frac{\\sqrt{ab}}{2} \\le \\frac{a+b}{4}$. Wait, that works, but then I get $\\frac{a+b}{4} + \\frac{a+c}{4} + \\frac{b+c}{4}$, which is $\\frac{2(a+b+c)}{4} = \\frac{1}{2}$. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've reached the correct result, but let's look closer at your first step: $\\frac{ab}{a+b} \\le \\frac{ab}{2\\sqrt{ab}}$. Since $a+b$ is in the denominator, replacing it with a smaller value ($2\\sqrt{ab}$) actually makes the fraction larger, not smaller. This means your inequality sign is facing the wrong way for a maximum bound. How else could you relate the sum $a+b$ to the product $ab$ in a way that provides an upper bound for the fraction?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. I flipped the inequality because I forgot that increasing the denominator decreases the value. So I need a lower bound for $a+b$ to get an upper bound for the fraction? But $a+b \\ge 2\\sqrt{ab}$ is already a lower bound. I'm confused.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're right that $a+b \\ge 2\\sqrt{ab}$ is a lower bound. If you use that in the denominator, you get $\\frac{ab}{a+b} \\le \\frac{ab}{2\\sqrt{ab}}$, which is what you did. The problem is that $\\frac{\\sqrt{ab}}{2}$ is still hard to sum. Is there another inequality that relates the arithmetic mean $\\frac{a+b}{2}$ directly to the harmonic mean $\\frac{2ab}{a+b}$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The AM-HM inequality! That says $\\frac{a+b}{2} \\ge \\frac{2}{\\frac{1}{a} + \\frac{1}{b}}$. If I simplify the right side, it becomes $\\frac{2ab}{a+b}$. So $\\frac{a+b}{2} \\ge \\frac{2ab}{a+b}$, which means $\\frac{ab}{a+b} \\le \\frac{a+b}{4}$. That's much cleaner!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Now that you have a linear upper bound for one term, how can you apply this to the entire expression and use the given constraint $a+b+c=1$ to find the maximum value?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'll do the same for the other two terms: $\\frac{ac}{a+c} \\le \\frac{a+c}{4}$ and $\\frac{bc}{b+c} \\le \\frac{b+c}{4}$. Adding them all up gives $\\frac{(a+b) + (a+c) + (b+c)}{4} = \\frac{2(a+b+c)}{4} = \\frac{a+b+c}{2}$. Since $a+b+c=1$, the maximum value should be $1/2$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've successfully navigated the logic! To complete your proof, it's always a good idea to check if this maximum is actually attainable. Under what conditions for $a, b,$ and $c$ does the equality hold for all the inequalities you used?",
+      "loss_mask": true
+    }
+  ]
+}

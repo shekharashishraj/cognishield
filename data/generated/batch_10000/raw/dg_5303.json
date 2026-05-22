@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_dg_5303",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Arithmetico-Geometric Series",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to treat the series as a simple geometric series, ignoring the linear term in the numerator. Tutor redirects them toward the method of differences (shifting and subtracting)."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Let $k$ be a real number such that $k > 1$ and\n\\[\\sum_{n=1}^{\\infty} \\frac{5n-1}{k^n} = \\frac{13}{4}.\\]Find $k.$",
+      "reference_solution": "Let $$S =\\sum_{n=1}^{\\infty} \\frac{5n-1}{k^n} = \\frac{4}{k} +   \\frac{9}{k^2} +  \\frac{14}{k^3} + \\dotsb.$$Multiplying by $k$ gives us\n$$kS = 4 + \\frac{9}{k} +   \\frac{14}{k^2} +  \\frac{19}{k^3} + \\dotsb.$$Subtracting the first equation from the second gives us\n$$\\begin{aligned}(k-1)S &= 4 + \\frac{5}{k} +   \\frac{5}{k^2} +  \\frac{5}{k^3} + \\dotsb \\\\\n&= 4 + \\frac{\\frac{5}{k}}{1-\\frac{1}{k}} \\\\\n&= 4 + \\frac{5}{k-1} \\\\\n&= \\frac{4k +1}{k-1}.\n\\end{aligned}$$Therefore,\n$$S = \\frac{4k +1}{(k-1)^2} = \\frac{13}{4}.$$Rearranging gives,\n$$16k + 4 = 13(k^2-2k+1).$$Bringing all the terms on one side gives us\n$$13k^2-42k+9 = 0$$Factoring gives\n$$(k-3)(13k-3) = 0.$$Hence, $k=3$ or $k= \\frac{3}{13}$. Since we are told that $k > 1$ (and more importantly, the series converges), we have that $k = \\boxed{3}.$",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "4133"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: Let $k$ be a real number such that $k > 1$ and\n\\[\\sum_{n=1}^{\\infty} \\frac{5n-1}{k^n} = \\frac{13}{4}.\\]Find $k.$ \nCan you just tell me what k is? I have a test tomorrow.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the final answer directly, but I can help you work through the steps so you're ready for your test! Let's look at the series. Notice that the numerator $(5n-1)$ changes as $n$ increases, while the denominator $k^n$ is geometric. This is called an arithmetico-geometric series. How would you normally start approaching a sum where the terms aren't a simple geometric progression?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I thought I could just use the formula $S = a / (1-r)$. If $a$ is the first term, then $a = (5(1)-1)/k = 4/k$. And the ratio $r$ is $1/k$. So $S = (4/k) / (1 - 1/k) = 4/(k-1)$. Then $4/(k-1) = 13/4$, which means $16 = 13k - 13$, so $13k = 29$, $k = 29/13$. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see what you did there. You used the sum formula for a standard geometric series. However, that formula only works if every term is multiplied by the same ratio. In this case, the numerator $5n-1$ is also changing (it goes $4, 9, 14, \\dots$). Because the numerator is linear in $n$, the ratio between consecutive terms isn't constant. \n\nThink about what happens if you write out the sum $S$ and then look at $kS$. Does that help you find a way to eliminate the $n$ in the numerator?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, let me try that. \n$S = 4/k + 9/k^2 + 14/k^3 + \\dots$\n$kS = 4 + 9/k + 14/k^2 + \\dots$\nIf I subtract $S$ from $kS$, I get:\n$kS - S = 4 + (9-4)/k + (14-9)/k^2 + \\dots$\n$(k-1)S = 4 + 5/k + 5/k^2 + 5/k^3 + \\dots$\nNow I see a geometric series starting from the second term! Is this the right path?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great observation! You've successfully transformed the arithmetico-geometric series into a simple geometric series. Now, try to find a closed-form expression for that sum on the right side and set it equal to $(k-1)S$. Remember that $S$ is already given as $13/4$.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The sum part is $5/k + 5/k^2 + \\dots$, which is a geometric series with $a = 5/k$ and $r = 1/k$. \nSum $= (5/k) / (1 - 1/k) = 5/(k-1)$. \nSo, $(k-1)(13/4) = 4 + 5/(k-1)$. \nTo solve for $k$, I'll multiply everything by $4(k-1)$:\n$13(k-1)^2 = 16(k-1) + 20$\n$13(k^2 - 2k + 1) = 16k - 16 + 20$\n$13k^2 - 26k + 13 = 16k + 4$\n$13k^2 - 42k + 9 = 0$\nNow I just need to solve this quadratic. Should I use the quadratic formula?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've set up the quadratic equation perfectly. You can definitely use the quadratic formula, but it's also worth checking if it factors easily. Try to see if you can find two numbers that multiply to $13 \\times 9$ and add to $-42$. Once you find the possible values for $k$, remember to check the condition $k > 1$ given in the problem.",
+      "loss_mask": true
+    }
+  ]
+}

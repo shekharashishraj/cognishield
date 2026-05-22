@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_10121",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Python fundamentals and short programs: Bitwise Operations",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor guides the student through the logic of bit rotation versus shifting. The assistant strictly follows the 'never_state' policy by refusing to confirm if the final code is 'correct' or 'right', instead prompting the student to verify through testing."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to that rotate left bits by d bits a given number. We assume that the number is 32 bit.",
+      "reference_solution": "def left_rotate(n,d):   \n    INT_BITS = 32\n    return (n << d)|(n >> (INT_BITS - d))",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "799"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Write a function to that rotate left bits by d bits a given number. We assume that the number is 32 bit. I think I've got it: `def left_rotate(n, d): return n << d`. Is this correct? I'm in a hurry, just let me know.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't simply confirm if it's correct, but let's look at what happens when you run that code. If you only use the left-shift operator `<<`, what happens to the bits that move past the 32nd position?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "They just get pushed out and disappear, right? But the problem says 'rotate'. Does that mean they are supposed to come back around?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's the key difference. In a standard shift, bits are lost. In a rotation, the bits that 'fall off' one end must reappear on the opposite end. If you are rotating left and bits fall off the left side, where should they be placed to complete the rotation?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "They should go to the right side. So I need a way to take those bits from the left and put them on the right. How do I move bits to the right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You can use the right-shift operator `>>`. If the total width is 32 bits and you shift the number left by `d` positions, how many positions to the right would you need to shift the original number so that those same `d` bits end up at the very beginning (the rightmost side)?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If I move `d` bits out, I probably need to shift the original number right by `32 - d` bits. Then I can combine the left-shifted part and the right-shifted part using the OR operator `|`. So it would be `(n << d) | (n >> (32 - d))`. Is this the right answer now?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've identified how to handle the wrap-around logic. To verify if this logic holds up for all 32-bit integers, I recommend trying a small trace with a 4-bit number first, and then running your function with a few test cases to see if the results match your expectations.",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_8090",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student mistakenly tries to sum all water first before dividing by capacity; tutor corrects this to per-well calculation."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def max_fill(grid, capacity):\n    import math\n    \"\"\"\n    You are given a rectangular grid of wells. Each row represents a single well,\n    and each 1 in a row represents a single unit of water.\n    Each well has a corresponding bucket that can be used to extract water from it, \n    and all buckets have the same capacity.\n    Your task is to use the buckets to empty the wells.\n    Output the number of times you need to lower the buckets.\n\n    Example 1:\n        Input: \n            grid : [[0,0,1,0], [0,1,0,0], [1,1,1,1]]\n            bucket_capacity : 1\n        Output: 6\n\n    Example 2:\n        Input: \n            grid : [[0,0,1,1], [0,0,0,0], [1,1,1,1], [0,1,1,1]]\n            bucket_capacity : 2\n        Output: 5\n    \n    Example 3:\n        Input: \n            grid : [[0,0,0], [0,0,0]]\n            bucket_capacity : 5\n        Output: 0\n\n    Constraints:\n        * all wells have the same length\n        * 1 <= grid.length <= 10^2\n        * 1 <= grid[:,1].length <= 10^2\n        * grid[i][j] -> 0 | 1\n        * 1 <= capacity <= 10\n    \"\"\"",
+      "reference_solution": "return sum([math.ceil(sum(arr)/capacity) for arr in grid])",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/115"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem. Can you just give me the code? \n\ndef max_fill(grid, capacity):\n    import math\n    \"\"\"\n    You are given a rectangular grid of wells. Each row represents a single well,\n    and each 1 in a row represents a single unit of water.\n    Each well has a corresponding bucket that can be used to extract water from it, \n    and all buckets have the same capacity.\n    Your task is to use the buckets to empty the wells.\n    Output the number of times you need to lower the buckets.\n\n    Example 1:\n        Input: \n            grid : [[0,0,1,0], [0,1,0,0], [1,1,1,1]]\n            bucket_capacity : 1\n        Output: 6\n\n    Example 2:\n        Input: \n            grid : [[0,0,1,1], [0,0,0,0], [1,1,1,1], [0,1,1,1]]\n            bucket_capacity : 2\n        Output: 5\n    \n    Example 3:\n        Input: \n            grid : [[0,0,0], [0,0,0]]\n            bucket_capacity : 5\n        Output: 0\n\n    Constraints:\n        * all wells have the same length\n        * 1 <= grid.length <= 10^2\n        * 1 <= grid[:,1].length <= 10^2\n        * grid[i][j] -> 0 | 1\n        * 1 <= capacity <= 10\n    \"\"\"",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code directly, but I'd be happy to help you figure it out! Let's start by breaking down the problem. What do you think the 'rows' in the grid represent in terms of the water we need to move?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Each row is a well. So I just need to count all the 1s in the whole grid to get the total water, and then divide that by the bucket capacity. If there's a remainder, I'll just add one more trip. Does that sound right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's an interesting approach, but let's look closer at the rules. The problem says 'Each well has a corresponding bucket'. Does that mean you can use the same bucket for different wells, or is the bucket specific to the well it's paired with?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. If each well has its own bucket, I can't just pool all the water together. I have to empty each well individually. So I should calculate the trips for each row separately and then sum those up?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's it! You've identified the key constraint. Now, if a single well has, say, 3 units of water and the bucket capacity is 2, how many times would you need to lower the bucket for that specific well?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'd need 2 trips. One trip takes 2 units, and the second trip takes the remaining 1 unit. In Python, I can use math.ceil(water_in_well / capacity) to get that number for each row.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. Now that you have the logic for a single well, how would you apply that to the entire grid to get the total number of trips?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'll use a list comprehension or a loop to iterate through each row in the grid, calculate the ceil of (sum of row / capacity), and then sum all those results together. Like this: return sum([math.ceil(sum(row)/capacity) for row in grid])",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is exactly correct. You've successfully handled the per-well constraint and the rounding for partial buckets. Great job working through that!",
+      "loss_mask": true
+    }
+  ]
+}

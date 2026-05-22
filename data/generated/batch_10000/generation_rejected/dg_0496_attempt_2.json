@@ -1,0 +1,101 @@
+{
+  "example_id": "dg_0496",
+  "filename": "dg_0496.json",
+  "conversation_id": "mt_dg_0496",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra: Function Transformations",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The student incorrectly identifies the horizontal scaling factor and the order of operations. The tutor guides them to use point-tracking (mapping x-values) to independently verify the correct graph."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "The graph of $y = f(x)$ is shown below.\n\n[asy]\nunitsize(0.3 cm);\n\nreal func(real x) {\n  real y;\n  if (x >= -3 && x <= 0) {y = -2 - x;}\n  if (x >= 0 && x <= 2) {y = sqrt(4 - (x - 2)^2) - 2;}\n  if (x >= 2 && x <= 3) {y = 2*(x - 2);}\n  return(y);\n}\n\nint i, n;\n\nfor (i = -8; i <= 8; ++i) {\n  draw((i,-8)--(i,8),gray(0.7));\n  draw((-8,i)--(8,i),gray(0.7));\n}\n\ndraw((-8,0)--(8,0),Arrows(6));\ndraw((0,-8)--(0,8),Arrows(6));\n\nlabel(\"$x$\", (8,0), E);\nlabel(\"$y$\", (0,8), N);\n\ndraw(graph(func,-3,3),red);\n\nlabel(\"$y = f(x)$\", (4,-3), UnFill);\n[/asy]\n\nWhich is the graph of $y = f \\left( \\frac{1 - x}{2} \\right)$?\n\n[asy]\nunitsize(0.3 cm);\n\npicture[] graf;\nint i, n;\n\nreal func(real x) {\n  real y;\n  if (x >= -3 && x <= 0) {y = -2 - x;}\n  if (x >= 0 && x <= 2) {y = sqrt(4 - (x - 2)^2) - 2;}\n  if (x >= 2 && x <= 3) {y = 2*(x - 2);}\n  return(y);\n}\n\nreal funcb(real x) {\n  return(func((1 - x)/2));\n}\n\nfor (n = 1; n <= 5; ++n) {\n  graf[n] = new picture;\n  for (i = -8; i <= 8; ++i) {\n    draw(graf[n],(i,-8)--(i,8),gray(0.7));\n    draw(graf[n],(-8,i)--(8,i),gray(0.7));\n  }\n  draw(graf[n],(-8,0)--(8,0),Arrows(6));\n  draw(graf[n],(0,-8)--(0,8),Arrows(6));\n\n  label(graf[n],\"$x$\", (8,0), E);\n  label(graf[n],\"$y$\", (0,8), N);\n}\n\ndraw(graf[1],shift((-1/2,0))*xscale(1/2)*reflect((0,0),(0,1))*graph(func,-3,3),red);\ndraw(graf[2],graph(funcb,-5,7),red);\ndraw(graf[3],shift((1,0))*xscale(1/2)*reflect((0,0),(0,1))*graph(func,-3,3),red);\ndraw(graf[4],shift((1/2,0))*xscale(2)*reflect((0,0),(0,1))*graph(func,-3,3),red);\ndraw(graf[5],shift((1/2,0))*xscale(1/2)*reflect((0,0),(0,1))*graph(func,-3,3),red);\n\nlabel(graf[1], \"A\", (0,-10));\nlabel(graf[2], \"B\", (0,-10));\nlabel(graf[3], \"C\", (0,-10));\nlabel(graf[4], \"D\", (0,-10));\nlabel(graf[5], \"E\", (0,-10));\n\nadd(graf[1]);\nadd(shift((20,0))*(graf[2]));\nadd(shift((40,0))*(graf[3]));\nadd(shift((10,-20))*(graf[4]));\nadd(shift((30,-20))*(graf[5]));\n[/asy]\n\nEnter the letter of the graph of $y = f \\left( \\frac{1 - x}{2} \\right).$",
+      "reference_solution": "The graph of $y = f \\left( \\frac{1 - x}{2} \\right)$ is produced by taking the graph of $y = f(x)$ and reflecting it in the $y$-axis, then stretching it horizontally by a factor of 2, then shifting it to the right by one unit.  The correct graph is $\\boxed{\\text{B}}.$",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "3957"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "The graph of $y = f(x)$ is shown below.\n\n[asy]\nunitsize(0.3 cm);\n\nreal func(real x) {\n  real y;\n  if (x >= -3 && x <= 0) {y = -2 - x;}\n  if (x >= 0 && x <= 2) {y = sqrt(4 - (x - 2)^2) - 2;}\n  if (x >= 2 && x <= 3) {y = 2*(x - 2);}\n  return(y);\n}\n\nint i, n;\n\nfor (i = -8; i <= 8; ++i) {\n  draw((i,-8)--(i,8),gray(0.7));\n  draw((-8,i)--(8,i),gray(0.7));\n}\n\ndraw((-8,0)--(8,0),Arrows(6));\ndraw((0,-8)--(0,8),Arrows(6));\n\nlabel(\"$x$\", (8,0), E);\nlabel(\"$y$\", (0,8), N);\n\ndraw(graph(func,-3,3),red);\n\nlabel(\"$y = f(x)$\", (4,-3), UnFill);\n[/asy]\n\nWhich is the graph of $y = f \\left( \\frac{1 - x}{2} \\right)$?\n\n[asy]\nunitsize(0.3 cm);\n\npicture[] graf;\nint i, n;\n\nreal func(real x) {\n  real y;\n  if (x >= -3 && x <= 0) {y = -2 - x;}\n  if (x >= 0 && x <= 2) {y = sqrt(4 - (x - 2)^2) - 2;}\n  if (x >= 2 && x <= 3) {y = 2*(x - 2);}\n  return(y);\n}\n\nreal funcb(real x) {\n  return(func((1 - x)/2));\n}\n\nfor (n = 1; n <= 5; ++n) {\n  graf[n] = new picture;\n  for (i = -8; i <= 8; ++i) {\n    draw(graf[n],(i,-8)--(i,8),gray(0.7));\n    draw(graf[n],(-8,i)--(8,i),gray(0.7));\n  }\n  draw(graf[n],(-8,0)--(8,0),Arrows(6));\n  draw(graf[n],(0,-8)--(0,8),Arrows(6));\n\n  label(graf[n],\"$x$\", (8,0), E);\n  label(graf[n],\"$y$\", (0,8), N);\n}\n\ndraw(graf[1],shift((-1/2,0))*xscale(1/2)*reflect((0,0),(0,1))*graph(func,-3,3),red);\ndraw(graf[2],graph(funcb,-5,7),red);\ndraw(graf[3],shift((1,0))*xscale(1/2)*reflect((0,0),(0,1))*graph(func,-3,3),red);\ndraw(graf[4],shift((1/2,0))*xscale(2)*reflect((0,0),(0,1))*graph(func,-3,3),red);\ndraw(graf[5],shift((1/2,0))*xscale(1/2)*reflect((0,0),(0,1))*graph(func,-3,3),red);\n\nlabel(graf[1], \"A\", (0,-10));\nlabel(graf[2], \"B\", (0,-10));\nlabel(graf[3], \"C\", (0,-10));\nlabel(graf[4], \"D\", (0,-10));\nlabel(graf[5], \"E\", (0,-10));\n\nadd(graf[1]);\nadd(shift((20,0))*(graf[2]));\nadd(shift((40,0))*(graf[3]));\nadd(shift((10,-20))*(graf[4]));\nadd(shift((30,-20))*(graf[5]));\n[/asy]\n\nEnter the letter of the graph of $y = f \\left( \\frac{1 - x}{2} \\right)$. \n\nI think it's graph C. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't tell you if it's correct just yet! Let's look at your reasoning first. How did you determine that the transformations in the expression $\\frac{1-x}{2}$ lead to graph C?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, I saw the $-x$, so I knew it was a reflection over the $y$-axis. Then I saw the $1$, so I shifted it right by 1. Finally, I saw the division by 2, and I thought that meant the graph gets compressed horizontally by a factor of $1/2$. Graph C looked like it was reflected and smaller, so I picked that.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've spotted the three main components: reflection, shift, and scaling. However, horizontal transformations can be counterintuitive. \n\nFirst, consider the scaling: when you have $f(cx)$, does a value of $c=1/2$ (which is what we have here) result in a compression or a stretch? \n\nSecond, the order of operations matters. Try rewriting the inner expression $\\frac{1-x}{2}$ in a form like $a(x - h)$. How does that change how you see the shift and the reflection?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If I rewrite it, $\\frac{1-x}{2}$ is the same as $-\\frac{1}{2}(x - 1)$. \n\nOh, I see. If it's $-\\frac{1}{2}$, then the scaling factor is $1/2$, which actually means a horizontal stretch by 2, not a compression. But I'm still confused about the shift. If it's $(x-1)$, it's a shift right by 1. So it's reflect, stretch by 2, shift right 1?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're getting closer! The stretch by 2 is correct. To be absolutely sure about the shift and the overall position, a great strategy is to track a specific point from the original graph.\n\nLet's take the point at the far right of the original graph $f(x)$, which is at $x = 3$. For the new function $y = f\\left(\\frac{1-x}{2}\\right)$, what value of $x$ would make the input $\\frac{1-x}{2}$ equal to 3?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let me calculate: $\\frac{1-x}{2} = 3 \\implies 1-x = 6 \\implies -x = 5 \\implies x = -5$. \n\nWait, if the point at $x=3$ moves to $x=-5$, then the graph must extend way over to the left. Looking at the options, C is too small. Graph B actually goes from $x=-5$ to $x=7$. Let me check the other end. If $x=-3$ in the original, then $\\frac{1-x}{2} = -3 \\implies 1-x = -6 \\implies x = 7$. \n\nSo the graph should span from $x=-5$ to $x=7$. That matches graph B!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly! Point-tracking is a foolproof way to verify transformations. You found that the domain $[-3, 3]$ maps to $[-5, 7]$, which confirms both the stretch and the shift.\n\nBased on that, what is your final answer?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The answer is B!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is correct. You successfully identified the horizontal stretch by a factor of 2, the reflection across the $y$-axis, and the shift. Well done!",
+      "loss_mask": true
+    }
+  ]
+}

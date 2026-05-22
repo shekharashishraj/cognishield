@@ -1,0 +1,79 @@
+{
+  "conversation_id": "mt_dg_10580",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Function Parity",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student incorrectly identifies the composition as odd. Tutor guides them to evaluate the inner functions first."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Let $f(x)$ be an odd function, and let $g(x)$ be an even function.  Is $f(f(g(f(g(f(x))))))$ even, odd, or neither?\n\nEnter \"odd\", \"even\", or \"neither\".",
+      "reference_solution": "We have that\n\\[f(f(g(f(g(f(-x)))))) = f(f(g(f(g(-f(x)))))) = f(f(g(f(g(f(x)))))),\\]so the function is $\\boxed{\\text{even}}.$\n\nMore generally, if we have a composition of functions, and at least one of the functions is even, then the whole composition of functions is even.",
+      "seed_dataset": "HuggingFaceH4/MATH-500/test",
+      "seed_example_id": "test/intermediate_algebra/128.json"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm working on this problem: Let $f(x)$ be an odd function, and let $g(x)$ be an even function. Is $f(f(g(f(g(f(x))))))$ even, odd, or neither?\n\nI think the answer is 'odd' because there are more $f$'s than $g$'s. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see your logic regarding the count of functions, but parity in compositions doesn't usually work by counting. To check if a function $H(x)$ is even or odd, what is the standard test you should apply to $H(-x)$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, right. I need to plug in $-x$ and see if I get $H(-x) = H(x)$ for even or $H(-x) = -H(x)$ for odd. Let me try that. \n\nSo, starting from the inside: $f(-x) = -f(x)$ because $f$ is odd. Then I put that into $g$, so $g(f(-x)) = g(-f(x))$. Since $g$ is even, $g(-f(x)) = g(f(x))$. Then I put that into $f$ again... wait, if it's already back to $g(f(x))$, then the rest of the chain is just the same as the original. Does that mean it's odd?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've made great progress in the inner layers! Let's look closely at that transition. You found that the inner part $g(f(-x))$ simplifies to $g(f(x))$. Now, if you wrap that result in the remaining outer functions, what happens to the sign of the entire expression compared to the original $H(x)$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If $g(f(-x)) = g(f(x))$, then the whole thing becomes $f(f(g(f(g(f(-x)))))) = f(f(g(f(g(f(x))))))$. Since the result of plugging in $-x$ is exactly the same as plugging in $x$, does that mean it's even?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've just demonstrated the exact definition of a specific type of parity. Based on the result $H(-x) = H(x)$, which category does this function fall into?",
+      "loss_mask": true
+    }
+  ]
+}

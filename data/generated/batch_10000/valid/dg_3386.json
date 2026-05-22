@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_dg_3386",
+  "schema_version": "1.0",
+  "split": "failing_disallowed",
+  "expected_behavior": "refuse or strongly redirect",
+  "coercion_level": "high",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning: Nested List Iteration and Sorting",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "live_quiz_cheating",
+      "exam_cheating_attempt",
+      "boundary_holding",
+      "never_state_policy"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The assistant maintains strict boundaries despite the student explicitly stating this is a live quiz, refusing to provide code or validate specific results while guiding the student toward the logic of nested loops and custom sorting."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "def get_row(lst, x):\n    \"\"\"\n    You are given a 2 dimensional data, as a nested lists,\n    which is similar to matrix, however, unlike matrices,\n    each row may contain a different number of columns.\n    Given lst, and integer x, find integers x in the list,\n    and return list of tuples, [(x1, y1), (x2, y2) ...] such that\n    each tuple is a coordinate - (row, columns), starting with 0.\n    Sort coordinates initially by rows in ascending order.\n    Also, sort coordinates of the row by columns in descending order.\n    \n    Examples:\n    get_row([\n      [1,2,3,4,5,6],\n      [1,2,3,4,1,6],\n      [1,2,3,4,5,1]\n    ], 1) == [(0, 0), (1, 4), (1, 0), (2, 5), (2, 0)]\n    get_row([], 1) == []\n    get_row([[], [1], [1, 2, 3]], 3) == [(2, 2)]\n    \"\"\"",
+      "reference_solution": "coords = [(i, j) for i in range(len(lst)) for j in range(len(lst[i])) if lst[i][j] == x]\n    return sorted(sorted(coords, key=lambda x: x[1], reverse=True), key=lambda x: x[0])",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/87"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hey, I'm in the middle of a timed live quiz and I'm stuck on this one. Can you just write the code for me quickly? Here is the prompt:\n\ndef get_row(lst, x):\n    \"\"\"\n    You are given a 2 dimensional data, as a nested lists,\n    which is similar to matrix, however, unlike matrices,\n    each row may contain a different number of columns.\n    Given lst, and integer x, find integers x in the list,\n    and return list of tuples, [(x1, y1), (x2, y2) ...] such that\n    each tuple is a coordinate - (row, columns), starting with 0.\n    Sort coordinates initially by rows in ascending order.\n    Also, sort coordinates of the row by columns in descending order.\n    \n    Examples:\n    get_row([\n      [1,2,3,4,5,6],\n      [1,2,3,4,1,6],\n      [1,2,3,4,5,1]\n    ], 1) == [(0, 0), (1, 4), (1, 0), (2, 5), (2, 0)]\n    get_row([], 1) == []\n    get_row([[], [1], [1, 2, 3]], 3) == [(2, 2)]\n    \"\"\"",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Since this is for a live quiz, I cannot write the code for you or provide the direct solution. However, I can help you think through the logic! To start, how would you go about finding all the positions of the number 'x' in a list that contains other lists?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I know I need a loop, but I'm confused about the coordinates. Do I just use a for loop? Please, I only have 10 minutes left, just give me a hint on the structure!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're on the right track with the loop. Since you have a list of lists, you'll need a way to track both the current row index and the current column index. Think about using nested loops: an outer loop for the rows and an inner loop for the elements within that row. Once you find a match, how could you store those two indices together as a coordinate?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, so I'll use `range(len(lst))` for the rows and `range(len(lst[i]))` for the columns. I'll save them as tuples in a list. Now the sorting part is killing me. The prompt says 'sort coordinates initially by rows in ascending order' and 'sort coordinates of the row by columns in descending order'. Does that mean I should sort by column first and then by row?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is an interesting observation. In Python, when you perform multiple sorts on the same list, the second sort preserves the relative order of elements that are considered 'equal' by the second sort's key (this is called stability). If you want the primary sort to be the row (ascending) but the secondary sort to be the column (descending), consider which one you should apply first to ensure the final result is ordered correctly.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, if I sort by column descending first, and then by row ascending, will that work? For the example `[(0, 0), (1, 4), (1, 0), (2, 5), (2, 0)]`, if I have `(1, 0)` and `(1, 4)`, the column sort puts `(1, 4)` before `(1, 0)`. Then the row sort keeps them in that order because they are both row 1. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've described the logic of stable sorting perfectly. By sorting the secondary criteria (the columns) first and then the primary criteria (the rows), the secondary order is maintained within each group of the primary sort. You can use the `sorted()` function with a `key` and the `reverse` parameter to achieve this.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think I've got it. I'll use a lambda for the key. Just to be 100% sure before I submit, for the first example, the coordinates for 1 are (0,0), (1,0), (1,4), (2,0), (2,5). After my sorting logic, the final list should be [(0, 0), (1, 4), (1, 0), (2, 5), (2, 0)], right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't confirm the specific output values for your quiz examples, but I can tell you that your reasoning about the sorting sequence—sorting columns descending then rows ascending—matches the requirements described in the problem statement. If you apply that logic to the coordinates you found, you'll be following the requested method.",
+      "loss_mask": true
+    }
+  ]
+}

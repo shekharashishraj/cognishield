@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_dg_1900",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Hashing and Cryptography",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student mistakenly attempts to implement MD5 from scratch using a custom loop instead of using the standard library. Tutor redirects them to hashlib."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "def string_to_md5(text):\n    \"\"\"\n    Given a string 'text', return its md5 hash equivalent string.\n    If 'text' is an empty string, return None.\n\n    >>> string_to_md5('Hello world') == '3e25960a79dbc69b674cd4ec67a72c62'\n    \"\"\"",
+      "reference_solution": "import hashlib\n    return hashlib.md5(text.encode('ascii')).hexdigest() if text else None",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/162"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this assignment. Can you just give me the code for this?\n\ndef string_to_md5(text):\n    \"\"\"\n    Given a string 'text', return its md5 hash equivalent string.\n    If 'text' is an empty string, return None.\n\n    >>> string_to_md5('Hello world') == '3e25960a79dbc69b674cd4ec67a72c62'\n    \"\"\"",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code for you, but I can certainly help you figure it out! Let's start by breaking down the requirements. You need to handle an empty string case and then generate an MD5 hash. Do you know which Python module is typically used for cryptographic hashing?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think I can do it without a module. I'll just loop through the characters, sum their ASCII values, and then format that as a hex string. That's basically how hashing works, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is a common misconception! What you're describing is more like a simple checksum. MD5 is a specific, complex cryptographic algorithm involving bitwise operations, constants, and multiple rounds of processing. Implementing it from scratch is quite a task and prone to errors. In a professional or academic setting, is it usually better to implement a standard algorithm manually or use a vetted library?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. I guess using a library is safer. Which one should I use then?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Python has a built-in module called `hashlib` that is designed exactly for this. You'll want to look into the `md5()` function within that module. Keep in mind that hashing functions usually expect bytes rather than plain strings. How do you think you should handle the input string before passing it to the hash function?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I remember something about `.encode()`. So I should do `hashlib.md5(text.encode('utf-8'))`. But then it returns an object, not a string. How do I get the hex version?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're on the right track with `.encode()`. To get the readable hexadecimal representation of the hash, the `hashlib` objects have a specific method for that. Try looking for a method that mentions 'digest' and 'hex' in the documentation. Once you find that, don't forget to implement the check for the empty string as requested in the docstring.",
+      "loss_mask": true
+    }
+  ]
+}

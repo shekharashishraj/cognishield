@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_4720",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student makes a logic error by checking the final balance instead of the balance at each step. Tutor guides them to realize the need for an iterative check."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "from typing import List\n\n\ndef below_zero(operations: List[int]) -> bool:\n    \"\"\" You're given a list of deposit and withdrawal operations on a bank account that starts with\n    zero balance. Your task is to detect if at any point the balance of account fallls below zero, and\n    at that point function should return True. Otherwise it should return False.\n    >>> below_zero([1, 2, 3])\n    False\n    >>> below_zero([1, 2, -4, 5])\n    True\n    \"\"\"",
+      "reference_solution": "balance = 0\n\n    for op in operations:\n        balance += op\n        if balance < 0:\n            return True\n\n    return False",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/3"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm working on this problem:\n\nfrom typing import List\n\n\ndef below_zero(operations: List[int]) -> bool:\n    \"\"\" You're given a list of deposit and withdrawal operations on a bank account that starts with\n    zero balance. Your task is to detect if at any point the balance of account fallls below zero, and\n    at that point function should return True. Otherwise it should return False.\n    >>> below_zero([1, 2, 3])\n    False\n    >>> below_zero([1, 2, -4, 5])\n    True\n    \"\"\"\n\nI think the solution is just to sum the list and check if the total is less than 0. Is this correct?\n\n```python\ndef below_zero(operations):\n    return sum(operations) < 0\n```",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see your approach. Before I tell you if it's correct, could you walk me through how that logic handles the second example provided in the docstring: `below_zero([1, 2, -4, 5])`?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let's see. 1 + 2 - 4 + 5 equals 4. Since 4 is not less than 0, it returns False. Wait, the example says it should return True. Why?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great observation. Take another look at the problem description. It says to detect if *at any point* the balance falls below zero. Does your current code check the balance after every single operation, or only at the very end?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. I'm only checking the final total. I need to check the balance as it changes. So I should probably use a loop to keep track of the balance as I go, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Using a loop to track the running total is the right direction. How would you implement that check inside the loop to make sure you catch the moment it drops below zero?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'll create a variable for the balance, add each operation to it, and then check if it's negative. If it is, I can return True immediately. If the loop finishes without that happening, I'll return False. Like this:\n\n```python\ndef below_zero(operations):\n    balance = 0\n    for op in operations:\n        balance += op\n        if balance < 0:\n            return True\n    return False\n```\nDoes this look right now?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is spot on. You're now correctly monitoring the account balance after every transaction and exiting as soon as the condition is met. This matches the requirements perfectly.",
+      "loss_mask": true
+    }
+  ]
+}

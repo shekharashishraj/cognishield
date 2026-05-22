@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_1598",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Counting & Probability: Binomial Identities",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully guides the student through the complex numbers approach to a binomial sum without revealing the final answer until the student derives it."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "What is the value of the sum $S=\\sum_{k=0}^{49}(-1)^k\\binom{99}{2k}=\\binom{99}{0}-\\binom{99}{2}+\\binom{99}{4}-\\cdots -\\binom{99}{98}?$\n(A) $-2^{50}$ (B) $-2^{49}$ (C) 0 (D) $2^{49}$ (E) $2^{50}$",
+      "reference_solution": "By the Binomial Theorem, $(1+i)^{99}=\\sum_{n=0}^{99}\\binom{99}{j}i^n =$ $\\binom{99}{0}i^0+\\binom{99}{1}i^1+\\binom{99}{2}i^2+\\binom{99}{3}i^3+\\binom{99}{4}i^4+\\cdots +\\binom{99}{98}i^{98}$.\nUsing the fact that $i^1=i$, $i^2=-1$, $i^3=-i$, $i^4=1$, and $i^{n+4}=i^n$, the sum becomes:\n$(1+i)^{99}=\\binom{99}{0}+\\binom{99}{1}i-\\binom{99}{2}-\\binom{99}{3}i+\\binom{99}{4}+\\cdots -\\binom{99}{98}$.\nSo, $Re[(1+i)^{99}]=\\binom{99}{0}-\\binom{99}{2}+\\binom{99}{4}-\\cdots -\\binom{99}{98} = S$.\nUsing De Moivre's Theorem, $(1+i)^{99}=[\\sqrt{2}cis(45^\\circ)]^{99}=\\sqrt{2^{99}}\\cdot cis(99\\cdot45^\\circ)=2^{49}\\sqrt{2}\\cdot cis(135^\\circ) = -2^{49}+2^{49}i$.\nAnd finally, $S=Re[-2^{49}+2^{49}i] = \\boxed{-2^{49}}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "2179"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: What is the value of the sum $S=\\sum_{k=0}^{49}(-1)^k\\binom{99}{2k}=\\binom{99}{0}-\\binom{99}{2}+\\binom{99}{4}-\\cdots -\\binom{99}{98}?$\n(A) $-2^{50}$ (B) $-2^{49}$ (C) 0 (D) $2^{49}$ (E) $2^{50}$\nI don't see any obvious way to simplify this alternating sum of even binomial coefficients.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "This is a challenging problem because it involves only the even terms of the binomial expansion, and they alternate in sign. \n\nThink about the standard Binomial Theorem expansion of $(a+b)^n$. If we want to isolate specific terms or create alternating signs, we often use special values for $a$ and $b$. Since you have alternating signs and only even indices, does that remind you of any properties of complex numbers, specifically the imaginary unit $i$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess $i^2 = -1$, so that could handle the alternating signs. But how do I get rid of the odd terms like $\\binom{99}{1}$ and $\\binom{99}{3}$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Consider the expansion of $(1+i)^{99}$. If you write out the first few terms using the Binomial Theorem, what happens to the coefficients of the real part and the imaginary part?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let's see... $(1+i)^{99} = \\binom{99}{0}i^0 + \\binom{99}{1}i^1 + \\binom{99}{2}i^2 + \\binom{99}{3}i^3 + \\dots$\nSince $i^0=1, i^1=i, i^2=-1, i^3=-i$, the real part is $\\binom{99}{0} - \\binom{99}{2} + \\binom{99}{4} - \\dots$\nWait, that's exactly the sum $S$! So $S$ is just the real part of $(1+i)^{99}$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. Now the problem reduces to calculating $(1+i)^{99}$ and finding its real component. What's the most efficient way to raise a complex number to a high power like 99?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I should probably convert $1+i$ to polar form. The magnitude is $\\sqrt{1^2+1^2} = \\sqrt{2}$ and the angle is $45^\\circ$ (or $\\pi/4$). \nSo $(1+i)^{99} = (\\sqrt{2} e^{i\\pi/4})^{99} = 2^{99/2} e^{i(99\\pi/4)}$.\n$2^{99/2}$ is $2^{49} \\sqrt{2}$. \nNow I need $e^{i(99\\pi/4)}$. $99/4$ is $24.75$, which is $24\\pi + 3\\pi/4$. \nSince $24\\pi$ is just multiple rotations, it's the same as $e^{i(3\\pi/4)}$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're doing great. Now, evaluate $e^{i(3\\pi/4)}$ (or $\\cos(135^\\circ) + i\\sin(135^\\circ)$) and multiply it by $2^{49}\\sqrt{2}$ to find the real part $S$.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "$\\cos(135^\\circ) = -\\frac{\\sqrt{2}}{2}$ and $\\sin(135^\\circ) = \\frac{\\sqrt{2}}{2}$.\nSo the real part is $2^{49}\\sqrt{2} \\cdot (-\\frac{\\sqrt{2}}{2}) = 2^{49} \\cdot (-\\frac{2}{2}) = -2^{49}$.\nThat matches option (B). Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that is correct! You correctly identified that the sum represented the real part of $(1+i)^{99}$ and used De Moivre's Theorem to evaluate it efficiently. Well done.",
+      "loss_mask": true
+    }
+  ]
+}

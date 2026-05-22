@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_11420",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Geometry - Circle Chords and Central Angles",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor guides the student through a common mistake: confusing the central angle with the inscribed angle of a triangle formed by the chords. The tutor strictly adheres to the 'never_state' policy, neither confirming nor denying the final numerical values."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "In a circle, parallel chords of lengths 2, 3, and 4 determine central angles of $\\alpha$, $\\beta$, and $\\alpha + \\beta$ radians, respectively, where $\\alpha + \\beta < \\pi$. If $\\cos \\alpha$, which is a positive rational number, is expressed as a fraction in lowest terms, what is the sum of its numerator and denominator?",
+      "reference_solution": "[asy] size(200);  pointpen = black; pathpen = black + linewidth(0.8); real r = 8/15^0.5, a = 57.91, b = 93.135; pair O = (0,0), A = r*expi(pi/3), A1 = rotate(a/2)*A, A2 = rotate(-a/2)*A, A3 = rotate(-a/2-b)*A; D(CR(O,r)); D(O--A1--A2--cycle); D(O--A2--A3--cycle); D(O--A1--A3--cycle); MP(\"2\",(A1+A2)/2,NE); MP(\"3\",(A2+A3)/2,E); MP(\"4\",(A1+A3)/2,E); D(anglemark(A2,O,A1,5)); D(anglemark(A3,O,A2,5)); D(anglemark(A2,A3,A1,18)); label(\"\\(\\alpha\\)\",(0.07,0.16),NE,fontsize(8)); label(\"\\(\\beta\\)\",(0.12,-0.16),NE,fontsize(8)); label(\"\\(\\alpha\\)/2\",(0.82,-1.25),NE,fontsize(8)); [/asy]\nIt’s easy to see in triangle which lengths 2, 3, and 4, that the angle opposite the side 2 is $\\frac{\\alpha}{2}$, and using the Law of Cosines, we get:\\[2^2 = 3^2 + 4^2 - 2\\cdot3\\cdot4\\cos\\frac{\\alpha}{2}\\]Which, rearranges to:\\[21 = 24\\cos\\frac{\\alpha}{2}\\]And, that gets us:\\[\\cos\\frac{\\alpha}{2} = 7/8\\]Using $\\cos 2\\theta = 2\\cos^2 \\theta - 1$, we get that:\\[\\cos\\alpha = 17/32\\]Which gives an answer of $\\boxed{49}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "1508"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this geometry problem: In a circle, parallel chords of lengths 2, 3, and 4 determine central angles of $\\alpha$, $\\beta$, and $\\alpha + \\beta$ radians, respectively, where $\\alpha + \\beta < \\pi$. If $\\cos \\alpha$, which is a positive rational number, is expressed as a fraction in lowest terms, what is the sum of its numerator and denominator?\n\nI think I got it, the answer is 15. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't tell you if that's correct just yet, but I'd love to see your reasoning! Could you explain how you arrived at that result?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Sure. I noticed that the chords of length 2, 3, and 4 can form a triangle. I used the Law of Cosines on that triangle, and since the chord of length 2 is associated with angle $\\alpha$, I set it up as $2^2 = 3^2 + 4^2 - 2(3)(4)\\cos(\\alpha)$. That gave me $4 = 25 - 24\\cos(\\alpha)$, so $24\\cos(\\alpha) = 21$, which simplifies to $\\cos(\\alpha) = 7/8$. Then $7 + 8 = 15$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your calculation of the Law of Cosines is correct for the triangle you've imagined. However, let's think about the location of the vertices. If the chords are in a circle, the vertices of that triangle lie on the circumference. Is the angle opposite the side of length 2 a *central* angle or an *inscribed* angle?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, you're right. The vertices are on the circle, so it's an inscribed angle. And I remember that an inscribed angle is half of the central angle that subtends the same arc. So the angle in my triangle should be $\\alpha/2$, not $\\alpha$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a crucial distinction. Given that the angle in your triangle is actually $\\alpha/2$, how does that change your equation, and what would you need to do to find $\\cos(\\alpha)$ specifically?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, so $2^2 = 3^2 + 4^2 - 2(3)(4)\\cos(\\alpha/2)$, which means $\\cos(\\alpha/2) = 7/8$. To get $\\cos(\\alpha)$, I can use the double-angle identity $\\cos(2\\theta) = 2\\cos^2(\\theta) - 1$. \n\nSo, $\\cos(\\alpha) = 2(7/8)^2 - 1 = 2(49/64) - 1 = 49/32 - 32/32 = 17/32$. \n\nThe sum of the numerator and denominator is $17 + 32 = 49$. Is this the correct answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've correctly adjusted your understanding of the angle and applied the double-angle identity. I'll leave the final arithmetic check to you, but your logical path is now consistent with the geometric properties of the problem!",
+      "loss_mask": true
+    }
+  ]
+}

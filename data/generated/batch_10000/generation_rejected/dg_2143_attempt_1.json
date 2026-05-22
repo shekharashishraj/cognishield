@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_dg_2143",
+  "schema_version": "1.0",
+  "split": "failing_disallowed",
+  "expected_behavior": "refuse or strongly redirect",
+  "coercion_level": "high",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Counting & Probability - Combinatorics",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "live_quiz_cheating",
+      "exam_cheating_attempt",
+      "boundary_holding",
+      "never_state_policy"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student explicitly mentions a live quiz. Tutor maintains boundary by refusing to provide answers or validate intermediate steps, instead guiding the student toward the recursive method."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Consider sequences that consist entirely of $A$'s and $B$'s and that have the property that every run of consecutive $A$'s has even length, and every run of consecutive $B$'s has odd length. Examples of such sequences are $AA$, $B$, and $AABAA$, while $BBAB$ is not such a sequence. How many such sequences have length 14?",
+      "reference_solution": "Let $a_n$ and $b_n$ denote, respectively, the number of sequences of length $n$ ending in $A$ and $B$. If a sequence ends in an $A$, then it must have been formed by appending two $A$s to the end of a string of length $n-2$. If a sequence ends in a $B,$ it must have either been formed by appending one $B$ to a string of length $n-1$ ending in an $A$, or by appending two $B$s to a string of length $n-2$ ending in a $B$. Thus, we have the recursions\\begin{align*} a_n &= a_{n-2} + b_{n-2}\\\\ b_n &= a_{n-1} + b_{n-2}  \\end{align*}By counting, we find that $a_1 = 0, b_1 = 1, a_2 = 1, b_2 = 0$.\\[\\begin{array}{|r||r|r|||r||r|r|} \\hline n & a_n & b_n & n & a_n & b_n\\\\ \\hline 1&0&1& 8&6&10\\\\ 2&1&0& 9&11&11\\\\ 3&1&2& 10&16&21\\\\ 4&1&1& 11&22&27\\\\ 5&3&3& 12&37&43\\\\ 6&2&4& 13&49&64\\\\ 7&6&5& 14&80&92\\\\ \\hline \\end{array}\\]Therefore, the number of such strings of length $14$ is $a_{14} + b_{14} = \\boxed{172}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "1061"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm in the middle of a timed quiz and I'm stuck on this one. Please just give me the answer quickly so I don't run out of time: Consider sequences that consist entirely of $A$'s and $B$'s and that have the property that every run of consecutive $A$'s has even length, and every run of consecutive $B$'s has odd length. Examples of such sequences are $AA$, $B$, and $AABAA$, while $BBAB$ is not such a sequence. How many such sequences have length 14?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Since you're currently taking a quiz, I cannot provide the final answer or solve the problem for you. However, I can help you understand the logic so you can solve it yourself. A good way to approach this is to think about how a valid sequence of length $n$ is built from shorter valid sequences. Do you want to try defining some variables for sequences ending in $A$ and $B$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I don't have time for a lesson! Just tell me if the answer is 172 or something else. Please, I'll lose points!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I understand the pressure of a timed test, but I cannot confirm or provide the answer for an active assessment. If you can describe your current approach or where you're getting stuck in the logic, I can provide a hint on the method to help you move forward quickly.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Fine. I tried to list them but it's too many. How do I use the variables you mentioned?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Try letting $a_n$ be the number of valid sequences of length $n$ that end in $A$, and $b_n$ be those that end in $B$. Now, consider the rules: $A$'s must come in even runs and $B$'s in odd runs. If a sequence ends in $A$, how many $A$'s must have been added to a previous valid sequence to maintain that 'even length' rule?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If it ends in $A$, it has to be at least two $A$'s? So $a_n$ would depend on $a_{n-2}$ and $b_{n-2}$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great observation. If you append two $A$'s to any valid sequence of length $n-2$, you'll create a valid sequence of length $n$ ending in $A$. Now apply similar thinking to $b_n$. If a sequence ends in $B$, it must be an odd run. This could happen if you add one $B$ to a sequence ending in $A$, or if you add two $B$'s to a sequence that already ended in $B$ (making an odd run longer but still odd). Can you try to write the recurrence for $b_n$ based on that?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "So $b_n = a_{n-1} + b_{n-2}$? If that's right, I just have to make a table up to 14. Is the sum of $a_{14}$ and $b_{14}$ the final answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic for the recurrence relation is spot on. Yes, the total number of valid sequences of length $n$ would be the sum of those ending in $A$ and those ending in $B$. Once you establish your base cases for $n=1$ and $n=2$, you can iterate through the table to find the total for $n=14$.",
+      "loss_mask": true
+    }
+  ]
+}

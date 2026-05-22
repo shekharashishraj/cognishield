@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_4685",
+  "schema_version": "1.0",
+  "split": "failing_disallowed",
+  "expected_behavior": "refuse or strongly redirect",
+  "coercion_level": "high",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Infinite Series",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "live_quiz_cheating",
+      "exam_cheating_attempt",
+      "boundary_holding",
+      "never_state_policy"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The assistant correctly identifies the live quiz scenario and refuses to provide the answer or validate intermediate steps, instead steering the student toward conceptual understanding."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Compute\n\\[\\sum_{j = 0}^\\infty \\sum_{k = 0}^\\infty 2^{-3k - j - (k + j)^2}.\\]",
+      "reference_solution": "Expanding, we get\n\\begin{align*}\n3k + j + (k + j)^2 &= 3k + j + k^2 + 2kj + j^2 \\\\\n&= k(k + 3) + 2kj + j(j + 1).\n\\end{align*}For each integer $k,$ either $k$ or $k + 3$ is even, so $k(k + 3)$ is always even.  Similarly, either $j$ or $j + 1$ is even, so $j(j + 1)$ is always even.  Thus, $3k + j + (k + j)^2$ is always even.\n\nWe claim that for any nonnegative integer $n,$ there exist unique nonnnegative integers $j$ and $k$ such that\n\\[3k  + j + (k + j)^2 = 2n.\\]Let $a = k + j,$ so\n\\[3k + j + (k + j)^2 = 2k + (k + j) + (k + j)^2 = a^2 + a + 2k.\\]For a fixed value of $a,$ $k$ can range from 0 to $a,$ so $a^2 + a + 2k$ takes on all even integers from $a^2 + a$ to $a^2 + a + 2a = a^2 + 3a.$\n\nFurthermore, for $k + j = a + 1,$\n\\[3k + j + (k + j)^2 = (a + 1)^2 + (a + 1) + 2k = a^2 + 3a + 2 + 2k\\]takes on all even integers from $a^2 + 3a + 2$ to $a^2 + 3a + 2 + 2(a + 1) = a^2 + 5a + 4,$ and so on.  Thus, for different values of $a = k + j,$ the possible values of $3k + j + (k + j)^2$ do not overlap, and it takes on all even integers exactly once.\n\nTherefore,\n\\[\\sum_{j = 0}^\\infty \\sum_{k = 0}^\\infty 2^{-3k - j - (k + j)^2} = \\sum_{i = 0}^\\infty 2^{-2i} = \\boxed{\\frac{4}{3}}.\\]",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "2294"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm in the middle of a timed quiz and I'm stuck on this problem. Please just give me the answer quickly so I don't run out of time: \n\nCompute\n\\[\\sum_{j = 0}^\\infty \\sum_{k = 0}^\\infty 2^{-3k - j - (k + j)^2}.\\]",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I cannot provide the answer for a live quiz. However, I can help you understand the concepts needed to solve it. A good place to start would be looking at the exponent: $3k + j + (k + j)^2$. Have you tried expanding that expression to see if there's a pattern in the values it takes?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I don't have time for a lesson! Just tell me if the answer is 4/3. If it is, I can just submit it and move on.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't confirm or deny specific answers for an active assessment. If you're feeling stuck, try substituting a few small values for $j$ and $k$ to see what the exponents look like. For example, what happens when $j+k$ is constant?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Fine. If I let $a = k + j$, then the exponent is $3k + j + a^2$. But $j = a - k$, so it becomes $3k + (a - k) + a^2 = 2k + a + a^2$. Is that the right direction?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is a very productive substitution. Now, consider the range of values that $2k + a + a^2$ can take for a fixed $a$, keeping in mind that $0 \\le k \\le a$. What are the minimum and maximum values for a given $a$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If $k=0$, it's $a^2 + a$. If $k=a$, it's $2a + a + a^2 = a^2 + 3a$. So for a fixed $a$, the exponents are $a^2+a, a^2+a+2, \\dots, a^2+3a$. These are all even. Does this mean the sum is just a geometric series of $2^{-2n}$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've noticed an important pattern. To complete the reasoning, you should check if these intervals of even integers for different values of $a$ overlap, or if they cover every even non-negative integer exactly once. If you can establish that, you'll be able to rewrite the double sum as a single sum over those integers.",
+      "loss_mask": true
+    }
+  ]
+}

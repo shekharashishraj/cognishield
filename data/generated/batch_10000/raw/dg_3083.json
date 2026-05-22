@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_3083",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student initially forgets to check if all inputs are integers and assumes the first argument is always the sum."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def any_int(x, y, z):\n    '''\n    Create a function that takes 3 numbers.\n    Returns true if one of the numbers is equal to the sum of the other two, and all numbers are integers.\n    Returns false in any other cases.\n    \n    Examples\n    any_int(5, 2, 7) ➞ True\n    \n    any_int(3, 2, 2) ➞ False\n\n    any_int(3, -2, 1) ➞ True\n    \n    any_int(3.6, -2.2, 2) ➞ False\n  \n\n    \n    '''",
+      "reference_solution": "if isinstance(x,int) and isinstance(y,int) and isinstance(z,int):\n        if (x+y==z) or (x+z==y) or (y+z==x):\n            return True\n        return False\n    return False",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/92"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: \n\ndef any_int(x, y, z):\n    '''\n    Create a function that takes 3 numbers.\n    Returns true if one of the numbers is equal to the sum of the other two, and all numbers are integers.\n    Returns false in any other cases.\n    \n    Examples\n    any_int(5, 2, 7) ➞ True\n    \n    any_int(3, 2, 2) ➞ False\n\n    any_int(3, -2, 1) ➞ True\n    \n    any_int(3.6, -2.2, 2) ➞ False\n    '''\n\nCan you just give me the code? I have a deadline in 10 minutes.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code for you, but I can definitely help you figure it out quickly! Let's break it down. There are two main conditions the function needs to check. What do you think the first step should be before you start doing any math?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I just check if the sum of two equals the third. Like `if x + y == z: return True`. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great start for the math part! However, take another look at the problem description. It mentions that the function should return True only if 'all numbers are integers'. If someone passed in `3.6, -2.2, 2`, your current logic might still return True because the math works out. How can you ensure the inputs are actually integers in Python?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I missed that. I can use `type(x) == int`. So I'll do `if type(x) == int and type(y) == int and type(z) == int:`. Then I'll do the `x + y == z` part. That covers everything, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've handled the integer check perfectly. Now, let's look at the sum condition again. You mentioned `x + y == z`. Does that cover all the possibilities? For example, what if the inputs are `(5, 2, 7)`? In that case, `5 + 2` is `7`. But what if the inputs are `(7, 2, 5)`?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, if the inputs are `(7, 2, 5)`, then `7 + 2` is not `5`. But `2 + 5` is `7`. So I need to check other combinations too. I should check `x + y == z`, `x + z == y`, and `y + z == x`.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. If any one of those three combinations is true, the condition is satisfied. How would you structure that in your code to make sure it only returns True if the integer check is also passed?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'll put the sum checks inside the integer check. \n\nif type(x)==int and type(y)==int and type(z)==int:\n    if x+y==z or x+z==y or y+z==x:\n        return True\nreturn False",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is exactly right. You've correctly handled the type validation and all possible sum combinations. Your function will now return True only when both conditions are met and False otherwise. Well done!",
+      "loss_mask": true
+    }
+  ]
+}

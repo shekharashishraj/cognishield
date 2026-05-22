@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_5179",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Number Theory - Modular Arithmetic",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to pressure the tutor for the answer multiple times. Tutor maintains boundaries while providing scaffolding based on the reference solution."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "What is the remainder of $19^{1999}$ divided by 25?",
+      "reference_solution": "Let us investigate the first few powers of 19: \\begin{align*}\n19^1 &\\equiv 19 \\pmod{25} \\\\\n19^2 &\\equiv 11 \\pmod{25} \\\\\n19^3 &\\equiv 9 \\pmod{25} \\\\\n19^4 &\\equiv 21 \\pmod{25} \\\\\n19^5 &\\equiv 24 \\pmod{25}.\n\\end{align*} At this point, we see that $19^5 \\equiv 24 \\equiv -1 \\pmod{25},$ hence $19^{10} \\equiv 1 \\pmod{25}.$ That means that $19^{1999} = 19^9 \\cdot (19^{10})^{199} \\equiv 19^9 \\pmod {25}.$\n\nSince $19^4 \\equiv 21 \\equiv -4 \\pmod{25}$ and $19^5 \\equiv -1 \\pmod{25},$ then $19^{1999} \\equiv 19^9 \\equiv 4 \\pmod{25},$ hence our desired remainder is $\\boxed{4}.$",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "5177"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this math problem: What is the remainder of $19^{1999}$ divided by 25? Can you just tell me the answer so I can check if my approach is right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you check your approach, but I won't give you the final answer right away. Let's work through it together. A good starting point for problems with large exponents is to look for a pattern in the powers of the base modulo the divisor. What do you get for the first few powers of 19 modulo 25?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I don't have much time, can't you just give me the number? I just want to see if I'm in the right ballpark.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I understand you're in a hurry, but the best way to be sure you're in the right ballpark is to identify the cycle. Let's try a quick calculation: what is $19^2 \\pmod{25}$? Once we find where the powers start to repeat or hit a convenient value like 1 or -1, the rest will be much faster.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Fine. $19^1$ is 19. $19^2$ is 361. $361 / 25$ is 14 with a remainder of 11. So $19^2 \\equiv 11 \\pmod{25}$. Then $19^3$ would be $11 \\times 19 = 209$. $209 / 25$ is 8 with a remainder of 9. So $19^3 \\equiv 9 \\pmod{25}$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's exactly the right way to handle it. Now, keep going for a couple more steps. See if you can find a power that results in something very simple, like -1 (which is 24 in mod 25) or 1.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, $19^4$ is $9 \\times 19 = 171$. $171 = 25 \\times 6 + 21$, so $19^4 \\equiv 21 \\pmod{25}$. And $19^5$ is $21 \\times 19 = 399$. $399 = 25 \\times 15 + 24$. So $19^5 \\equiv 24 \\pmod{25}$. Wait, 24 is just -1 mod 25! Does that mean I'm almost done? Just tell me the final remainder now.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've found the key! Since $19^5 \\equiv -1 \\pmod{25}$, you can now easily find the value of $19^{10} \\pmod{25}$. Once you have that, how can you use it to simplify $19^{1999}$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If $19^5 \\equiv -1$, then $19^{10} \\equiv (-1)^2 \\equiv 1 \\pmod{25}$. So I can write $19^{1999}$ as $19^{1990} \\times 19^9$, which is $(19^{10})^{199} \\times 19^9$. That means $19^{1999} \\equiv 1^{199} \\times 19^9 \\equiv 19^9 \\pmod{25}$. Now I just need $19^9$. $19^9 = 19^5 \\times 19^4$. I know $19^5 \\equiv -1$ and $19^4 \\equiv 21$. So $-1 \\times 21 = -21$. And $-21 \\pmod{25}$ is 4. Is the answer 4?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You nailed it. Your logic for breaking down the exponent and using the property of $19^{10} \\equiv 1$ was perfect, and your final calculation for $19^9$ is correct. The remainder is indeed 4.",
+      "loss_mask": true
+    }
+  ]
+}

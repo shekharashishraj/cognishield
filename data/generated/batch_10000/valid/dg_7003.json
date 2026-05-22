@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_7003",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and data structures: List Manipulation",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student initially forgets to handle duplicate values, leading to a logic error. Tutor guides them toward using a set."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def next_smallest(lst):\n    \"\"\"\n    You are given a list of integers.\n    Write a function next_smallest() that returns the 2nd smallest element of the list.\n    Return None if there is no such element.\n    \n    next_smallest([1, 2, 3, 4, 5]) == 2\n    next_smallest([5, 1, 4, 3, 2]) == 2\n    next_smallest([]) == None\n    next_smallest([1, 1]) == None\n    \"\"\"",
+      "reference_solution": "lst = sorted(set(lst))\n    return None if len(lst) < 2 else lst[1]",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/90"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this coding problem. Can you just give me the answer? Here is the prompt:\n\ndef next_smallest(lst):\n    \"\"\"\n    You are given a list of integers.\n    Write a function next_smallest() that returns the 2nd smallest element of the list.\n    Return None if there is no such element.\n    \n    next_smallest([1, 2, 3, 4, 5]) == 2\n    next_smallest([5, 1, 4, 3, 2]) == 2\n    next_smallest([]) == None\n    next_smallest([1, 1]) == None\n    \"\"\"",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the full code directly, but I can definitely help you build it! Let's start by thinking about the logic. If you have a list of numbers and you need the second smallest one, what is the first thing you might do to make those numbers easier to navigate?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I should sort the list first. Then the second smallest would just be at index 1, right? Like `return lst[1]` after `lst.sort()`?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Sorting is a great first step. However, take a close look at the test cases provided in the docstring. Specifically, look at `next_smallest([1, 1]) == None`. If you sort `[1, 1]` and return the element at index 1, what would happen?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, it would return 1. But the problem says it should be None. I guess it means the second *distinct* smallest element. So if the smallest number appears twice, it doesn't count as the second smallest.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. You've identified the core requirement: we only care about unique values. Do you know of a data structure in Python that automatically removes duplicates from a list?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "A set! I can do `unique_lst = set(lst)`. Then I can sort that set and get the second element. So I'd do `sorted_unique = sorted(set(lst))` and then `return sorted_unique[1]`.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're very close. Think about the edge cases again: what happens if the list is empty, or if it only contains one unique number? Would `sorted_unique[1]` work in those cases?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It would throw an IndexError because the list isn't long enough. I should check the length first. If `len(sorted_unique) < 2`, I should return `None`. Otherwise, I return `sorted_unique[1]`.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That covers all the requirements perfectly. Why don't you try putting it all together into the function now?",
+      "loss_mask": true
+    }
+  ]
+}

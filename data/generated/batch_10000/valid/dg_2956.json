@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_dg_2956",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Geometry - Triangle Centroids and Altitudes",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The student initially confuses the length of the median with the length of the altitude. The tutor guides them to use similar triangles and Heron's formula to find the height of the triangle first."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "In triangle $ABC$, $AB = 11$, $AC = 13$, and $BC = 20$.  The medians $AD$, $BE$, and $CF$ of triangle $ABC$ intersect at the centroid $G$.  Let $P$ be the foot of the altitude from $G$ to $BC$.  Find $GP$.\n\n[asy]\nunitsize(0.3 cm);\n\npair A, B, C, D, E, F, G, P;\n\nA = (44/5,33/5);\nB = (0,0);\nC = (20,0);\nD = (B + C)/2;\nE = (C + A)/2;\nF = (A + B)/2;\nG = (A + B + C)/3;\nP = (G + reflect(B,C)*(G))/2;\n\ndraw(A--B--C--cycle);\ndraw(A--D);\ndraw(B--E);\ndraw(C--F);\ndraw(G--P);\n\nlabel(\"$A$\", A, dir(90));\nlabel(\"$B$\", B, SW);\nlabel(\"$C$\", C, SE);\nlabel(\"$D$\", D, SE);\nlabel(\"$E$\", E, NE);\nlabel(\"$F$\", F, NW);\nlabel(\"$G$\", G, NE);\nlabel(\"$P$\", P, SSW);\n[/asy]",
+      "reference_solution": "Let $Q$ be the foot of the altitude from $A$ to $BC$.  Then triangles $AQD$ and $GPD$ are similar.  Furthermore, \\[\\frac{GP}{AQ} = \\frac{GD}{AD} = \\frac{1}{3},\\]so to find $GP$, we can find $AQ$.\n\n[asy]\nunitsize(0.3 cm);\n\npair A, B, C, D, E, F, G, P, Q;\n\nA = (44/5,33/5);\nB = (0,0);\nC = (20,0);\nD = (B + C)/2;\nE = (C + A)/2;\nF = (A + B)/2;\nG = (A + B + C)/3;\nP = (G + reflect(B,C)*(G))/2;\nQ = (A + reflect(B,C)*(A))/2;\n\ndraw(A--B--C--cycle);\ndraw(A--D);\ndraw(B--E);\ndraw(C--F);\ndraw(G--P);\ndraw(A--Q);\n\nlabel(\"$A$\", A, dir(90));\nlabel(\"$B$\", B, SW);\nlabel(\"$C$\", C, SE);\nlabel(\"$D$\", D, SE);\nlabel(\"$E$\", E, NE);\nlabel(\"$F$\", F, NW);\nlabel(\"$G$\", G, NE);\nlabel(\"$P$\", P, S);\nlabel(\"$Q$\", Q, SSW);\n[/asy]\n\nThe semi-perimeter of the triangle is $(11 + 13 + 20)/2 = 22$, so by Heron's formula, the area of triangle $ABC$ is $$\\sqrt{22(22 - 11)(22 - 13)(22 - 20)} = 66.$$Hence, the height of triangle $ABC$ with respect to base $BC$ is $AQ = 2 \\cdot 66/BC = 2 \\cdot 66/20 = 33/5$.  Therefore, $GP = AQ/3 = (33/5)/3 = \\boxed{\\frac{11}{5}}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "1846"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: In triangle $ABC$, $AB = 11$, $AC = 13$, and $BC = 20$. The medians $AD$, $BE$, and $CF$ of triangle $ABC$ intersect at the centroid $G$. Let $P$ be the foot of the altitude from $G$ to $BC$. Find $GP$.\n\n[asy]\nunitsize(0.3 cm);\n\npair A, B, C, D, E, F, G, P;\n\nA = (44/5,33/5);\nB = (0,0);\nC = (20,0);\nD = (B + C)/2;\nE = (C + A)/2;\nF = (A + B)/2;\nG = (A + B + C)/3;\nP = (G + reflect(B,C)*(G))/2;\n\ndraw(A--B--C--cycle);\ndraw(A--D);\ndraw(B--E);\ndraw(C--F);\ndraw(G--P);\n\nlabel(\"$A$\", A, dir(90));\nlabel(\"$B$\", B, SW);\nlabel(\"$C$\", C, SE);\nlabel(\"$D$\", D, SE);\nlabel(\"$E$\", E, NE);\nlabel(\"$F$\", F, NW);\nlabel(\"$G$\", G, NE);\nlabel(\"$P$\", P, SSW);\n[/asy]\n\nI think I know how to start. Since $G$ is the centroid, it divides the median $AD$ in a 2:1 ratio. So $GD = 1/3 AD$. Since $P$ is the altitude from $G$, is $GP$ just $1/3$ of the length of the median $AD$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're absolutely correct that the centroid $G$ divides the median $AD$ such that $GD = \\frac{1}{3}AD$. However, be careful with the difference between a median and an altitude. \n\nIs the median $AD$ necessarily perpendicular to the base $BC$? If it's not, how does the length of the segment $GD$ compare to the length of the perpendicular segment $GP$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, you're right. $AD$ is just the line to the midpoint, not necessarily the height. So $GP$ is the leg of a right triangle where $GD$ is the hypotenuse. But they are still proportional, right? If $GD$ is $1/3$ of $AD$, then $GP$ should be $1/3$ of the altitude from $A$ to $BC$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on! If you let $Q$ be the foot of the altitude from $A$ to $BC$, then triangles $AQD$ and $GPD$ are similar. This confirms that $GP = \\frac{1}{3}AQ$. \n\nNow the problem reduces to finding the length of the altitude $AQ$. Given the side lengths of the triangle, what approach would you use to find the height?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I can use Heron's formula to find the area first, then use the area to find the height. \n\nSides are 11, 13, 20. Semi-perimeter $s = (11+13+20)/2 = 22$.\nArea = $\\sqrt{22(22-11)(22-13)(22-20)} = \\sqrt{22 \\cdot 11 \\cdot 9 \\cdot 2} = \\sqrt{4356} = 66$.\n\nNow, Area = $1/2 \\cdot BC \\cdot AQ$, so $66 = 1/2 \\cdot 20 \\cdot AQ$, which means $66 = 10 \\cdot AQ$. So $AQ = 6.6$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your area calculation and your value for $AQ$ are correct. You're almost there! What is the final step to find $GP$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Since $GP = 1/3 AQ$, then $GP = 6.6 / 3 = 2.2$. In fraction form, that's $11/5$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's correct! $GP = 11/5$. You correctly identified the relationship between the centroid's altitude and the triangle's altitude and applied Heron's formula perfectly. Well done!",
+      "loss_mask": true
+    }
+  ]
+}

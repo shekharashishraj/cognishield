@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_5987",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Function Parity",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The student incorrectly attempts to determine parity by counting the number of odd/even functions in a composition. The tutor guides them through the formal substitution process to discover the correct parity without stating the answer."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Let $f(x)$ be an odd function, and let $g(x)$ be an even function.  Is $f(f(g(f(g(f(x))))))$ even, odd, or neither?\n\nEnter \"odd\", \"even\", or \"neither\".",
+      "reference_solution": "We have that\n\\[f(f(g(f(g(f(-x)))))) = f(f(g(f(g(-f(x)))))) = f(f(g(f(g(f(x)))))),\\]so the function is $\\boxed{\\text{even}}.$\n\nMore generally, if we have a composition of functions, and at least one of the functions is even, then the whole composition of functions is even.",
+      "seed_dataset": "HuggingFaceH4/MATH-500/test",
+      "seed_example_id": "test/intermediate_algebra/128.json"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this math problem: Let $f(x)$ be an odd function, and let $g(x)$ be an even function.  Is $f(f(g(f(g(f(x))))))$ even, odd, or neither?\n\nEnter \"odd\", \"even\", or \"neither\".\n\nI think the answer is 'odd' because there are four $f$'s and only two $g$'s, so the oddness should dominate. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It's common to try to find a pattern by counting, but parity in function composition doesn't work the same way as addition or multiplication. To verify your answer, could you try applying the formal definition of even and odd functions to the entire expression?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Right, the definition. So I should replace $x$ with $-x$ and see what happens. The innermost function is $f(x)$, and since $f$ is odd, $f(-x) = -f(x)$. So the whole thing becomes $f(f(g(f(g(-f(x))))))$. Now what?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is the correct first step. Now, move one layer outward. The result $-f(x)$ is now the input for the function $g$. Given that $g$ is an even function, how does $g(-f(x))$ compare to $g(f(x))$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Since $g$ is even, $g(-u) = g(u)$. So $g(-f(x))$ is just $g(f(x))$. That means the expression simplifies to $f(f(g(f(g(f(x))))))$. Wait, that's the exact same expression I started with!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. You've found that replacing $x$ with $-x$ in the entire composition returns the original function. Based on the definitions of parity, what does this tell you about whether the function is even, odd, or neither?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If $H(-x) = H(x)$, then the function is even. So the answer must be 'even'. My counting logic was wrong!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got it. Your step-by-step derivation shows why the formal definition is the safest approach. As a tip for the future: if any function in a composition chain is even, it often 'absorbs' the negative sign of everything inside it, which heavily influences the final parity.",
+      "loss_mask": true
+    }
+  ]
+}

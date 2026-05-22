@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_9378",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning - Floating Point Arithmetic",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to use int() conversion which fails for negative numbers or precision, but specifically fails the logic of returning only the decimal part in a concise way. Tutor guides them toward the modulo operator."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "def truncate_number(number: float) -> float:\n    \"\"\" Given a positive floating point number, it can be decomposed into\n    and integer part (largest integer smaller than given number) and decimals\n    (leftover part always smaller than 1).\n\n    Return the decimal part of the number.\n    >>> truncate_number(3.5)\n    0.5\n    \"\"\"",
+      "reference_solution": "return number % 1.0",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/2"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem:\n\ndef truncate_number(number: float) -> float:\n    \"\"\" Given a positive floating point number, it can be decomposed into\n    and integer part (largest integer smaller than given number) and decimals\n    (leftover part always smaller than 1).\n\n    Return the decimal part of the number.\n    >>> truncate_number(3.5)\n    0.5\n    \"\"\"\n\nI think the answer is `return int(number)`, but I'm not sure. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Let's look at that closely. If you pass 3.5 into `int(3.5)`, what value does Python return, and does that match the goal of the function?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, `int(3.5)` returns 3. I guess I forgot that `int()` just chops off the decimal part. So it returns the integer part, not the decimal part. My bad!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. You've identified that `int(number)` gives you the first part of the decomposition. Since the problem asks for the 'leftover part', how could you use that integer part to find the remainder?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could subtract it! Like `return number - int(number)`. Does that work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is sound for positive numbers. However, in programming, there is often a specific operator designed to find the remainder after a division. Do you know which operator that is?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Is it the modulo operator `%`? I usually use it for integers, like `10 % 3` is 1. Can I use it with floats too?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, you can! Think about what happens when you take a number and find the remainder after dividing by 1.0. How would you write that in a return statement?",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "conversation_id": "mt_dg_8349",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning: Modulo operations with negative numbers",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student struggles with how Python's modulo operator handles negative integers; tutor guides them toward using absolute values to isolate the unit digit."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "def multiply(a, b):\n    \"\"\"Complete the function that takes two integers and returns \n    the product of their unit digits.\n    Assume the input is always valid.\n    Examples:\n    multiply(148, 412) should return 16.\n    multiply(19, 28) should return 72.\n    multiply(2020, 1851) should return 0.\n    multiply(14,-15) should return 20.\n    \"\"\"",
+      "reference_solution": "return abs(a % 10) * abs(b % 10)",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/97"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this coding problem. Can you just give me the answer so I can finish my homework?\n\ndef multiply(a, b):\n    \"\"\"Complete the function that takes two integers and returns \n    the product of their unit digits.\n    Assume the input is always valid.\n    Examples:\n    multiply(148, 412) should return 16.\n    multiply(19, 28) should return 72.\n    multiply(2020, 1851) should return 0.\n    multiply(14,-15) should return 20.\n    \"\"\"",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the full solution, but I'd be happy to help you figure it out! Let's start with the logic. To get the 'unit digit' (the last digit) of a number, what mathematical operator usually comes to mind?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The modulo operator, right? Like `a % 10` and `b % 10`. So I'll just do `return (a % 10) * (b % 10)`.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great start and works perfectly for positive numbers. However, take a closer look at the last example in the problem statement: `multiply(14, -15)`. In Python, what happens when you perform `-15 % 10`?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, wouldn't it be -5? Because 15 divided by 10 leaves 5, and it's negative.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is a very common assumption! However, Python's modulo operator handles negative numbers differently than some other languages. It always returns a result with the same sign as the divisor (the 10 in this case). Try running `-15 % 10` in a Python console and see what you get.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh! It gave me 5. That's weird. But the example says `multiply(14, -15)` should return 20. If `14 % 10` is 4 and `-15 % 10` is 5, then 4 * 5 is 20. So my code `(a % 10) * (b % 10)` actually works for this case too?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It does work for that specific case because the result of `-15 % 10` happened to be the positive digit we needed. But what if both numbers were negative? For example, if the input was `-14` and `-15`, the unit digits are 4 and 5, so the product should be 20. What would `(-14 % 10) * (-15 % 10)` result in?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let me check... `-14 % 10` is 6. So 6 * 5 would be 30. That's wrong! I need the 4, not the 6. How do I make sure I always get the actual digit regardless of the sign?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. The issue is that the modulo of a negative number in Python doesn't directly give you the absolute value of the last digit. Is there a function you can use to ensure you are working with the positive version of the number before or after you find the remainder?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could use `abs()`! So if I do `abs(a % 10) * abs(b % 10)`, would that fix it for everything?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the right idea using `abs()`. Think about whether you should apply `abs()` to the number before the modulo or to the result of the modulo. Try testing your logic with a few more negative examples to be sure it's robust!",
+      "loss_mask": true
+    }
+  ]
+}

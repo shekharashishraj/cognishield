@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_dg_2780",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Number Theory - Combinatorics and Carry Operations",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor correctly guides the student through the carry-over logic, identifying that the student initially ignored the units digit carry and the special case of the number 2000."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "For how many pairs of consecutive integers in $\\{1000,1001,1002,\\ldots,2000\\}$ is no carrying required when the two integers are added?",
+      "reference_solution": "Consider what carrying means: If carrying is needed to add two numbers with digits $abcd$ and $efgh$, then $h+d\\ge 10$ or $c+g\\ge 10$ or $b+f\\ge 10$. 6. Consider $c \\in \\{0, 1, 2, 3, 4\\}$. $1abc + 1ab(c+1)$ has no carry if $a, b \\in \\{0, 1, 2, 3, 4\\}$. This gives $5^3=125$ possible solutions.\nWith $c \\in \\{5, 6, 7, 8\\}$, there obviously must be a carry. Consider $c = 9$. $a, b \\in \\{0, 1, 2, 3, 4\\}$ have no carry. This gives $5^2=25$ possible solutions. Considering $b = 9$, $a \\in \\{0, 1, 2, 3, 4, 9\\}$ have no carry. Thus, the solution is $125 + 25 + 6=\\boxed{156}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "5252"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: For how many pairs of consecutive integers in $\\{1000,1001,1002,\\ldots,2000\\}$ is no carrying required when the two integers are added? I think the answer is 125. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't tell you if that's correct just yet. Could you walk me through how you arrived at 125? I'd like to see your reasoning first.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, the numbers are mostly $1abc$ and $1ab(c+1)$. For there to be no carry, the digits $a, b,$ and $c$ must all be less than 5. Since there are 5 choices for each (0, 1, 2, 3, 4), I did $5 \\times 5 \\times 5 = 125$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic for the cases where $c < 5$ is spot on. However, you've assumed that $c$ must be less than 5 for there to be no carry. Is it possible to have no carry even if $c$ is larger? Think about what happens when $c=9$.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, if $c=9$, then the next number's units digit is 0. So $9+0=9$, which is less than 10. That means there's no carry in the units place! But wouldn't there be a carry in the tens place because $c$ becomes $c+1$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great observation. If $c=9$, the units digit addition is $9+0$, which is fine. Now look at the tens digit. If the first number is $1ab9$, the next is $1a(b+1)0$. For there to be no carry in the tens place, what must be true about $b$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If the tens digit is $b$ and the next is $b+1$, then $b + (b+1)$ must be less than 10. So $2b+1 < 10$, which means $2b < 9$, so $b$ can be 0, 1, 2, 3, or 4. That's another 5 options. And $a$ also has to be less than 5, so that's $5 \\times 5 = 25$ more pairs. So $125 + 25 = 150$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're making great progress. You've handled the cases where $c < 5$ and the case where $c=9$ and $b < 5$. But let's dig deeper into that $c=9$ scenario. Is it possible for $b$ to be 9 as well without causing a carry?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If $b=9$, then the first number is $1a99$ and the second is $1a(9+1)0$, which is $1(a+1)00$. The tens place addition would be $9+0=9$. The hundreds place would be $a + (a+1)$. For that to be less than 10, $a$ can be 0, 1, 2, 3, 4. That's 5 more. Also, what if $a$ is also 9? Then it's $1999 + 2000$. Let's check: $9+0=9, 9+0=9, 9+0=9, 1+2=3$. No carries! That's 6 more pairs. So $150 + 6 = 156$. Is this the correct answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that is correct! You carefully identified the standard cases, the boundary case where the units digit resets, and the cascading carries that occur when multiple digits are 9. Well done.",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_2927",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and data structures - Dynamic Programming",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to maximize average by greedily picking the highest neighbor, failing to realize path length is constant. Tutor redirects them to DP."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Given a square matrix of size N*N given as a list of lists, where each cell is associated with a specific cost. A path is defined as a specific sequence of cells that starts from the top-left cell move only right or down and ends on bottom right cell. We want to find a path with the maximum average over all existing paths. Average is computed as total cost divided by the number of cells visited in the path.",
+      "reference_solution": "def maxAverageOfPath(cost):\n  N = len(cost)\n  dp = [[0 for i in range(N + 1)] for j in range(N + 1)]\n  dp[0][0] = cost[0][0]\n  for i in range(1, N):\n    dp[i][0] = dp[i - 1][0] + cost[i][0]\n  for j in range(1, N):\n    dp[0][j] = dp[0][j - 1] + cost[0][j]\n  for i in range(1, N):\n    for j in range(1, N):\n      dp[i][j] = max(dp[i - 1][j],\n                     dp[i][j - 1]) + cost[i][j]\n  return dp[N - 1][N - 1] / (2 * N - 1)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "721"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: Given a square matrix of size N*N given as a list of lists, where each cell is associated with a specific cost. A path is defined as a specific sequence of cells that starts from the top-left cell move only right or down and ends on bottom right cell. We want to find a path with the maximum average over all existing paths. Average is computed as total cost divided by the number of cells visited in the path. Can you just give me the code for this? I'm in a rush.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code for you, but I'd be happy to help you work through the logic so you can implement it yourself! Let's start by looking at the objective: maximizing the average. In this specific problem, does the number of cells visited change depending on the path you take from the top-left to the bottom-right?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think it does. If I take a path that zig-zags more, it might be longer? Wait, the rules say I can only move right or down. Even then, I thought I should use a greedy approach—at each cell, just pick the neighbor with the higher cost to keep the average high. Would that work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a common intuition, but let's test it. If you pick a high-cost cell now, it might force you into a region of the matrix with very low-cost cells later. Greedy choices don't always lead to a global maximum. Now, back to the path length: if you are in an N x N matrix and you can only move right or down to get from (0,0) to (N-1, N-1), how many steps total will you always take?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let me see... to get to the bottom, I need N-1 down moves. To get to the right, I need N-1 right moves. Plus the starting cell. So it's always (N-1) + (N-1) + 1 = 2N - 1 cells. Oh! If the number of cells is always the same, then maximizing the average is actually the same as maximizing the total sum of the costs!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly! You've identified a key simplification. Since the divisor (the path length) is constant for all valid paths, the problem reduces to finding the path with the maximum total sum. Given that you have overlapping subproblems (multiple paths leading to the same cell), what algorithmic technique would be most efficient here?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "This looks like a Dynamic Programming problem. I can create a 2D array where each cell stores the maximum sum to reach that point. But I'm not sure how to handle the edges of the matrix. Do I just initialize them to zero?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're on the right track with DP. For the edges, think about the movement restrictions. If you are on the top row, you can only have arrived from the left. If you are on the leftmost column, you can only have arrived from above. How would you express the value of a cell in the top row based on the cell before it?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, so for the first row, `dp[0][j] = dp[0][j-1] + cost[0][j]`. And for the first column, `dp[i][0] = dp[i-1][0] + cost[i][0]`. Then for any other cell `dp[i][j]`, I just take the max of the cell above it and the cell to its left, then add the current cell's cost. After filling the table, I just divide the bottom-right value by (2N-1). Does that sound right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic for the transitions and the final average calculation is spot on. You've successfully translated the problem from maximizing an average to a maximum path sum problem using dynamic programming. Why don't you try implementing that logic in Python now?",
+      "loss_mask": true
+    }
+  ]
+}

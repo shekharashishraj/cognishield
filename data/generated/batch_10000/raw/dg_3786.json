@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_3786",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Polynomials",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to use Lagrange Interpolation directly on a rational function, tutor redirects to creating a helper polynomial to handle the denominator."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "A cubic polynomial $p(x)$ satisfies\n\\[p(n) = \\frac{1}{n^2}\\]for $n = 1, 2, 3,$ and $4.$  Find $p(5).$",
+      "reference_solution": "Let $q(x) = x^2 p(x) - 1.$  Then $q(x)$ is a polynomial of degree 5, and $q(n) = 0$ for $n = 1,$ 2, 3, and 4, so\n\\[q(x) = (ax + b)(x - 1)(x - 2)(x - 3)(x - 4)\\]for some constants $a$ and $b.$\n\nWe know that $q(0) = 0^2 \\cdot p(0) - 1 = -1.$  But setting $x = 0$ in the equation above, we get\n\\[q(0) = 24b,\\]so $b = -\\frac{1}{24}.$\n\nWe also know that the coefficient of $x$ in $q(x) = x^2 p(x) - 1$ is 0.  The coefficient of $x$ in\n\\[q(x) = (ax + b)(x - 1)(x - 2)(x - 3)(x - 4)\\]is\n\\begin{align*}\n&a(-1)(-2)(-3)(-4) + b(-2)(-3)(-4) \\\\\n&\\quad + b(-1)(-3)(-4) + b(-1)(-2)(-4) + b(-1)(-2)(-3) \\\\\n&= 24a - 50b,\n\\end{align*}so $a = \\frac{50b}{24} = -\\frac{25}{288}.$  Hence,\n\\[q(x) = \\left( -\\frac{25}{288} x - \\frac{1}{24} \\right) (x - 1)(x - 2)(x - 3)(x - 4) = -\\frac{(25x + 12)(x - 1)(x - 2)(x - 3)(x - 4)}{288}.\\]Then\n\\[q(5) = -\\frac{137}{12},\\]so $p(x) = \\frac{q(5) + 1}{25} = \\boxed{-\\frac{5}{12}}.$",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "2352"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: A cubic polynomial $p(x)$ satisfies\n\\[p(n) = \\frac{1}{n^2}\\]for $n = 1, 2, 3,$ and $4.$  Find $p(5).$\n\nCan you just tell me the answer? I have a deadline in an hour.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the final answer directly, but I can help you work through it quickly so you understand the method! \n\nTo start, we have a cubic polynomial $p(x)$ that equals $1/n^2$ for four specific values. Usually, when we see a polynomial equal to a fraction, it's helpful to clear the denominator. What happens if you multiply both sides by $n^2$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If I multiply by $n^2$, I get $n^2 p(n) = 1$. So I can just use Lagrange Interpolation on the points $(1, 1), (2, 1/4), (3, 1/9), (4, 1/16)$ to find $p(x)$, and then plug in 5. Is that the right way?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Using Lagrange interpolation on those points would technically work, but it will lead to some very messy fractions and a lot of algebra. There's a more elegant way using the observation you just made.\n\nIf $n^2 p(n) = 1$ for $n=1, 2, 3, 4$, consider the expression $q(x) = x^2 p(x) - 1$. What can you say about the roots of this new polynomial $q(x)$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Since $q(n) = n^2 p(n) - 1$, and we know $n^2 p(n) = 1$ for $n=1, 2, 3, 4$, then $q(1)=0, q(2)=0, q(3)=0,$ and $q(4)=0$. So $(x-1)(x-2)(x-3)(x-4)$ must be factors of $q(x)$. \n\nWait, $p(x)$ is a cubic, so $x^2 p(x)$ is degree 5. That means $q(x)$ is degree 5. I have 4 roots, but I need 5. Does that mean there's another root I'm missing, or is $q(x)$ just $(x-1)(x-2)(x-3)(x-4)$ times some linear term $(ax+b)$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got it! Since $q(x)$ is degree 5 and you've identified four roots, the remaining factor must indeed be a linear term $(ax + b)$. \n\nSo we have $q(x) = (ax + b)(x - 1)(x - 2)(x - 3)(x - 4)$. Now, we need to find $a$ and $b$. Is there any other value of $x$ for which we can determine the value of $q(x)$ without knowing $p(x)$ explicitly?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If I plug in $x=0$, then $q(0) = 0^2 \times p(0) - 1 = -1$. \nUsing the factored form: $q(0) = (a(0) + b)(0-1)(0-2)(0-3)(0-4) = b(-1)(-2)(-3)(-4) = 24b$.\nSo $24b = -1$, which means $b = -1/24$. \n\nNow I just need $a$. How do I find $a$? I don't know $p(0)$ or any other values.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're making great progress. Think about the original definition $q(x) = x^2 p(x) - 1$. \n\nIf you were to expand $x^2 p(x) - 1$, what is the coefficient of the $x$ term? Since $p(x)$ is a polynomial, $x^2 p(x)$ only has terms with powers $x^2, x^3, x^4, x^5$. What does that tell you about the linear coefficient of $q(x)$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh! The coefficient of $x$ in $q(x)$ must be 0 because $x^2 p(x)$ has no $x$ term and the $-1$ is just a constant. \n\nSo I can expand $(ax + b)(x - 1)(x - 2)(x - 3)(x - 4)$ and set the coefficient of $x$ to 0. \nLet $R(x) = (x - 1)(x - 2)(x - 3)(x - 4)$. \n$q(x) = (ax + b)R(x) = ax R(x) + b R(x)$.\nThe coefficient of $x$ in $q(x)$ is $a \times R(0) + b \times R'(0)$. \n$R(0) = (-1)(-2)(-3)(-4) = 24$. \n$R'(0)$ is the sum of products of roots taken 3 at a time: $(-2)(-3)(-4) + (-1)(-3)(-4) + (-1)(-2)(-4) + (-1)(-2)(-3) = -24 - 12 - 8 - 6 = -50$. \nSo $24a - 50b = 0$. \nSince $b = -1/24$, then $24a = 50(-1/24)$, so $a = -50 / (24 \times 24) = -50 / 576 = -25/288$.\n\nNow I have $a$ and $b$. I can find $q(5)$, then use $q(5) = 5^2 p(5) - 1$ to solve for $p(5)$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is exactly the correct logic. You've successfully handled the degree of the polynomial and used the properties of the coefficients to find the unknowns. \n\nGo ahead and calculate $q(5)$ and solve for $p(5)$. Let me know what you get!",
+      "loss_mask": true
+    }
+  ]
+}

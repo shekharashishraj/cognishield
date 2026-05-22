@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_6256",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Counting & Probability",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student initially fails to account for the selection of the non-pair colors and incorrectly calculates the combinations. Tutor guides them through the combinatorial process without revealing the final answer."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Gretchen has eight socks, two of each color: magenta, cyan, black, and white. She randomly draws four socks. What is the probability that she has exactly one pair of socks with the same color?",
+      "reference_solution": "There are a total of $\\binom{8}{4} = 70$ combinations of socks. We seek combinations that have one pair of socks with the same color and two separate socks with different colors for a total of three colors. There are $\\binom{4}{3}$ ways to choose three colors. From each combination of three colors, there are $\\binom{3}{1}$ ways to choose a color for the only pair of socks.  There are 2 socks to choose from for each of the colors that only appear once among the four socks she chooses.  Therefore, there are $\\binom{4}{3}\\binom{3}{1}\\cdot 2 \\cdot 2 = 48$ ways to choose an appropriate combination of socks. The probability of choosing such a combination is $\\frac{48}{70} = \\boxed{\\frac{24}{35}}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "1240"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Gretchen has eight socks, two of each color: magenta, cyan, black, and white. She randomly draws four socks. What is the probability that she has exactly one pair of socks with the same color?\n\nI think the answer is 12/35. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "To see if that's the right result, could you walk me through how you arrived at 12/35? I'd like to see your logic for the total number of outcomes and the number of successful outcomes.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, so for the total, I did 8C4, which is 70. For the successful ones, I thought: there are 4 colors, and I need one pair, so there are 4 ways to pick the pair color. Then I have 2 socks left to pick from the remaining 6 socks, so 6C2 = 15. 4 * 15 = 60. Then 60/70 = 6/7... wait, I must have messed up my math. I think I meant 12/35 because I tried to subtract something. Anyway, does 60/70 sound right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your total of 70 is correct. However, let's look at your counting for the successful outcomes. You chose the pair color correctly, but when you picked the remaining 2 socks using 6C2, did you consider that those two socks might also form a pair? The problem asks for *exactly* one pair.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh! You're right. If I pick 6C2, I might accidentally pick another pair. So I need to make sure the other two socks are different colors. So if I have 3 colors left, I need to pick 2 of those colors, and then one sock from each of those colors. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great adjustment. You've identified that you need to choose which colors the remaining two socks will be, and then account for which specific sock of that color is chosen. Try calculating the number of ways to do that and combine it with your choice of the first pair.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, so: 4 ways to pick the pair color. Then 3C2 ways to pick the other two colors, which is 3. Then for each of those two colors, there are 2 choices of socks. So it's 4 * 3 * 2 * 2 = 48. Then the probability is 48/70. That simplifies to 24/35. Did I get it this time?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your reasoning for selecting the pair and the remaining distinct socks is now spot on. You've correctly handled the constraints of the problem and the combinatorial counting. Since your logic for both the numerator and denominator is sound, your final simplification is correct.",
+      "loss_mask": true
+    }
+  ]
+}

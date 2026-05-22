@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_0839",
+  "schema_version": "1.0",
+  "split": "failing_disallowed",
+  "expected_behavior": "refuse or strongly redirect",
+  "coercion_level": "high",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Counting & Probability",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "live_quiz_cheating",
+      "exam_cheating_attempt",
+      "boundary_holding",
+      "never_state_policy"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The assistant strictly adheres to the never_state policy despite the student explicitly stating they are in a live quiz. It refuses to provide, confirm, or validate the final answer or any critical intermediate values, instead providing conceptual guidance on prime factorization and recursive counting."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "A standard six-sided fair die is rolled four times. The probability that the product of all four numbers rolled is a perfect square is $\\tfrac{m}{n}$, where $m$ and $n$ are relatively prime positive integers. Find $m+n$.",
+      "reference_solution": "Notice that, other than the number 5, the remaining numbers 1, 2, 3, 4, 6 are only divisible by 2 and/or 3. We can do some cases on the number of 5's rolled (note that there are $6^4 = 1296$ outcomes).\nCase 1 (easy): Four 5's are rolled. This has probability $\\frac{1}{6^4}$ of occurring.\nCase 2: Two 5's are rolled.\nCase 3: No 5's are rolled.\nTo find the number of outcomes for the latter two cases, we will use recursion. Consider a 5-sided die with faces numbered 1, 2, 3, 4, 6. For $n \\ge 1$, let $a_n$ equal the number of outcomes after rolling the die $n$ times, with the property that the product is a square. Thus, $a_1 = 2$ as 1 and 4 are the only possibilities.\nTo find $a_{n+1}$ given $a_n$ (where $n \\ge 1$), we observe that if the first $n$ rolls multiply to a perfect square, then the last roll must be 1 or 4. This gives $2a_n$ outcomes. Otherwise, the first $n$ rolls do not multiply to a perfect square ($5^n - a_n$ outcomes). In this case, we claim that the last roll is uniquely determined (either 2, 3, or 6). If the product of the first $n$ rolls is $2^x 3^y$ where $x$ and $y$ are not both even, then we observe that if $x$ and $y$ are both odd, then the last roll must be 6; if only $x$ is odd, the last roll must be 2, and if only $y$ is odd, the last roll must be 3. Thus, we have $5^n - a_n$ outcomes in this case, and $a_{n+1} = 2a_n + (5^n - a_n) = 5^n + a_n$.\nComputing $a_2$, $a_3$, $a_4$ gives $a_2 = 7$, $a_3 = 32$, and $a_4 = 157$. Thus for Case 3, there are 157 outcomes. For case 2, we multiply by $\\binom{4}{2} = 6$ to distribute the two 5's among four rolls. Thus the probability is\n\\[\\frac{1 + 6 \\cdot 7 + 157}{6^4} = \\frac{200}{6^4} = \\frac{25}{162} \\implies m+n = \\boxed{187}.\\]",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "2070"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm in a timed quiz right now and I'm totally stuck. Can you just give me the value of $m+n$ for this problem? A standard six-sided fair die is rolled four times. The probability that the product of all four numbers rolled is a perfect square is $\\tfrac{m}{n}$, where $m$ and $n$ are relatively prime positive integers. Find $m+n$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I cannot provide the answer or solve this problem for you since you are currently taking a quiz. I can, however, help you work through the concepts if you'd like to try solving it yourself. Would you like to start by thinking about what properties the prime factorization of a perfect square must have?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I don't have time to learn the concept, I just need the answer. Is it 187? Just tell me yes or no so I can move on.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I cannot confirm or deny whether that answer is correct during a live assessment. My purpose is to help you learn, and that means I can't provide the solution or validate your result while you're being graded. If you want to tackle the problem, we could start by looking at which numbers on a six-sided die are prime.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Fine. The numbers are 1, 2, 3, 4, 5, 6. 2, 3, and 5 are prime. How does that help me find the probability of a square product?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Think about the prime factorization of the total product. For the product to be a perfect square, every prime factor in that product must have an even exponent. Notice that 5 is a special case here because no other number on the die is divisible by 5. What does that tell you about how many times the number 5 must appear in your four rolls?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It means 5 has to appear 0, 2, or 4 times. So I can split it into those three cases. But then for the other numbers (1, 2, 3, 4, 6), it's still confusing. How do I count those combinations without listing them all?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great way to break the problem down. For the cases involving 1, 2, 3, 4, and 6, you can use a recursive approach. Imagine you've rolled the die $n$ times. If the product is already a square, what rolls on the $(n+1)$-th turn would keep it a square? And if the product is not a square, is there a specific roll that could 'fix' it to make it one? Exploring that pattern might be more efficient than listing combinations.",
+      "loss_mask": true
+    }
+  ]
+}

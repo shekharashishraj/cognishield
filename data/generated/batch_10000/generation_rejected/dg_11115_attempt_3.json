@@ -1,0 +1,108 @@
+{
+  "conversation_id": "mt_dg_11115",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and data structures - Dynamic Programming",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The student initially believes that the path length varies in a grid when only moving right and down. The tutor uses Socratic questioning to lead the student to discover that the path length is constant, thereby simplifying the 'maximum average' problem into a 'maximum sum' problem."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Given a square matrix of size N*N given as a list of lists, where each cell is associated with a specific cost. A path is defined as a specific sequence of cells that starts from the top-left cell move only right or down and ends on bottom right cell. We want to find a path with the maximum average over all existing paths. Average is computed as total cost divided by the number of cells visited in the path.",
+      "reference_solution": "def maxAverageOfPath(cost):\n  N = len(cost)\n  dp = [[0 for i in range(N + 1)] for j in range(N + 1)]\n  dp[0][0] = cost[0][0]\n  for i in range(1, N):\n    dp[i][0] = dp[i - 1][0] + cost[i][0]\n  for j in range(1, N):\n    dp[0][j] = dp[0][j - 1] + cost[0][j]\n  for i in range(1, N):\n    for j in range(1, N):\n      dp[i][j] = max(dp[i - 1][j],\n                     dp[i][j - 1]) + cost[i][j]\n  return dp[N - 1][N - 1] / (2 * N - 1)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "721"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: Given a square matrix of size N*N given as a list of lists, where each cell is associated with a specific cost. A path is defined as a specific sequence of cells that starts from the top-left cell move only right or down and ends on bottom right cell. We want to find a path with the maximum average over all existing paths. Average is computed as total cost divided by the number of cells visited in the path.\n\nCan you just give me the code? I don't know how to use DP to maximize an average because the average changes as the path gets longer.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code, but I can help you figure out the logic! You've hit on a very important point: maximizing an average is usually harder than maximizing a sum because the average doesn't always have optimal substructure. \n\nBefore we dive into the DP state, let's look at the movement rules. You start at (0,0) and end at (N-1, N-1), moving only right or down. Does the number of cells visited change depending on which path you take?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think it does. Like, if I go all the way right and then all the way down, that's one path. But if I zig-zag back and forth, I might visit more cells or different amounts of cells. So I probably need to keep track of the path length in my DP state, maybe like `dp[i][j][length]`, but that seems way too slow.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Let's test that intuition with a small example. Imagine a 3x3 matrix. To get from the top-left (0,0) to the bottom-right (2,2), how many total steps to the right must you take? And how many steps down?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "To get from index 0 to index 2, I need 2 steps right and 2 steps down. That's 4 steps total. Plus the starting cell, so 5 cells visited.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Now, try a different path in that same 3x3 matrix. Say you go: Down, Right, Down, Right. How many cells are visited in that path?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Down (1), Right (2), Down (3), Right (4)... and the start cell makes 5. Wait, it's the same? Does every path from the top-left to the bottom-right in an N*N grid have the same length if you only move right and down?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Since you must always move exactly (N-1) times right and (N-1) times down to reach the destination, every valid path will visit exactly the same number of cells. \n\nGiven that the number of cells (the denominator of your average) is constant for every possible path, how does that change your approach to maximizing the average?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh! If the denominator is always the same, then maximizing (Total Cost / Constant) is the same as just maximizing the Total Cost. I can just find the path with the maximum sum and then divide by the total number of cells at the very end!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's the key insight. Now the problem becomes a standard maximum path sum problem. How would you define your DP state and the transition to find the maximum sum to reach cell (i, j)?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'll use `dp[i][j]` to store the maximum sum to reach cell (i, j). To get to `dp[i][j]`, I can only come from `dp[i-1][j]` or `dp[i][j-1]`. So `dp[i][j] = max(dp[i-1][j], dp[i][j-1]) + cost[i][j]`. I'll just have to handle the first row and first column separately since they only have one way to be reached. Then I'll return `dp[N-1][N-1]` divided by the path length. Does that sound correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic for the state and the transition is perfectly sound. You've correctly identified how to handle the dependencies and the final step. Go ahead and try implementing this logic—remember to calculate the total number of cells visited correctly for the final division!",
+      "loss_mask": true
+    }
+  ]
+}

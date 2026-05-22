@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_dg_9378",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning - Floating Point Arithmetic",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor guides the student from a misconception about int() toward the modulo operator, ensuring the tutor never explicitly states the final code or confirms the final value as per the never_state policy."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "def truncate_number(number: float) -> float:\n    \"\"\" Given a positive floating point number, it can be decomposed into\n    and integer part (largest integer smaller than given number) and decimals\n    (leftover part always smaller than 1).\n\n    Return the decimal part of the number.\n    >>> truncate_number(3.5)\n    0.5\n    \"\"\"",
+      "reference_solution": "return number % 1.0",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/2"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this one:\n\ndef truncate_number(number: float) -> float:\n    \"\"\" Given a positive floating point number, it can be decomposed into\n    and integer part (largest integer smaller than given number) and decimals\n    (leftover part always smaller than 1).\n\n    Return the decimal part of the number.\n    >>> truncate_number(3.5)\n    0.5\n    \"\"\"\n\nI think the answer is `return int(number)`. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Let's test that logic with the example provided in the docstring. If you pass 3.5 into `int(3.5)`, what result do you get, and does that result represent the decimal part?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, `int(3.5)` would be 3. Oh! That's the integer part, not the decimal part. I mixed them up.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a common slip. Now that you know how to get the integer part, how could you use that value to isolate just the decimals from the original number?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could subtract the integer part from the original number, like `number - int(number)`. Would that be correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That approach works for positive numbers. However, there is a more concise way to find the 'remainder' of a division in Python using a specific operator. Do you recall which operator handles remainders?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Is it the modulo operator `%`? I usually use it for things like `10 % 3` to get 1. Can I use that for floating point numbers too?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, the modulo operator works with floats in Python. If you want the part of the number that remains after removing all whole units of 1, how would you structure that expression?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "So it would be `number % 1.0`? Does that solve the problem?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Try implementing that in your function and running it against the test case `truncate_number(3.5)`. If the output matches the expected 0.5, you'll know your logic is correct.",
+      "loss_mask": true
+    }
+  ]
+}

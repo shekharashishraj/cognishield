@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_dg_7400",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Polynomial Algebra",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student incorrectly assumes that subtracting two polynomials of the same degree always results in a lower degree. Tutor corrects this misconception by prompting the student to check coefficients."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "When the expression $(2x^4+3x^3+x-14)(3x^{10}-9x^7+9x^4+30)-(x^2+5)^7$ is expanded, what is the degree of the resulting polynomial?",
+      "reference_solution": "Multiplying out that entire polynomial would be pretty ugly, so let's see if there's a faster way. The degree of $(2x^4+3x^3+x-14)(3x^{10}-9x^7+9x^4+30)$ is the highest possible power of $x$, which occurs when we multiply $(2x^4)(3x^{10})$. This gives $6x^{14}$ so the degree of the first part is $14$. To find the degree of $(x^2+5)^7$, we need to find the highest possible power of $x$. This product is equivalent to multiplying $(x^2+5)$ by itself $7$ times, and each term is created by choosing either $x^2$ or $5$ from each of the seven factors. To get the largest power of $x$, we should choose $x^2$ from all seven factors, to find $(x^2)^7=x^{14}$ as the highest power of $x$, so the second part is also a degree-$14$ polynomial. Thus we have a degree-$14$ polynomial minus a degree-$14$ polynomial, which will give us another degree-$14$ polynomial... unless the $x^{14}$ terms cancel out. We must check this. In the first part, the coefficient on $x^{14}$ was $6$, and in the second part the coefficient was $1$. So our expression will look like $(6x^{14}+\\ldots)-(x^{14}+\\ldots)$ where all the other terms have degree less than $14$, so when simplified the expression will be $5x^{14}+\\ldots$. Thus the coefficient on the $x^{14}$ term is not zero, and the polynomial has degree $\\boxed{14}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "575"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm stuck on this problem: When the expression $(2x^4+3x^3+x-14)(3x^{10}-9x^7+9x^4+30)-(x^2+5)^7$ is expanded, what is the degree of the resulting polynomial? I don't want to multiply everything out, can you just tell me the answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you figure it out! Multiplying the whole thing would be very tedious, so we can definitely find a more efficient way. To start, let's look at the expression in two parts: the product of the first two polynomials and the term $(x^2+5)^7$. What is the highest power of $x$ you would get from the first product $(2x^4+3x^3+x-14)(3x^{10}-9x^7+9x^4+30)$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, the highest power in the first part would come from $2x^4$ times $3x^{10}$, which is $6x^{14}$. So the degree of that part is 14.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's correct. Now, let's look at the second part: $(x^2+5)^7$. If you were to expand this using the binomial theorem or by multiplying it out, what would be the highest power of $x$ in that expansion?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Since it's $(x^2)^7$, the highest power is $x^{14}$. So both parts have a degree of 14. Since we are subtracting them, the $x^{14}$ terms must cancel out, so the degree must be whatever the next highest power is. It's probably 13 or 12, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've identified that both parts have a degree of 14, which is a great observation. However, be careful with the assumption that they *must* cancel out. Terms only cancel if their coefficients are identical. Do the $x^{14}$ terms in this specific problem have the same coefficient?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. In the first part, the coefficient was 6. For the second part, $(x^2+5)^7$, the coefficient of the $x^{14}$ term is just 1. So it's $6x^{14} - 1x^{14}$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Now that you've looked at the coefficients, what does that tell you about the $x^{14}$ term in the final simplified expression? Based on that, what can you conclude about the degree of the resulting polynomial?",
+      "loss_mask": true
+    }
+  ]
+}

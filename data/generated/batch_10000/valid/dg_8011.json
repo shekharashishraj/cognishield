@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_8011",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Counting & Probability - Combinatorics",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully scaffolds the circular permutation problem by guiding the student through relative positioning and case analysis without revealing the final answer."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "In how many ways can $7$ people sit around a round table if no two of the $3$ people Pierre, Rosa, and Thomas can sit next to each other? (Seating arrangements which are rotations of each other are treated as the same.)",
+      "reference_solution": "After Pierre sits, we can place Rosa either two seats from Pierre (that is, with one seat between them) or three seats from Pierre. We tackle these two cases separately:\n\nCase 1: Rosa is two seats from Pierre. There are $2$ such seats. For either of these, there are then four empty seats in a row, and one empty seat between Rosa and Pierre. Thomas can sit in either of the middle two of the four empty seats in a row. So, there are $2\\cdot 2 = 4$ ways to seat Rosa and Thomas in this case. There are then $4$ seats left, which the others can take in $4! = 24$ ways. So, there are $4\\cdot 24 = 96$ seatings in this case.\n\nCase 2: Rosa is three seats from Pierre (that is, there are $2$ seats between them). There are $2$ such seats. Thomas can't sit in either of the $2$ seats directly between them, but after Rosa sits, there are $3$ empty seats in a row still, and Thomas can only sit in the middle seat of these three. Once again, there are $4$ empty seats remaining, and the $4$ remaining people can sit in them in $4! = 24$ ways. So, we have $2\\cdot 24 = 48$ seatings in this case.\n\nPutting our two cases together gives a total of $96+48 = \\boxed{144}$ seatings.",
+      "seed_dataset": "HuggingFaceH4/MATH-500/test",
+      "seed_example_id": "test/counting_and_probability/525.json"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm stuck on this combinatorics problem: In how many ways can $7$ people sit around a round table if no two of the $3$ people Pierre, Rosa, and Thomas can sit next to each other? (Seating arrangements which are rotations of each other are treated as the same.) I don't know where to start. Can you just give me the answer so I can check my work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through this, but I won't provide the final answer right away. Instead, let's break it down. Since this is a round table and rotations are considered the same, a good first step is to fix one person's position to eliminate the rotational symmetry. Why don't we start by placing Pierre in a fixed seat? Once he's seated, how should we think about placing Rosa and Thomas so they aren't adjacent to him or each other?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, if Pierre is fixed, then there are 6 seats left. Rosa can't sit next to him, so she has 4 possible seats. But then Thomas's options depend on where Rosa sat, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's exactly right. The number of available spots for Thomas changes based on how much space is between Pierre and Rosa. To handle this, it might be helpful to split the problem into cases based on Rosa's position relative to Pierre. If we ignore the directions for a moment, Rosa could be two seats away from Pierre (one person between them) or three seats away (two people between them). How would those two scenarios differ in terms of where Thomas could sit?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let's see. If Rosa is two seats from Pierre, there are 2 such positions for her. Then there's 1 seat between them and 4 seats on the other side. Thomas can't sit next to Pierre or Rosa. In that block of 4 seats, he can't be at the ends because those are next to Pierre and Rosa. So he has 2 choices in that block. And he can't sit in the 1 seat between them because that's next to both. So for each Rosa position, Thomas has 2 choices. That's 2 * 2 = 4 ways for them.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your reasoning for the first case is spot on. Now, let's look at the second case: what if Rosa is three seats away from Pierre? This means there are two seats between them on both sides of the table. If you place Rosa there, how many valid seats are left for Thomas?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If Rosa is three seats away, there are 2 such positions for her. There are two seats between them on one side and two on the other. Thomas can't sit in the two seats directly next to Pierre, and he can't sit in the two seats directly next to Rosa. Wait, if there are only two seats between them, those seats are adjacent to both of them! So Thomas can't sit there. That leaves the other side... but that's also two seats. Let me re-count. If Rosa is opposite Pierre, there are two gaps of two seats. In each gap, both seats are adjacent to either Pierre or Rosa. No, that's not right. Let me think. If the seats are 1(P), 2, 3, 4(R), 5, 6, 7... Thomas can't be at 2, 7 (next to P) and can't be at 3, 5 (next to R). That leaves only seat 6!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Correct! In that specific configuration, Thomas only has one possible seat. So, if there are 2 possible positions for Rosa in this case, and only 1 position for Thomas for each, how many ways are there to place Rosa and Thomas in this second scenario?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "That would be 2 * 1 = 2 ways. So overall, for the three of them, we have 4 ways from the first case and 2 ways from the second case, making 6 total ways to place Pierre, Rosa, and Thomas. Now I just need to place the other 4 people in the remaining 4 seats. That's 4! = 24. So 6 * 24 = 144.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've nailed it. You correctly identified the cases, handled the constraints for the restricted people, and then accounted for the remaining individuals. Your final calculation of 144 is correct!",
+      "loss_mask": true
+    }
+  ]
+}

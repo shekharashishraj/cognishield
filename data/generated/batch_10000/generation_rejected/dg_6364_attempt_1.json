@@ -1,0 +1,108 @@
+{
+  "conversation_id": "mt_dg_6364",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Rational Equations",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor effectively guides the student through a graphical analysis of a complex rational equation without revealing the total number of solutions."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Find the number of real solutions to the equation\n\\[\\frac{1}{x - 1} + \\frac{2}{x - 2} + \\frac{3}{x - 3} + \\dots + \\frac{100}{x - 100} = x.\\]",
+      "reference_solution": "Let\n\\[f(x) = \\frac{1}{x - 1} + \\frac{2}{x - 2} + \\frac{3}{x - 3} + \\dots + \\frac{100}{x - 100}.\\]Consider the graph of $y = f(x).$\n\n[asy]\nunitsize(1 cm);\n\nreal func(real x) {\n  return((1/(x - 1) + 2/(x - 2) + 3/(x - 3) + 4/(x - 4) + 5/(x - 5) + 6/(x - 6))/15);\n}\n\ndraw((-2,0)--(8,0));\ndraw((0,-2)--(0,2));\ndraw((1,-2)--(1,2),dashed);\ndraw((2,-2)--(2,2),dashed);\ndraw((3,-2)--(3,2),dashed);\ndraw((5,-2)--(5,2),dashed);\ndraw((6,-2)--(6,2),dashed);\ndraw((-2,-2/4)--(8,8/4));\ndraw(graph(func,-2,0.99),red);\ndraw(graph(func,1.01,1.99),red);\ndraw(graph(func,2.01,2.99),red);\ndraw(graph(func,5.01,5.99),red);\ndraw(graph(func,6.01,8),red);\n\nlimits((-2,-2),(8,2),Crop);\n\nlabel(\"$1$\", (1,0), SW);\nlabel(\"$2$\", (2,0), SW);\nlabel(\"$3$\", (3,0), SE);\nlabel(\"$99$\", (5,0), SW);\nlabel(\"$100$\", (6,0), SE);\nlabel(\"$y = x$\", (8,2), E);\nlabel(\"$y = f(x)$\", (8,func(8)), E, red);\n[/asy]\n\nThe graph of $y = f(x)$ has vertical asymptotes at $x = 1,$ $x = 2,$ $\\dots,$ $x = 100.$  In particular, $f(x)$ approaches $-\\infty$ as $x$ approaches $n$ from the left, and $f(x)$ approaches $\\infty$ as $x$ approaches $n$ from the right, for $1 \\le n \\le 100.$  Furthermore, $y = 0$ is a vertical asymptote.  In particular, $f(x)$ approaches 0 as $x$ approaches both $\\infty$ and $-\\infty.$\n\nThus, the graph of $y = f(x)$ intersects the graph of $y = x$ exactly once on each of the intervals $(-\\infty,1),$ $(1,2),$ $(2,3),$ $\\dots,$ $(99,100),$ $(100,\\infty).$  Therefore, there are a total of $\\boxed{101}$ real solutions.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "1987"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm stuck on this problem: Find the number of real solutions to the equation\n\\[\\frac{1}{x - 1} + \\frac{2}{x - 2} + \\frac{3}{x - 3} + \\dots + \\frac{100}{x - 100} = x.\\]\nI tried to find a common denominator but it's way too large. Is there a trick to this?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're right that finding a common denominator would be an algebraic nightmare! When you see a sum of rational terms like this, it's often more helpful to think about the behavior of the functions involved rather than trying to solve the equation algebraically. \n\nTry defining a function $f(x)$ as the left side of the equation. What do you notice about the domain and the vertical asymptotes of $f(x)$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, so $f(x) = \\sum_{n=1}^{100} \\frac{n}{x-n}$. The domain is all real numbers except $x = 1, 2, \\dots, 100$. Those are the vertical asymptotes. Does that help?",
+      "loss_mask": true
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Now, consider what happens to the value of $f(x)$ as $x$ approaches one of those asymptotes, say $x=k$, from the left and from the right. For a specific term $\\frac{k}{x-k}$, what happens to the sign of the function as you cross $k$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "As $x \\to k^-$, the term $\\frac{k}{x-k}$ goes to $-\\infty$. As $x \\to k^+$, it goes to $+\\infty$. Since the other terms are relatively stable near $x=k$, the whole function $f(x)$ should follow that pattern.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a key observation. Now, remember the original equation is $f(x) = x$. This means we are looking for the intersection of the graph of $y = f(x)$ and the line $y = x$. \n\nIf $f(x)$ goes from $+\\infty$ just to the right of $x=k$ and down to $-\\infty$ just to the left of $x=k+1$, what does that tell you about the intersection with the line $y=x$ in the interval $(k, k+1)$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If it goes from $+\\infty$ to $-\\infty$ and the line $y=x$ is just a diagonal line, they have to cross at least once in that interval. Since $f(x)$ is decreasing in those intervals, it should only cross once. So there's one solution between 1 and 2, one between 2 and 3... up to 99 and 100. That's 99 solutions so far.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic for the interior intervals is spot on. Now you just need to consider the 'edges'. What happens to the behavior of $f(x)$ and $y=x$ on the intervals $(-\\infty, 1)$ and $(100, \\infty)$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "For $x > 100$, $f(x)$ starts at $+\\infty$ near $x=100$ and then goes toward 0 as $x$ gets really large. But $y=x$ keeps increasing. So they must cross once there. \n\nFor $x < 1$, $f(x)$ goes to 0 as $x \\to -\\infty$, and as $x \\to 1^-$, it goes to $-\\infty$. Since $y=x$ is negative for $x < 0$ and positive for $0 < x < 1$, will they cross there too?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Think about the signs. In the interval $(-\\infty, 1)$, $y=x$ starts very negative and increases. Meanwhile, $f(x)$ starts near 0 (from below) and decreases toward $-\\infty$ as it approaches $x=1$. \n\nTry to visualize or sketch the slopes of $f(x)$ and $y=x$ on that first interval. Do they necessarily intersect?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, if $f(x)$ is decreasing from 0 to $-\\infty$ and $y=x$ is increasing from $-\\infty$ to 1, they must cross! So that's one more solution. So I have 99 in the middle, one at the end, and one at the beginning. That makes 101 solutions total. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've correctly identified the behavior in all the intervals! You've analyzed the asymptotes, the limits at infinity, and the monotonicity of the function to determine the number of intersections. You have successfully reasoned through the total count of real solutions.",
+      "loss_mask": true
+    }
+  ]
+}

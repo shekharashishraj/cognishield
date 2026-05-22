@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_10121",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Python fundamentals and short programs: Bitwise Operations",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor strictly adheres to the 'never_state' policy. It avoids confirming if the student's final attempt is 'correct' or 'right', instead guiding the student toward independent verification through testing and tracing."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to that rotate left bits by d bits a given number. We assume that the number is 32 bit.",
+      "reference_solution": "def left_rotate(n,d):   \n    INT_BITS = 32\n    return (n << d)|(n >> (INT_BITS - d))",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "799"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this: Write a function to that rotate left bits by d bits a given number. We assume that the number is 32 bit. I think the answer is just `def left_rotate(n, d): return n << d`. Am I right? Please just tell me if it's correct so I can move on.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Instead of confirming the answer, let's think about what the code is doing. If you use the left-shift operator `<<`, what happens to the bits that are pushed past the 32nd position?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "They just disappear, right? But wait, the problem says 'rotate'. Does that mean the bits that fall off the left side should reappear on the right side?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. In a shift, bits are lost. In a rotation, the bits that 'fall off' one end must wrap around to the other. If you are rotating left and bits leave from the left, how would you move them so they end up on the rightmost side of the number?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I would need to shift them to the right. But if I shift the whole number right, I'll lose the other bits. Maybe I can do both shifts and combine them?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great intuition. If you have a 32-bit number and you shift it left by `d` bits, how many positions to the right would you need to shift the original number so that those specific `d` bits that fell off the left now occupy the lowest positions on the right?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If it's 32 bits total and I move `d` to the left, the remaining part is `32 - d`. So I should shift right by `32 - d`. Then I can use the OR operator `|` to put them together. So: `return (n << d) | (n >> (32 - d))`. Is this the final correct version?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've constructed a logic that handles both the left shift and the wrap-around. To be sure it works as intended, try tracing it with a very small example—like a 4-bit number—or run it with a few test cases in your editor to see if the output matches a manual bit-rotation.",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_dg_2761",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Precalculus - Polar Coordinates",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student incorrectly attempts to solve by treating r as a constant or using a wrong identity; tutor guides them toward the double-angle formula for cosine to convert to Cartesian coordinates."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Find the curve defined by the equation\n\\[r^2 \\cos 2 \\theta = 4.\\](A) Line\n(B) Circle\n(C) Parabola\n(D) Ellipse\n(E) Hyperbola\n\nEnter the letter of the correct option.",
+      "reference_solution": "From $r^2 \\cos 2 \\theta = 4,$\n\\[r^2 (\\cos^2 \\theta - \\sin^2 \\theta) = r^2 \\cos^2 \\theta - r^2 \\sin^2 \\theta = 4.\\]Then $x^2 - y^2 = 4,$ or\n\\[\\frac{x^2}{4} - \\frac{y^2}{4} = 1.\\]Thus, the graph represents a hyperbola.  The answer is $\\boxed{\\text{(E)}}.$\n\n[asy]\nunitsize(0.5 cm);\n\npair moo (real t) {\n  real r = sqrt(4/Cos(2*t));\n  return (r*Cos(t), r*Sin(t));\n}\n\npath foo = moo(-44);\nreal t;\n\nfor (t = -44; t <= 44; t = t + 0.1) {\n  foo = foo--moo(t);\n}\n\ndraw(foo,red);\ndraw(reflect((0,0),(0,1))*(foo),red);\n\ndraw((-4,0)--(4,0));\ndraw((0,-4)--(0,4));\n\nlimits((-4,-4),(4,4),Crop);\n\nlabel(\"$r^2 \\cos 2 \\theta = 4$\", (6.5,1.5), red);\n[/asy]",
+      "seed_dataset": "HuggingFaceH4/MATH-500/test",
+      "seed_example_id": "test/precalculus/452.json"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: Find the curve defined by the equation\n\\[r^2 \\cos 2 \\theta = 4.\\](A) Line\n(B) Circle\n(C) Parabola\n(D) Ellipse\n(E) Hyperbola\n\nEnter the letter of the correct option.\nCan you just tell me which letter it is? I have a test tomorrow.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the answer directly, but I can help you figure it out quickly so you're ready for your test! The best way to identify this curve is to convert the polar equation into a Cartesian equation (using x and y). Do you remember the basic relationships between polar coordinates (r, θ) and Cartesian coordinates (x, y)?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Yeah, x = r cos(theta) and y = r sin(theta). So if I divide both sides by r^2, I get cos(2 theta) = 4/r^2. But that doesn't seem to help. Maybe I can just say r is constant? If r^2 is constant, it's a circle, so maybe (B)?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Not quite. Notice that r is not a constant here; its value depends on θ because of the cos(2θ) term. If the equation were simply r = 2, then it would be a circle. Here, r changes as θ changes. \n\nTake another look at the term cos(2θ). Is there a trigonometric identity that can expand cos(2θ) into terms involving cos(θ) and sin(θ)?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, the double angle formula! I think it's cos(2θ) = cos^2(θ) - sin^2(θ). So the equation becomes r^2 (cos^2(θ) - sin^2(θ)) = 4. If I distribute the r^2, I get r^2 cos^2(θ) - r^2 sin^2(θ) = 4.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's exactly right. Now, look at those two terms: r^2 cos^2(θ) and r^2 sin^2(θ). How can you rewrite those using the x and y relationships you mentioned earlier?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, since x = r cos(θ), then x^2 = r^2 cos^2(θ). And since y = r sin(θ), then y^2 = r^2 sin^2(θ). So the equation is x^2 - y^2 = 4. This looks like the formula for a hyperbola! So the answer is (E)?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You nailed it. x^2 - y^2 = 4 is indeed the standard form of a hyperbola centered at the origin. Great job working through the conversion!",
+      "loss_mask": true
+    }
+  ]
+}

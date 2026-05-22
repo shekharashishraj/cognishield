@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_1295",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Multi-step programming and contest-style problems",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student incorrectly assumes case swapping happens after vowel replacement, potentially affecting the character offset. Tutor guides them to the correct sequence."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def encode(message):\n    \"\"\"\n    Write a function that takes a message, and encodes in such a \n    way that it swaps case of all letters, replaces all vowels in \n    the message with the letter that appears 2 places ahead of that \n    vowel in the english alphabet. \n    Assume only letters. \n    \n    Examples:\n    >>> encode('test')\n    'TGST'\n    >>> encode('This is a message')\n    'tHKS KS C MGSSCGG'\n    \"\"\"",
+      "reference_solution": "vowels = \"aeiouAEIOU\"\n    vowels_replace = dict([(i, chr(ord(i) + 2)) for i in vowels])\n    message = message.swapcase()\n    return ''.join([vowels_replace[i] if i in vowels else i for i in message])",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/93"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: \n\ndef encode(message):\n    \"\"\"\n    Write a function that takes a message, and encodes in such a \n    way that it swaps case of all letters, replaces all vowels in \n    the message with the letter that appears 2 places ahead of that \n    vowel in the english alphabet. \n    Assume only letters. \n    \n    Examples:\n    >>> encode('test')\n    'TGST'\n    >>> encode('This is a message')\n    'tHKS KS C MGSSCGG'\n    \"\"\"\nCan you just give me the code? I have a deadline in an hour.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code directly, but I can definitely help you build it quickly! Let's break this down into two main requirements: swapping the case and handling the vowels. Which part do you want to tackle first?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, I'll try. I think I should first find all the vowels and shift them by 2 using ord() and chr(), and then run .swapcase() on the whole result at the end. Does that sound right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Take a close look at the examples provided. For 'test', the result is 'TGST'. In 'test', the vowel is 'e'. If we shift 'e' by 2, we get 'g'. If we then swap the case of 'g', we get 'G'. Now, consider if we swap the case first: 'e' becomes 'E', and then shifting 'E' by 2 gives 'G'. \n\nWait, let's look at the second example: 'This is a message' becomes 'tHKS KS C MGSSCGG'. Look at the 'i' in 'This'. It becomes 'K'. \n\nIf you shift 'i' (vowel) by 2, you get 'k'. Then swapping case makes it 'K'. But if you swap case first, 'i' becomes 'I', and shifting 'I' by 2 gives 'K'. \n\nActually, look at the vowel 'a' in 'message'. It becomes 'C'. 'a' shifted by 2 is 'c', swapped is 'C'. 'a' swapped is 'A', shifted by 2 is 'C'. \n\nLet's re-read the prompt carefully: 'swaps case of all letters, replaces all vowels...'. Does the order of these operations matter for the final character? Try tracing 'i' in 'This' again. If you replace 'i' with 'k' first, then swap case, you get 'K'. If you swap 'i' to 'I' first, then replace the vowel 'I' with 'K', you also get 'K'. \n\nHowever, there is a catch: the prompt says to replace vowels. If you swap the case first, a lowercase 'i' becomes an uppercase 'I'. Is 'I' still a vowel? Yes. But would your logic for 'replacing vowels' be different if the case had already changed?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. If I shift first, I'm shifting the original vowel. If I swap case first, I'm shifting the swapped vowel. But since the shift is just +2 in the alphabet, it's the same letter regardless of case, right? So it shouldn't matter?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "In terms of the letter's position in the alphabet, you're right. But consider the implementation. If you use a list of vowels like `['a', 'e', 'i', 'o', 'u']` to check which characters to shift, and you've already swapped the case, your lowercase 'a' is now 'A'. Your check `if char in ['a', 'e', 'i', 'o', 'u']` would fail for 'A'. \n\nTo avoid this, you'd need to check for both upper and lowercase vowels. Alternatively, is there a sequence of operations that makes the logic simpler?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I get it now. I should probably swap the case first, and then I just need to make sure my vowel replacement logic handles both uppercase and lowercase vowels. Or I could swap the case at the very beginning and then check for vowels in the modified string. Let me try to write the vowel replacement part using a dictionary for the shifts.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great approach. Using a dictionary to map each vowel to its shifted counterpart is efficient. Go ahead and try implementing that. How do you plan to construct that dictionary?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'll do something like: `vowels = 'aeiouAEIOU'` and then a dictionary comprehension: `{v: chr(ord(v) + 2) for v in vowels}`. Then I'll swap the case of the message first, and then use a list comprehension to join the characters, replacing them if they are in the dictionary. Does that sound like a complete solution?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic covers all the requirements: the case swap, the vowel identification (both cases), and the alphabet shift. It matches the behavior seen in the examples. Why don't you try putting it all together into the `encode` function and test it with 'test' and 'This is a message'?",
+      "loss_mask": true
+    }
+  ]
+}

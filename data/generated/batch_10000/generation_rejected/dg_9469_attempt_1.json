@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_9469",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The student mistakenly believes that any number between x and y can be made even by adding 1, regardless of the range boundaries. The tutor guides them to consider the upper bound first."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "def choose_num(x, y):\n    \"\"\"This function takes two positive numbers x and y and returns the\n    biggest even integer number that is in the range [x, y] inclusive. If \n    there's no such number, then the function should return -1.\n\n    For example:\n    choose_num(12, 15) = 14\n    choose_num(13, 12) = -1\n    \"\"\"",
+      "reference_solution": "if x > y:\n        return -1\n    if y % 2 == 0:\n        return y\n    if x == y:\n        return -1\n    return y - 1",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/102"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: \n\ndef choose_num(x, y):\n    \"\"\"This function takes two positive numbers x and y and returns the\n    biggest even integer number that is in the range [x, y] inclusive. If \n    there's no such number, then the function should return -1.\n\n    For example:\n    choose_num(12, 15) = 14\n    choose_num(13, 12) = -1\n    \"\"\"\n\nCan you just give me the code? I have a deadline in an hour.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code for you, but I can definitely help you work through the logic so you can finish it quickly! Let's start with the basics: what is the first thing you need to check to make sure a valid range actually exists between x and y?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, right. I should check if x is greater than y. If it is, I just return -1. After that, I think I can just take the average of x and y and if that's not even, just add 1 to it to find the biggest even number. Does that work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Checking if x > y is a great start. Regarding the second part, let's test your average idea. If x is 10 and y is 20, the average is 15. Adding 1 gives you 16. But is 16 the *biggest* even number in the range [10, 20]?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, no, 20 is the biggest. I guess the average doesn't help. I'll just check if y is even. If it is, then y is the answer. If it's not, I can just add 1 to it to make it even, and that should be the biggest one, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're on the right track by looking at y! But think carefully about the range [x, y]. If y is odd and you add 1 to it, will that new number still be inside the range [x, y]?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh! No, it would be y + 1, which is outside the range. So if y is odd, I should probably subtract 1 instead. But what if x and y are the same number and that number is odd?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a very important edge case to consider. If x and y are the same odd number, and you subtract 1 from y, would that result still be within the inclusive range [x, y]?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "No, it wouldn't. It would be smaller than x. So in that case, I should return -1. I think I have the logic now: check if x > y, then check if y is even, then check if x == y, and finally just do y - 1 if none of those hit. I'll go try to code it!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That sounds like a solid plan. You've covered the range validity, the ideal case where the upper bound is even, the edge case where the range is a single odd number, and the fallback for when the upper bound is odd. Give it a try!",
+      "loss_mask": true
+    }
+  ]
+}

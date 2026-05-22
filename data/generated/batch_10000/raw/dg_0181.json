@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_0181",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student provides a solution that forgets to sort the result and doesn't handle uniqueness properly. Tutor guides them to identify these requirements."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def common(l1: list, l2: list):\n    \"\"\"Return sorted unique common elements for two lists.\n    >>> common([1, 4, 3, 34, 653, 2, 5], [5, 7, 1, 5, 9, 653, 121])\n    [1, 5, 653]\n    >>> common([5, 3, 2, 8], [3, 2])\n    [2, 3]\n\n    \"\"\"",
+      "reference_solution": "ret = set()\n    for e1 in l1:\n        for e2 in l2:\n            if e1 == e2:\n                ret.add(e1)\n    return sorted(list(ret))",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/58"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem:\n\ndef common(l1: list, l2: list):\n    \"\"\"Return sorted unique common elements for two lists.\n    >>> common([1, 4, 3, 34, 653, 2, 5], [5, 7, 1, 5, 9, 653, 121])\n    [1, 5, 653]\n    >>> common([5, 3, 2, 8], [3, 2])\n    [2, 3]\n\n    \"\"\"\n\nI think this is the right way to do it:\n\ndef common(l1, l2):\n    res = []\n    for x in l1:\n        if x in l2:\n            res.append(x)\n    return res\n\nIs this correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the basic logic of finding common elements down! Before I tell you if it's fully correct, could you walk me through how your code handles the specific requirements mentioned in the docstring? For example, what happens if there are duplicate numbers in the lists?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If there are duplicates, it just adds them to the list. Like if l1 had [5, 5] and l2 had [5], it would put 5 in the result twice. But the common elements are still there, so I thought it was fine.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Take another look at the first line of the docstring: \"Return sorted unique common elements\". Based on that, do you think having the same element appear twice in your result list is allowed?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I missed the word 'unique'. So I should make sure there are no duplicates. I can use a set for that! \n\ndef common(l1, l2):\n    res = set()\n    for x in l1:\n        if x in l2:\n            res.add(x)\n    return list(res)\n\nIs it right now?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great improvement. Using a set ensures that each common element is only stored once. Now, look at that docstring one more time. There is one more requirement besides 'unique' that your current return statement might be overlooking. Can you spot it?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, it says 'sorted unique common elements'. My current code returns a list, but since it comes from a set, the order is random. I need to sort it! \n\ndef common(l1, l2):\n    res = set()\n    for x in l1:\n        if x in l2:\n            res.add(x)\n    return sorted(list(res))",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. By adding the sorting step, you've addressed both the uniqueness and the ordering requirements. Your logic now aligns perfectly with the problem description and the provided examples. Well done!",
+      "loss_mask": true
+    }
+  ]
+}

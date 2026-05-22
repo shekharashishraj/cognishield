@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_dg_6665",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Python fundamentals and short programs",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Generated a multi-turn interaction where the student fails to handle multidimensional coordinates correctly. Tutor guides them toward recursion or nested loops without providing the final code."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to extract all the adjacent coordinates of the given coordinate tuple.",
+      "reference_solution": "def adjac(ele, sub = []): \n  if not ele: \n     yield sub \n  else: \n     yield from [idx for j in range(ele[0] - 1, ele[0] + 2) \n                for idx in adjac(ele[1:], sub + [j])] \ndef get_coordinates(test_tup):\n  return list(adjac(test_tup))",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "630"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: \"Write a function to extract all the adjacent coordinates of the given coordinate tuple.\" I think I have it. Is this right?\n\n```python\ndef get_coordinates(tup):\n    return [(tup[0]-1, tup[1]-1), (tup[0]+1, tup[1]+1)]\n```",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "To help you figure that out, could you explain your reasoning? Specifically, what do you consider to be an 'adjacent' coordinate in this context, and does your current code cover all those possibilities?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, adjacent means the points next to it. So if I have (2, 2), then (1, 1) and (3, 3) are next to it because they are one step away. I just subtract and add 1 to the numbers.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see. Consider a grid. If you are at (2, 2), is (1, 2) or (2, 1) also adjacent? Your current logic only moves diagonally. How might you modify your approach to ensure you capture every coordinate that differs by at most 1 in any direction, including the point itself?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. I missed the straight lines. So I should just list all 9 combinations manually? Like (tup[0]-1, tup[1]-1), (tup[0]-1, tup[1]), etc.?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Listing them manually works for a 2D tuple, but what if the input tuple has three dimensions, like (2, 2, 2), or even more? A manual list would become very long. Can you think of a way to generate these offsets programmatically, perhaps using a loop or recursion, so it works for a tuple of any length?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I could use a loop for each dimension. But I'm not sure how to do that if I don't know how many dimensions there are. Maybe I can use a loop that goes from -1 to 1 for each element in the tuple?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great intuition. Since you need to apply that '-1 to 1' range to every single element in the tuple regardless of its size, think about how you can 'nest' these operations. If you can't hard-code the number of loops, what programming technique allows a function to call itself to handle one dimension at a time?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Recursion! I should make a function that takes the tuple, handles the first number by iterating from -1 to 1, and then calls itself for the rest of the tuple.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Try implementing that. Think about what your 'base case' will be—when should the recursion stop and finally return the completed coordinate tuple?",
+      "loss_mask": true
+    }
+  ]
+}

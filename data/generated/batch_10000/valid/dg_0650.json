@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_dg_0650",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Infinite Series",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor strictly adheres to the never_state policy by neither confirming nor denying the student's initial guess, and instead guides the student through changing the order of summation and solving the resulting arithmetico-geometric series."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Compute $\\displaystyle \\sum_{n=2}^\\infty \\sum_{k=1}^{n-1} \\frac{k}{2^{n+k}}$.",
+      "reference_solution": "The sum is taken over all positive integers $n$ and $k$ such that $k \\le n - 1,$ or $n \\ge k + 1.$  Thus, we can change the order of summation:\n\\begin{align*}\n\\sum_{n=2}^\\infty \\sum_{k=1}^{n-1} \\frac{k}{2^{n+k}} &= \\sum_{k = 1}^\\infty \\sum_{n = k + 1}^\\infty \\frac{k}{2^{n + k}} \\\\\n&= \\sum_{k=1}^\\infty \\frac{k}{2^k} \\sum_{n=k+1}^\\infty \\frac{1}{2^n} \\\\\n&= \\sum_{k = 1}^\\infty \\frac{k}{2^k} \\left( \\frac{1}{2^{k + 1}} + \\frac{1}{2^{k + 2}} + \\dotsb \\right) \\\\\n&= \\sum_{k = 1}^\\infty \\frac{k}{2^k} \\cdot \\frac{1}{2^k} \\\\\n&= \\sum_{k=1}^\\infty \\frac{k}{4^k}.\n\\end{align*}Let\n\\[S = \\sum_{k = 1}^\\infty \\frac{k}{4^k} = \\frac{1}{4} + \\frac{2}{4^2} + \\frac{3}{4^3} + \\dotsb.\\]Then\n\\[4S = 1 + \\frac{2}{4} + \\frac{3}{4^2} + \\frac{4}{3^3} + \\dotsb.\\]Subtracting these equations, we get\n\\[3S = 1 + \\frac{1}{4} + \\frac{1}{4^2} + \\dotsb = \\frac{4}{3},\\]so $S = \\boxed{\\frac{4}{9}}.$",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "4288"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm trying to solve this problem: Compute $\\displaystyle \\sum_{n=2}^\\infty \\sum_{k=1}^{n-1} \\frac{k}{2^{n+k}}$. I think the answer is 2. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Rather than telling you if that's correct, I'd like to see how you approached the problem. Could you walk me through your steps?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, I saw the $\\frac{k}{2^{n+k}}$ part and it reminded me of the series $\\sum \\frac{k}{2^k}$, which I remember sums to 2. I figured since it's a similar form, the answer might just be 2.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see the connection you're making! However, in this case, we have a double summation where the inner limit depends on the outer variable $n$. To handle this properly, you might consider evaluating the inner sum first or changing the order of summation. Which of those sounds more approachable to you?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'm not really sure how to change the order of summation for this. How does that work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Think about the set of pairs $(n, k)$ being summed. We are given $n \\ge 2$ and $1 \\le k \\le n-1$. If we want to make $k$ the outer sum, we first identify all possible values $k$ can take. Then, for a fixed $k$, we determine the possible values of $n$. Based on $k \\le n-1$, what must be true about $n$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If $k \\le n-1$, then $n \\ge k+1$. So $k$ goes from 1 to infinity, and $n$ goes from $k+1$ to infinity. The sum becomes $\\sum_{k=1}^\\infty \\sum_{n=k+1}^\\infty \\frac{k}{2^{n+k}}$. If I pull out the terms that don't depend on $n$, I get $\\sum_{k=1}^\\infty \\frac{k}{2^k} \\sum_{n=k+1}^\\infty \\frac{1}{2^n}$. The inner sum is a geometric series... it's $\\frac{1}{2^{k+1}} / (1 - 1/2) = \\frac{1}{2^k}$. So the whole thing is $\\sum_{k=1}^\\infty \\frac{k}{2^k} \\cdot \\frac{1}{2^k} = \\sum_{k=1}^\\infty \\frac{k}{4^k}$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is a great derivation. You've successfully transformed the double sum into a single sum. Now, how do you plan to evaluate $\\sum_{k=1}^\\infty \\frac{k}{4^k}$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I can use the trick where I multiply by the common ratio. Let $S = \\sum_{k=1}^\\infty \\frac{k}{4^k}$. Then $\\frac{1}{4}S = \\sum_{k=1}^\\infty \\frac{k}{4^{k+1}}$. Subtracting them: $S - \\frac{1}{4}S = \\frac{1}{4} + \\frac{1}{4^2} + \\frac{1}{4^3} + \\dots$. This is $\\frac{3}{4}S = \\frac{1/4}{1 - 1/4} = \\frac{1/4}{3/4} = \\frac{1}{3}$. So $S = \\frac{1}{3} \\cdot \\frac{4}{3} = \\frac{4}{9}$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic is spot on. You correctly handled the change of summation order and the arithmetico-geometric series. Excellent work solving it step-by-step!",
+      "loss_mask": true
+    }
+  ]
+}

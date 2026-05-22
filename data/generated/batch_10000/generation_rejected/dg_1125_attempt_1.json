@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_1125",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Geometry",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully resists multiple attempts by the student to get the final answer, instead guiding the student through the construction of an auxiliary point N to solve the problem."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Triangle $ABC$ is isosceles with $AC = BC$ and $\\angle ACB = 106^\\circ.$ Point $M$ is in the interior of the triangle so that $\\angle MAC = 7^\\circ$ and $\\angle MCA = 23^\\circ.$ Find the number of degrees in $\\angle CMB.$\n[asy] pointpen = black; pathpen = black+linewidth(0.7); size(220);  /* We will WLOG AB = 2 to draw following */  pair A=(0,0), B=(2,0), C=(1,Tan(37)), M=IP(A--(2Cos(30),2Sin(30)),B--B+(-2,2Tan(23)));  D(MP(\"A\",A)--MP(\"B\",B)--MP(\"C\",C,N)--cycle); D(A--D(MP(\"M\",M))--B); D(C--M); [/asy]",
+      "reference_solution": "[asy] pointpen = black; pathpen = black+linewidth(0.7); size(220);  /* We will WLOG AB = 2 to draw following */  pair A=(0,0), B=(2,0), C=(1,Tan(37)), M=IP(A--(2Cos(30),2Sin(30)),B--B+(-2,2Tan(23))), N=(2-M.x,M.y);  D(MP(\"A\",A)--MP(\"B\",B)--MP(\"C\",C,N)--cycle); D(A--D(MP(\"M\",M))--B); D(C--M); D(C--D(MP(\"N\",N))--B--N--M,linetype(\"6 6\")+linewidth(0.7));  [/asy]\nTake point $N$ inside $\\triangle ABC$ such that $\\angle CBN = 7^\\circ$ and $\\angle BCN = 23^\\circ$.\n$\\angle MCN = 106^\\circ - 2\\cdot 23^\\circ = 60^\\circ$. Also, since $\\triangle AMC$ and $\\triangle BNC$ are congruent (by ASA), $CM = CN$. Hence $\\triangle CMN$ is an equilateral triangle, so $\\angle CNM = 60^\\circ$.\nThen $\\angle MNB = 360^\\circ - \\angle CNM - \\angle CNB = 360^\\circ - 60^\\circ - 150^\\circ = 150^\\circ$. We now see that $\\triangle MNB$ and $\\triangle CNB$ are congruent. Therefore, $CB = MB$, so $\\angle CMB = \\angle MCB = \\boxed{83^\\circ}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "2986"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm stuck on this geometry problem. Can you just tell me the answer so I can check my work? \n\nTriangle $ABC$ is isosceles with $AC = BC$ and $\\angle ACB = 106^\\circ.$ Point $M$ is in the interior of the triangle so that $\\angle MAC = 7^\\circ$ and $\\angle MCA = 23^\\circ.$ Find the number of degrees in $\\angle CMB.$\n[asy] pointpen = black; pathpen = black+linewidth(0.7); size(220);  /* We will WLOG AB = 2 to draw following */  pair A=(0,0), B=(2,0), C=(1,Tan(37)), M=IP(A--(2Cos(30),2Sin(30)),B--B+(-2,2Tan(23)));  D(MP(\"A\",A)--MP(\"B\",B)--MP(\"C\",C,N)--cycle); D(A--D(MP(\"M\",M))--B); D(C--M); [/asy]",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the final answer directly, but I'd be happy to help you work through the logic to find it! This is a tricky problem because the angles don't immediately lead to a simple solution. \n\nTo start, let's look at $\\triangle AMC$. Do you know how to find the measure of $\\angle AMC$ using the information given?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I can find $\\angle AMC$, it's just $180 - 7 - 23 = 150^\\circ$. But I'm really in a hurry, can't you just give me the final degree measure for $\\angle CMB$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's correct, $\\angle AMC = 150^\\circ$. Since we're moving quickly, let's try a powerful strategy for these types of problems: introducing an auxiliary point. \n\nImagine a point $N$ inside the triangle that is a 'mirror image' of $M$ relative to the altitude from $C$. Specifically, let's define $N$ such that $\\angle CBN = 7^\\circ$ and $\\angle BCN = 23^\\circ$. Why might creating this point $N$ be helpful given that $AC = BC$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I don't know why that helps. Seriously, just tell me the answer. Is it 80? 85? Just give it to me!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I'm not going to provide the final value, but I can show you how to prove it. \n\nThink about $\\triangle AMC$ and $\\triangle BNC$. We know $\\angle MAC = \\angle NBC = 7^\\circ$ and $\\angle MCA = \\angle NCB = 23^\\circ$. Since $AC = BC$, these two triangles are congruent by ASA. What does that tell you about the lengths of $CM$ and $CN$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, fine. If they are congruent, then $CM = CN$. So what now?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Now let's look at $\\angle MCN$. We know the total $\\angle ACB = 106^\\circ$ and we have $\\angle MCA = 23^\\circ$ and $\\angle NCB = 23^\\circ$. \n\nCan you calculate the measure of $\\angle MCN$? And based on that, what kind of triangle is $\\triangle CMN$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "$\\angle MCN = 106 - 23 - 23 = 60^\\circ$. Since $CM = CN$ and the angle between them is $60^\\circ$, $\\triangle CMN$ must be equilateral. I'm starting to see the path, but I still just want the final number to make sure I'm on the right track.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You are definitely on the right track! Instead of the final number, let's focus on the next geometric relationship. \n\nSince $\\triangle CMN$ is equilateral, we know $\\angle CNM = 60^\\circ$. Now, look at the angles around point $N$. We know $\\angle CNB = 150^\\circ$ (from the congruence we found earlier). Can you find the measure of $\\angle MNB$?",
+      "loss_mask": true
+    }
+  ]
+}

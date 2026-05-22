@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_dg_6836",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and data structures - Stack-based Parsing",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Tutor successfully scaffolds the stack-based approach for balanced parentheses without providing the full code."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to check if the given expression is balanced or not. https://www.geeksforgeeks.org/check-for-balanced-parentheses-in-an-expression/",
+      "reference_solution": "from collections import deque\ndef check_expression(exp):\n    if len(exp) & 1:\n        return False\n    stack = deque()\n    for ch in exp:\n        if ch == '(' or ch == '{' or ch == '[':\n            stack.append(ch)\n        if ch == ')' or ch == '}' or ch == ']':\n            if not stack:\n                return False\n            top = stack.pop()\n            if (top == '(' and ch != ')') or (top == '{' and ch != '}' or (top == '[' and ch != ']')):\n                return False\n    return not stack",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "771"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm struggling with this assignment: Write a function to check if the given expression is balanced or not. https://www.geeksforgeeks.org/check-for-balanced-parentheses-in-an-expression/ \n\nI'm not sure where to start. Could you just give me the code so I can see how it's done?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through this! Instead of giving you the full code right away, let's break down the logic so you can implement it yourself. \n\nThink about how you track parentheses manually. When you see an opening bracket like '(' or '{', you know you need to find a matching closing bracket later. What kind of data structure allows you to 'remember' the last thing you saw and retrieve it in reverse order?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Is it a list? Or maybe a queue?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "A list can work, but specifically, we want a 'Last-In, First-Out' (LIFO) behavior. This is known as a Stack. \n\nIf you use a stack, what should you do when you encounter an opening bracket, and what should you do when you encounter a closing bracket?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I should push the opening brackets onto the stack. Then when I see a closing bracket, I pop the top one off and check if they match? Like if I pop '(' and the current char is ')', that's a match.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's exactly the right logic. Now, consider the edge cases. What happens if you encounter a closing bracket, but the stack is already empty? Or what happens if you finish scanning the whole string and there are still brackets left in the stack?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If the stack is empty but I have a closing bracket, it means there was no opening one, so it's unbalanced. And if brackets are left over at the end, it means some were never closed. So both should return False.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. You've got the core algorithm down. Now try to translate that into Python. You can use a standard list as a stack with `.append()` and `.pop()`, or use `collections.deque` for better performance. \n\nHow would you structure your loop and the conditional checks for the different bracket types?",
+      "loss_mask": true
+    }
+  ]
+}

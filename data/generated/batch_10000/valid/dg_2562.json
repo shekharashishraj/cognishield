@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_dg_2562",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Basic algorithms and data manipulation: Binary Heaps",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts a simple loop that only checks adjacent elements instead of the parent-child relationship of a heap. Tutor guides them toward the correct indexing logic."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to check if the given array represents min heap or not. https://www.geeksforgeeks.org/how-to-check-if-a-given-array-represents-a-binary-heap/",
+      "reference_solution": "def check_min_heap_helper(arr, i):\n    if 2 * i + 2 > len(arr):\n        return True\n    left_child = (arr[i] <= arr[2 * i + 1]) and check_min_heap_helper(arr, 2 * i + 1)\n    right_child = (2 * i + 2 == len(arr)) or (arr[i] <= arr[2 * i + 2] \n                                      and check_min_heap_helper(arr, 2 * i + 2))\n    return left_child and right_child\n\ndef check_min_heap(arr):\n  return check_min_heap_helper(arr, 0)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "751"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Write a function to check if the given array represents min heap or not. https://www.geeksforgeeks.org/how-to-check-if-a-given-array-represents-a-binary-heap/ \n\nI think I've got it. Is this correct?\n\n```python\ndef is_min_heap(arr):\n    for i in range(len(arr) - 1):\n        if arr[i] > arr[i+1]:\n            return False\n    return True\n```",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see what you've written. Before I tell you if it's correct, could you explain your reasoning? Specifically, what property of a min heap is your code checking for?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, in a min heap, the smallest element is at the top, and everything should generally increase as you go down. So I just checked if the array is sorted in ascending order. That should be the same thing, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a common misconception! While it's true that the smallest element is at the root, a min heap doesn't have to be fully sorted. It only requires that every parent node is less than or equal to its children. \n\nThink about this: if an array is `[10, 15, 12, 20, 25, 17, 19]`, is it sorted? And does it still satisfy the min heap property where the parent is smaller than its children?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, `[10, 15, 12, 20, 25, 17, 19]` isn't sorted because 12 comes after 15. But 10 is the smallest, and 15 is smaller than 20 and 25, and 12 is smaller than 17 and 19. So it is a min heap even though it's not sorted. My bad. How do I actually check the parent and children in an array?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. You've got the concept now. In a binary heap stored as an array, if a parent is at index `i`, do you remember the formulas to find the indices of its left and right children?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think the left child is `2*i + 1` and the right child is `2*i + 2`. So I should loop through the array and check if `arr[i]` is smaller than those two indices?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the indices correct! Now, consider the boundaries. What happens if you are at the end of the array and try to check `2*i + 1` or `2*i + 2`? How would you handle that in your loop or function to avoid an index error?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I should probably check if those indices are actually within the length of the array before comparing them. I'll try to rewrite the function now using a loop that stops before the children go out of bounds.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That sounds like a solid plan. Go ahead and try implementing that. I'll be here to review your updated code!",
+      "loss_mask": true
+    }
+  ]
+}

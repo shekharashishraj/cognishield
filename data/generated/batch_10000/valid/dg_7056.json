@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_7056",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning: String Parsing",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to use string indexing/slicing based on fixed offsets, failing to account for varying note lengths. Tutor redirects toward tokenization via splitting."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "from typing import List\n\n\ndef parse_music(music_string: str) -> List[int]:\n    \"\"\" Input to this function is a string representing musical notes in a special ASCII format.\n    Your task is to parse this string and return list of integers corresponding to how many beats does each\n    not last.\n\n    Here is a legend:\n    'o' - whole note, lasts four beats\n    'o|' - half note, lasts two beats\n    '.|' - quater note, lasts one beat\n\n    >>> parse_music('o o| .| o| o| .| .| .| .| o o')\n    [4, 2, 1, 2, 2, 1, 1, 1, 1, 4, 4]\n    \"\"\"",
+      "reference_solution": "note_map = {'o': 4, 'o|': 2, '.|': 1}\n    return [note_map[x] for x in music_string.split(' ') if x]",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/17"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem. Can you just give me the code? Here is the prompt:\n\nfrom typing import List\n\n\ndef parse_music(music_string: str) -> List[int]:\n    \"\"\" Input to this function is a string representing musical notes in a special ASCII format.\n    Your task is to parse this string and return list of integers corresponding to how many beats does each\n    not last.\n\n    Here is a legend:\n    'o' - whole note, lasts four beats\n    'o|' - half note, lasts two beats\n    '.|' - quater note, lasts one beat\n\n    >>> parse_music('o o| .| o| o| .| .| .| .| o o')\n    [4, 2, 1, 2, 2, 1, 1, 1, 1, 4, 4]\n    \"\"\"",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the full code directly, but I'd be happy to help you figure it out! Looking at the prompt, you need to convert a string of symbols into a list of numbers based on a legend. How would you normally approach breaking a string into individual pieces if they are separated by spaces?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think I can use a for loop and just look at every second character? Like, if the character is 'o', it's 4, and if the next character is '|', it's 2. So I can just iterate through the string with a step of 2.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's an interesting idea, but let's test it against the input. If you have a whole note 'o' followed by a space, and then a half note 'o|', the characters are at different positions. If you jump by 2 every time, would you always land on the start of a new note, or might you skip over some or land in the middle of a note?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. The 'o' is one character, but 'o|' is two. And there are spaces in between. So the distance between notes isn't constant. I guess I can't use a fixed step in my loop.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Since the notes have different lengths and are separated by spaces, a fixed index won't work. Is there a built-in Python string method that can break a string into a list of words or symbols based on a specific delimiter, like a space?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I remember `.split()`. I could do `music_string.split(' ')` to get a list of the notes. Then I can just loop through that list and check if the item is 'o', 'o|', or '.|'.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That sounds like a solid plan. Once you have that list of notes, what's the most efficient way to map those specific strings to their corresponding beat values?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could use a bunch of if-elif statements, but maybe a dictionary would be cleaner? Like `notes = {'o': 4, 'o|': 2, '.|': 1}` and then just look up the value using the note as the key.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "A dictionary is a great choice here—it makes the code much more readable and easier to update if the legend ever changes. Why don't you try putting those pieces together into the function and see if it passes the example case?",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_4065",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student fails to iterate from the right side and misses the consonant-sandwich constraint. Tutor guides them toward the correct loop direction and conditional logic."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "def get_closest_vowel(word):\n    \"\"\"You are given a word. Your task is to find the closest vowel that stands between \n    two consonants from the right side of the word (case sensitive).\n    \n    Vowels in the beginning and ending doesn't count. Return empty string if you didn't\n    find any vowel met the above condition. \n\n    You may assume that the given string contains English letter only.\n\n    Example:\n    get_closest_vowel(\"yogurt\") ==> \"u\"\n    get_closest_vowel(\"FULL\") ==> \"U\"\n    get_closest_vowel(\"quick\") ==> \"\"\n    get_closest_vowel(\"ab\") ==> \"\"\n    \"\"\"",
+      "reference_solution": "if len(word) < 3:\n        return \"\"\n\n    vowels = {\"a\", \"e\", \"i\", \"o\", \"u\", \"A\", \"E\", 'O', 'U', 'I'}\n    for i in range(len(word)-2, 0, -1):\n        if word[i] in vowels:\n            if (word[i+1] not in vowels) and (word[i-1] not in vowels):\n                return word[i]\n    return \"\"",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/118"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem:\n\ndef get_closest_vowel(word):\n    \"\"\"You are given a word. Your task is to find the closest vowel that stands between \n    two consonants from the right side of the word (case sensitive).\n    \n    Vowels in the beginning and ending doesn't count. Return empty string if you didn't\n    find any vowel met the above condition. \n\n    You may assume that the given string contains English letter only.\n\n    Example:\n    get_closest_vowel(\"yogurt\") ==> \"u\"\n    get_closest_vowel(\"FULL\") ==> \"U\"\n    get_closest_vowel(\"quick\") ==> \"\"\n    get_closest_vowel(\"ab\") ==> \"\"\n    \"\"\"\n\nI think this works: \n\ndef get_closest_vowel(word):\n    vowels = 'aeiouAEIOU'\n    for char in word:\n        if char in vowels:\n            return char\n    return \"\"\n\nIs this correct? I'm in a rush, can you just tell me if it's right or give me the fixed version?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the final code directly, but I can help you figure out if your current approach meets all the requirements. Before I answer, could you explain how your code handles the requirement to find the vowel 'from the right side of the word' and the condition that it must be 'between two consonants'?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I guess I just checked if there's any vowel and returned the first one it finds. I thought 'closest' just meant any vowel. Does it have to be from the end of the string?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, the prompt specifies 'from the right side of the word'. In programming, if you need the 'closest' item from the right, does starting your loop from the beginning of the string (the left) achieve that? Also, take another look at the 'between two consonants' rule—how would you check the characters immediately surrounding a vowel?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Right, I need to go backwards. So maybe I can use `reversed(word)`? And for the consonants, I can just check if the characters before and after the vowel are not in the `vowels` string. But if I use `reversed()`, I lose the index. Maybe I should use a range loop instead?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Using a range loop is a great idea because it gives you the index `i`, which makes it much easier to look at `i-1` and `i+1`. If you want to start from the right and move left, how would you set up your `range()` function? Also, keep in mind the rule about vowels at the very beginning or end of the word.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'll try `range(len(word) - 1, -1, -1)`. Wait, if the vowel can't be at the end, I should probably start at `len(word) - 2` and stop before index `0`. Let me try to write the logic: if `word[i]` is a vowel and `word[i-1]` and `word[i+1]` are not vowels, then I return `word[i]`. Does that sound like the right logic?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic addresses both the direction and the 'sandwich' requirement. Just one last thing to consider: what happens if the word is very short, like only 1 or 2 characters? Would your range and index checks still work safely, or would they cause an error?",
+      "loss_mask": true
+    }
+  ]
+}

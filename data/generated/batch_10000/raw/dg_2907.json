@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_dg_2907",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Telescoping Series",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to use integral approximation for the sum, which is a common misconception for this specific telescoping series. Tutor redirects toward algebraic manipulation of the term."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "For a positive integer $n,$ let\n\\[H_n = 1 + \\frac{1}{2} + \\frac{1}{3} + \\dots + \\frac{1}{n}.\\]Compute\n\\[\\sum_{n = 1}^\\infty \\frac{1}{(n + 1) H_n H_{n + 1}}.\\]",
+      "reference_solution": "We can write\n\\[\\frac{1}{(n + 1) H_n H_{n + 1}} = \\frac{\\frac{1}{n + 1}}{H_n H_{n + 1}} = \\frac{H_{n + 1} - H_n}{H_n H_{n + 1}} = \\frac{1}{H_n} - \\frac{1}{H_{n + 1}}.\\]Thus,\n\\begin{align*}\n\\sum_{n = 1}^\\infty \\frac{1}{(n + 1) H_n H_{n + 1}} &= \\sum_{n = 1}^\\infty \\left( \\frac{1}{H_n} - \\frac{1}{H_{n + 1}} \\right) \\\\\n&= \\left( \\frac{1}{H_1} - \\frac{1}{H_2} \\right) + \\left( \\frac{1}{H_2} - \\frac{1}{H_3} \\right) + \\left( \\frac{1}{H_3} - \\frac{1}{H_4} \\right) + \\dotsb \\\\\n&= \\frac{1}{H_1} = \\boxed{1}.\n\\end{align*}Note that this result depends on the fact that $H_n \\to \\infty$ as $n \\to \\infty.$  We can prove this as follows:\n\\begin{align*}\n\\frac{1}{2} &\\ge \\frac{1}{2}, \\\\\n\\frac{1}{3} + \\frac{1}{4} &> \\frac{1}{4} + \\frac{1}{4} = \\frac{1}{2}, \\\\\n\\frac{1}{5} + \\frac{1}{6} + \\frac{1}{7} + \\frac{1}{8} &> \\frac{1}{8} + \\frac{1}{8} + \\frac{1}{8} + \\frac{1}{8} = \\frac{1}{2},\n\\end{align*}and so on.  Thus,\n\\[1 + \\frac{1}{2} + \\frac{1}{3} + \\frac{1}{4} + \\dotsb > 1 + \\frac{1}{2} + \\frac{1}{2} + \\dotsb,\\]which shows that $H_n \\to \\infty$ as $n \\to \\infty.$",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "3980"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm stuck on this math problem: For a positive integer $n,$ let\n\\[H_n = 1 + \\frac{1}{2} + \\frac{1}{3} + \\dots + \\frac{1}{n}.\\]Compute\n\\[\\sum_{n = 1}^\\infty \\frac{1}{(n + 1) H_n H_{n + 1}}.\\]\nCan you just tell me the answer? I'm in a rush.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the final answer directly, but I'd be happy to help you work through the steps to find it! Let's start by looking at the general term of the sum. Do you notice any relationship between $H_n$, $H_{n+1}$, and the factor $(n+1)$ in the denominator?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I know that $H_{n+1} = H_n + 1/(n+1)$. Since the sum looks like it's involving harmonic numbers, maybe I can approximate the sum using an integral? Like $\\int \\frac{1}{x \\ln(x)^2} dx$? That's how I usually handle harmonic series.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Using integrals is a great tool for estimating the growth of harmonic numbers, but for a summation like this, we are usually looking for an exact value. If you look at the relationship you just mentioned—$H_{n+1} = H_n + \\frac{1}{n+1}$—could you try to express the numerator of the term $\\frac{1}{(n+1) H_n H_{n+1}}$ using $H_n$ and $H_{n+1}$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, if $H_{n+1} - H_n = \\frac{1}{n+1}$, then I can replace the $1/(n+1)$ part of the term. \nSo the term is $\\frac{H_{n+1} - H_n}{H_n H_{n+1}}$. Does that help?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly! Now, try splitting that fraction into two separate fractions. What does the expression look like once you do that?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It becomes $\\frac{H_{n+1}}{H_n H_{n+1}} - \\frac{H_n}{H_n H_{n+1}}$, which simplifies to $\\frac{1}{H_n} - \\frac{1}{H_{n+1}}$. \nSo the whole sum is $\\sum_{n=1}^\\infty (\\frac{1}{H_n} - \\frac{1}{H_{n+1}})$. This looks like a telescoping series!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got it. Now that you've identified it as a telescoping series, think about what happens when you write out the first few terms and take the limit as $n$ goes to infinity. What remains, and what happens to the $H_n$ term in the denominator as $n$ grows?",
+      "loss_mask": true
+    }
+  ]
+}

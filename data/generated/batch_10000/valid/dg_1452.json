@@ -1,0 +1,108 @@
+{
+  "conversation_id": "mt_dg_1452",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Number Theory - Modular Arithmetic and Sophie Germain Identity",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "off_topic_redirect",
+      "task_focus",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to deviate into a discussion about the history of Fermat; tutor politely redirects to the problem at hand."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Let $d_1 = a^2 + 2^a + a \\cdot 2^{(a+1)/2}$ and $d_2 = a^2 + 2^a - a \\cdot 2^{(a+1)/2}$. If $1 \\le a \\le 251$, how many integral values of $a$ are there such that $d_1 \\cdot d_2$ is a multiple of $5$?",
+      "reference_solution": "\\begin{align*}[(a^2 + 2^a) + a \\cdot 2^{(a+1)/2}][(a^2 + 2^a) - a \\cdot 2^{(a+1)/2}] &= (a^2 + 2^a)^2 - a^2 \\cdot 2^{a+1}\\\\ &= a^4 + 2 \\cdot a^22^{a} + 2^{2a} - a^2 \\cdot 2^{a+1}\\\\ &= a^4 + 2^{2a}\\end{align*}\n(If you recall the reverse of Sophie Germain Identity with $a=a,\\, b = 2^{(a-1)/2}$, then you could have directly found the answer).\nBy Fermat's Little Theorem, we have that $a^{4} \\equiv 1 \\pmod{5}$ if $a \\nmid 5$ and $a^{4} \\equiv 0 \\pmod{5}$ if $a | 5$. Also, we note that by examining a couple of terms, $2^{2a} \\equiv 4 \\pmod{5}$ if $a \\nmid 2$ and $2^{2a} \\equiv 1 \\pmod{5}$ if $a|2$. Therefore,\\[a^{4} + 2^{2a} \\equiv \\{0,1\\} + \\{1,4\\} \\equiv \\{0,1,2,4\\} \\pmod{5}\\]With divisibility by $5$ achievable only if $a \\nmid 2,5$. There are $\\frac{251-1}{2}+1 = 126$ odd numbers in the range given, and $\\frac{245-5}{10}+1 = 25$ of those are divisible by $5$, so the answer is $126 - 25 = \\boxed{101}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "5345"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this math problem: Let $d_1 = a^2 + 2^a + a \\cdot 2^{(a+1)/2}$ and $d_2 = a^2 + 2^a - a \\cdot 2^{(a+1)/2}$. If $1 \\le a \\le 251$, how many integral values of $a$ are there such that $d_1 \\cdot d_2$ is a multiple of $5$? Can you just give me the answer so I can check my work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through it, but I won't give you the final answer right away. Let's start by looking at the expression $d_1 \\cdot d_2$. Do you notice anything about the structure of $d_1$ and $d_2$ that might make multiplying them easier?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, it looks like $(X + Y)(X - Y)$ where $X = a^2 + 2^a$ and $Y = a \\cdot 2^{(a+1)/2}$. So it should be $X^2 - Y^2$. Let me try expanding that: $(a^2 + 2^a)^2 - (a \\cdot 2^{(a+1)/2})^2$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great observation. Go ahead and expand those terms and see if you can simplify the resulting expression. What do you get?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Expanding it gives $a^4 + 2 \\cdot a^2 \\cdot 2^a + (2^a)^2 - a^2 \\cdot 2^{a+1}$. Wait, $2 \\cdot a^2 \\cdot 2^a$ is the same as $a^2 \\cdot 2^{a+1}$, so those two terms cancel out! I'm left with $a^4 + 2^{2a}$. \n\nActually, speaking of powers, I was reading about Fermat's Last Theorem earlier. Do you think Fermat would have found this specific problem trivial, or was he more focused on the higher-power equations?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It's interesting to think about how mathematicians like Fermat approached numbers, but let's stay focused on your current problem for now so we can reach the solution. You've successfully simplified the expression to $a^4 + 2^{2a}$. Now, the problem asks when this is a multiple of 5. How can you use modular arithmetic to analyze $a^4 + 2^{2a} \\pmod{5}$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Right, sorry. So I need $a^4 + 2^{2a} \\equiv 0 \\pmod{5}$. By Fermat's Little Theorem, $a^4 \\equiv 1 \\pmod{5}$ if $a$ isn't a multiple of 5, and $a^4 \\equiv 0 \\pmod{5}$ if it is. For the $2^{2a}$ part, $2^{2a} = (2^2)^a = 4^a$. Since $4 \\equiv -1 \\pmod{5}$, then $4^a \\equiv (-1)^a \\pmod{5}$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're on the right track. Now, consider the two cases for $a$ (whether it's a multiple of 5 or not) and the two cases for the parity of $a$ (even or odd). Which combinations result in $a^4 + 2^{2a} \\equiv 0 \\pmod{5}$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If $a$ is a multiple of 5, $a^4 \\equiv 0$. Then we need $4^a \\equiv 0 \\pmod{5}$, which is impossible. \nIf $a$ is not a multiple of 5, $a^4 \\equiv 1$. Then we need $4^a \\equiv -1 \\pmod{5}$. Since $4^a \\equiv (-1)^a \\pmod{5}$, this happens when $a$ is odd. \nSo $a$ must be odd and not divisible by 5.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is correct. Now the final step is to count how many integers $a$ in the range $1 \\le a \\le 251$ satisfy those two conditions: $a$ is odd and $a$ is not a multiple of 5. How would you calculate that?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "First, the odd numbers from 1 to 251. That's $(251-1)/2 + 1 = 126$ numbers. Then I subtract the odd multiples of 5. The odd multiples of 5 are 5, 15, 25... up to 245. That's an arithmetic progression: $245 = 5 + (n-1)10$, so $240 = (n-1)10$, $n-1 = 24$, $n = 25$. \nSo $126 - 25 = 101$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your calculations are spot on. You correctly identified the simplified form, applied Fermat's Little Theorem, handled the parity of the exponent, and accurately counted the values in the given range. The final answer is indeed 101.",
+      "loss_mask": true
+    }
+  ]
+}

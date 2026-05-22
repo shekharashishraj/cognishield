@@ -1,0 +1,108 @@
+{
+  "conversation_id": "mt_dg_4240",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Counting & Probability - Pascal's Triangle",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student initially attempts to find a simple linear pattern for even numbers; tutor redirects them to actually construct the triangle or use Lucas's Theorem logic."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "There are four even integers in the top five rows of Pascal's Triangle. How many even integers are in the top 10 rows of the triangle?",
+      "reference_solution": "We can list the first 10 rows of Pascal's triangle, and mark the even numbers.\n\n[asy]\nusepackage(\"amsmath\");\nunitsize(0.5 cm);\n\nint i, j, n;\n\nfor (int i = 0; i <= 9; ++i) {\nfor (int j = 0; j <= 9; ++j) {\n  if (i + j <= 9) {\n    n = choose(i + j,i);\n    if (n % 2 == 0) {label(\"$\\boxed{\" + string(n) + \"}$\", i*(-1,-1) + j*(1,-1));}\n    if (n % 2 == 1) {label(\"$\" + string(n) + \"$\", i*(-1,-1) + j*(1,-1));}\n  }\n}}\n[/asy]\n\nThus, the number of even numbers is $1 + 3 + 2 + 3 + 7 + 6 = \\boxed{22}.$",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "1262"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: 'There are four even integers in the top five rows of Pascal's Triangle. How many even integers are in the top 10 rows of the triangle?' Can you just tell me the answer? I'm in a rush.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the final answer directly, but I can help you find it quickly! Let's start by looking at the information given. If there are 4 even integers in the first 5 rows, do you think there's a simple formula we can use to scale that up to 10 rows, or should we look at the structure of the triangle?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Since 10 is double 5, maybe it's just double the even numbers? So 4 * 2 = 8? That seems like the fastest way.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's an intuitive guess, but Pascal's Triangle doesn't usually grow linearly like that. The number of elements in each row increases as you go down, which means the number of even entries likely grows faster than a simple multiplication. Why don't we try writing out the first few rows to see if we can spot a more reliable pattern?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, let's see. Row 0: 1. Row 1: 1, 1. Row 2: 1, 2, 1. Row 3: 1, 3, 3, 1. Row 4: 1, 4, 6, 4, 1. In these first five rows (0-4), the even numbers are 2, 4, 6, 4. That's 4 evens. I see it now. Let me try Row 5: 1, 5, 10, 10, 5, 1. That adds two more (10 and 10). So for 6 rows, it's 6 evens. If it goes 4, 6... maybe it's just adding 2 each time?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're doing great with the construction! However, be careful about assuming the pattern is 'add 2' based on just one more row. Let's look at Row 6. If you calculate the entries for Row 6, do you find exactly two more even numbers, or does something else happen?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let me calculate Row 6: 1, 6, 15, 20, 15, 6, 1. The even numbers are 6, 20, 6. That's 3 even numbers. So for 7 rows, it's 4 + 2 + 3 = 9. Okay, the 'add 2' theory is wrong. I'll just list them all out to row 9 then.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly, listing them is a foolproof way for a small number of rows like this. Go ahead and find the even numbers for rows 7, 8, and 9, then sum them all up. Let me know what total you get!",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Row 7: 1, 7, 21, 35, 35, 21, 7, 1 (0 evens). Row 8: 1, 8, 28, 56, 70, 56, 28, 8, 1 (8 evens). Row 9: 1, 9, 36, 84, 126, 126, 84, 36, 9, 1 (6 evens). Total: 4 (rows 0-4) + 2 (row 5) + 3 (row 6) + 0 (row 7) + 8 (row 8) + 6 (row 9) = 23. Wait, did I miss something?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You are very close! Double-check your count for Row 8. You listed 1, 8, 28, 56, 70, 56, 28, 8, 1. How many of those are actually even? Count them carefully one by one.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "8, 28, 56, 70, 56, 28, 8. That's... 7 numbers. My bad, I counted the 1s or something. So 4 + 2 + 3 + 0 + 7 + 6 = 22.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is correct! By systematically listing the rows and counting the even entries, you found that there are 22 even integers in the top 10 rows.",
+      "loss_mask": true
+    }
+  ]
+}

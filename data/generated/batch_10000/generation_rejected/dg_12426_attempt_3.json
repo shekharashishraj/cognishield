@@ -1,0 +1,109 @@
+{
+  "conversation_id": "mt_dg_12426",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Functional Equations",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor guides the student through a functional equation problem. The student initially guesses an answer; the tutor ensures the student tests their hypothesis and then leads them through strategic substitutions to derive the function without ever stating the final answer or confirming the final numeric value."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Let $f : \\mathbb{R} \\to \\mathbb{R}$ be a function such that\n\\[f(f(x) - y) = f(x) + f(f(y) - f(-x)) + x\\]for all real numbers $x$ and $y.$\n\nLet $n$ be the number of possible values of $f(3),$ and let $s$ be the sum of all possible values of $f(3).$  Find $n \\times s.$",
+      "reference_solution": "Setting $x = y = 0,$ we get\n\\[f(f(0)) = 2f(0).\\]Let $c = f(0),$ so $f(c) = 2c.$\n\nSetting $x = 0$ and $y = c,$ we get\n\\[f(0) = f(0) + f(f(c) - c).\\]Then $f(c) = 0,$ so $c = 0.$\n\nSetting $x = 0,$ we get\n\\[f(-y) = f(f(y))\\]for all $y.$\n\nSetting $y = f(x),$ we get\n\\[0 = f(x) + f(f(f(x)) - f(-x)) + x.\\]Since $f(f(x)) = f(-x),$ this becomes $f(x) = -x$ for all $x.$  We can check that this function works.\n\nThus, $n = 1$ and $s = -3,$ so $n \\times s = \\boxed{-3}.$",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "2573"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Let $f : \\mathbb{R} \\to \\mathbb{R}$ be a function such that\n\\[f(f(x) - y) = f(x) + f(f(y) - f(-x)) + x\\]for all real numbers $x$ and $y.$\n\nLet $n$ be the number of possible values of $f(3),$ and let $s$ be the sum of all possible values of $f(3).$  Find $n \\times s.$\n\nI think the answer is 3. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I cannot tell you if that is correct. To determine if your answer is right, could you walk me through the steps and reasoning you used to arrive at that value?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I just tried a simple linear function $f(x) = x$. Then $f(3) = 3$. If that's the only solution, then $n=1$ and $s=3$, so $n \\times s = 3$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Testing simple functions is a good instinct. However, for a function to be a solution, it must satisfy the given equation for all real numbers $x$ and $y$. Try substituting $f(x) = x$ into the original equation to see if the equality holds.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let me check. \nLeft side: $f(f(x) - y) = f(x - y) = x - y$.\nRight side: $f(x) + f(f(y) - f(-x)) + x = x + f(y - (-x)) + x = x + (y + x) + x = 3x + y$.\n$x - y$ is definitely not $3x + y$. So $f(x) = x$ doesn't work. I'm lost now.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It's okay to hit a dead end; that's part of the process. Since guessing didn't work, let's try to find properties of $f$ using specific substitutions. A common first step in functional equations is to see what happens when variables are zero. What happens if you set $x = 0$ and $y = 0$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If $x=0, y=0$, then $f(f(0) - 0) = f(0) + f(f(0) - f(0)) + 0$.\nThat's $f(f(0)) = f(0) + f(0) = 2f(0)$. \nIf I let $f(0) = c$, then $f(c) = 2c$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great start. Now we have a relationship involving $c$. To find the value of $c$, you might try another substitution that involves $c$. What would happen if you set $x = 0$ and $y = c$ in the original equation?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Setting $x=0, y=c$ gives:\n$f(f(0) - c) = f(0) + f(f(c) - f(0)) + 0$\n$f(c - c) = c + f(2c - c)$\n$f(0) = c + f(c)$\n$c = c + 2c$, which means $2c = 0$, so $c = 0$. \nSo $f(0) = 0$!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Now that you know $f(0) = 0$, try setting $x = 0$ again, but keep $y$ as a variable. What relationship does this reveal between $f(-y)$ and $f(f(y))$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "With $x=0$, we get $f(f(0) - y) = f(0) + f(f(y) - f(0)) + 0$.\nSince $f(0) = 0$, this is $f(-y) = f(f(y))$.\nHow do I use this to find the general form of $f(x)$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've discovered that $f(f(y)) = f(-y)$. Now, try to use this identity to simplify the original equation. A helpful strategy would be to substitute $y = f(x)$ into the original equation and see if you can isolate $f(x)$ in terms of $x$.",
+      "loss_mask": true
+    }
+  ]
+}

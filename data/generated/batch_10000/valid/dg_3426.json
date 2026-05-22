@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_3426",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Roots of Unity",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor guides the student through the symmetry of roots of unity. The student initially guesses an answer; the tutor refuses to confirm the value and instead scaffolds the student toward the pairing method. The tutor adheres to the method_only policy by validating the logic rather than the final numeric result."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "If $\\omega^{1997} = 1$ and $\\omega \\neq 1,$ then evaluate\n\\[\\frac{1}{1 + \\omega} + \\frac{1}{1 + \\omega^2} + \\dots + \\frac{1}{1 + \\omega^{1997}}.\\]",
+      "reference_solution": "Note that\n\\begin{align*}\n\\frac{1}{1 + \\omega^k} + \\frac{1}{1 + \\omega^{1997 - k}} &= \\frac{1}{1 + \\omega^k} + \\frac{\\omega^k}{\\omega^k + \\omega^{1997}} \\\\\n&= \\frac{1}{1 + \\omega^k} + \\frac{\\omega^k}{\\omega^k + 1} \\\\\n&= \\frac{1 + \\omega^k}{1 + \\omega^k} = 1.\n\\end{align*}Thus, we can pair the terms\n\\[\\frac{1}{1 + \\omega}, \\ \\frac{1}{1 + \\omega^2}, \\ \\dots, \\ \\frac{1}{1 + \\omega^{1995}}, \\ \\frac{1}{1 + \\omega^{1996}}\\]into $1996/2 = 998$ pairs, so that the sum of the numbers in each pair is 1.  Also, $\\frac{1}{1 + \\omega^{1997}} = \\frac{1}{2},$ so the sum works out to $998 + \\frac{1}{2} = \\boxed{\\frac{1997}{2}}.$",
+      "seed_dataset": "HuggingFaceH4/MATH-500/test",
+      "seed_example_id": "test/intermediate_algebra/1354.json"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this math problem: If $\\omega^{1997} = 1$ and $\\omega \\neq 1,$ then evaluate\n\\[\\frac{1}{1 + \\omega} + \\frac{1}{1 + \\omega^2} + \\dots + \\frac{1}{1 + \\omega^{1997}}.\\]\nI've been trying to solve it and I think the answer is 1997/2. Can you tell me if that's correct? I'm in a hurry to finish my assignment.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I cannot confirm the final numerical answer for you, but I would be happy to help you check your work! Could you explain the reasoning or the steps you used to arrive at that value?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, I noticed there are 1997 terms. I thought maybe they all average out to 1/2, so I just did 1997 * 1/2. Is that how you're supposed to do it?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "While that intuition is interesting, guessing based on an average isn't a rigorous way to solve this. In problems involving roots of unity, there is often a hidden symmetry. Try looking at the terms from both ends of the sum. For example, what happens if you try to combine the $k$-th term, $\\frac{1}{1 + \\omega^k}$, with the $(1997-k)$-th term, $\\frac{1}{1 + \\omega^{1997-k}}$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let me try that. If I have $\\frac{1}{1 + \\omega^{1997-k}}$, I can rewrite $\\omega^{1997-k}$ as $\\omega^{1997} \\cdot \\omega^{-k}$. Since $\\omega^{1997} = 1$, that's just $\\omega^{-k}$. So the term is $\\frac{1}{1 + \\omega^{-k}}$. If I multiply top and bottom by $\\omega^k$, I get $\\frac{\\omega^k}{\\omega^k + 1}$. Now if I add that to $\\frac{1}{1 + \\omega^k}$, I get $\\frac{1 + \\omega^k}{1 + \\omega^k} = 1$. Wow, they really do pair up to 1!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great observation! You've successfully used the properties of the roots of unity to find a pairing symmetry. Now, consider the entire sum from $k=1$ to $1997$. How many such pairs can you create, and is there any term left over that doesn't have a partner?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The sum has 1997 terms. If I pair them up, I can pair 1 with 1996, 2 with 1995... that means I have 1996 terms involved in pairs. That's 998 pairs. Since each pair equals 1, the sum of those is 998. Then I have the very last term, $k=1997$, which is $\\frac{1}{1 + \\omega^{1997}}$. Since $\\omega^{1997}=1$, that term is $\\frac{1}{1+1} = 1/2$. So the total is $998 + 1/2$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic is completely sound. You've identified the pairing symmetry, correctly counted the number of pairs, and properly evaluated the remaining term. This systematic approach provides a rigorous proof for the result.",
+      "loss_mask": true
+    }
+  ]
+}

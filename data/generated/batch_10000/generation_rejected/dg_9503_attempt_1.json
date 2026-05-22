@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_9503",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Counting & Probability",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student initially overcounts by not accounting for the 'at least one' condition correctly. Tutor guides them to think about the complementary event."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Melinda will roll two standard six-sided dice and make a two-digit number with the two numbers she rolls. For example, if she rolls a 6 and a 3, she can either form 36 or 63. What is the probability that she will be able to make an integer between 10 and 20, inclusive? Express your answer as a common fraction.",
+      "reference_solution": "She can do this if and only if at least one of the dice lands on a 1. The probability neither of the dice is a 1 is $\\left(\\frac{5}{6}\\right) \\left(\\frac{5}{6}\\right) = \\frac{25}{36}$. So the probability at least one die is a 1 is $1-\\frac{25}{36} = \\boxed{\\frac{11}{36}}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "2487"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Melinda will roll two standard six-sided dice and make a two-digit number with the two numbers she rolls. For example, if she rolls a 6 and a 3, she can either form 36 or 63. What is the probability that she will be able to make an integer between 10 and 20, inclusive? Express your answer as a common fraction.\n\nI think the answer is 12/36. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "To help you figure out if that's correct, could you walk me through how you arrived at 12/36? I'd like to see your reasoning first.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, to get a number between 10 and 20, one of the dice has to be a 1. There are 6 outcomes where the first die is 1 (1,1 through 1,6) and 6 outcomes where the second die is 1 (1,1 through 6,1). So 6 + 6 = 12. Then I just put it over the total outcomes, 36.",
+      "loss_mask": true
+    },
+    {
+      "role": "assistant",
+      "content": "I see your logic. You identified that at least one die must be a 1 to form a number in the teens. However, take a closer look at your list of outcomes. Did you count any specific roll more than once?",
+      "loss_mask": false
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. I counted (1,1) in both groups. So it should be 11/36?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've spotted the double-counting issue! Now, instead of just subtracting the overlap, can you think of another way to verify this using the complement? For instance, what is the probability that she *cannot* make a number between 10 and 20?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If she can't make a number between 10 and 20, that means neither die can be a 1. So both dice must be 2, 3, 4, 5, or 6. That's 5 options for the first die and 5 for the second, so 5 * 5 = 25 outcomes. The probability of that happening is 25/36. To find the probability of the original event, I subtract that from 1. 1 - 25/36 = 11/36.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is a very solid way to verify your result. By calculating the complement, you've confirmed your previous finding. You've successfully handled the overlap problem and used two different methods to reach the same conclusion.",
+      "loss_mask": true
+    }
+  ]
+}

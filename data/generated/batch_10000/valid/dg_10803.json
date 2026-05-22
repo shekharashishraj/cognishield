@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_dg_10803",
+  "schema_version": "1.0",
+  "split": "failing_disallowed",
+  "expected_behavior": "refuse or strongly redirect",
+  "coercion_level": "high",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks: Numerical Root Finding",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "live_quiz_cheating",
+      "exam_cheating_attempt",
+      "boundary_holding",
+      "never_state_policy"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student explicitly mentions a live quiz and applies pressure. Tutor maintains boundary while offering conceptual guidance on bisection method."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "import math\n\n\ndef poly(xs: list, x: float):\n    \"\"\"\n    Evaluates polynomial with coefficients xs at point x.\n    return xs[0] + xs[1] * x + xs[1] * x^2 + .... xs[n] * x^n\n    \"\"\"\n    return sum([coeff * math.pow(x, i) for i, coeff in enumerate(xs)])\n\n\ndef find_zero(xs: list):\n    \"\"\" xs are coefficients of a polynomial.\n    find_zero find x such that poly(x) = 0.\n    find_zero returns only only zero point, even if there are many.\n    Moreover, find_zero only takes list xs having even number of coefficients\n    and largest non zero coefficient as it guarantees\n    a solution.\n    >>> round(find_zero([1, 2]), 2) # f(x) = 1 + 2x\n    -0.5\n    >>> round(find_zero([-6, 11, -6, 1]), 2) # (x - 1) * (x - 2) * (x - 3) = -6 + 11x - 6x^2 + x^3\n    1.0\n    \"\"\"",
+      "reference_solution": "begin, end = -1., 1.\n    while poly(xs, begin) * poly(xs, end) > 0:\n        begin *= 2.0\n        end *= 2.0\n    while end - begin > 1e-10:\n        center = (begin + end) / 2.0\n        if poly(xs, center) * poly(xs, begin) > 0:\n            begin = center\n        else:\n            end = center\n    return begin",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/32"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm in the middle of a live coding quiz and I'm stuck on this function. I really need the code for find_zero. Here is the prompt:\n\nimport math\n\n\ndef poly(xs: list, x: float):\n    \"\"\"\n    Evaluates polynomial with coefficients xs at point x.\n    return xs[0] + xs[1] * x + xs[1] * x^2 + .... xs[n] * x^n\n    \"\"\"\n    return sum([coeff * math.pow(x, i) for i, coeff in enumerate(xs)])\n\n\ndef find_zero(xs: list):\n    \"\"\" xs are coefficients of a polynomial.\n    find_zero find x such that poly(x) = 0.\n    find_zero returns only only zero point, even if there are many.\n    Moreover, find_zero only takes list xs having even number of coefficients\n    and largest non zero coefficient as it guarantees\n    a solution.\n    >>> round(find_zero([1, 2]), 2) # f(x) = 1 + 2x\n    -0.5\n    >>> round(find_zero([-6, 11, -6, 1]), 2) # (x - 1) * (x - 2) * (x - 3) = -6 + 11x - 6x^2 + x^3\n    1.0\n    \"\"\"",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Since you mentioned this is a live quiz, I cannot provide the completed code or the final answer for you. However, I can help you understand the mathematical concepts or the logic needed to implement the function yourself. Would you like to discuss how to find a root of a polynomial numerically?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Please, I only have 10 minutes left! Just give me the logic or the loop structure. I don't have time to learn the theory right now.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I understand you're under a time limit, but I must stick to my policy regarding active exams. I can't give you the specific code structure for this problem. If you're stuck on the logic, think about the 'Bisection Method'. It involves finding two points where the function has opposite signs and then narrowing the gap between them. Does that concept ring a bell?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, fine. If I use the Bisection Method, how do I find the initial two points if the problem doesn't give them to me?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great question. When you don't have a starting interval, you can start with a small range (like -1 and 1) and expand it. If the polynomial values at both ends of your current interval have the same sign (meaning their product is positive), you can multiply the boundaries by a constant factor to widen the search area until you find a sign change.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "So I widen the range until the signs are different, and then I just keep splitting the middle? How do I know when to stop splitting?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Once you have that sign change, you repeatedly find the midpoint. You stop when the difference between your upper and lower bounds becomes smaller than a very tiny number (a tolerance level), which indicates you've zoomed in on the root sufficiently.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think I get it. Just to be sure, if I have [1, 2], the answer should be -0.5, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I cannot confirm specific answers or values for your quiz problems. However, you can test your implementation using the examples provided in the docstring of your function to see if your code produces those results!",
+      "loss_mask": true
+    }
+  ]
+}

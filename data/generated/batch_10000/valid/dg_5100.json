@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_dg_5100",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Geometry - Triangle Properties and Trigonometry",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor effectively guides the student from a wrong assumption (equilateral triangle) to the correct trigonometric approach and integer constraint analysis without revealing the final answer."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Triangle $ABC$ has positive integer side lengths with $AB=AC$. Let $I$ be the intersection of the bisectors of $\\angle B$ and $\\angle C$. Suppose $BI=8$. Find the smallest possible perimeter of $\\triangle ABC$.",
+      "reference_solution": "Let $D$ be the midpoint of $\\overline{BC}$. Then by SAS Congruence, $\\triangle ABD \\cong \\triangle ACD$, so $\\angle ADB = \\angle ADC = 90^o$.\nNow let $BD=y$, $AB=x$, and $\\angle IBD = \\dfrac{\\angle ABD}{2} = \\theta$.\nThen $\\mathrm{cos}{(\\theta)} = \\dfrac{y}{8}$\nand $\\mathrm{cos}{(2\\theta)} = \\dfrac{y}{x} = 2\\mathrm{cos^2}{(\\theta)} - 1 = \\dfrac{y^2-32}{32}$.\nCross-multiplying yields $32y = x(y^2-32)$.\nSince $x,y>0$, $y^2-32$ must be positive, so $y > 5.5$.\nAdditionally, since $\\triangle IBD$ has hypotenuse $\\overline{IB}$ of length $8$, $BD=y < 8$.\nTherefore, given that $BC=2y$ is an integer, the only possible values for $y$ are $6$, $6.5$, $7$, and $7.5$.\nHowever, only one of these values, $y=6$, yields an integral value for $AB=x$, so we conclude that $y=6$ and $x=\\dfrac{32(6)}{(6)^2-32}=48$.\nThus the perimeter of $\\triangle ABC$ must be $2(x+y) = \\boxed{108}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "1634"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this geometry problem: 'Triangle $ABC$ has positive integer side lengths with $AB=AC$. Let $I$ be the intersection of the bisectors of $\\angle B$ and $\\angle C$. Suppose $BI=8$. Find the smallest possible perimeter of $\\triangle ABC$.' I think the answer is 64. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't confirm the final value for you, but I'd be happy to check your work. Could you explain the reasoning you used to arrive at 64?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, I figured that for the 'smallest' perimeter, the triangle should probably be equilateral. If $AB=BC=AC=s$, then the distance from a vertex to the incenter $I$ is $s/\\sqrt{3}$. So $8 = s/\\sqrt{3}$, which means $s = 8\\sqrt{3} \\approx 13.85$. Since the sides must be integers, I tried rounding $s$ and then calculating the perimeter, and I ended up with 64 after some trial and error. Does that logic hold up?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Starting with the equilateral case is a good instinct for optimization, but there's a catch here: the problem requires the side lengths to be positive integers. In your calculation, $s = 8\\sqrt{3}$ is irrational, and simply rounding it might not satisfy the geometric constraints of the triangle. \n\nInstead of assuming it's equilateral, let's use the fact that it's isosceles ($AB=AC$). If you let $D$ be the midpoint of $BC$ and $\\angle IBD = \\theta$, how can you express the length of $BD$ using the given length of $BI$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Since $\\angle BDI$ is $90^\\circ$ and $BI$ is the hypotenuse of length 8, then $BD = 8 \\cos(\\theta)$. That part seems straightforward. What's the next step?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Now, consider the larger right triangle $\\triangle ABD$. Since $BI$ is the angle bisector of $\\angle B$, the angle $\\angle ABD$ is $2\\theta$. Can you find another expression for $BD$ in terms of the side length $AB$ and this angle $2\\theta$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "In $\\triangle ABD$, $BD = AB \\cos(2\\theta)$. So I have $AB \\cos(2\\theta) = 8 \\cos(\\theta)$. I can use the identity $\\cos(2\\theta) = 2\\cos^2(\\theta) - 1$. If I let $y = BD$, then $\\cos(\\theta) = y/8$. Plugging that in gives $AB(2(y/8)^2 - 1) = y$, which is $AB(y^2/32 - 1) = y$. Am I on the right track now?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You are exactly on the right track. You've established a relationship between the side $AB$ (let's call it $x$) and half the base $BD$ (which you called $y$). \n\nNow, apply the integer constraints. We know $x$ must be an integer, and the full base $BC = 2y$ must also be an integer. Looking at the equation $x = y / (y^2/32 - 1)$, what does this tell you about the possible values for $y$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "For $x$ to be positive, $y^2/32 - 1$ must be greater than 0, so $y^2 > 32$, which means $y > 5.65$. Also, since $y$ is a leg of a right triangle with hypotenuse 8, $y$ must be less than 8. Since $2y$ is an integer, $y$ could be $6, 6.5, 7,$ or $7.5$. I just need to check which of these makes $x$ an integer!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's the perfect way to narrow it down. Go ahead and test those four values for $y$ to see which one results in an integer for $x$. Once you find the valid $x$ and $y$, you can calculate the perimeter $2x + 2y$. Let me know what you find!",
+      "loss_mask": true
+    }
+  ]
+}

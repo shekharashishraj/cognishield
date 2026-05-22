@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_dg_11601",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Precalculus - Matrix Powers",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully guides the student to discover the cyclic property of the matrix power without revealing the final result."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Given\n\\[\\mathbf{A} = \\begin{pmatrix} 3 & 7 \\\\ -1 & -2 \\end{pmatrix},\\]compute $\\mathbf{A}^{27} + \\mathbf{A}^{31} + \\mathbf{A}^{40}.$",
+      "reference_solution": "Note that\n\\[\\mathbf{A}^2 = \\begin{pmatrix} 2 & 7 \\\\ -1 & -3 \\end{pmatrix}\\]and\n\\[\\mathbf{A}^3 = \\mathbf{A} \\mathbf{A}^2 = \\begin{pmatrix} -1 & 0 \\\\ 0 & -1 \\end{pmatrix} = -\\mathbf{I}.\\]Then\n\\begin{align*}\n\\mathbf{A}^{27} + \\mathbf{A}^{31} + \\mathbf{A}^{40} &= (\\mathbf{A}^3)^9 + (\\mathbf{A}^3)^{10} \\mathbf{A} + (\\mathbf{A}^3)^{13} \\mathbf{A} \\\\\n&= (-\\mathbf{I})^9 + (-\\mathbf{I})^{10} \\mathbf{A} + (-\\mathbf{I})^{13} \\mathbf{A} \\\\\n&= -\\mathbf{I} + \\mathbf{A} - \\mathbf{A} \\\\\n&= -\\mathbf{I} = \\boxed{\\begin{pmatrix} -1 & 0 \\\\ 0 & -1 \\end{pmatrix}}.\n\\end{align*}",
+      "seed_dataset": "HuggingFaceH4/MATH-500/test",
+      "seed_example_id": "test/precalculus/920.json"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm stuck on this math problem: Given\n\\[\\mathbf{A} = \\begin{pmatrix} 3 & 7 \\\\ -1 & -2 \\end{pmatrix},\\]compute $\\mathbf{A}^{27} + \\mathbf{A}^{31} + \\mathbf{A}^{40}$. I don't want to multiply the matrix 40 times, there must be a trick. Can you help me solve it?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're absolutely right—calculating these powers manually would be exhausting! Usually, when you see very high exponents like 27, 31, and 40, it's a sign that the matrix has a repeating pattern or reaches a special form (like the identity matrix) after a few iterations. Why don't you start by calculating $\\mathbf{A}^2$ and $\\mathbf{A}^3$ to see if you notice anything interesting?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, let me try. For $\\mathbf{A}^2$: \n(3*3 + 7*-1) = 2\n(3*7 + 7*-2) = 7\n(-1*3 + -2*-1) = -1\n(-1*7 + -2*-2) = -3\nSo $\\mathbf{A}^2 = \\begin{pmatrix} 2 & 7 \\\\ -1 & -3 \\end{pmatrix}$. That doesn't look like the identity matrix. Let me do $\\mathbf{A}^3$ now... \n(3*2 + 7*-1) = -1\n(3*7 + 7*-3) = 0\n(-1*2 + -2*-1) = 0\n(-1*7 + -2*-3) = -1\nWait, $\\mathbf{A}^3 = \\begin{pmatrix} -1 & 0 \\\\ 0 & -1 \\end{pmatrix}$. Is this the trick?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a huge discovery! Notice that $\\begin{pmatrix} -1 & 0 \\\\ 0 & -1 \\end{pmatrix}$ is actually $-\\mathbf{I}$, where $\\mathbf{I}$ is the identity matrix. Since the identity matrix behaves like the number 1 in scalar multiplication, this simplifies things immensely. How can you use the fact that $\\mathbf{A}^3 = -\\mathbf{I}$ to rewrite $\\mathbf{A}^{27}$, $\\mathbf{A}^{31}$, and $\\mathbf{A}^{40}$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If $\\mathbf{A}^3 = -\\mathbf{I}$, then $\\mathbf{A}^{27} = (\\mathbf{A}^3)^9 = (-\\mathbf{I})^9$. Since 9 is odd, that's just $-\\mathbf{I}$. \nFor $\\mathbf{A}^{31}$, that's $(\\mathbf{A}^3)^{10} \\mathbf{A} = (-\\mathbf{I})^{10} \\mathbf{A}$. Since 10 is even, it's $\\mathbf{I} \\mathbf{A} = \\mathbf{A}$. \nAnd $\\mathbf{A}^{40}$ is $(\\mathbf{A}^3)^{13} \\mathbf{A} = (-\\mathbf{I})^{13} \\mathbf{A} = -\\mathbf{I} \\mathbf{A} = -\\mathbf{A}$. \nIs that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic for breaking down the exponents is spot on. You've successfully reduced those high powers into much simpler terms involving $\\mathbf{I}$ and $\\mathbf{A}$. Now, just put those three results back into the original expression: $\\mathbf{A}^{27} + \\mathbf{A}^{31} + \\mathbf{A}^{40}$. What happens when you combine them?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It becomes $-\\mathbf{I} + \\mathbf{A} - \\mathbf{A}$. The $\\mathbf{A}$ and $-\\mathbf{A}$ cancel out, leaving just $-\\mathbf{I}$. So the final answer is $\\begin{pmatrix} -1 & 0 \\\\ 0 & -1 \\end{pmatrix}$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've navigated the problem perfectly. You identified the cyclic property of the matrix, used the identity matrix to simplify the exponents, and correctly combined the terms. Great work on working through the steps!",
+      "loss_mask": true
+    }
+  ]
+}

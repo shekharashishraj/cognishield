@@ -1,0 +1,108 @@
+{
+  "conversation_id": "mt_dg_5832",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Precalculus - Trigonometric Identities",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to calculate angles individually using Law of Cosines, which leads to messy calculations. Tutor redirects them to use trigonometric identities to simplify the expression first."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "If triangle $ABC$ has sides of length $AB = 6,$ $AC = 5,$ and $BC = 4,$ then calculate\n\\[\\frac{\\cos \\frac{A - B}{2}}{\\sin \\frac{C}{2}} - \\frac{\\sin \\frac{A - B}{2}}{\\cos \\frac{C}{2}}.\\]",
+      "reference_solution": "We can write the expression as\n\\[\\frac{\\cos \\frac{A - B}{2} \\cos \\frac{C}{2} - \\sin \\frac{A - B}{2} \\sin \\frac{C}{2}}{\\sin \\frac{C}{2} \\cos \\frac{C}{2}}.\\]The numerator is\n\\[\\cos \\left (\\frac{A - B}{2} + \\frac{C}{2} \\right) = \\cos \\frac{A - B + C}{2} = \\cos \\frac{(180^\\circ - B) - B}{2} = \\cos (90^\\circ - B) = \\sin B,\\]and the denominator is $\\frac{1}{2} \\sin C,$ so by the Law of Sines, the expression is\n\\[\\frac{2 \\sin B}{\\sin C} = \\frac{2AC}{AB} = \\frac{10}{6} = \\boxed{\\frac{5}{3}}.\\]",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "3766"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: If triangle $ABC$ has sides of length $AB = 6,$ $AC = 5,$ and $BC = 4,$ then calculate\n\\[\\frac{\\cos \\frac{A - B}{2}}{\\sin \\frac{C}{2}} - \\frac{\\sin \\frac{A - B}{2}}{\\cos \\frac{C}{2}}.\\]\nCan you just tell me the answer? I'm in a rush.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the final answer directly, but I can certainly help you work through the steps to find it! Looking at the expression, it seems quite complex to evaluate if you try to find the angles first. Do you have any ideas on how to simplify that fraction before plugging in the side lengths?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I thought I should use the Law of Cosines to find angle A, B, and C first. For example, $4^2 = 5^2 + 6^2 - 2(5)(6)\\cos(A)$, so $\\cos(A) = (25+36-16)/60 = 45/60 = 3/4$. Then I can find A and B and plug them into the formula. Is that the right way?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your application of the Law of Cosines is mathematically correct, but consider the form of the target expression. It involves half-angles like $\\frac{A-B}{2}$ and $\\frac{C}{2}$. If you calculate the angles numerically, you'll end up with inverse trigonometric functions that might be very difficult to simplify. Is there a trigonometric identity that looks like $\\frac{a}{b} - \\frac{c}{d}$ that could combine these two terms into one?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I could find a common denominator! It would be $\\sin \\frac{C}{2} \\cos \\frac{C}{2}$. The numerator would then be $\\cos \\frac{A - B}{2} \\cos \\frac{C}{2} - \\sin \\frac{A - B}{2} \\sin \\frac{C}{2}$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great start. Now, take a close look at that numerator: $\\cos \\frac{A - B}{2} \\cos \\frac{C}{2} - \\sin \\frac{A - B}{2} \\sin \\frac{C}{2}$. Does that pattern remind you of any specific angle addition or subtraction formulas?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, that's the formula for $\\cos(x + y)$! So the numerator is $\\cos(\\frac{A-B}{2} + \\frac{C}{2})$, which is $\\cos(\\frac{A-B+C}{2})$. Since $A+B+C = 180^\\circ$, then $A+C = 180^\\circ - B$. So it's $\\cos(\\frac{180^\\circ - 2B}{2}) = \\cos(90^\\circ - B)$. That's just $\\sin B$!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. You've simplified the numerator significantly. Now apply the same logic to the denominator $\\sin \\frac{C}{2} \\cos \\frac{C}{2}$. Can you rewrite that using a double-angle identity?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The double angle for sine is $\\sin(2\\theta) = 2\\sin\\theta\\cos\\theta$. So $\\sin \\frac{C}{2} \\cos \\frac{C}{2} = \\frac{1}{2} \\sin C$. Now the whole expression is $\\frac{\\sin B}{\\frac{1}{2} \\sin C} = \\frac{2 \\sin B}{\\sin C}$. How do I get a number from this using the side lengths?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're almost there. You have a ratio of sines of the angles of the triangle. Which law relates the sines of the angles to the lengths of the opposite sides?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The Law of Sines! $\\frac{\\sin B}{b} = \\frac{\\sin C}{c}$. So $\\frac{\\sin B}{\\sin C} = \\frac{b}{c}$. In this triangle, $b$ is the side opposite to angle $B$ (which is $AC=5$) and $c$ is the side opposite to angle $C$ (which is $AB=6$). So the answer is $2 \\times \\frac{5}{6} = \\frac{10}{6} = \\frac{5}{3}$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've correctly applied the Law of Sines and simplified the expression to its final form. Great job navigating those identities to avoid the tedious calculations!",
+      "loss_mask": true
+    }
+  ]
+}

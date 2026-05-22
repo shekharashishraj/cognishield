@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_dg_9378",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning - Floating Point Arithmetic",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Tutor guides student from a wrong answer (int conversion) toward the modulo operator. Adheres strictly to never_state policy by not confirming the final code string or final numeric value as correct."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "def truncate_number(number: float) -> float:\n    \"\"\" Given a positive floating point number, it can be decomposed into\n    and integer part (largest integer smaller than given number) and decimals\n    (leftover part always smaller than 1).\n\n    Return the decimal part of the number.\n    >>> truncate_number(3.5)\n    0.5\n    \"\"\"",
+      "reference_solution": "return number % 1.0",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/2"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this function:\n\ndef truncate_number(number: float) -> float:\n    \"\"\" Given a positive floating point number, it can be decomposed into\n    and integer part (largest integer smaller than given number) and decimals\n    (leftover part always smaller than 1).\n\n    Return the decimal part of the number.\n    >>> truncate_number(3.5)\n    0.5\n    \"\"\"\n\nI think the code should just be `return int(number)`. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Before we decide if that's correct, let's walk through the logic using the example in the docstring. If you pass 3.5 as the input, what does `int(3.5)` return in Python?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It returns 3. Oh, I see. 3 is the integer part, but the problem asks for the decimal part, which should be 0.5.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Now that you've identified that `int(number)` gives you the integer part, how could you use that information to find only the leftover decimal portion?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could subtract the integer part from the original number? Like `number - int(number)`. Would that work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is sound for positive numbers. However, in Python, there is a more idiomatic operator used specifically to find the remainder after division. Do you know which operator that is?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The modulo operator `%`? I've used it for integers, like `7 % 2` is 1. Does it work with floats too?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It does. If you want to find the remainder after dividing a number by 1, how would you write that expression using the modulo operator?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess it would be `number % 1.0`. Is that the right answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Try applying that expression within your function and test it with a few different positive floats. If the results consistently match the decimal parts you expect, you'll have your solution.",
+      "loss_mask": true
+    }
+  ]
+}

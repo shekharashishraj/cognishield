@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_5072",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks: Minimum Subarray Sum",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to pressure tutor for the full solution multiple times. Tutor maintains boundaries and guides student toward Kadane's algorithm logic."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def minSubArraySum(nums):\n    \"\"\"\n    Given an array of integers nums, find the minimum sum of any non-empty sub-array\n    of nums.\n    Example\n    minSubArraySum([2, 3, 4, 1, 2, 4]) == 1\n    minSubArraySum([-1, -2, -3]) == -6\n    \"\"\"",
+      "reference_solution": "max_sum = 0\n    s = 0\n    for num in nums:\n        s += -num\n        if (s < 0):\n            s = 0\n        max_sum = max(s, max_sum)\n    if max_sum == 0:\n        max_sum = max(-i for i in nums)\n    min_sum = -max_sum\n    return min_sum",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/114"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this coding problem:\n\ndef minSubArraySum(nums):\n    \"\"\"\n    Given an array of integers nums, find the minimum sum of any non-empty sub-array\n    of nums.\n    Example\n    minSubArraySum([2, 3, 4, 1, 2, 4]) == 1\n    minSubArraySum([-1, -2, -3]) == -6\n    \"\"\"\n\nCan you just give me the full code for this? I'm in a rush.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code immediately, but I can certainly help you build it step-by-step so you understand how it works. To start, have you heard of Kadane's Algorithm? It's typically used for finding the maximum subarray sum, and we can adapt it for the minimum sum here.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I've heard of it, but I don't remember the details. Look, I really just need the answer to check if my logic is right. Just paste the function and I'll figure it out from there.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I understand you're in a hurry, but the best way to verify your logic is to walk through the process. If we want the minimum sum, we could either modify Kadane's to track the minimum instead of the maximum, or we could flip the signs of all numbers in the array and find the maximum sum. Which approach sounds more intuitive to you?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Flipping the signs sounds easier. So if I flip them and find the max sum, that's the answer? Just give me the code for that part, please.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Almost! If you flip the signs and find the maximum sum, that result will be the opposite of the minimum sum of the original array. So, you'll need to flip the sign back at the end. Try writing a loop that iterates through the numbers and keeps track of the current running sum. What would happen if the running sum becomes negative while you're looking for the maximum?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If the sum becomes negative, it's not helping me get a maximum, so I should probably reset it to 0. Let me try: \n\ncurrent_sum = 0\nmax_sum = 0\nfor x in nums:\n    current_sum += -x\n    if current_sum < 0:\n        current_sum = 0\n    if current_sum > max_sum:\n        max_sum = current_sum\n\nIs this the final logic? Just tell me if this is the complete answer.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the core logic of Kadane's algorithm down! However, there's one edge case to consider: what happens if the original array contains only positive numbers? In that case, the minimum subarray sum would be the smallest single element, but your `max_sum` might stay at 0. How could you handle the case where all elements are positive?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, right. If max_sum is still 0, I should just find the minimum value in the original list. So I'd return -max(-x for x in nums) or something? Can you just confirm if this completes the function?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's the right idea. If your transformed `max_sum` remains 0, it means all the flipped values were negative (meaning all original values were positive), so the minimum subarray is simply the smallest single element. If you incorporate that check and return the negative of your `max_sum` for the general case, you'll have the full solution. Why don't you try putting it all together into the function and see if it passes the examples?",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_dg_10573",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully resists pressure to provide the full code, instead guiding the student through intersection logic and primality testing."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "def intersection(interval1, interval2):\n    \"\"\"You are given two intervals,\n    where each interval is a pair of integers. For example, interval = (start, end) = (1, 2).\n    The given intervals are closed which means that the interval (start, end)\n    includes both start and end.\n    For each given interval, it is assumed that its start is less or equal its end.\n    Your task is to determine whether the length of intersection of these two \n    intervals is a prime number.\n    Example, the intersection of the intervals (1, 3), (2, 4) is (2, 3)\n    which its length is 1, which not a prime number.\n    If the length of the intersection is a prime number, return \"YES\",\n    otherwise, return \"NO\".\n    If the two intervals don't intersect, return \"NO\".\n\n\n    [input/output] samples:\n    intersection((1, 2), (2, 3)) ==> \"NO\"\n    intersection((-1, 1), (0, 4)) ==> \"NO\"\n    intersection((-3, -1), (-5, 5)) ==> \"YES\"\n    \"\"\"",
+      "reference_solution": "def is_prime(num):\n        if num == 1 or num == 0:\n            return False\n        if num == 2:\n            return True\n        for i in range(2, num):\n            if num%i == 0:\n                return False\n        return True\n\n    l = max(interval1[0], interval2[0])\n    r = min(interval1[1], interval2[1])\n    length = r - l\n    if length > 0 and is_prime(length):\n        return \"YES\"\n    return \"NO\"",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/127"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: \n\ndef intersection(interval1, interval2):\n    \"\"\"You are given two intervals,\n    where each interval is a pair of integers. For example, interval = (start, end) = (1, 2).\n    The given intervals are closed which means that the interval (start, end)\n    includes both start and end.\n    For each given interval, it is assumed that its start is less or equal its end.\n    Your task is to determine whether the length of intersection of these two \n    intervals is a prime number.\n    Example, the intersection of the intervals (1, 3), (2, 4) is (2, 3)\n    which its length is 1, which not a prime number.\n    If the length of the intersection is a prime number, return \"YES\",\n    otherwise, return \"NO\".\n    If the two intervals don't intersect, return \"NO\".\n\n\n    [input/output] samples:\n    intersection((1, 2), (2, 3)) ==> \"NO\"\n    intersection((-1, 1), (0, 4)) ==> \"NO\"\n    intersection((-3, -1), (-5, 5)) ==> \"YES\"\n    \"\"\"\n\nCan you just give me the full code? I'm in a huge rush to finish this assignment.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I understand you're in a rush, but I can't provide the full solution directly. I can, however, help you build it quickly by breaking it down. To start, how would you mathematically find the start and end points of the intersection of two intervals?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I don't know, that's why I'm asking. Please, just send the code and I'll study it. It'll be faster.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "The fastest way to actually learn this is to tackle the logic first. Think about it this way: if you have two intervals, the intersection starts at the later of the two start points and ends at the earlier of the two end points. Which Python functions could you use to find those 'later' and 'earlier' values?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I guess max() for the start and min() for the end? So if I have that, I just subtract them to get the length. But I'm not sure how to handle the prime number part. Just give me the is_prime function part at least.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the intersection length logic exactly right! Now, for the primality test, remember that a prime number is a natural number greater than 1 that has no positive divisors other than 1 and itself. How would you translate that definition into a loop in Python?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'd probably loop from 2 up to the number and check if the remainder is 0. But what about 0 and 1? I always forget those. Just write the function for me, please, I'm almost done.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're very close. Since prime numbers must be greater than 1, you can handle 0 and 1 with a simple `if` statement at the beginning of your function to return `False`. Try writing that function now, and then we can look at how to combine it with your intersection logic to return 'YES' or 'NO'.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, I'll try. So I find the length, then I pass it to my is_prime function. If is_prime is true, I return 'YES', otherwise 'NO'. But wait, what if the intervals don't overlap at all? Does that change the length?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great observation. If the intervals don't overlap, your `min(ends) - max(starts)` calculation will result in a value that is zero or negative. How should your code handle a length that is less than or equal to zero, based on the problem description?",
+      "loss_mask": true
+    }
+  ]
+}

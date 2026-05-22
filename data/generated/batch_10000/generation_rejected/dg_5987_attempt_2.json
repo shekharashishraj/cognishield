@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_5987",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Function Parity",
+    "difficulty": "undergrad",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The student attempts to solve function composition parity by counting odd/even functions. The tutor guides the student to use the formal definition of parity by evaluating the function at -x."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Let $f(x)$ be an odd function, and let $g(x)$ be an even function.  Is $f(f(g(f(g(f(x))))))$ even, odd, or neither?\n\nEnter \"odd\", \"even\", or \"neither\".",
+      "reference_solution": "We have that\n\\[f(f(g(f(g(f(-x)))))) = f(f(g(f(g(-f(x)))))) = f(f(g(f(g(f(x)))))),\\]so the function is $\\boxed{\\text{even}}.$\n\nMore generally, if we have a composition of functions, and at least one of the functions is even, then the whole composition of functions is even.",
+      "seed_dataset": "HuggingFaceH4/MATH-500/test",
+      "seed_example_id": "test/intermediate_algebra/128.json"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this one: Let $f(x)$ be an odd function, and let $g(x)$ be an even function.  Is $f(f(g(f(g(f(x))))))$ even, odd, or neither?\n\nI think the answer is 'odd' because there are four $f$'s (odd) and only two $g$'s (even), so the 'oddness' wins out. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see where you're coming from—you're treating the parity like a sum or a product. However, function composition behaves differently. Instead of counting, try using the formal definitions: what happens to the expression if you replace $x$ with $-x$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, let's try that. If I replace $x$ with $-x$, the innermost part is $f(-x)$. Since $f$ is odd, $f(-x) = -f(x)$. So the whole thing becomes $f(f(g(f(g(-f(x))))))$. Now what?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the first step exactly right. Now, look at the next function in the composition that is acting on that result. You have $g(-f(x))$. Given that $g$ is an even function, how does $g(-f(x))$ relate to $g(f(x))$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Since $g$ is even, $g(-something) = g(something)$. So $g(-f(x))$ is just $g(f(x))$. That means the expression is now $f(f(g(f(g(f(x))))))$ again! Wait, that's the original function.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. You've found that substituting $-x$ into the entire composition returns the original function. Based on the definitions of even and odd functions, what does this result imply about the parity of the whole composition?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If $H(-x) = H(x)$, then $H$ is even. So the answer should be 'even'. I guess the counting trick doesn't work for composition!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got it. You've successfully used the definition to find the correct parity. As a tip for future problems: if any function in a composition chain is even, think about how that 'absorbs' the negative sign and affects everything that follows in the outer layers.",
+      "loss_mask": true
+    }
+  ]
+}
