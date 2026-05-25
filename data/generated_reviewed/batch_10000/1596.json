@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_1596",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Counting & Probability",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student initially forgets to account for the combinations of islands and mistakenly includes the trap probability. Tutor guides them to isolate the specific required outcomes."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "A pirate is searching for buried treasure on 6 islands. On each island, there is a $\\frac{1}{4}$ chance that the island has buried treasure and no traps, a $\\frac{1}{12}$ chance that the island has traps but no treasure, and a $\\frac{2}{3}$ chance that the island has neither traps nor treasure. What is the probability that while searching all 6 islands, the pirate will encounter exactly 3 islands with treasure, and none with traps?",
+      "reference_solution": "There are $\\binom{6}{3}=20$ ways to choose 3 islands. For each of these choices, there is a probability of $\\left( \\frac{1}{4} \\right)^3 \\left( \\frac{2}{3} \\right)^3$ that the chosen islands have treasure and the remaining ones have neither treasure nor traps. Therefore, the probability that the pirate encounters exactly 3 islands with treasure and none with traps is $20 \\left( \\frac{1}{4} \\right)^3 \\left( \\frac{2}{3} \\right)^3 = \\boxed{\\frac{5}{54}}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "905"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm working on this problem: A pirate is searching for buried treasure on 6 islands. On each island, there is a $\\frac{1}{4}$ chance that the island has buried treasure and no traps, a $\\frac{1}{12}$ chance that the island has traps but no treasure, and a $\\frac{2}{3}$ chance that the island has neither traps nor treasure. What is the probability that while searching all 6 islands, the pirate will encounter exactly 3 islands with treasure, and none with traps?\n\nI think the answer is $(\\frac{1}{4})^3 \\times (\\frac{11}{12})^3$. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see how you're thinking about the probabilities for the treasure islands, but that result isn't quite correct. Could you walk me through your reasoning? Specifically, how did you arrive at the $\\frac{11}{12}$ term and why did you choose that specific structure for your calculation?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, there are 6 islands. I need 3 to have treasure, so that's $(\\frac{1}{4})^3$. Then the other 3 islands just need to NOT have treasure, and since the treasure probability is $\\frac{1}{4}$, the probability of not having treasure is $1 - \\frac{1}{4} = \\frac{3}{4}$. Wait, I used $\\frac{11}{12}$ because I thought about the traps... I subtracted the trap probability $\\frac{1}{12}$ from 1. Does that make sense?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're touching on the two main constraints: treasure and traps. Let's look closer at the condition 'none with traps'. If an island must not have treasure AND must not have traps, which of the three given probabilities for a single island fits that specific description?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, the problem says there is a $\\frac{2}{3}$ chance that the island has neither traps nor treasure. So for the 3 islands that don't have treasure, they MUST fall into that $\\frac{2}{3}$ category to ensure there are no traps at all. So it should be $(\\frac{1}{4})^3 \\times (\\frac{2}{3})^3$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great correction! You've now correctly identified the probability for one specific sequence of islands (e.g., Treasure, Treasure, Treasure, Neither, Neither, Neither). However, does the problem specify that the treasure must be on the first three islands specifically?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "No, it just says 'exactly 3 islands'. So the treasure could be on any 3 of the 6. I need to multiply by the number of ways to choose 3 islands out of 6. That's $\\binom{6}{3}$, which is 20. So the final answer is $20 \\times (\\frac{1}{4})^3 \\times (\\frac{2}{3})^3$. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that is exactly right. You've accounted for the binomial coefficient to cover all possible combinations and correctly identified the probabilities for both the 'success' and 'failure' outcomes. Go ahead and simplify that expression to find the final numerical value!",
+      "loss_mask": true
+    }
+  ]
+}

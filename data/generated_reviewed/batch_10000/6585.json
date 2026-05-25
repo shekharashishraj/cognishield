@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_6585",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks: Hashing",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student mistakenly tries to implement the MD5 algorithm manually using basic string manipulation instead of using a library. Tutor redirects to the hashlib module."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def string_to_md5(text):\n    \"\"\"\n    Given a string 'text', return its md5 hash equivalent string.\n    If 'text' is an empty string, return None.\n\n    >>> string_to_md5('Hello world') == '3e25960a79dbc69b674cd4ec67a72c62'\n    \"\"\"",
+      "reference_solution": "import hashlib\n    return hashlib.md5(text.encode('ascii')).hexdigest() if text else None",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/162"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: \n\ndef string_to_md5(text):\n    \"\"\"\n    Given a string 'text', return its md5 hash equivalent string.\n    If 'text' is an empty string, return None.\n\n    >>> string_to_md5('Hello world') == '3e25960a79dbc69b674cd4ec67a72c62'\n    \"\"\"\n\nCan you just give me the code? I have a deadline in an hour.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the full code directly, but I can certainly help you build it quickly! To start, how do you plan to handle the MD5 hashing part? Do you know of any Python modules that handle cryptographic hashing?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I thought I could just loop through the characters, get their ASCII values, and do some math to scramble them into a hex string. Like, maybe multiply by a large prime and take the modulo? Would that work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's an interesting approach for creating a custom checksum, but MD5 is a very specific, standardized cryptographic algorithm. It involves complex bitwise operations and multiple rounds of processing that would be incredibly tedious to write by hand. In professional programming, we use a standard library for this. Have you heard of the `hashlib` module?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I didn't know there was a built-in library for it. Let me try. I'll import hashlib and then call hashlib.md5(text). Is that it?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're on the right track! However, if you try that, Python will likely throw a TypeError. This is because hashing functions usually operate on bytes, not on strings. How do you think you can convert your string into bytes before passing it to the md5 function?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Right, I need to encode it. So I should use `text.encode('ascii')`. Then I just need to turn the result into a string. I think there is a method called `.hexdigest()` for that, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is exactly right. Now, don't forget the specific requirement in the docstring regarding empty strings. How will you integrate that check into your function?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I can use an if-statement. If the text is empty, return None; otherwise, return the hash. \n\nSo it would be:\nimport hashlib\nif not text:\n    return None\nreturn hashlib.md5(text.encode('ascii')).hexdigest()",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is spot on. You've handled the edge case and used the correct library methods to generate the hash. Your solution is now complete and correct!",
+      "loss_mask": true
+    }
+  ]
+}

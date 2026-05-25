@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_422",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Python fundamentals and short programs: Stack-based Parentheses Matching",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to solve the balanced parentheses problem using simple counting instead of a stack, which is a common misconception for mixed bracket types."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to check if the given expression is balanced or not. https://www.geeksforgeeks.org/check-for-balanced-parentheses-in-an-expression/",
+      "reference_solution": "from collections import deque\ndef check_expression(exp):\n    if len(exp) & 1:\n        return False\n    stack = deque()\n    for ch in exp:\n        if ch == '(' or ch == '{' or ch == '[':\n            stack.append(ch)\n        if ch == ')' or ch == '}' or ch == ']':\n            if not stack:\n                return False\n            top = stack.pop()\n            if (top == '(' and ch != ')') or (top == '{' and ch != '}' or (top == '[' and ch != ']')):\n                return False\n    return not stack",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "771"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I need help with this coding problem: Write a function to check if the given expression is balanced or not. https://www.geeksforgeeks.org/check-for-balanced-parentheses-in-an-expression/ . Can you just give me the code? I'm in a rush.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through this! Instead of giving you the full code right away, let's figure out the logic together so you can implement it. To start, how would you define a 'balanced' expression in your own words?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It just means that every opening bracket has a closing one. I think I can just use a counter. Like, increment a variable when I see '(' or '[' or '{', and decrement it when I see the closing ones. If the counter is 0 at the end, it's balanced, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great start for a simple case with only one type of bracket, like just parentheses (). However, consider an expression like \"([)]\". If you use a counter, it would end at 0. Would that expression be considered balanced?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, no, that's not balanced because the square bracket is closed before the parenthesis. Oh, I see. My counter doesn't track the order or the type of bracket. So how do I keep track of which one needs to be closed first?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. We need a way to 'remember' the most recent opening bracket we encountered so we can match it with the next closing bracket. In computer science, there is a specific data structure that follows the 'Last-In, First-Out' (LIFO) principle. Do you know which one that is?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Is it a stack? I remember learning about stacks in class. I can push the opening bracket onto the stack and then pop it when I find a closing one to see if they match.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on! That is the perfect approach. Now, thinking about the implementation: what should happen if you encounter a closing bracket but the stack is already empty? And what should the final state of the stack be for the expression to be truly balanced?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If the stack is empty and I see a closing bracket, it means there was no opening bracket for it, so it's unbalanced. And at the very end, the stack should be empty, because if there's something left, it means an opening bracket was never closed. I'll try writing the code now!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the logic down perfectly. Go ahead and try implementing that. If you run into any bugs or get stuck on the syntax, feel free to share your code here!",
+      "loss_mask": true
+    }
+  ]
+}

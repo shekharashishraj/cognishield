@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_7507",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Python fundamentals and short programs: Coordinate Manipulation",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "emotional_support",
+      "frustration",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Generated a multi-turn tutoring session where the student is frustrated. The tutor follows the 'never_state' policy, avoiding providing the full code while guiding the student through recursive logic for coordinate extraction."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to extract all the adjacent coordinates of the given coordinate tuple.",
+      "reference_solution": "def adjac(ele, sub = []): \n  if not ele: \n     yield sub \n  else: \n     yield from [idx for j in range(ele[0] - 1, ele[0] + 2) \n                for idx in adjac(ele[1:], sub + [j])] \ndef get_coordinates(test_tup):\n  return list(adjac(test_tup))",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "630"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I have to do this problem: Write a function to extract all the adjacent coordinates of the given coordinate tuple. I've tried for an hour and I just can't do it. I'm honestly terrible at Python, can you just give me the answer so I can move on?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can hear how frustrating this is, but please don't be so hard on yourself. Coordinate problems can be tricky because they often require thinking about dimensions in a way that isn't immediately intuitive. Instead of just giving you the answer, let's break this down into a small, manageable first step. If you had a single coordinate, like (5,), what would its 'adjacent' values be?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess it would be 4, 5, and 6? Because those are the numbers right next to it and the number itself.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. Now, imagine the input is a tuple with multiple values, like (5, 10). You'd need to find the neighbors for the 5, and for each of those, find the neighbors for the 10. Does that feel like a pattern that could be repeated for any number of dimensions?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess so, but I don't know how to code that. Do I use a for loop? I always get confused with nested loops and I'll probably just mess it up again.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It's completely normal to find nested loops confusing at first. One way to handle a problem where you repeat the same logic for each element in a sequence is using recursion—where a function calls itself. If we process the first element of the tuple and then pass the rest of the tuple back into the same function, we can handle any number of dimensions. How would you write a base case to tell the function when to stop recursing?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The base case... so when there are no more coordinates left in the tuple? Like `if not ele:`?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Once you've reached that point, you've successfully built one complete adjacent coordinate. Now, think about the recursive step: for the current first element, you want to iterate through its neighbors (like the 4, 5, 6 we discussed) and then call the function again for the remaining elements. How might you structure that loop to keep track of the coordinates you've already found?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Maybe I can pass a list called 'sub' that stores the neighbors as I go? So it would be something like `for j in range(ele[0]-1, ele[0]+2):` and then call the function again with `ele[1:]` and `sub + [j]`?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the logic perfectly. You're handling the current dimension and passing the updated list and the remaining tuple forward. To make this efficient in Python, you could use `yield` to turn this into a generator. Do you remember how `yield from` works when you want to return all the values from a recursive call?",
+      "loss_mask": true
+    }
+  ]
+}

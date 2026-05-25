@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_765",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Counting & Probability - Combinatorics",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor correctly avoids giving the answer and guides the student to account for the overlap of painted cubes on the edges."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "A 5x5x5 cube is formed by assembling 125 unit cubes. Nine unit squares are painted on each of the six faces of the cube according to the pattern shown. How many of the 125 unit cubes have no paint on them? [asy]\nfill((2,0)--(3,0)--(3,5)--(2,5)--cycle,gray(.7));\nfill((0,2)--(0,3)--(5,3)--(5,2)--cycle,gray(.7));\npath p=(0,0)--(5,0);\n\ndraw(p,linewidth(1));\ndraw(shift(0,1)*p,linewidth(1));\ndraw(shift(0,2)*p,linewidth(1));\ndraw(shift(0,3)*p,linewidth(1));\ndraw(shift(0,4)*p,linewidth(1));\ndraw(shift(0,5)*p,linewidth(1));\n\ndraw((0,0)--(0,5),linewidth(1));\ndraw((1,0)--(1,5),linewidth(1));\ndraw((2,0)--(2,5),linewidth(1));\ndraw((3,0)--(3,5),linewidth(1));\ndraw((4,0)--(4,5),linewidth(1));\ndraw((5,0)--(5,5),linewidth(1));\n\n[/asy]",
+      "reference_solution": "The number of painted faces is $9(6)=54$.  However, the four edge faces painted on each face are also painted on the other face.  Thus $4(6)=24$ of the painted faces are on cubes with two painted faces.  These account for only $12$ painted cubes, in addition to the $54-24=30$ singly painted cubes.  So there are $42$ painted cubes, leaving $125-42=\\boxed{83}$ unpainted cubes.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "2253"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: A 5x5x5 cube is formed by assembling 125 unit cubes. Nine unit squares are painted on each of the six faces of the cube according to the pattern shown. How many of the 125 unit cubes have no paint on them? [asy]\nfill((2,0)--(3,0)--(3,5)--(2,5)--cycle,gray(.7));\nfill((0,2)--(0,3)--(5,3)--(5,2)--cycle,gray(.7));\npath p=(0,0)--(5,0);\n\ndraw(p,linewidth(1));\ndraw(shift(0,1)*p,linewidth(1));\ndraw(shift(0,2)*p,linewidth(1));\ndraw(shift(0,3)*p,linewidth(1));\ndraw(shift(0,4)*p,linewidth(1));\ndraw(shift(0,5)*p,linewidth(1));\n\ndraw((0,0)--(0,5),linewidth(1));\ndraw((1,0)--(1,5),linewidth(1));\ndraw((2,0)--(2,5),linewidth(1));\ndraw((3,0)--(3,5),linewidth(1));\ndraw((4,0)--(4,5),linewidth(1));\ndraw((5,0)--(5,5),linewidth(1));\n\n[/asy]\n\nI think the answer is 71. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't tell you if that's correct just yet. Could you walk me through how you arrived at 71? I'd like to see your reasoning first.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, there are 6 faces. Each face has 9 squares painted. So that's 6 * 9 = 54 painted squares. Then I just did 125 - 54 = 71.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see your logic. You're counting the total number of painted squares across all faces. However, does every painted square belong to a unique unit cube? Think about the squares that lie on the edges of the 5x5 faces.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. Some cubes are on the edges, so they might have more than one face painted. In the pattern, the gray bars go all the way to the edges. So the cubes at the ends of those bars are shared between two faces of the large cube.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. If a unit cube is on an edge, it contributes to the 'painted square' count of two different faces. How many of those painted squares on each face are actually on the edges of the large cube?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Looking at the pattern, there's a vertical bar of 5 and a horizontal bar of 5. The middle square is shared. So that's 5 + 4 = 9. The vertical bar has 2 ends on edges, and the horizontal bar has 2 ends on edges. That's 4 squares per face that are on the edges.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's correct. Now, if each of those 4 edge-squares is shared with another face, how does that change your total count of painted cubes? Remember, you want to find the number of unique cubes that have at least one face painted.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, so 6 faces * 4 edge-squares = 24 edge-squares. But since each edge cube is shared by 2 faces, that's actually only 12 cubes. The other squares are 9 - 4 = 5 per face, which are not on edges. So 6 * 5 = 30 cubes. Total painted cubes = 12 + 30 = 42. Then 125 - 42 = 83.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your reasoning is spot on. You correctly identified the overlap at the edges and adjusted the total count of painted unit cubes accordingly. 83 is the correct answer!",
+      "loss_mask": true
+    }
+  ]
+}

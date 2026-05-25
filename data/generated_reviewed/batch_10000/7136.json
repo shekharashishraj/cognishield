@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_7136",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Multi-step programming and contest-style problems",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Generated a multi-turn tutoring session where the student fails to handle non-integer types and negative numbers correctly. The tutor guides them toward the correct constraints without providing the final code."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "def double_the_difference(lst):\n    '''\n    Given a list of numbers, return the sum of squares of the numbers\n    in the list that are odd. Ignore numbers that are negative or not integers.\n    \n    double_the_difference([1, 3, 2, 0]) == 1 + 9 + 0 + 0 = 10\n    double_the_difference([-1, -2, 0]) == 0\n    double_the_difference([9, -2]) == 81\n    double_the_difference([0]) == 0  \n   \n    If the input list is empty, return 0.\n    '''",
+      "reference_solution": "return sum([i**2 for i in lst if i > 0 and i%2!=0 and \".\" not in str(i)])",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/151"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem:\n\ndef double_the_difference(lst):\n    '''\n    Given a list of numbers, return the sum of squares of the numbers\n    in the list that are odd. Ignore numbers that are negative or not integers.\n    \n    double_the_difference([1, 3, 2, 0]) == 1 + 9 + 0 + 0 = 10\n    double_the_difference([-1, -2, 0]) == 0\n    double_the_difference([9, -2]) == 81\n    double_the_difference([0]) == 0  \n   \n    If the input list is empty, return 0.\n    '''\n\nI think this is the correct solution:\n\ndef double_the_difference(lst):\n    total = 0\n    for x in lst:\n        if x % 2 != 0:\n            total += x**2\n    return total\n\nIs this right? I'm in a rush, can you just tell me if it works?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you verify your logic. Rather than just giving a yes or no, could you explain how your current code handles the specific constraints mentioned in the docstring, particularly regarding negative numbers and non-integers?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, the `x % 2 != 0` part checks if it's odd, and then I square it and add it to the total. If the list is empty, the loop doesn't run and it returns 0, which matches the requirement. I don't see why it wouldn't work.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've correctly handled the odd check and the empty list case. However, take another look at the requirement: \"Ignore numbers that are negative or not integers.\" If `lst` contained a value like `-3` or `3.5`, how would your current `if` statement behave?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. For `-3`, `-3 % 2` is `1` in Python, so it would actually include it in the sum. And for `3.5`, it might not be considered 'odd' in the way I'm thinking, but it's definitely not an integer. So I need to filter those out first.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great observation. You'll need to add conditions to ensure the number is strictly positive and is an actual integer before checking if it's odd. How do you plan to implement the check for integers, especially since the input list might contain floats?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could use `type(x) == int`? Or maybe check if `x == int(x)`? Let me try: \n\nif x > 0 and type(x) == int and x % 2 != 0:\n    total += x**2\n\nDoes that cover everything now?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've addressed the negative numbers and the integer requirement. To be fully confident, try tracing your updated logic with a few test cases, such as `[1, 3, -1, 2.0, 5]`. If the logic holds for those, you should be on the right track.",
+      "loss_mask": true
+    }
+  ]
+}

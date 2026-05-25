@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_9181",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Bit Manipulation and Algorithms",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "off_topic_redirect",
+      "task_focus",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to pivot to a general question about Python libraries; tutor redirects back to the bit manipulation problem while maintaining a supportive tone."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Write a python function to toggle bits of the number except the first and the last bit. https://www.geeksforgeeks.org/toggle-bits-number-expect-first-last-bits/",
+      "reference_solution": "def set_middle_bits(n):  \n    n |= n >> 1; \n    n |= n >> 2; \n    n |= n >> 4; \n    n |= n >> 8; \n    n |= n >> 16;  \n    return (n >> 1) ^ 1\ndef toggle_middle_bits(n): \n    if (n == 1): \n        return 1\n    return n ^ set_middle_bits(n)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "735"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: Write a python function to toggle bits of the number except the first and the last bit. https://www.geeksforgeeks.org/toggle-bits-number-expect-first-last-bits/ \n\nCan you just give me the code? I'm in a rush.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code directly, but I can certainly help you figure it out step-by-step. To start, think about what 'toggling' means in terms of bitwise operations. Which operator allows you to flip a bit from 0 to 1 or 1 to 0?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh right, the XOR operator (^). So I need to XOR the number with a mask that has 1s in the middle and 0s at the ends. How do I create that mask dynamically for any number?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's the right approach. To create a mask that covers all bits between the most significant bit (MSB) and the least significant bit (LSB), you first need to find a way to set all bits to the right of the MSB to 1. Do you know any bit-shifting techniques that can 'fill' the bits to the right?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, before we continue, do you know if there is a Python library that handles bit manipulation more easily than using these operators? Like something in the 'bitarray' package?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "There are libraries for specialized bit manipulation, but for this specific problem, using built-in bitwise operators is the most efficient and standard way to learn the logic. Let's stick to the current approach for now—how would you use right-shifts and OR operations to fill those bits with 1s?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think I can do something like n |= n >> 1, then n |= n >> 2, and so on. That would propagate the 1s downward. If I do that up to 16, it should cover 32-bit integers. Then I just need to make sure the first and last bits aren't toggled.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the propagation logic down perfectly. Now, consider the final mask. If you have a sequence of 1s starting from the MSB down to the LSB, how can you modify that result so that the MSB remains 0 (to avoid toggling the first bit) and the LSB is 0 (to avoid toggling the last bit)?",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_6686",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Algorithms and data structures",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "emotional_support",
+      "frustration",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Generated a multi-turn tutoring session where the tutor handles a frustrated student using scaffolding for a binary search approach to find the first missing natural number."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Write a python function to find the smallest missing number from a sorted list of natural numbers.",
+      "reference_solution": "def find_First_Missing(array,start=0,end=None):\n    if end is None:\n      end = len(array) - 1   \n    if (start > end): \n        return end + 1\n    if (start != array[start]): \n        return start; \n    mid = int((start + end) / 2) \n    if (array[mid] == mid): \n        return find_First_Missing(array,mid+1,end) \n    return find_First_Missing(array,start,mid)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "627"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm really struggling with this. I feel like I'm just not cut out for algorithms. Can you just give me the code for this? 'Write a python function to find the smallest missing number from a sorted list of natural numbers.'",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It's completely normal to feel overwhelmed by algorithms at first—they're a new way of thinking, and it takes practice. I can't give you the full code right away, but I know you can figure this out if we break it down into small pieces. Since the list is already sorted, do you think we can do better than just checking every single number one by one?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess? Maybe something like binary search? But I don't even know how that would apply here. I'll probably just mess it up anyway.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Binary search is a great intuition! Don't worry about making mistakes; that's actually how the best learning happens. Think about this: in a sorted list of natural numbers starting from 0, if no numbers are missing, the value at index `i` should be exactly `i`. If `array[i]` is not equal to `i`, what does that tell us about the missing number?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If array[i] isn't i, then something must have been skipped before that index, right? So the missing number would be at or before that position.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Now, if the value at the middle index *does* match the index (array[mid] == mid), what does that imply about the left half of the array and where the missing number might be hiding?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If it matches, then everything to the left is probably correct, so the gap must be in the right half. So I should move my search to the right side.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. You've just mapped out the core logic of the algorithm. Now, let's try to put this into a recursive structure. What would be your base case to stop the recursion and return the missing number?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Maybe when the start index passes the end index? Or if I find a spot where the value doesn't match the index immediately. Let me try to write a draft: \n\ndef find_missing(arr, start, end):\n    if start > end:\n        return end + 1\n    if arr[start] != start:\n        return start\n    mid = (start + end) // 2\n    # I'm stuck on the recursive calls again...",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're doing great—you've already handled the base cases perfectly. Now just apply the logic we discussed: if `arr[mid] == mid`, you search the right side. Otherwise, you search the left. How would you write those two recursive calls using your `find_missing` function?",
+      "loss_mask": true
+    }
+  ]
+}

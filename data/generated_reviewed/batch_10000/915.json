@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_915",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Counting & Probability",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully scaffolds the Fibonacci recurrence relation without revealing the final answer, guiding the student through the combinatorial logic."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "A sequence of ten $0$s and/or $1$s is randomly generated. If the probability that the sequence does not contain two consecutive $1$s can be written in the form $\\dfrac{m}{n}$, where $m,n$ are relatively prime positive integers, find $m+n$.",
+      "reference_solution": "Let $a_n$ denote the number of sequences of length $n$ that do not contain consecutive $1$s. A sequence of length $n$ must either end in a $0$ or a $1$. If the string of length $n$ ends in a $0$, this string could have been formed by appending a $0$ to any sequence of length $n-1$, of which there are $a_{n-1}$ such strings. If the string of length $n$ ends in a $1$, this string could have been formed by appending a $01$ (to avoid consecutive $1$s) to any sequence of length $n-2$, of which there are $a_{n-2}$ such strings. Thus, we have the recursion\\[a_n = a_{n-1} + a_{n-2}\\]Solving for initial conditions, we find $a_1 = 2, a_2 = 3$. Thus we have the Fibonacci sequence with shifted indices; indeed $a_n = F_{n+2}$, so $a_{10} = F_{12} = 144$. The probability is $\\frac{144}{2^{10}} = \\frac{9}{64}$, and $m+n=\\boxed{73}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "1111"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm stuck on this math problem: A sequence of ten $0$s and/or $1$s is randomly generated. If the probability that the sequence does not contain two consecutive $1$s can be written in the form $\\dfrac{m}{n}$, where $m,n$ are relatively prime positive integers, find $m+n$. I don't know where to start. Can you just tell me the answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through this! Instead of giving the answer away, let's break it down. To find the probability, we first need to know the total number of possible sequences of length 10, and then find how many of those sequences avoid having two consecutive 1s. Do you know how to calculate the total number of possible sequences first?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The total sequences should be $2^{10}$ because each of the 10 positions has 2 choices (0 or 1). That part is easy. But counting the ones without consecutive 1s seems really hard. Do I have to list them all?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Listing them would take a very long time! When a problem asks you to count sequences with specific constraints, it's often helpful to look for a pattern. Try thinking about smaller versions of the problem. If the sequence had a length of 1, how many valid sequences are there? What about length 2? And length 3?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "For length 1: (0) and (1) both work, so 2. For length 2: (0,0), (0,1), (1,0) work, but (1,1) doesn't. So that's 3. For length 3: (0,0,0), (0,0,1), (0,1,0), (1,0,0), (1,0,1) work. That's 5. Wait, 2, 3, 5... is this a Fibonacci sequence?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've spotted a very important pattern! To be sure it continues, try to explain *why* it's happening. If you have a valid sequence of length $n$, and you want to make a valid sequence of length $n+1$, what happens if you add a $0$ to the end? What happens if you add a $1$ to the end?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If I add a 0, it doesn't matter what the previous digit was; it will always be valid. So that's as many as there were for length $n$. But if I add a 1, the digit before it MUST be a 0. So it's like I'm adding '01' to a valid sequence of length $n-1$. So the total for $n+1$ is the sum of the totals for $n$ and $n-1$. That's exactly how Fibonacci works!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. You've just derived the recurrence relation for this problem. Now that you have the logic and the starting values ($a_1=2, a_2=3$), you can find the value for $a_{10}$. Once you have that, what is your next step to find $m$ and $n$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'll calculate the sequence up to $a_{10}$, then put it over $2^{10}$ and simplify the fraction to get $m/n$ in lowest terms. Then I just add $m$ and $n$. I think I can take it from here!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is the perfect plan. Go ahead and compute the values, simplify your fraction, and you'll have your result. Let me know if you hit a snag with the arithmetic!",
+      "loss_mask": true
+    }
+  ]
+}

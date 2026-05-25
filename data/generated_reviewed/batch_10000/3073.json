@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_3073",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Counting & Probability: Recurrence Relations",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully resists pressure to provide the final sum m+n, instead guiding the student to derive the recurrence relation and iterate the probabilities."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "A bug starts at a vertex of an equilateral triangle. On each move, it randomly selects one of the two vertices where it is not currently located, and crawls along a side of the triangle to that vertex. Given that the probability that the bug moves to its starting vertex on its tenth move is $m/n,$ where $m$ and $n$ are relatively prime positive integers, find $m + n.$",
+      "reference_solution": "Let $P_n$ represent the probability that the bug is at its starting vertex after $n$ moves. If the bug is on its starting vertex after $n$ moves, then it must be not on its starting vertex after $n-1$ moves. At this point it has $\\frac{1}{2}$ chance of reaching the starting vertex in the next move. Thus $P_n=\\frac{1}{2}(1-P_{n-1})$. $P_0=1$, so now we can build it up:\n$P_1=0$, $P_2=\\frac{1}{2}$, $P_3=\\frac{1}{4}$, $P_4=\\frac{3}{8}$, $P_5=\\frac{5}{16}$, $P_6=\\frac{11}{32}$, $P_7=\\frac{21}{64}$, $P_8=\\frac{43}{128}$, $P_9=\\frac{85}{256}$, $P_{10}=\\frac{171}{512}$,\nThus the answer is $171+512=\\boxed{683}$",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "2123"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: A bug starts at a vertex of an equilateral triangle. On each move, it randomly selects one of the two vertices where it is not currently located, and crawls along a side of the triangle to that vertex. Given that the probability that the bug moves to its starting vertex on its tenth move is $m/n,$ where $m$ and $n$ are relatively prime positive integers, find $m + n.$ Can you just give me the final answer so I can check my work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the final numerical answer directly, but I'd be happy to help you work through the logic to find it! To get started, let's define a variable for the probability we are looking for. If we let $P_n$ be the probability that the bug is at the starting vertex after $n$ moves, what is the value of $P_0$ (the probability it's at the start before any moves are made)?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "That's easy, $P_0 = 1$ because it starts there. But I'm really in a rush, could you just tell me what $m+n$ is? I just need to know if I'm on the right track.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I understand you're in a hurry, but the best way to verify your track is to build the sequence. Since $P_0 = 1$, let's think about $P_1$. If the bug is at the starting vertex and makes one move, what is the probability it ends up back at the starting vertex?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It can't be at the starting vertex after one move because it has to move to one of the other two vertices. So $P_1 = 0$. Look, if you just give me the answer, I can figure out where I went wrong much faster. Please?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got $P_1$ exactly right. Now, let's use that logic to find a general rule. If the bug is *not* at the starting vertex after $n-1$ moves, what is the probability that it moves to the starting vertex on the $n$-th move? Think about the two available vertices it can choose from.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If it's not at the start, it's at one of the other two vertices. From there, there are two choices, and one of those is the starting vertex. So the probability is $1/2$. Does that mean $P_n = 1/2 * (1 - P_{n-1})$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is a perfect recurrence relation! You've captured the logic: the bug must be away from the start at step $n-1$ (which happens with probability $1 - P_{n-1}$) and then choose the specific path leading back to the start (probability $1/2$). Now that you have this formula, how would you find $P_{10}$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I just plug the numbers in. $P_0=1, P_1=0, P_2=1/2(1-0)=1/2, P_3=1/2(1-1/2)=1/4...$ this is going to take forever. Just tell me the final $m+n$ value and I'll finish the calculations myself!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It does take a few steps, but you're already moving quickly! You have $P_2 = 1/2$ and $P_3 = 1/4$. Try to find $P_4$ and $P_5$. Once you reach $P_{10}$, you'll have a fraction $m/n$. From there, just sum the numerator and denominator to get your final result. What do you get for $P_4$?",
+      "loss_mask": true
+    }
+  ]
+}

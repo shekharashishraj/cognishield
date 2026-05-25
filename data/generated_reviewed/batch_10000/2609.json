@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_2609",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Regular Expressions for String Matching",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts a regex solution but misses the end-of-string anchor and non-greedy matching. Tutor guides them through testing cases."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Write a function that matches a string that has an 'a' followed by anything, ending in 'b'.",
+      "reference_solution": "import re\ndef text_starta_endb(text):\n        patterns = 'a.*?b$'\n        return re.search(patterns,  text)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "794"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Write a function that matches a string that has an 'a' followed by anything, ending in 'b'. I think the regex should be 'a.*b'. Is this correct? Just tell me if it's right so I can move on.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you check that! Before I tell you if it's correct, could you explain how you think 'a.*b' handles the requirement that the string must end in 'b'?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, the 'a' matches the first letter, '.*' matches everything in between, and the 'b' matches the last letter. So it should work, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a logical way to look at it. However, consider a string like 'apple banana boat'. Your pattern 'a.*b' would find a match because it starts at the 'a' in apple and ends at the 'b' in boat. But what happens if the string is 'apple banana boat and cherry'? Would your current pattern still match, and would that match be at the end of the string?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. It would match 'apple banana boat' even if there's more text after it. I need it to actually be the end of the string. Do I need a special character for that?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. In regular expressions, there is a specific anchor character used to signify the end of a string. Do you happen to know which character that is?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Is it the dollar sign? Like 'a.*b$'. Does that fix it?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the anchor correct! Now, let's think about the '.*' part. By default, '*' is 'greedy', meaning it matches as much as possible. If you had a string like 'a b c a b', a greedy match would start at the first 'a' and go all the way to the last 'b'. While this might work for this specific prompt, it's often safer to use a 'non-greedy' match. Do you know how to make the quantifier non-greedy?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think you add a question mark. So the pattern would be 'a.*?b$'. Is that the final correct version?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that is the correct regex pattern for this requirement. Now, try putting that into a Python function using the `re` module and let me know when you've written the code!",
+      "loss_mask": true
+    }
+  ]
+}

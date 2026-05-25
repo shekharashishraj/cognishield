@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_388",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Precalculus - Determinants and Trigonometry",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to solve by maximizing individual entries instead of the determinant. Tutor redirects to determinant expansion."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Find the maximum value of\n\\[\\begin{vmatrix} 1 & 1 & 1 \\\\ 1 & 1 + \\sin \\theta & 1 \\\\ 1 + \\cos \\theta & 1 & 1 \\end{vmatrix},\\]as $\\theta$ ranges over all angles.",
+      "reference_solution": "We can expand the determinant as follows:\n\\begin{align*}\n\\begin{vmatrix} 1 & 1 & 1 \\\\ 1 & 1 + \\sin \\theta & 1 \\\\ 1 + \\cos \\theta & 1 & 1 \\end{vmatrix} &= \\begin{vmatrix} 1 + \\sin \\theta & 1 \\\\ 1 & 1 \\end{vmatrix} - \\begin{vmatrix} 1 & 1 \\\\ 1 + \\cos \\theta & 1 \\end{vmatrix} + \\begin{vmatrix} 1 & 1 + \\sin \\theta \\\\ 1 + \\cos \\theta & 1 \\end{vmatrix} \\\\\n&= ((1 + \\sin \\theta) - 1) - (1 - (1 + \\cos \\theta)) + (1 - (1 + \\sin \\theta)(1 + \\cos \\theta)) \\\\\n&= -\\cos \\theta \\sin \\theta = -\\frac{2 \\cos \\theta \\sin \\theta}{2} = -\\frac{\\sin 2 \\theta}{2}.\n\\end{align*}The maximum value of the determinant is then $\\boxed{\\frac{1}{2}}.$",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "6902"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: Find the maximum value of\n\\[\\begin{vmatrix} 1 & 1 & 1 \\\\ 1 & 1 + \\sin \\theta & 1 \\\\ 1 + \\cos \\theta & 1 & 1 \\end{vmatrix},\\]as $\\theta$ ranges over all angles. Can you just tell me the answer? I'm in a rush.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the final answer directly, but I can help you work through it quickly! To start, how do you usually approach finding the value of a $3 \\times 3$ determinant?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think I can just maximize the terms inside. Like, $\\sin \\theta$ and $\\cos \\theta$ both have a max of 1. If I set $\\theta$ so they are both 1, then the matrix entries are maximized, so the determinant should be maximized too, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's an intuitive thought, but be careful! The value of a determinant isn't simply the sum of its entries; it's a specific combination of products. Also, remember that $\\sin \\theta$ and $\\cos \\theta$ cannot both be 1 at the same time. Why don't we try expanding the determinant first to see what the actual expression in terms of $\\theta$ is?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, right. I forgot the identity $\\sin^2 \\theta + \\cos^2 \\theta = 1$. Okay, let me try expanding along the first row. \n\nDet $= 1((1 + \\sin \\theta)(1) - 1(1)) - 1(1(1) - 1(1 + \\cos \\theta)) + 1(1(1) - (1 + \\sin \\theta)(1 + \\cos \\theta))$.\n\nIs that the right start?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, your expansion along the first row is perfectly set up. Now, try simplifying those three terms. What does the expression look like once you multiply everything out and combine like terms?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let's see...\nFirst term: $1 + \\sin \\theta - 1 = \\sin \\theta$.\nSecond term: $-(1 - 1 - \\cos \\theta) = \\cos \\theta$.\nThird term: $1 - (1 + \\cos \\theta + \\sin \\theta + \\sin \\theta \\cos \\theta) = -\\cos \\theta - \\sin \\theta - \\sin \\theta \\cos \\theta$.\n\nAdding them all up: $\\sin \\theta + \\cos \\theta - \\cos \\theta - \\sin \\theta - \\sin \\theta \\cos \\theta = -\\sin \\theta \\cos \\theta$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. You've simplified the determinant to $-\\sin \\theta \\cos \\theta$. Now, the goal is to find the maximum value of this expression. Do you know a trigonometric identity that could help you rewrite $\\sin \\theta \\cos \\theta$ as a single function?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I remember the double angle formula: $\\sin(2\\theta) = 2 \\sin \\theta \\cos \\theta$. So $-\\sin \\theta \\cos \\theta$ is the same as $-\\frac{1}{2} \\sin(2\\theta)$. Since the minimum of $\\sin(2\\theta)$ is $-1$, the maximum value of $-\\frac{1}{2} \\sin(2\\theta)$ should be $\\frac{1}{2}$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is correct. You correctly identified the identity and applied the range of the sine function to find the maximum. Great job working through the expansion!",
+      "loss_mask": true
+    }
+  ]
+}

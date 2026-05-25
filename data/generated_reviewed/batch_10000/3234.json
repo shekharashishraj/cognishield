@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_3234",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Prealgebra - Parallel Lines and Angles",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor correctly handles a student's incorrect guess by requesting the reasoning first and then guiding them toward the auxiliary line method."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Lines $l$ and $m$ are parallel to each other. $m\\angle A = 120^\\circ$, and $m\\angle B = 150^\\circ$. What is the number of degrees in $m\\angle C$?\n\n[asy]\nsize(100); real h = 1.2; currentpen = fontsize(10pt);\ndraw(Label(\"$l$\",Relative(1)),(0,0)--(1,0),E);\ndraw(Label(\"$m$\",Relative(1)),(0,-h)--(1,-h),E);\ndraw((0,-h)--h/2*(cos(150*pi/180),sin(150*pi/180)) + (0,-h));\ndraw(Label(\"$C$\",Relative(1)),(0,0)--h*sqrt(3)/2*(cos(-120*pi/180),sin(-120*pi/180)),W);\nlabel(\"$A$\",(0,0),N); label(\"$B$\",(0,-h),S);\nlabel(\"$120^\\circ$\",(0,0),SE); label(\"$150^\\circ$\",(0,-h),NE);\n[/asy]",
+      "reference_solution": "We draw segment $\\overline{CD}$ as shown parallel to lines $l$ and $m$.\n\n[asy]\nsize(200); real h = 1.2; currentpen = fontsize(10pt);\ndraw(Label(\"$l$\",Relative(1)),(0,0)--(1,0),E);\ndraw(Label(\"$m$\",Relative(1)),(0,-h)--(1,-h),E);\ndraw((0,-h)--h/2*(cos(150*pi/180),sin(150*pi/180)) + (0,-h));\ndraw(Label(\"$C$\",Relative(1)),(0,0)--h*sqrt(3)/2*(cos(-120*pi/180),sin(-120*pi/180)),W);\nlabel(\"$A$\",(0,0),N); label(\"$B$\",(0,-h),S);\nlabel(\"$120^\\circ$\",(0,0),SE); label(\"$150^\\circ$\",(0,-h),NE);\npair D = (h*sqrt(3)/2*(cos(-120*pi/180),sin(-120*pi/180))) + (2,0);\ndraw(D -- (D-(2,0)));\ndot(D);\nlabel(\"$D$\",D,E);\n[/asy]\n\nSince $\\overline{CD}\\parallel l$, we have $\\angle ACD = 180^\\circ - \\angle A = 60^\\circ$.  Since $\\overline{CD}\\parallel m$, we have $\\angle BCD = 180^\\circ - \\angle B = 30^\\circ$.  Therefore, $\\angle ACB = \\angle ACD + \\angle DCB = 60^\\circ + 30^\\circ = \\boxed{90^\\circ}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "6419"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this geometry problem: Lines $l$ and $m$ are parallel to each other. $m\\angle A = 120^\\circ$, and $m\\angle B = 150^\\circ$. What is the number of degrees in $m\\angle C$?\n\n[asy]\nsize(100); real h = 1.2; currentpen = fontsize(10pt);\ndraw(Label(\"$l$\",Relative(1)),(0,0)--(1,0),E);\ndraw(Label(\"$m$\",Relative(1)),(0,-h)--(1,-h),E);\ndraw((0,-h)--h/2*(cos(150*pi/180),sin(150*pi/180)) + (0,-h));\ndraw(Label(\"$C$\",Relative(1)),(0,0)--h*sqrt(3)/2*(cos(-120*pi/180),sin(-120*pi/180)),W);\nlabel(\"$A$\",(0,0),N); label(\"$B$\",(0,-h),S);\nlabel(\"$120^\\circ$\",(0,0),SE); label(\"$150^\\circ$\",(0,-h),NE);\n[/asy]\n\nI think the answer is $30^\\circ$ because $180 - 150 = 30$. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see how you got $30^\\circ$ by looking at $\\angle B$, but we need to consider how both $\\angle A$ and $\\angle B$ affect the measure of $\\angle C$. Could you explain your reasoning for why $\\angle C$ would only depend on $\\angle B$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, $\\angle B$ is on the bottom line and $\\angle C$ is the vertex of the angle I'm looking for. I thought maybe they were related directly. But I guess $\\angle A$ matters too. How do I use both of them?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're right that both matter! Since the lines $l$ and $m$ are parallel, but the vertex $C$ is floating between them, it's hard to see the relationship directly. A common trick in geometry is to add an 'auxiliary line.' What would happen if you drew a third line passing through point $C$ that was also parallel to lines $l$ and $m$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If I draw a line through $C$ parallel to $l$ and $m$, it splits $\\angle C$ into two smaller angles. Let's call them $\\angle C_1$ (the top part) and $\\angle C_2$ (the bottom part).",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great start. Now, look at the top part ($\\angle C_1$) and $\\angle A$. Since the line you drew and line $l$ are parallel, what is the relationship between $\\angle C_1$ and the $120^\\circ$ angle at $A$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "They are consecutive interior angles, so they should add up to $180^\\circ$. So $\\angle C_1 = 180 - 120 = 60^\\circ$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. Now apply that same logic to the bottom part, $\\angle C_2$, and $\\angle B$. What does that tell you about the measure of $\\angle C_2$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Using the same logic, $\\angle C_2 = 180 - 150 = 30^\\circ$. So if $\\angle C$ is the sum of those two, then $60 + 30 = 90^\\circ$. Is the answer $90^\\circ$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that is correct! You successfully used the auxiliary line to break the problem into two manageable parts. Well done.",
+      "loss_mask": true
+    }
+  ]
+}

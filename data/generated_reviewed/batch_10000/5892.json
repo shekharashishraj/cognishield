@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_5892",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Multi-step programming and contest-style problems",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to use .replace() sequentially, which leads to a common logic error. Tutor guides them to realize the conflict and suggests a character-by-character approach."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to replace whitespaces with an underscore and vice versa in a given string.",
+      "reference_solution": "def replace_spaces(text):\n  return \"\".join(\" \" if c == \"_\" else (\"_\" if c == \" \" else c) for c in text)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "631"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Write a function to replace whitespaces with an underscore and vice versa in a given string. I think I have it: \n\ndef swap_chars(s):\n    return s.replace(' ', '_').replace('_', ' ')\n\nIs this correct? I'm in a rush, can you just let me know if it works?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Before I confirm, could you walk me through what happens to a string that contains both a space and an underscore? For example, if you pass the string \"a _ b\", what would the output be according to your current logic?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let's see... 'a _ b' first becomes 'a___b' after the first replace, and then the second replace turns all those underscores back into spaces, so it becomes 'a   b'. Wait, that's not right. It should be 'a b _'.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've spotted the issue. Since the first `.replace()` changes spaces into underscores, the second `.replace()` can't tell which underscores were originally there and which ones were just created. How might you handle the characters so that you only change each one once?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could use a temporary placeholder character? Like replace space with '#', then underscore with space, then '#' with underscore?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is a valid workaround! However, it relies on the assumption that '#' isn't already part of the input string. Is there a way to process the string character by character to avoid needing a placeholder entirely?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I could use a loop. I'll create a new list, iterate through the string, and check each character. If it's a space, append '_'; if it's an underscore, append ' '; otherwise just append the character. Then join the list at the end.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is sound. It ensures each character is evaluated independently and only transformed once. Why don't you try implementing that and see if it passes your test cases?",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_3330",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Multi-step programming and contest-style problems",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor guides the student away from using '==' for None checks and encourages the use of 'is' and functional tools like 'any()'."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to check if the given tuple has any none value or not.",
+      "reference_solution": "def check_none(test_tup):\n  res = any(map(lambda ele: ele is None, test_tup))\n  return res",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "744"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: Write a function to check if the given tuple has any none value or not. Can you just give me the code so I can finish my assignment?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code for your assignment, but I'd be happy to help you build it step-by-step! To start, how would you typically check if a single variable is equal to None in Python?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I would use `if x == None:`. So for the tuple, I'll probably just loop through it and use that.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the right logic for iterating through the tuple. However, there's a subtle but important point in Python: while `== None` often works, it's generally recommended to use the `is` operator when checking for `None`. Do you know why `is` is preferred over `==` in this specific case?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'm not sure. Isn't it the same thing? I'll just stick with `==` for now. So, I'll write a for loop and return True if I find one.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It's a common misconception that they are identical. `==` checks for equality (which can be overridden by a class's `__eq__` method), whereas `is` checks for identity—meaning it verifies if both objects are actually the exact same object in memory. Since `None` is a singleton in Python, `is None` is more robust and idiomatic. With that in mind, how could you implement the check across the whole tuple?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, I'll use `is None`. I'll do something like:\nfor item in test_tup:\n    if item is None:\n        return True\nreturn False\nIs there a shorter way to do this without a full loop?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your loop logic is perfectly correct! If you're looking for a more concise, 'Pythonic' approach, you might consider using a built-in function that checks if *any* element in an iterable meets a condition. Have you encountered the `any()` function or the `map()` function before?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I've heard of `any()`, but I don't remember how to use it with a condition. Do I put the `if` statement inside it?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Not exactly. `any()` takes an iterable of booleans and returns True if at least one is True. To use it here, you first need to transform your tuple of values into a sequence of True/False values based on whether each element is None. You could achieve this transformation using a generator expression or the `map()` function combined with a `lambda`. Which one would you like to try?",
+      "loss_mask": true
+    }
+  ]
+}

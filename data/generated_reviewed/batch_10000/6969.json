@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_6969",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning: String Manipulation",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "emotional_support",
+      "frustration",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Generated a multi-turn tutoring session where the tutor handles a frustrated student by breaking down a string rotation problem into smaller conceptual steps."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def cycpattern_check(a , b):\n    \"\"\"You are given 2 words. You need to return True if the second word or any of its rotations is a substring in the first word\n    cycpattern_check(\"abcd\",\"abd\") => False\n    cycpattern_check(\"hello\",\"ell\") => True\n    cycpattern_check(\"whassup\",\"psus\") => False\n    cycpattern_check(\"abab\",\"baa\") => True\n    cycpattern_check(\"efef\",\"eeff\") => False\n    cycpattern_check(\"himenss\",\"simen\") => True\n\n    \"\"\"",
+      "reference_solution": "l = len(b)\n    pat = b + b\n    for i in range(len(a) - l + 1):\n        for j in range(l + 1):\n            if a[i:i+l] == pat[j:j+l]:\n                return True\n    return False",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/154"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm really struggling with this one and I feel like I'm just not cut out for coding. Can you just give me the answer? Here is the problem:\n\ndef cycpattern_check(a , b):\n    \"\"\"You are given 2 words. You need to return True if the second word or any of its rotations is a substring in the first word\n    cycpattern_check(\"abcd\",\"abd\") => False\n    cycpattern_check(\"hello\",\"ell\") => True\n    cycpattern_check(\"whassup\",\"psus\") => False\n    cycpattern_check(\"abab\",\"baa\") => True\n    cycpattern_check(\"efef\",\"eeff\") => False\n    cycpattern_check(\"himenss\",\"simen\") => True\n\n    \"\"\"",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It's completely normal to feel overwhelmed when a problem doesn't click right away—that's actually where most of the learning happens. You've got this! Instead of just giving you the code, let's tackle it in small pieces. First, let's ignore the 'substring' part for a second. If you have a word like 'apple', what are all the possible rotations of that word?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess it would be 'apple', 'pplea', 'pleap', 'leapp', and 'eappl'. But I don't know how to do that in Python without making a mess of the code.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You nailed the rotations! Now, here is a little trick: if you concatenate a string with itself (like `b + b`), does that help you find all the rotations of `b` within that new string?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait... if b is 'apple', then b+b is 'appleapple'. And 'pplea' is in there... 'pleap' is in there... yeah, all the rotations are actually substrings of the doubled string! That's actually clever. So I can just use `b + b`?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Now we have a way to represent all rotations. The next part of the problem is checking if any of those rotations appear as a substring in word `a`. Since we know the rotations are all the same length as `b`, how could you check if any slice of `a` matches any slice of `b + b`?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could loop through `a` and take a slice of the same length as `b`. Then I check if that slice is inside `b + b`. Like this:\n\nfor i in range(len(a) - len(b) + 1):\n    if a[i : i + len(b)] in (b + b):\n        return True\nreturn False\n\nIs that right? Or did I mess it up again?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You didn't mess it up at all—that logic is spot on. You've successfully combined the rotation trick with a sliding window approach. Why don't you try putting it all together inside the function and testing it with one of the examples, like `cycpattern_check(\"abab\", \"baa\")`?",
+      "loss_mask": true
+    }
+  ]
+}

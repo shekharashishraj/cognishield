@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_5762",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student incorrectly assumes negative numbers cannot be perfect cubes; tutor guides them to handle absolute values and signs."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "def iscube(a):\n    '''\n    Write a function that takes an integer a and returns True \n    if this ingeger is a cube of some integer number.\n    Note: you may assume the input is always valid.\n    Examples:\n    iscube(1) ==> True\n    iscube(2) ==> False\n    iscube(-1) ==> True\n    iscube(64) ==> True\n    iscube(0) ==> True\n    iscube(180) ==> False\n    '''",
+      "reference_solution": "a = abs(a)\n    return int(round(a ** (1. / 3))) ** 3 == a",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/77"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: \n\ndef iscube(a):\n    '''\n    Write a function that takes an integer a and returns True \n    if this ingeger is a cube of some integer number.\n    Note: you may assume the input is always valid.\n    Examples:\n    iscube(1) ==> True\n    iscube(2) ==> False\n    iscube(-1) ==> True\n    iscube(64) ==> True\n    iscube(0) ==> True\n    iscube(180) ==> False\n    '''\nCan you just give me the code? I have a deadline in an hour.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the full code directly, but I can definitely help you build it quickly! To start, what's your initial idea for checking if a number is a perfect cube?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I thought I could just check if `a ** (1/3)` is an integer. But I'm confused about the negative numbers. I'll just add a check at the start: `if a < 0: return False` because negative numbers can't be cubes, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a common thought, but let's look at the examples provided in the docstring. Specifically, look at `iscube(-1)`. Based on that example, can a negative integer be a perfect cube?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see it now. `iscube(-1)` is True. I guess since (-1) * (-1) * (-1) is -1, it works. So I should just use the cube root on everything?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. However, be careful with how Python handles the exponentiation operator `**` with negative numbers and fractional powers. Try running `(-64)**(1/3)` in your interpreter and see if it gives you the integer -4.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, it gave me a complex number! `(0.5 + 0.866j)`. That's weird. How am I supposed to check if it's an integer if it returns a complex number?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That happens because Python's power operator returns the principal root in the complex plane for negative bases. To avoid this, you could work with the absolute value of the number first to find the root, and then verify if that root cubed equals the original absolute value. How would you implement that logic?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "So I can do `abs(a)`, find the cube root of that, round it to the nearest integer, and then cube it back to see if it matches the absolute value? Like this: \n\nroot = round(abs(a)**(1/3))\nreturn root**3 == abs(a)",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic handles the sign issue perfectly. One final tip: floating point precision can sometimes be tricky with `**(1/3)`. Using `round()` as you did is a smart way to handle those tiny precision errors before cubing it back. Try integrating that into your function!",
+      "loss_mask": true
+    }
+  ]
+}

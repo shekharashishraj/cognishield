@@ -1,0 +1,108 @@
+{
+  "conversation_id": "mt_5933",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Multi-step programming and contest-style problems",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student incorrectly attempts to use a global count instead of resetting it for separate runs of uppercase letters; tutor guides them to track the maximum separately."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to find maximum run of uppercase characters in the given string.",
+      "reference_solution": "def max_run_uppercase(test_str):\n  cnt = 0\n  res = 0\n  for idx in range(0, len(test_str)):\n    if test_str[idx].isupper():\n      cnt += 1\n    else:\n      res = cnt\n      cnt = 0\n  if test_str[len(test_str) - 1].isupper():\n    res = cnt\n  return (res)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "806"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this assignment: 'Write a function to find maximum run of uppercase characters in the given string.' Can you just give me the code? I'm in a rush.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code directly, but I can certainly help you build it step-by-step! To get started, how would you describe the logic for identifying a 'run' of uppercase characters as you move through the string?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think I can just loop through the string and keep a counter. If the character is uppercase, I increment the counter. At the end, I return the counter. Like this:\n\ndef max_run(s):\n    count = 0\n    for char in s:\n        if char.isupper():\n            count += 1\n    return count",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great start for counting the *total* number of uppercase characters. However, the problem asks for the 'maximum run'. If you had a string like 'ABC-DEFGH-I', your current code would return 9. In that case, what should the actual answer be for the maximum run?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. The maximum run would be 5 because 'DEFGH' is the longest sequence. So I just need to check if the current run is bigger than the previous one?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. You'll need a way to keep track of the 'current' run length and a separate variable to store the 'maximum' run length seen so far. What should happen to your current counter when you encounter a character that is NOT uppercase?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I should probably reset the current counter to 0. So I'll do something like:\n\nmax_val = 0\ncurrent_val = 0\nfor char in s:\n    if char.isupper():\n        current_val += 1\n    else:\n        max_val = current_val\n        current_val = 0\nreturn max_val",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're very close! Think about the line `max_val = current_val`. If you have a run of 3 uppercase letters, then a lowercase letter, then a run of only 1 uppercase letter, what would happen to `max_val` when the second run ends?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, it would overwrite the 3 with the 1. I need to only update `max_val` if `current_val` is actually larger. I should use `max_val = max(max_val, current_val)`. Also, what if the string ends with uppercase letters? The 'else' block won't run for the final run.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. You've identified both the need for a comparison and the edge case regarding the end of the string. How would you handle that final run to ensure it's accounted for in your result?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I can just call the max comparison one more time after the loop finishes. Here is my final logic:\n\ndef max_run_uppercase(test_str):\n    cnt = 0\n    res = 0\n    for char in test_str:\n        if char.isupper():\n            cnt += 1\n        else:\n            res = max(res, cnt)\n            cnt = 0\n    res = max(res, cnt)\n    return res",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is correct! You've successfully handled the run tracking, the maximum comparison, and the trailing uppercase characters. Well done.",
+      "loss_mask": true
+    }
+  ]
+}

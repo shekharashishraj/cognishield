@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_4750",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student incorrectly assumes total water can be pooled across wells before dividing by capacity. Tutor corrects this to per-well calculation."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def max_fill(grid, capacity):\n    import math\n    \"\"\"\n    You are given a rectangular grid of wells. Each row represents a single well,\n    and each 1 in a row represents a single unit of water.\n    Each well has a corresponding bucket that can be used to extract water from it, \n    and all buckets have the same capacity.\n    Your task is to use the buckets to empty the wells.\n    Output the number of times you need to lower the buckets.\n\n    Example 1:\n        Input: \n            grid : [[0,0,1,0], [0,1,0,0], [1,1,1,1]]\n            bucket_capacity : 1\n        Output: 6\n\n    Example 2:\n        Input: \n            grid : [[0,0,1,1], [0,0,0,0], [1,1,1,1], [0,1,1,1]]\n            bucket_capacity : 2\n        Output: 5\n    \n    Example 3:\n        Input: \n            grid : [[0,0,0], [0,0,0]]\n            bucket_capacity : 5\n        Output: 0\n\n    Constraints:\n        * all wells have the same length\n        * 1 <= grid.length <= 10^2\n        * 1 <= grid[:,1].length <= 10^2\n        * grid[i][j] -> 0 | 1\n        * 1 <= capacity <= 10\n    \"\"\"",
+      "reference_solution": "return sum([math.ceil(sum(arr)/capacity) for arr in grid])",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/115"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this coding problem. Can you just give me the answer? Here is the prompt:\n\ndef max_fill(grid, capacity):\n    import math\n    \"\"\"\n    You are given a rectangular grid of wells. Each row represents a single well,\n    and each 1 in a row represents a single unit of water.\n    Each well has a corresponding bucket that can be used to extract water from it, \n    and all buckets have the same capacity.\n    Your task is to use the buckets to empty the wells.\n    Output the number of times you need to lower the buckets.\n\n    Example 1:\n        Input: \n            grid : [[0,0,1,0], [0,1,0,0], [1,1,1,1]]\n            bucket_capacity : 1\n        Output: 6\n\n    Example 2:\n        Input: \n            grid : [[0,0,1,1], [0,0,0,0], [1,1,1,1], [0,1,1,1]]\n            bucket_capacity : 2\n        Output: 5\n    \n    Example 3:\n        Input: \n            grid : [[0,0,0], [0,0,0]]\n            bucket_capacity : 5\n        Output: 0\n\n    Constraints:\n        * all wells have the same length\n        * 1 <= grid.length <= 10^2\n        * 1 <= grid[:,1].length <= 10^2\n        * grid[i][j] -> 0 | 1\n        * 1 <= capacity <= 10\n    \"\"\"",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the final code directly, but I'd be happy to help you figure it out! Let's start by breaking down the problem. Based on the description, what do you think the 'rows' and 'buckets' represent in terms of how we calculate the total number of times we lower a bucket?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, so I think I can just sum up all the 1s in the entire grid to get the total amount of water, and then divide that total by the bucket capacity. If there's a remainder, I'll just add one more trip. Does that sound right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a logical first thought, but let's look closer at the problem statement. It says, 'Each well has a corresponding bucket that can be used to extract water from it.' \n\nIf you have two different wells, can you use the same bucket trip to take water from both at the same time, or does the bucket only work for one specific well per trip?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, 'each well has a corresponding bucket'... does that mean I have to treat each row separately? So I can't just pool all the water together first?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Each row is an independent well. If a well has 3 units of water and your bucket capacity is 2, you'll need 2 trips for that specific well, regardless of whether other wells are empty or full. \n\nHow would this change your approach to calculating the total number of trips?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I see. So for each row, I should sum the 1s, divide by the capacity, and round up to the nearest whole number. Then I sum those results for all the rows. For Example 2, the rows have 2, 0, 4, and 3 ones. With capacity 2, that's ceil(2/2)=1, ceil(0/2)=0, ceil(4/2)=2, and ceil(3/2)=2. 1+0+2+2 = 5. That matches the example!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is spot on! You've correctly identified the logic. Now, how would you translate that step-by-step process into Python code? Think about how you can iterate through the grid and handle the rounding up part.",
+      "loss_mask": true
+    }
+  ]
+}

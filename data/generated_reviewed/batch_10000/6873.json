@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_6873",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Precalculus: Trigonometric Identities",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor guides the student to use the sum of cubes identity to simplify a trigonometric expression, preventing the student from relying on brute-force calculation and helping them correct a wrong initial answer."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Simplify\n\\[\\frac{\\tan^3 75^\\circ + \\cot^3 75^\\circ}{\\tan 75^\\circ + \\cot 75^\\circ}.\\]",
+      "reference_solution": "We can write\n\\begin{align*}\n\\frac{\\tan^3 75^\\circ + \\cot^3 75^\\circ}{\\tan 75^\\circ + \\cot 75^\\circ} &= \\frac{(\\tan 75^\\circ + \\cot 75^\\circ)(\\tan^2 75^\\circ - \\tan 75^\\circ \\cot 75^\\circ + \\cot^2 75^\\circ)}{\\tan 75^\\circ + \\cot 75^\\circ} \\\\\n&= \\tan^2 75^\\circ - \\tan 75^\\circ \\cot 75^\\circ + \\cot^2 75^\\circ \\\\\n&= \\tan^2 75^\\circ + \\cot^2 75^\\circ - 1 \\\\\n&= \\frac{\\sin^2 75^\\circ}{\\cos^2 75^\\circ} + \\frac{\\cos^2 75^\\circ}{\\sin^2 75^\\circ} - 1 \\\\\n&= \\frac{\\sin^4 75^\\circ + \\cos^4 75^\\circ}{\\cos^2 75^\\circ \\sin^2 75^\\circ} - 1 \\\\\n&= \\frac{(\\sin^2 75^\\circ + \\cos^2 75^\\circ)^2 - 2 \\cos^2 75^\\circ \\sin^2 75^\\circ}{\\cos^2 75^\\circ \\sin^2 75^\\circ} - 1 \\\\\n&= \\frac{1 - 2 \\cos^2 75^\\circ \\sin^2 75^\\circ}{\\cos^2 75^\\circ \\sin^2 75^\\circ} - 1.\n\\end{align*}By the double-angle formula,\n\\[2 \\cos 75^\\circ \\sin 75^\\circ = \\sin 150^\\circ = \\frac{1}{2},\\]so $\\cos 75^\\circ \\sin 75^\\circ = \\frac{1}{4}.$  Hence,\n\\[\\frac{1 - 2 \\cos^2 75^\\circ \\sin^2 75^\\circ}{\\cos^2 75^\\circ \\sin^2 75^\\circ} - 1 = \\frac{1 - 2 (\\frac{1}{4})^2}{(\\frac{1}{4})^2} - 1 = \\boxed{13}.\\]",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "6840"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm trying to solve this: Simplify\n\\[\\frac{\\tan^3 75^\\circ + \\cot^3 75^\\circ}{\\tan 75^\\circ + \\cot 75^\\circ}.\\]\nI got 7 as the answer. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Instead of confirming the final result, I'd like to understand your approach. Could you show me the steps you took to get to 7?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I looked up the values for tan(75) and cot(75). I used tan(75) = 2 + sqrt(3) and cot(75) = 2 - sqrt(3). Then I just plugged them into the fraction and simplified. I think I might have messed up the cubing part though.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your values for $\\tan 75^\\circ$ and $\\cot 75^\\circ$ are correct, but calculating cubes of binomials can get messy very quickly, which is likely where the error occurred. \n\nBefore you try the arithmetic again, take a look at the structure of the expression: $\\frac{a^3 + b^3}{a + b}$. Does that look like a specific algebraic identity you've studied?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, it's a sum of cubes! So $a^3 + b^3 = (a + b)(a^2 - ab + b^2)$. That means the $(a+b)$ terms cancel out, and I'm left with $\\tan^2 75^\\circ - \\tan 75^\\circ \\cot 75^\\circ + \\cot^2 75^\\circ$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a much more efficient way to handle it! Now, look at the middle term: $\\tan 75^\\circ \\cot 75^\\circ$. What does that simplify to?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Since cot is 1/tan, that's just 1. So the expression is now $\\tan^2 75^\\circ + \\cot^2 75^\\circ - 1$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Perfect. Now you can use those values you found earlier for $\\tan 75^\\circ$ and $\\cot 75^\\circ$ to evaluate the remaining squares. What do you get when you calculate that?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, $(2 + \\sqrt{3})^2 + (2 - \\sqrt{3})^2 - 1$.\n$(4 + 4\\sqrt{3} + 3) + (4 - 4\\sqrt{3} + 3) - 1 = 7 + 7 - 1 = 13$. \nSo the answer is 13, not 7!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've found it! By applying the algebraic identity first, you simplified the expression into a form that was much easier to calculate accurately. Great job identifying the mistake and correcting your process.",
+      "loss_mask": true
+    }
+  ]
+}

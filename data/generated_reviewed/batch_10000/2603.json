@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_2603",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Polynomial Remainder Theorem",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student incorrectly applies the Remainder Theorem for a linear divisor to a cubic divisor. Tutor guides them toward using binomial expansion/Taylor series approach."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Find the remainder when $x^{100}$ is divided by $(x + 1)^3.$",
+      "reference_solution": "We can write\n\\begin{align*}\nx^{100} &= [(x + 1) - 1]^{100} \\\\\n&= (x + 1)^{100} - \\binom{100}{1} (x + 1)^{99} + \\binom{100}{2} (x + 1)^{98} + \\dots - \\binom{100}{97} (x + 1)^3 + \\binom{100}{98} (x + 1)^2 - \\binom{100}{99} (x + 1) + 1.\n\\end{align*}When this is divided by $(x + 1)^3,$ the remainder is then\n\\[\\binom{100}{98} (x + 1)^2 - \\binom{100}{99} (x + 1) + 1 = \\boxed{4950x^2 + 9800x + 4851}.\\]",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "2239"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Find the remainder when $x^{100}$ is divided by $(x + 1)^3.$ I think the answer is just 1 because if I plug in $x = -1$, I get $(-1)^{100} = 1$. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see how you arrived at that result. You are applying the Polynomial Remainder Theorem, which works perfectly when you divide by a linear factor like $(x + 1)$. However, in this case, you are dividing by $(x + 1)^3$. Do you think the remainder for a cubic divisor is always a constant?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, I guess not. If the divisor is degree 3, the remainder could be a quadratic, right? But I don't know how to find the coefficients if I can't just plug in one value for $x$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great observation. The remainder will indeed be a polynomial of degree at most 2. Since we are dividing by a power of $(x + 1)$, it might be helpful to rewrite $x$ in terms of $(x + 1)$. How could you express $x$ using the term $(x + 1)$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could write $x = (x + 1) - 1$. So then the expression is $((x + 1) - 1)^{100}$. Does that help?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Now, think about how you would expand that expression. Is there a specific theorem or formula that allows you to expand a binomial raised to a high power?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The Binomial Theorem! So I can expand $((x + 1) - 1)^{100}$ as a sum of terms. But that's going to be 101 terms. Do I have to calculate all of them?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You don't need all of them. Remember that we are looking for the remainder when dividing by $(x + 1)^3$. Which terms in the binomial expansion will be divisible by $(x + 1)^3$, and which terms will not be?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Any term with $(x + 1)^k$ where $k \\ge 3$ will be divisible by $(x + 1)^3$, so they'll just disappear in the remainder. That means I only need to look at the terms where the power of $(x + 1)$ is 0, 1, and 2.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. Now, try to identify those specific last three terms from the binomial expansion of $((x + 1) - 1)^{100}$ and simplify them to find your final remainder.",
+      "loss_mask": true
+    }
+  ]
+}

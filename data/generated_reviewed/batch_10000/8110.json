@@ -1,0 +1,108 @@
+{
+  "conversation_id": "mt_8110",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Basic algorithms and data manipulation: Balanced Parentheses",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to use a counter for multiple bracket types, which is a common misconception. Tutor guides them toward a stack."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to check if the given expression is balanced or not. https://www.geeksforgeeks.org/check-for-balanced-parentheses-in-an-expression/",
+      "reference_solution": "from collections import deque\ndef check_expression(exp):\n    if len(exp) & 1:\n        return False\n    stack = deque()\n    for ch in exp:\n        if ch == '(' or ch == '{' or ch == '[':\n            stack.append(ch)\n        if ch == ')' or ch == '}' or ch == ']':\n            if not stack:\n                return False\n            top = stack.pop()\n            if (top == '(' and ch != ')') or (top == '{' and ch != '}' or (top == '[' and ch != ']')):\n                return False\n    return not stack",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "771"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm stuck on this assignment: Write a function to check if the given expression is balanced or not. https://www.geeksforgeeks.org/check-for-balanced-parentheses-in-an-expression/ \nCan you just give me the code? I'm in a rush.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the full code directly, but I'd be happy to help you build it! To get started, how are you thinking about tracking whether the brackets are closed in the right order?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think I can just use three variables to count them. Like, one for parentheses, one for square brackets, and one for curly ones. Whenever I see an opening one, I add 1, and when I see a closing one, I subtract 1. If they all end at 0, it's balanced, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a very logical approach for a single type of bracket. However, consider a case like this: `([)]`. If you use counters, the counts for both `()` and `[]` would end at zero. Would that expression be considered balanced in this problem?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. In `([)]`, the square bracket closes before the parenthesis does, but the parenthesis started first. So it's not balanced. My counter idea doesn't care about the order, just the total number.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Since the order of nesting matters, we need a way to 'remember' which opening bracket was the most recent one encountered. Do you know of a data structure that follows a 'Last-In, First-Out' (LIFO) principle?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Is that a stack? I remember learning about stacks in class. You push things on top and pop them off from the top.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. How would you use a stack to handle the opening and closing brackets as you loop through the string?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, so when I see `(`, `[`, or `{`, I push it onto the stack. Then, when I see a closing bracket like `)`, I pop the top element from the stack and check if it's the matching `(`. If it's not, or if the stack is empty when I try to pop, then it's not balanced.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is perfect. One last thing to think about: once you've finished looping through the entire expression, how do you know for sure that every opening bracket was actually closed?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I should check if the stack is empty at the end. If there's still something in there, it means an opening bracket never got its closing pair.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got it! You now have a complete logical plan. Why don't you try implementing that in Python? Let me know if you run into any syntax errors.",
+      "loss_mask": true
+    }
+  ]
+}

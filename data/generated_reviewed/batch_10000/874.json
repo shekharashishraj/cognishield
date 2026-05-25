@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_874",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Geometry - 3D Net Unfolding",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "off_topic_redirect",
+      "task_focus",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to distract tutor with a question about gecko species; tutor politely redirects back to the geometry problem."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "A gecko is in a room that is 12 feet long, 10 feet wide and 8 feet tall. The gecko is currently on a side wall ($10^{\\prime}$ by $8^{\\prime}$), one foot from the ceiling and one foot from the back wall ($12^{\\prime}$ by $8^{\\prime}$). The gecko spots a fly on the opposite side wall, one foot from the floor and one foot from the front wall. What is the length of the shortest path the gecko can take to reach the fly assuming that it does not jump and can only walk across the ceiling and the walls? Express your answer in simplest radical form.",
+      "reference_solution": "[asy]\nimport three;\ncurrentprojection=orthographic(1/2,-1,1/2);\ntriple A,B,C,D,E,F,G,H,g,f;\nA = (0,0,0);\nB = (12,0,0);\nC = (12,10,0);\nD = (0,10,0);\nE = (0,10,8);\nF = (0,0,8);\nG = (12,0,8);\nH = (12,10,8);\ndraw(A--B--C--D--cycle);\ndraw(E--F--G--H--cycle);\ndraw(A--F); draw(B--G); draw(C--H); draw(D--E);\ng = (12,9,7); f = (0,1,1);\ndot(g, green); dot(f, purple);\nlabel(\"12\", A--B); label(\"10\", B--C); label(\"8\", C--H);\n[/asy] In the above diagram, the green dot is the gecko and the purple dot is the fly. We can ``unfold'' the walls that the gecko traveled along, as below, to represent the gecko's path in two dimensions. This unfolding does not change the length of the gecko's path, so in order for the gecko's path to be minimal before unfolding, it must be minimal after unfolding. In other words, it must be a straight line after unfolding. Now, besides the side walls, the gecko can travel along the front, back, and ceiling. Suppose that among these, it only travels along the front wall. The walls the gecko walked along unfold as such: [asy]\ndraw( (0,0)--(10,0)--(10,8)--(0,8)--cycle ); draw( (10,0)--(22,0) ); draw( (10,8)--(22,8) );\ndraw( (22,0)--(32,0)--(32,8)--(22,8)--cycle );\npair g = (31,7); pair f = (9,1);\ndot(g, green); dot(f, purple);\ndraw(g--f, red);\ndraw(f--(31,1), red+dashed); draw(g--(31,1), red+dashed);\nlabel( \"10\", (0,0)--(10,0) ); label( \"12\", (10,0)--(22,0) ); label( \"10\", (22,0)--(32,0) ); label( \"8\", (32,0)--(32,8) );\n[/asy] The gecko's path is the hypotenuse of a right triangle with legs 6 and 22, so its length is $\\sqrt{6^2 + 22^2} = 2\\sqrt{3^2 + 11^2} = 2\\sqrt{130}$. By symmetry (the gecko and the fly are exactly opposite each other in the room), the path length is the same if the gecko only travels along the back wall and side walls.\n\nNow suppose the gecko only travels along the ceiling and side walls. These walls unfolded become: [asy]\ndraw( (0,0)--(8,0)--(8,10)--(0,10)--cycle ); draw( (8,0)--(20,0) ); draw( (8,10)--(20,10) );\ndraw( (20,0)--(28,0)--(28,10)--(20,10)--cycle );\npair g = (21,9); pair f = (1,1);\ndot(g, green); dot(f, purple);\ndraw(g--f, red);\ndraw(f--(21,1), red+dashed); draw(g--(21,1), red+dashed);\nlabel( \"8\", (0,0)--(8,0) ); label( \"12\", (8,0)--(20,0) ); label( \"8\", (20,0)--(28,0) ); label( \"10\", (28,0)--(28,10) );\n[/asy] The path is the hypotenuse of a right triangle with legs 8 and 20, so its length is $\\sqrt{8^2 + 20^2} = 2\\sqrt{4^2+10^2} = 2\\sqrt{116}$. (We'll keep it in this form because it makes it easier to compare with the other cases.)\n\nFinally, the gecko may cross both the ceiling and front wall (or back wall; the cases give the same results by symmetry). The unfolded walls then look like this: [asy]\ndraw( (0,0)--(10,0)--(10,8)--(0,8)--cycle );\ndraw( (10,0)--(22,0)--(22,8)--(10,8)--(10,18)--(22,18) );\ndraw( (22,8)--(30,8)--(30,18)--(22,18)--cycle );\npair g = (23,17); pair f = (9,1);\ndot(g, green); dot(f, purple);\ndraw(g--f, red);\ndraw(f--(23,1), red+dashed); draw(g--(23,1), red+dashed);\nlabel(\"10\", (0,0)--(10,0)); label(\"12\", (10,0)--(22,0)); label(\"8\", (0,0)--(0,8), W);\n\nlabel(\"8\", (22,18)--(30,18), N); label(\"10\", (30,18)--(30,8), E);\n[/asy] The path is the hypotenuse of a right triangle with legs 16 and 14, so its length is $\\sqrt{16^2+14^2} = 2\\sqrt{8^2+7^2} = 2\\sqrt{113}$. Of the three cases, this is the smallest, so the answer is $\\boxed{2\\sqrt{113}}$.",
+      "seed_dataset": "HuggingFaceH4/MATH-500/test",
+      "seed_example_id": "test/geometry/880.json"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm stuck on this problem: A gecko is in a room that is 12 feet long, 10 feet wide and 8 feet tall. The gecko is currently on a side wall ($10^{\\prime}$ by $8^{\\prime}$), one foot from the ceiling and one foot from the back wall ($12^{\\prime}$ by $8^{\\prime}$). The gecko spots a fly on the opposite side wall, one foot from the floor and one foot from the front wall. What is the length of the shortest path the gecko can take to reach the fly assuming that it does not jump and can only walk across the ceiling and the walls? Express your answer in simplest radical form. Can you just tell me the answer so I can check my work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through this, but I won't give you the final answer right away. The goal is to find the shortest distance on a 3D surface, which usually means we need to 'flatten' the room into a 2D net. To start, can you describe how you might unfold the walls to create a straight-line path between the gecko and the fly?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think I can just unfold the two side walls and the floor? Wait, actually, I just remembered I saw a documentary on geckos. Do you know if all geckos can walk on ceilings, or just certain species?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's an interesting question about biology, but let's stay focused on the geometry for now so we can solve this problem. Coming back to your idea: you mentioned unfolding the side walls and the floor. Since the gecko is near the ceiling and the fly is near the floor on opposite walls, would using the floor be the most direct route, or are there other surfaces the gecko could cross?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Right, sorry. The gecko is 1 foot from the ceiling, so maybe the ceiling is better. If I unfold the side walls and the ceiling, the distance would be a straight line. The distance across the ceiling is 12 feet. The gecko is 1 foot from the ceiling, and the fly is 1 foot from the floor, which means the fly is 7 feet from the ceiling (since the wall is 8 feet tall). So the vertical distance is 1+7=8, and the horizontal distance is... wait, the side walls are 10 feet wide. If the gecko is 1 foot from the back wall and the fly is 1 foot from the front wall, they are 8 feet apart horizontally on those walls? No, the room is 12 feet long. Let me re-calculate. If we go through the ceiling, the horizontal distance is 12 feet, and the 'vertical' distance on the unfolded map is the distance from the gecko to the ceiling (1) plus the distance from the ceiling to the fly (7)? No, that's not right. The fly is on the opposite wall.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're on the right track by considering different unfoldings. Let's be very precise with the coordinates on the unfolded 2D plane. If you unfold the side walls and the ceiling, the 'width' of the path involves the distance between the gecko and the fly relative to the 10-foot width of the room. If the gecko is 1 foot from the back wall and the fly is 1 foot from the front wall, how far apart are they in that specific dimension?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If the room is 10 feet wide, and the gecko is 1 foot from one side and the fly is 1 foot from the other, the distance between them in that direction is 10 - 1 - 1 = 8 feet. Then the other dimension would be the distance across the ceiling (12) plus the distance from the ceiling to the gecko (1) and the ceiling to the fly (7). So 12 + 1 + 7 = 20. Then the distance is $\\sqrt{8^2 + 20^2} = \\sqrt{64 + 400} = \\sqrt{464}$. That simplifies to $4\\sqrt{29}$ or $2\\sqrt{116}$. Is that the shortest path?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've correctly calculated the path for one specific unfolding! However, in these types of problems, there are often multiple ways to unfold the box. You've tried the ceiling route. What about a route that goes across the front or back walls? Or perhaps a combination of the ceiling and a wall? Try to visualize another unfolding and see if it yields a shorter distance.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "What if it goes through the front wall? The distance from the gecko to the back wall is 1. The room is 12 feet long. The fly is 1 foot from the front wall. So the distance across the length is 1 + 12 + 1 = 14? No, that's not right. Let's see... gecko to back wall (1), back wall length (12), and then the fly is on the opposite wall... wait. If it goes through the front wall, the gecko travels across its side wall (9 feet to reach the front wall), then across the front wall (8 feet tall), then to the fly. That's confusing. Let me try the ceiling and front wall combo. If I unfold it so it goes side wall -> ceiling -> front wall -> side wall... no, that's too long. Let's try side wall -> front wall -> side wall. The distance would be (10-1) + 12 + (10-1) = 30? No. Let's try the legs of the triangle: one leg is 12 + 1 + 1 = 14, and the other leg is 7 + 1 = 8? No. Let me try legs 16 and 14. $\\sqrt{16^2 + 14^2} = \\sqrt{256 + 196} = \\sqrt{452} = 2\\sqrt{113}$. Is $2\\sqrt{113}$ smaller than $2\\sqrt{116}$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, $2\\sqrt{113}$ is indeed smaller than $2\\sqrt{116}$. You've found a shorter path! To be absolutely sure this is the minimum, can you explain how you arrived at the legs 16 and 14? Once you can justify that unfolding, we can check if any other possibilities exist.",
+      "loss_mask": true
+    }
+  ]
+}

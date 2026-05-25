@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_8814",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks: Custom Sorting",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The student initially struggles with the tie-breaking condition of the sort. The tutor guides them through the concept of stability and tuple-based keys without providing the final code."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "def sort_array(arr):\n    \"\"\"\n    In this Kata, you have to sort an array of non-negative integers according to\n    number of ones in their binary representation in ascending order.\n    For similar number of ones, sort based on decimal value.\n\n    It must be implemented like this:\n    >>> sort_array([1, 5, 2, 3, 4]) == [1, 2, 3, 4, 5]\n    >>> sort_array([-2, -3, -4, -5, -6]) == [-6, -5, -4, -3, -2]\n    >>> sort_array([1, 0, 2, 3, 4]) [0, 1, 2, 3, 4]\n    \"\"\"",
+      "reference_solution": "return sorted(sorted(arr), key=lambda x: bin(x)[2:].count('1'))",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/116"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this coding challenge and I'm totally stuck. Can you just give me the solution? I'm out of time!\n\ndef sort_array(arr):\n    \"\"\"\n    In this Kata, you have to sort an array of non-negative integers according to\n    number of ones in their binary representation in ascending order.\n    For similar number of ones, sort based on decimal value.\n\n    It must be implemented like this:\n    >>> sort_array([1, 5, 2, 3, 4]) == [1, 2, 3, 4, 5]\n    >>> sort_array([-2, -3, -4, -5, -6]) == [-6, -5, -4, -3, -2]\n    >>> sort_array([1, 0, 2, 3, 4]) [0, 1, 2, 3, 4]\n    \"\"\"",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full solution, but I can help you get there quickly! Let's look at the requirements. You need to sort by two different things: first by the number of 1s in binary, and then by the number's actual value if there's a tie. Which part is giving you the most trouble?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I know how to count the ones using `bin(x).count('1')`. I thought I could just use that as the key in `sorted()`, like `sorted(arr, key=lambda x: bin(x).count('1'))`. But when I test it with [5, 3], it doesn't always put 3 before 5, even though they both have two ones. Why isn't it sorting by the decimal value automatically?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a common misconception! By default, if you only provide one key (the count of ones), Python's `sorted()` function doesn't know it should use the decimal value as a backup. It uses a 'stable' sort, which means it keeps elements with the same key in their original relative order. If 5 came before 3 in your input, it stays before 3. How do you think you could tell Python to consider the decimal value as a second priority?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, if it's 'stable', does that mean I could just sort the whole list by value first, and then sort it again by the binary count? Would the second sort keep the value-order for the ties?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got it! Since the second sort is stable, it will preserve the order established by the first sort for any items that have the same number of ones. That's one very effective way to handle multi-level sorting. Can you think of another way to do this using a single `sorted()` call instead of two?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Maybe I could make the key return a tuple? Like `key=lambda x: (bin(x).count('1'), x)`. Does Python know how to sort tuples?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. When Python compares tuples, it compares the first elements first. If they are the same, it moves to the second element to break the tie. This maps perfectly to your requirements. Now that you have two possible strategies—the double sort and the tuple key—which one do you think is cleaner to implement in your function?",
+      "loss_mask": true
+    }
+  ]
+}

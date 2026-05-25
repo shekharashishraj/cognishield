@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_5654",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning: Fibonacci and Primality",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "emotional_support",
+      "frustration",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student exhibits frustration; tutor provides emotional validation and breaks the problem into primality testing and Fibonacci generation steps."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def prime_fib(n: int):\n    \"\"\"\n    prime_fib returns n-th number that is a Fibonacci number and it's also prime.\n    >>> prime_fib(1)\n    2\n    >>> prime_fib(2)\n    3\n    >>> prime_fib(3)\n    5\n    >>> prime_fib(4)\n    13\n    >>> prime_fib(5)\n    89\n    \"\"\"",
+      "reference_solution": "import math\n\n    def is_prime(p):\n        if p < 2:\n            return False\n        for k in range(2, min(int(math.sqrt(p)) + 1, p - 1)):\n            if p % k == 0:\n                return False\n        return True\n    f = [0, 1]\n    while True:\n        f.append(f[-1] + f[-2])\n        if is_prime(f[-1]):\n            n -= 1\n        if n == 0:\n            return f[-1]",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/39"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm really struggling with this problem and I feel like I'm just not cut out for coding. I keep getting stuck. Here is the prompt:\n\ndef prime_fib(n: int):\n    \"\"\"\n    prime_fib returns n-th number that is a Fibonacci number and it's also prime.\n    >>> prime_fib(1)\n    2\n    >>> prime_fib(2)\n    3\n    >>> prime_fib(3)\n    5\n    >>> prime_fib(4)\n    13\n    >>> prime_fib(5)\n    89\n    \"\"\"\nCan you just give me the code? I'm too frustrated to think straight.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I'm sorry you're feeling this way, but please don't be so hard on yourself. Coding is all about hitting walls and then finding a way over them—it's a normal part of the process. Instead of giving you the full code, let's tackle this in small, manageable pieces. That way, you can see that you actually *can* do this. \n\nTo start, this problem asks for two things: generating Fibonacci numbers and checking if a number is prime. Which of those two parts feels more approachable to you right now?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I can do the prime check. But I always forget if I need to check every number up to the target or if there's a faster way. I'll probably mess it up anyway.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It's okay to forget details; that's why we have documentation and peers. You don't need to check every single number up to the target. Think about the factors of a number—if a number has a factor larger than its square root, it must also have a factor smaller than its square root. \n\nHow could you use that observation to make your `is_prime` function more efficient?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, right. So I only need to check from 2 up to the square root of the number. \n\n```python\nimport math\ndef is_prime(p):\n    if p < 2: return False\n    for i in range(2, int(math.sqrt(p)) + 1):\n        if p % i == 0:\n            return False\n    return True\n```\nIs this correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is exactly right. You handled the edge case for numbers less than 2 and implemented the square root optimization perfectly. See? You're making progress already.\n\nNow that we have a way to check for primality, how should we handle the Fibonacci sequence? How do you plan to generate the numbers and keep track of how many 'prime Fibonacci' numbers you've found?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could use a list to store the Fibonacci numbers, starting with [0, 1]. Then I can use a while loop to keep adding the last two numbers together. I'll check each new number with the `is_prime` function, and if it returns true, I'll decrement `n`. When `n` hits 0, I return that number. Does that sound like a valid plan?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That sounds like a very solid plan. You've correctly identified the state you need to track (the sequence) and the stopping condition (when the count of primes reaches n). \n\nGo ahead and try to put it all together into the `prime_fib` function. Take your time, and if you hit a snag, I'm right here.",
+      "loss_mask": true
+    }
+  ]
+}

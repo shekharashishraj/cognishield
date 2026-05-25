@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_2424",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student initially confuses 'rolling max' with sorting the list; tutor corrects this misconception by explaining the temporal nature of the sequence."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "from typing import List, Tuple\n\n\ndef rolling_max(numbers: List[int]) -> List[int]:\n    \"\"\" From a given list of integers, generate a list of rolling maximum element found until given moment\n    in the sequence.\n    >>> rolling_max([1, 2, 3, 2, 3, 4, 2])\n    [1, 2, 3, 3, 3, 4, 4]\n    \"\"\"",
+      "reference_solution": "running_max = None\n    result = []\n\n    for n in numbers:\n        if running_max is None:\n            running_max = n\n        else:\n            running_max = max(running_max, n)\n\n        result.append(running_max)\n\n    return result",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/9"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this coding problem: \n\nfrom typing import List, Tuple\n\ndef rolling_max(numbers: List[int]) -> List[int]:\n    \"\"\" From a given list of integers, generate a list of rolling maximum element found until given moment\n    in the sequence.\n    >>> rolling_max([1, 2, 3, 2, 3, 4, 2])\n    [1, 2, 3, 3, 3, 4, 4]\n    \"\"\"\n\nCan you just give me the solution? I have a deadline in an hour.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the full code directly, but I can help you figure it out quickly so you can meet your deadline! Let's start by breaking down the requirement. Looking at the example `[1, 2, 3, 2, 3, 4, 2]` becoming `[1, 2, 3, 3, 3, 4, 4]`, how would you describe what is happening to the numbers as we move from left to right?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think it's just sorting the list in ascending order but keeping the length the same? Like, we find the biggest numbers and put them at the end?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's an interesting thought, but let's look closer at the example. If we sorted `[1, 2, 3, 2, 3, 4, 2]`, we would get `[1, 2, 2, 2, 3, 3, 4]`. However, the expected output is `[1, 2, 3, 3, 3, 4, 4]`. \n\nNotice that at index 2, the value is 3, and it stays 3 even when the next number in the original list is 2. What does that tell you about how the 'maximum' is being tracked?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. It's not sorting the whole list. It's like we are keeping track of the highest number we've seen *so far*. So if we see a 3, and then a 2, the max is still 3.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Precisely. You've got the logic down now. Now, thinking about the implementation: if you were to loop through the list, what variable would you need to maintain to keep track of that 'highest seen so far' value?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'd probably create a variable called `current_max` and initialize it to the first element of the list. Then I'd loop through the rest and use `max()` to compare the current element with `current_max`. I'll append the result of that comparison to a new list.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That sounds like a solid plan. One small detail: what happens if the input list `numbers` is empty? How would you handle the initialization of `current_max` to avoid an error in that case?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could check if the list is empty first and return an empty list. Or, I could initialize `current_max` to `None` and set it to the first number I encounter in the loop.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Both are valid approaches. The `None` approach is quite elegant as it handles the first element naturally within the loop. Why don't you try writing out the full function now?",
+      "loss_mask": true
+    }
+  ]
+}

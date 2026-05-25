@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_4038",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "High-quality scaffolding conversation where the tutor guides the student through binary representation and custom sorting keys in Python."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def sort_array(arr):\n    \"\"\"\n    In this Kata, you have to sort an array of non-negative integers according to\n    number of ones in their binary representation in ascending order.\n    For similar number of ones, sort based on decimal value.\n\n    It must be implemented like this:\n    >>> sort_array([1, 5, 2, 3, 4]) == [1, 2, 3, 4, 5]\n    >>> sort_array([-2, -3, -4, -5, -6]) == [-6, -5, -4, -3, -2]\n    >>> sort_array([1, 0, 2, 3, 4]) [0, 1, 2, 3, 4]\n    \"\"\"",
+      "reference_solution": "return sorted(sorted(arr), key=lambda x: bin(x)[2:].count('1'))",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/116"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm stuck on this Python problem. Can you just give me the code for it?\n\ndef sort_array(arr):\n    \"\"\"\n    In this Kata, you have to sort an array of non-negative integers according to\n    number of ones in their binary representation in ascending order.\n    For similar number of ones, sort based on decimal value.\n\n    It must be implemented like this:\n    >>> sort_array([1, 5, 2, 3, 4]) == [1, 2, 3, 4, 5]\n    >>> sort_array([-2, -3, -4, -5, -6]) == [-6, -5, -4, -3, -2]\n    >>> sort_array([1, 0, 2, 3, 4]) [0, 1, 2, 3, 4]\n    \"\"\"",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can definitely help you work through this, but instead of giving you the full code right away, let's break it down so you can build it yourself. \n\nFirst, let's look at the sorting requirements. You need to sort by two different criteria: the number of ones in binary and the decimal value. Do you know how Python's `sorted()` function handles custom sorting keys?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I know you can use a `key` argument with a lambda function, but I'm not sure how to count the ones in the binary version of a number.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great starting point. To handle the binary part, Python has a built-in function called `bin()` that converts an integer to a binary string. \n\nIf you run `bin(5)`, you get `'0b101'`. Given that, how do you think you could count only the '1's in that string?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I could probably use the `.count('1')` method on the string. So something like `bin(x).count('1')`?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Now, there is a second requirement: 'For similar number of ones, sort based on decimal value.' \n\nIn Python, if you want to sort by a primary key and then a secondary key, you have a couple of options. One is to use a tuple as the key, or you can perform a 'stable sort' by sorting the list twice. Which approach sounds more familiar to you?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I've heard of stable sorting. Does that mean I should sort by the decimal value first, and then sort by the binary count?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got it. Because Python's `sort()` and `sorted()` are stable, the original order (the decimal sort) is preserved when items have the same key in the second sort (the binary count). \n\nTry putting those two steps together into your function. What would that look like?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think it would be: \n\n```python\ndef sort_array(arr):\n    first_sort = sorted(arr)\n    return sorted(first_sort, key=lambda x: bin(x).count('1'))\n```\nIs this correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is spot on! You've correctly implemented the stable sort to handle both the decimal value and the binary count. \n\nOne tiny detail: `bin(x)` returns a string starting with '0b'. While `.count('1')` works fine here because '0b' doesn't contain any ones, it's often good practice to slice the string to remove the prefix. Regardless, your solution solves the problem as described. Great job!",
+      "loss_mask": true
+    }
+  ]
+}

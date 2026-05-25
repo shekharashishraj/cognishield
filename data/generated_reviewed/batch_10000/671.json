@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_671",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student fails to filter for uppercase characters; tutor guides them to use isupper() without giving the code."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def digitSum(s):\n    \"\"\"Task\n    Write a function that takes a string as input and returns the sum of the upper characters only'\n    ASCII codes.\n\n    Examples:\n        digitSum(\"\") => 0\n        digitSum(\"abAB\") => 131\n        digitSum(\"abcCd\") => 67\n        digitSum(\"helloE\") => 69\n        digitSum(\"woArBld\") => 131\n        digitSum(\"aAaaaXa\") => 153\n    \"\"\"",
+      "reference_solution": "if s == \"\": return 0\n    return sum(ord(char) if char.isupper() else 0 for char in s)",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/66"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem:\n\ndef digitSum(s):\n    \"\"\"Task\n    Write a function that takes a string as input and returns the sum of the upper characters only'\n    ASCII codes.\n\n    Examples:\n        digitSum(\"\") => 0\n        digitSum(\"abAB\") => 131\n        digitSum(\"abcCd\") => 67\n        digitSum(\"helloE\") => 69\n        digitSum(\"woArBld\") => 131\n        digitSum(\"aAaaaXa\") => 153\n    \"\"\"\n\nI think the answer is just:\ndef digitSum(s):\n    return sum(ord(c) for c in s)\n\nIs this correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Let's take a closer look at the requirements. Could you explain how your current code handles the 'upper characters only' part of the task?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, it iterates through the string and adds up the ASCII values using ord(). I thought that's what the problem wanted.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "The `ord()` function does indeed give you the ASCII value, but your current loop processes every single character in the string `s`. If the input was \"abAB\", what would your code calculate, and how does that compare to the expected result of 131?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. It would add 'a' and 'b' too, not just 'A' and 'B'. So I need to ignore the lowercase letters. Should I use an if statement inside the sum?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great approach. How can you check if a character is an uppercase letter in Python?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think there is a method called .isupper(). So maybe I can do something like:\n\ndef digitSum(s):\n    total = 0\n    for char in s:\n        if char.isupper():\n            total += ord(char)\n    return total\n\nDoes this look right now?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic now correctly filters for uppercase characters and accumulates their ASCII values. Try testing it against the examples provided in the docstring—specifically the empty string case—to be absolutely sure it handles everything.",
+      "loss_mask": true
+    }
+  ]
+}

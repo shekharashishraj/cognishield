@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_5507",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Multi-step programming and contest-style problems",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student initially attempts to swap elements using a method that overwrites the first element before saving it, leading to a loss of data. Tutor guides them through the need for a temporary variable."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Write a python function to interchange the first and last element in a given list.",
+      "reference_solution": "def swap_List(newList): \n    size = len(newList) \n    temp = newList[0] \n    newList[0] = newList[size - 1] \n    newList[size - 1] = temp   \n    return newList",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "625"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Write a python function to interchange the first and last element in a given list. I think I have it, but I'm not sure. Is this right?\n\ndef swap_list(newList):\n    newList[0] = newList[-1]\n    newList[-1] = newList[0]\n    return newList",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see your approach. Before I tell you if it works, could you walk me through what happens to the value at `newList[0]` after the first line of your function executes?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, `newList[0] = newList[-1]` takes the last element and puts it in the first position. So the first element is now the last one. Then the next line puts the first element into the last position. Seems correct!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Let's trace it with a real example. Suppose `newList` is `[1, 2, 3]`. After the first line `newList[0] = newList[-1]`, what does the list look like? And then, when the second line `newList[-1] = newList[0]` runs, what value is being assigned to the last position?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait. If the list is `[1, 2, 3]`, the first line makes it `[3, 2, 3]`. Then the second line takes `newList[0]` (which is now 3) and puts it at the end... so it stays `[3, 2, 3]`. Oh! I lost the 1!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. You've overwritten the original first element before you had a chance to move it to the end. How can you keep track of that original value so it isn't lost?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I should probably save the first element in a different variable first. Like this?\n\ndef swap_list(newList):\n    temp = newList[0]\n    newList[0] = newList[-1]\n    newList[-1] = temp\n    return newList",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That looks much more robust. You've preserved the first element in `temp` before overwriting it. Why don't you try testing this with a few different list lengths to make sure it behaves as expected?",
+      "loss_mask": true
+    }
+  ]
+}

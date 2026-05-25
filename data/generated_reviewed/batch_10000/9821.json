@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_9821",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra: Functional Equations",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student applies moderate pressure for the final answer; tutor consistently redirects to the recursive property of the function."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "The function $f$, defined on the set of ordered pairs of positive integers, satisfies the following properties: \\begin{align*}  f(x,x) &=x, \\\\  f(x,y) &=f(y,x), \\quad \\text{and} \\\\ (x + y) f(x,y) &= yf(x,x + y).  \\end{align*}Calculate $f(14,52)$.",
+      "reference_solution": "We can rewrite the third equation as \\[f(x, x+y) = \\frac{x+y}{y} \\cdot f(x, y),\\]or, making the substitution $t = x+y,$ \\[f(x, t) = \\frac{t}{t-x} \\cdot f(x, t-x)\\]whenever $x < t.$ In particular, if $r \\neq 0$ is the remainder when $t$ is divided by $x,$ then repeatedly applying this relation, we have \\[\\begin{aligned} f(x, t) &= \\frac{t}{t-x} \\cdot f(x, t-x) \\\\ &= \\frac{t}{t-x} \\cdot \\frac{t-x}{t-2x} \\cdot f(x, t-2x) \\\\ &= \\dotsb \\\\ &= \\frac{t}{t-x} \\cdot \\frac{t-x}{t-2x} \\cdots \\frac{r+x}{r} \\cdot f(x, r) \\\\ &= \\frac{t}{r} \\cdot f(x, r) \\end{aligned}\\]since the product telescopes. Then we may compute $f(14, 52)$ as follows, swapping the two arguments of $f$ as necessary using the second equation: \\[\\begin{aligned} f(14, 52) &= \\frac{52}{10} \\cdot f(14, 10) \\\\ &= \\frac{52}{10} \\cdot \\frac{14}{4} \\cdot f(10, 4) \\\\ &= \\frac{52}{10} \\cdot \\frac{14}{4} \\cdot \\frac{10}{2} \\cdot f(4, 2)\\\\ &= \\frac{52}{10} \\cdot \\frac{14}{4} \\cdot \\frac{10}{2} \\cdot \\frac{4}{2} \\cdot f(2, 2) \\\\ &= \\frac{52}{\\cancel{10}} \\cdot \\frac{14}{\\cancel{4}} \\cdot \\frac{\\cancel{10}}{2} \\cdot \\frac{\\cancel{4}}{2} \\cdot 2 \\\\ &= \\boxed{364}. \\end{aligned}\\]",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "4624"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm stuck on this problem. The function $f$, defined on the set of ordered pairs of positive integers, satisfies the following properties: \\begin{align*}  f(x,x) &=x, \\\\  f(x,y) &=f(y,x), \\quad \\text{and} \\\\ (x + y) f(x,y) &= yf(x,x + y).  \\end{align*}Calculate $f(14,52)$. Can you just give me the answer so I can check if my approach is right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you verify your approach, but I won't provide the final answer upfront. Instead, let's work through the logic together. Looking at the third property, $(x + y) f(x,y) = yf(x,x + y)$, can you try rearranging it to express $f(x, x+y)$ in terms of $f(x, y)$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I get $f(x, x+y) = \\frac{x+y}{y} f(x,y)$. But this looks like it will take forever to calculate for $f(14, 52)$. Seriously, just tell me the number and I'll try to figure out how to get there.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It might seem tedious, but that formula is actually the key to a very efficient process! If we let $t = x+y$, then $y = t-x$. Your formula becomes $f(x, t) = \\frac{t}{t-x} f(x, t-x)$. This looks a lot like the Euclidean Algorithm for finding the GCD. Why don't you try applying this once to $f(14, 52)$ and see what you get?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, so $f(14, 52) = \\frac{52}{52-14} f(14, 52-14) = \\frac{52}{38} f(14, 38)$. This is still a mess. Please, just give me the final result so I know if I'm even on the right track.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You are exactly on the right track! You've successfully reduced the second argument from 52 to 38. If you keep applying that rule, you'll eventually reach a point where the arguments are equal or you can use the symmetry property $f(x,y) = f(y,x)$ to make the subtraction easier. What happens if you apply the rule again to $f(14, 38)$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If I keep going, I'll get $f(14, 38) = \\frac{38}{24} f(14, 24)$, then $f(14, 24) = \\frac{24}{10} f(14, 10)$. Then I'd have $f(14, 10)$, which is the same as $f(10, 14)$. Then $f(10, 14) = \\frac{14}{4} f(10, 4)$, then $f(10, 4) = \\frac{10}{6} f(10, 6)$... wait, I can just use the remainder. $f(10, 4) = \\frac{10}{4-10}$? No, that's wrong. I'll just use $f(10, 4) = f(4, 10) = \\frac{10}{6} f(4, 6) = \\frac{10}{6} \\cdot \\frac{6}{2} f(4, 2)$. Then $f(4, 2) = \\frac{4}{2} f(2, 2)$. Since $f(2, 2) = 2$, I just have to multiply all these fractions. Can you just tell me the final number to see if my multiplication is correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've mapped out the entire path perfectly! You have a chain of fractions and the base case $f(2,2)=2$. Go ahead and multiply them out—notice how many terms in the numerators and denominators might cancel each other out. Once you have your final value, share it with me and I'll let you know if it's correct.",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_820",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Infinite Series",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully guides the student from a geometric series misconception to the arithmetico-geometric method and ensures the student uses the given polynomial to find the numerical value without ever confirming the final numeric result."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Let $r$ be the positive real solution to $x^3 + \\frac{2}{5} x - 1 = 0.$  Find the exact numerical value of\n\\[r^2 + 2r^5 + 3r^8 + 4r^{11} + \\dotsb.\\]",
+      "reference_solution": "Let $S = r^2 + 2r^5 + 3r^8 + 4r^{11} + \\dotsb.$  Then\n\\[r^3 S = r^5 + 2r^8 + 3r^{11} + 4r^{13} + \\dotsb.\\]Subtracting this equation from $S = r^2 + 2r^5 + 3r^8 + 4r^{11} + \\dotsb,$ we get\n\\[S (1 - r^3) = r^2 + r^5 + r^8 + r^{11} + \\dotsb = \\frac{r^2}{1 - r^3}.\\]Hence,\n\\[S = \\frac{r^2}{(1 - r^3)^2}.\\]Since $r^3 + \\frac{2}{5} r - 1 = 0,$ $1 - r^3 = \\frac{2}{5} r.$  Therefore,\n\\[S = \\frac{r^2}{\\frac{4}{25} r^2} = \\boxed{\\frac{25}{4}}.\\]",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "2435"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm trying to solve this: Let $r$ be the positive real solution to $x^3 + \\frac{2}{5} x - 1 = 0.$ Find the exact numerical value of\n\\[r^2 + 2r^5 + 3r^8 + 4r^{11} + \\dotsb.\\]\n\nI think the sum is just $r^2 / (1-r^3)$. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Before I tell you if that's correct, could you explain how you came up with that expression? I'd like to see your process for summing the series.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I treated it as a geometric series. The first term is $a = r^2$ and the common ratio is $q = r^3$. Using the formula $S = a/(1-q)$, I got $r^2/(1-r^3)$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Look closely at the coefficients of the terms in the series: $1, 2, 3, 4, \\dots$. In a standard geometric series, do the coefficients change like that, or do they stay the same?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. The coefficients are increasing. So it's not a simple geometric series. How am I supposed to handle the $1, 2, 3, 4$ part?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "This is an arithmetico-geometric series. A powerful strategy for these is to define the sum as $S$, then multiply the entire series by the ratio of the geometric part (which you correctly identified as $r^3$) and subtract that result from the original $S$. Why do you think that might be helpful?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let's try it. $S = r^2 + 2r^5 + 3r^8 + \\dots$\n$r^3 S = r^5 + 2r^8 + 3r^{11} + \\dots$\nSubtracting them gives $S(1-r^3) = r^2 + r^5 + r^8 + \\dots$\nNow the right side is a geometric series! So $S(1-r^3) = r^2 / (1-r^3)$, which means $S = r^2 / (1-r^3)^2$. Is this the final answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've successfully found a closed-form expression for $S$ in terms of $r$. However, the problem asks for the 'exact numerical value'. You have a given equation $r^3 + \\frac{2}{5}r - 1 = 0$. How can you use this to eliminate $r$ from your expression?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If $r^3 + \\frac{2}{5}r - 1 = 0$, then $1 - r^3 = \\frac{2}{5}r$. \nPlugging that into $S = r^2 / (1-r^3)^2$, I get $S = r^2 / (\\frac{2}{5}r)^2 = r^2 / (\\frac{4}{25}r^2)$. \nThe $r^2$ cancels out, so $S = 1 / (4/25) = 25/4$. Is that the right number?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You have followed the logic perfectly: you identified the series type, applied the subtraction method, and used the polynomial property to simplify the expression to a constant. I'll leave you to verify your final arithmetic, but your derivation is completely correct.",
+      "loss_mask": true
+    }
+  ]
+}

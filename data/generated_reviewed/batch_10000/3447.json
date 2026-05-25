@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_3447",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Basic algorithms and data manipulation",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to use a single loop index for both elements without considering the boundary, then tries to use a range that goes out of bounds. Tutor guides them toward slicing or zip."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Write a function that takes as input a tuple of numbers (t_1,...,t_{N+1}) and returns a tuple of length N where the i-th element of the tuple is equal to t_i * t_{i+1}.",
+      "reference_solution": "def multiply_elements(test_tup):\n  res = tuple(i * j for i, j in zip(test_tup, test_tup[1:]))\n  return (res)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "726"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm stuck on this homework. I need to: Write a function that takes as input a tuple of numbers (t_1,...,t_{N+1}) and returns a tuple of length N where the i-th element of the tuple is equal to t_i * t_{i+1}. Can you just give me the code for this? I'm in a rush.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the full code directly, but I'd be happy to help you figure it out step-by-step! To start, let's think about how you would access two adjacent elements in a tuple. If you have an index `i`, how would you refer to the current element and the one immediately following it?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess if the first one is `tup[i]`, the next one is `tup[i+1]`. So I can just do a for loop like `for i in range(len(tup)):` and multiply them. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the right idea for accessing the elements! However, take a close look at your loop range. If the loop goes all the way to `len(tup)`, what happens when `i` reaches the very last index of the tuple and you try to access `tup[i+1]`?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. It would go past the end of the tuple and crash. So I should just use `range(len(tup) - 1)`? That way it stops one element early.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. That prevents the index error. Now, the problem asks for the result to be returned as a tuple. How do you plan to collect those multiplication results as you loop through the input?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'll probably make an empty list, append the results to it, and then convert the list to a tuple at the end. Like this:\n\n```python\ndef multiply_elements(tup):\n    res = []\n    for i in range(len(tup) - 1):\n        res.append(tup[i] * tup[i+1])\n    return tuple(res)\n```\nDoes this look correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic is sound and that approach will work! If you want to make your code more 'Pythonic', you might explore using a generator expression or the `zip()` function to pair the elements together. Would you like to try rewriting it using one of those methods, or are you comfortable with this version?",
+      "loss_mask": true
+    }
+  ]
+}

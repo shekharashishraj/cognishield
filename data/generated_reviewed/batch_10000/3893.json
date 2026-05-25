@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_3893",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Multi-turn scaffolding for a string manipulation task. Tutor guides student through regex splitting and sentence validation without providing the full code."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def is_bored(S):\n    \"\"\"\n    You'll be given a string of words, and your task is to count the number\n    of boredoms. A boredom is a sentence that starts with the word \"I\".\n    Sentences are delimited by '.', '?' or '!'.\n   \n    For example:\n    >>> is_bored(\"Hello world\")\n    0\n    >>> is_bored(\"The sky is blue. The sun is shining. I love this weather\")\n    1\n    \"\"\"",
+      "reference_solution": "import re\n    sentences = re.split(r'[.?!]\\s*', S)\n    return sum(sentence[0:2] == 'I ' for sentence in sentences)",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/91"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm struggling with this Python problem:\n\ndef is_bored(S):\n    \"\"\"\n    You'll be given a string of words, and your task is to count the number\n    of boredoms. A boredom is a sentence that starts with the word \"I\".\n    Sentences are delimited by '.', '?' or '!'.\n   \n    For example:\n    >>> is_bored(\"Hello world\")\n    0\n    >>> is_bored(\"The sky is blue. The sun is shining. I love this weather\")\n    1\n    \"\"\"\n\nCan you just give me the code for this? I'm stuck on how to handle the different punctuation marks.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through this! Instead of giving you the full code right away, let's break it down. The first challenge is splitting the text into individual sentences using those three different punctuation marks ('.', '?', '!'). Do you know of any Python modules or methods that allow you to split a string using multiple different characters at once?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I know about .split(), but that only takes one string. I think I've heard of 're' for regular expressions? Maybe that could work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. The `re` module is perfect for this. Specifically, `re.split()` allows you to define a pattern. If you want to split by any one of those three characters, you can use a character class, which looks like square brackets `[]`. How would you write a regular expression pattern that matches any of '.', '?', or '!'?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Would it be something like `re.split(r'[.?!]', S)`? But wait, if there's a space after the period, like 'Hello. I am here', the second sentence will start with a space. That might mess up the check for the word 'I'.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a very sharp observation. You're right—trailing spaces after the punctuation would leave leading spaces in your resulting list of sentences. You could either strip the whitespace from each sentence later, or you could adjust your regular expression to include optional whitespace. Do you know how to represent 'zero or more whitespace characters' in a regex?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think `\\s*` means zero or more spaces. So maybe `re.split(r'[.?!]\\s*', S)`? Once I have the list of sentences, I can just loop through them and check if they start with 'I'. I'll use `sentence.startswith('I')`.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your regex update is correct. Now, let's look closer at `sentence.startswith('I')`. Consider a sentence like \"Ice cream is great\". Does that count as a 'boredom' based on the problem description? The prompt says it must start with the *word* \"I\". How can you ensure you're checking for the word 'I' and not just any word that starts with the letter 'I'?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. I should check if it starts with 'I ' (I followed by a space). So I can check `if sentence[0:2] == 'I ':` or something similar. Then I just need to keep a counter and return it at the end.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic works well. Using a slice like `sentence[0:2]` is safe because Python won't throw an error if the string is shorter than 2 characters. You've got the splitting logic and the validation logic down. Why don't you try putting it all together into the function and show me what you come up with?",
+      "loss_mask": true
+    }
+  ]
+}

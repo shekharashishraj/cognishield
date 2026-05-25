@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_2893",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Counting & Probability",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully scaffolds the student toward a recursive probability approach without revealing the final answer."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "A moving particle starts at the point $(4,4)$ and moves until it hits one of the coordinate axes for the first time. When the particle is at the point $(a,b)$, it moves at random to one of the points $(a-1,b)$, $(a,b-1)$, or $(a-1,b-1)$, each with probability $\\frac{1}{3}$, independently of its previous moves. The probability that it will hit the coordinate axes at $(0,0)$ is $\\frac{m}{3^n}$, where $m$ and $n$ are positive integers such that $m$ is not divisible by $3$. Find $m + n$.",
+      "reference_solution": "One could recursively compute the probabilities of reaching $(0,0)$ as the first axes point from any point $(x,y)$ as\\[P(x,y) = \\frac{1}{3} P(x-1,y) + \\frac{1}{3} P(x,y-1) + \\frac{1}{3} P(x-1,y-1)\\]for $x,y \\geq 1,$ and the base cases are $P(0,0) = 1, P(x,0) = P(y,0) = 0$ for any $x,y$ not equal to zero. We then recursively find $P(4,4) = \\frac{245}{2187}$ so the answer is $245 + 7 = \\boxed{252}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "2167"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this math problem: A moving particle starts at the point $(4,4)$ and moves until it hits one of the coordinate axes for the first time. When the particle is at the point $(a,b)$, it moves at random to one of the points $(a-1,b)$, $(a,b-1)$, or $(a-1,b-1)$, each with probability $\\frac{1}{3}$, independently of its previous moves. The probability that it will hit the coordinate axes at $(0,0)$ is $\\frac{m}{3^n}$, where $m$ and $n$ are positive integers such that $m$ is not divisible by $3$. Find $m + n$. Can you just tell me the answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you solve this, but I won't give you the final answer right away. Instead, let's work through the logic together. To start, let's define $P(a, b)$ as the probability that a particle starting at $(a, b)$ eventually hits the axes at $(0, 0)$. If the particle is at $(a, b)$, what are the possible next positions it can move to, and how does that help us write an equation for $P(a, b)$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The problem says it can move to $(a-1, b)$, $(a, b-1)$, or $(a-1, b-1)$, each with a $1/3$ chance. So I guess $P(a, b) = \\frac{1}{3} P(a-1, b) + \\frac{1}{3} P(a, b-1) + \\frac{1}{3} P(a-1, b-1)$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's exactly right. You've established the recursive relationship for any point $(a, b)$ where $a > 0$ and $b > 0$. Now, we need to consider the 'boundary conditions'—the points where the particle actually hits the axes. If the particle hits the axes at $(0, 0)$, what is $P(0, 0)$? And if it hits the axes at any other point like $(x, 0)$ where $x > 0$, what is the probability it will then hit $(0, 0)$ for the first time?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If it's already at $(0,0)$, the probability is 1. If it hits $(x, 0)$ with $x > 0$, it has already hit the axes, but not at $(0,0)$, so the probability of hitting $(0,0)$ *for the first time* must be 0. Same for $(0, y)$ where $y > 0$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. Now that you have the recurrence relation and the base cases, you can start calculating the probabilities for small values of $a$ and $b$ and build your way up to $P(4, 4)$. I suggest making a table. For example, start with $P(1, 1)$. Using your formula and the base cases, what do you get for $P(1, 1)$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let's see... $P(1,1) = \\frac{1}{3}P(0,1) + \\frac{1}{3}P(1,0) + \\frac{1}{3}P(0,0)$. Since $P(0,1)=0$ and $P(1,0)=0$, it's just $\\frac{1}{3}(0) + \\frac{1}{3}(0) + \\frac{1}{3}(1) = 1/3$. Then for $P(1,2)$, it's $\\frac{1}{3}P(0,2) + \\frac{1}{3}P(1,1) + \\frac{1}{3}P(0,1) = \\frac{1}{3}(0) + \\frac{1}{3}(1/3) + \\frac{1}{3}(0) = 1/9$. Wait, if I keep doing this, I'll eventually get $P(4,4)$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the method down perfectly. Continue filling out the values for $P(a, b)$ up to $a=4, b=4$. Once you find the value of $P(4, 4)$, remember to express it as a fraction $\\frac{m}{3^n}$ where $m$ is not divisible by 3, and then find $m + n$. Let me know what you get for $P(4, 4)$!",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, I did the table. $P(1,1)=1/3$, $P(2,2)=5/27$, $P(3,3)=37/243$... and finally $P(4,4)=245/2187$. So $m=245$ and $3^n=2187$. $2187$ is $3^7$, so $n=7$. $245$ isn't divisible by 3. So $m+n = 245 + 7 = 252$. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that is correct! You correctly applied the recurrence relation and carefully handled the boundary conditions to find the probability. Great job working through the calculations.",
+      "loss_mask": true
+    }
+  ]
+}

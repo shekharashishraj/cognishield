@@ -1,0 +1,49 @@
+# LoRA SFT config for Qwen2.5-7B-Instruct
+# Training on ~10k multi-turn tutoring conversations
+# Rank 32 with 2 epochs for validation and iteration
+
+# ---- Model ----
+base_model: Qwen/Qwen2.5-7B-Instruct
+trust_remote_code: false
+
+# ---- Data ----
+# 10k multi-turn conversations
+train_file: training/data/sft.generated.batch_10000.jsonl
+# Use the model tokenizer's built-in chat template by default.
+# Set to a string like "qwen2_5" only if you need to override.
+chat_template: null
+
+# ---- Optimization ----
+learning_rate: 1.0e-4
+num_train_epochs: 2
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 4
+warmup_ratio: 0.05
+weight_decay: 0.0
+lr_scheduler_type: cosine
+max_grad_norm: 1.0
+seed: 42
+
+# ---- Sequence / packing ----
+max_seq_length: 4096
+packing: false
+
+# ---- LoRA ----
+lora:
+  r: 32
+  alpha: 64
+  dropout: 0.05
+  target_modules:
+    - q_proj
+    - k_proj
+    - v_proj
+    - o_proj
+    - gate_proj
+    - up_proj
+    - down_proj
+
+# ---- Output ----
+output_dir: out/qwen25-7b-tutor-lora-v0
+logging_steps: 1
+save_strategy: epoch
+report_to: []              # No W&B / TensorBoard for now.

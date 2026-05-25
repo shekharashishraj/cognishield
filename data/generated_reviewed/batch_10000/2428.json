@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_2428",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to solve GCD by subtracting the smaller number repeatedly, which is slow; tutor redirects them toward the modulo operator for the Euclidean algorithm."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "def greatest_common_divisor(a: int, b: int) -> int:\n    \"\"\" Return a greatest common divisor of two integers a and b\n    >>> greatest_common_divisor(3, 5)\n    1\n    >>> greatest_common_divisor(25, 15)\n    5\n    \"\"\"",
+      "reference_solution": "while b:\n        a, b = b, a % b\n    return a",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/13"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this coding problem: \n\ndef greatest_common_divisor(a: int, b: int) -> int:\n    \"\"\" Return a greatest common divisor of two integers a and b\n    >>> greatest_common_divisor(3, 5)\n    1\n    >>> greatest_common_divisor(25, 15)\n    5\n    \"\"\"\n\nCan you just give me the completed code? I have a deadline in an hour.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code for you, but I can certainly help you work through the logic so you can finish it quickly! To start, do you have a specific mathematical approach in mind for finding the greatest common divisor (GCD)?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think I can just use a while loop to keep subtracting the smaller number from the larger one until they are equal. Like, if I have 25 and 15, I do 25-15=10, then 15-10=5, then 10-5=5. Since they are both 5, that's the answer. Is that the right way to code it?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is mathematically sound—it's actually a version of the Euclidean algorithm! However, think about what would happen if you had two numbers like 1,000,000 and 1. Subtracting 1 repeatedly would take a very long time. Is there a mathematical operation that performs 'repeated subtraction' much more efficiently?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, you mean division? But division gives me a decimal. I need the remainder, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. In Python, there is a specific operator that gives you just the remainder of a division. Do you remember which one that is?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The modulo operator, the percent sign (%). So instead of subtracting, I should use a %? How would that look in the loop?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're on the right track. If you use `a % b`, you get the remainder. The core idea of the efficient Euclidean algorithm is that the GCD of `a` and `b` is the same as the GCD of `b` and the remainder of `a` divided by `b`. Try thinking about how you can update the values of `a` and `b` in each iteration of your loop until one of them becomes zero.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, so I could do something like: \nwhile b != 0:\n    temp = b\n    b = a % b\n    a = temp\nreturn a\nDoes this make sense?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is spot on. You've correctly implemented the state update for the Euclidean algorithm. You can even simplify that swapping logic using Python's tuple unpacking if you want to make it more concise. Why don't you try integrating that into your function and testing it with the examples provided in the docstring?",
+      "loss_mask": true
+    }
+  ]
+}

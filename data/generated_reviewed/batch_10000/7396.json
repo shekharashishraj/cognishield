@@ -1,0 +1,109 @@
+{
+  "conversation_id": "mt_7396",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Counting & Probability",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student proposes an incorrect answer (991) and the tutor guides them through the probability equation and the constraint that total socks must be a perfect square."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "A drawer contains a mixture of red socks and blue socks, at most $1991$ in all. It so happens that, when two socks are selected randomly without replacement, there is a probability of exactly $\\frac{1}{2}$ that both are red or both are blue. What is the largest possible number of red socks in the drawer that is consistent with this data?",
+      "reference_solution": "Let $r$ and $b$ denote the number of red and blue socks, respectively. Also, let $t=r+b$. The probability $P$ that when two socks are drawn randomly, without replacement, both are red or both are blue is given by\n\\[\\frac{r(r-1)}{(r+b)(r+b-1)}+\\frac{b(b-1)}{(r+b)(r+b-1)}=\\frac{r(r-1)+(t-r)(t-r-1)}{t(t-1)}=\\frac{1}{2}.\\]\nSolving the resulting quadratic equation $r^{2}-rt+t(t-1)/4=0$, for $r$ in terms of $t$, one obtains that\n\\[r=\\frac{t\\pm\\sqrt{t}}{2}\\, .\\]\nNow, since $r$ and $t$ are positive integers, it must be the case that $t=n^{2}$, with $n\\in\\mathbb{N}$. Hence, $r=n(n\\pm 1)/2$ would correspond to the general solution. For the present case $t\\leq 1991$, and so one easily finds that $n=44$ is the largest possible integer satisfying the problem conditions.\nIn summary, the solution is that the maximum number of red socks is $r=\\boxed{990}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "2088"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm working on this problem: 'A drawer contains a mixture of red socks and blue socks, at most $1991$ in all. It so happens that, when two socks are selected randomly without replacement, there is a probability of exactly $\\frac{1}{2}$ that both are red or both are blue. What is the largest possible number of red socks in the drawer that is consistent with this data?'\n\nI think the answer is 991. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't tell you if that's correct just yet. To help me understand your approach, could you walk me through how you arrived at 991? What equations did you set up for the probability?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, I thought if the probability is 1/2, maybe the socks are just split evenly? If there are 1991 socks, and I divide by 2, I get 995.5. I tried some numbers around there and thought 991 might work because it's prime? I didn't really write out a full equation.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see. Relying on intuition is a good start, but for a probability problem like this, we need a formal model. Let $r$ be the number of red socks and $b$ be the number of blue socks. If you pick two socks without replacement, how would you express the probability that both are red, and the probability that both are blue?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The probability both are red would be $\\frac{r}{r+b} \\cdot \\frac{r-1}{r+b-1}$. And for blue, it would be $\\frac{b}{r+b} \\cdot \\frac{b-1}{r+b-1}$. Since the problem says 'both are red OR both are blue', I should add them together and set it equal to 1/2, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is exactly correct. Now, try to simplify that equation. Let $t = r + b$ be the total number of socks. If you substitute $b = t - r$ into your equation and simplify, what relationship do you find between $r$ and $t$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let me try... $\\frac{r(r-1) + (t-r)(t-r-1)}{t(t-1)} = \\frac{1}{2}$. \nMultiplying across: $2(r^2 - r + t^2 - tr - t - rt + r^2 + r) = t^2 - t$\n$2(2r^2 - 2rt + t^2 - t) = t^2 - t$\n$4r^2 - 4rt + 2t^2 - 2t = t^2 - t$\n$4r^2 - 4rt + t^2 - t = 0$\n\nI'm stuck on how to solve for $r$ now.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've done the algebra correctly! You have a quadratic equation in terms of $r$: $4r^2 - 4rt + (t^2 - t) = 0$. \n\nTry using the quadratic formula to solve for $r$ in terms of $t$. What does the discriminant look like?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The quadratic formula is $r = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$.\nHere, $a=4, b=-4t, c=t^2-t$.\nDiscriminant $D = (-4t)^2 - 4(4)(t^2-t) = 16t^2 - 16t^2 + 16t = 16t$.\nSo $r = \\frac{4t \\pm \\sqrt{16t}}{8} = \\frac{4t \\pm 4\\sqrt{t}}{8} = \\frac{t \\pm \\sqrt{t}}{2}$.\n\nWait, for $r$ to be an integer, $t$ has to be a perfect square!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. Since $t$ must be a perfect square and the problem states $t \\leq 1991$, what is the largest possible perfect square for $t$? Once you find that, you can determine the maximum possible value for $r$.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I need the largest square less than or equal to 1991. $40^2 = 1600$, $45^2 = 2025$ (too big). Let's try $44^2$. $44 \\times 44 = 1936$. That works!\n\nNow I plug $t = 1936$ into $r = \\frac{t + \\sqrt{t}}{2}$ to get the largest $r$:\n$r = \\frac{1936 + 44}{2} = \\frac{1980}{2} = 990$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've nailed it. Your logic is sound and your calculation is correct. The largest possible number of red socks is indeed 990.",
+      "loss_mask": true
+    }
+  ]
+}

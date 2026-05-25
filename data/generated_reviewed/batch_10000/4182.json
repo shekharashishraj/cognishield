@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_4182",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks: Root Finding",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully guides the student through the logic of the bisection method and the need for an initial bracket without providing the full implementation."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "import math\n\n\ndef poly(xs: list, x: float):\n    \"\"\"\n    Evaluates polynomial with coefficients xs at point x.\n    return xs[0] + xs[1] * x + xs[1] * x^2 + .... xs[n] * x^n\n    \"\"\"\n    return sum([coeff * math.pow(x, i) for i, coeff in enumerate(xs)])\n\n\ndef find_zero(xs: list):\n    \"\"\" xs are coefficients of a polynomial.\n    find_zero find x such that poly(x) = 0.\n    find_zero returns only only zero point, even if there are many.\n    Moreover, find_zero only takes list xs having even number of coefficients\n    and largest non zero coefficient as it guarantees\n    a solution.\n    >>> round(find_zero([1, 2]), 2) # f(x) = 1 + 2x\n    -0.5\n    >>> round(find_zero([-6, 11, -6, 1]), 2) # (x - 1) * (x - 2) * (x - 3) = -6 + 11x - 6x^2 + x^3\n    1.0\n    \"\"\"",
+      "reference_solution": "begin, end = -1., 1.\n    while poly(xs, begin) * poly(xs, end) > 0:\n        begin *= 2.0\n        end *= 2.0\n    while end - begin > 1e-10:\n        center = (begin + end) / 2.0\n        if poly(xs, center) * poly(xs, begin) > 0:\n            begin = center\n        else:\n            end = center\n    return begin",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/32"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm stuck on this coding problem. I have the `poly` function already, but I don't know how to implement `find_zero`. Here is the code:\n\nimport math\n\n\ndef poly(xs: list, x: float):\n    \"\"\"\n    Evaluates polynomial with coefficients xs at point x.\n    return xs[0] + xs[1] * x + xs[1] * x^2 + .... xs[n] * x^n\n    \"\"\"\n    return sum([coeff * math.pow(x, i) for i, coeff in enumerate(xs)])\n\n\ndef find_zero(xs: list):\n    \"\"\" xs are coefficients of a polynomial.\n    find_zero find x such that poly(x) = 0.\n    find_zero returns only only zero point, even if there are many.\n    Moreover, find_zero only takes list xs having even number of coefficients\n    and largest non zero coefficient as it guarantees\n    a solution.\n    >>> round(find_zero([1, 2]), 2) # f(x) = 1 + 2x\n    -0.5\n    >>> round(find_zero([-6, 11, -6, 1]), 2) # (x - 1) * (x - 2) * (x - 3) = -6 + 11x - 6x^2 + x^3\n    1.0\n    \"\"\"\n\nCan you just give me the code for `find_zero`?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you figure this out! Instead of giving you the full code, let's work through the logic together so you can implement it. Since the problem guarantees a solution for the given constraints, we can use a numerical method to find the root. Have you heard of the Bisection Method or the Intermediate Value Theorem?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I've heard of the Bisection Method in math class, but I'm not sure how to apply it here. Don't I need two points where the function has different signs to start?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's exactly right. To use the Bisection Method, you need an interval [a, b] such that f(a) and f(b) have opposite signs (meaning f(a) * f(b) < 0). If you don't have those points initially, how do you think you could find a range that contains a zero?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I could start with a small range, like -1 and 1, and if the signs are the same, just keep making the range bigger until they are different?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great strategy. You can expand the boundaries symmetrically until you've bracketed the root. Once you have found that interval where the signs differ, what would be the next step to narrow down the exact location of the zero?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I would find the midpoint of the interval. Then I check the sign of the function at that midpoint. If the midpoint has the same sign as the left endpoint, the root must be in the right half, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. You keep repeating that process—halving the interval—until the distance between your boundaries is small enough to be considered a precise answer. How would you translate that 'repeating process' into a loop in Python, and when should that loop stop?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'll use a `while` loop that continues as long as the difference between the end and begin points is greater than a very small number, like 1e-10. I think I have enough now to try coding it myself!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That sounds like a solid plan. Remember to handle the initial expansion phase first, then move into the bisection loop. Give it a try, and let me know if you run into any bugs!",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_4083",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "High-quality scaffolding for a string-to-integer mapping and sorting problem. Tutor guides student through data structure choice and the use of a custom sort key."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "from typing import List\n\n\ndef sort_numbers(numbers: str) -> str:\n    \"\"\" Input is a space-delimited string of numberals from 'zero' to 'nine'.\n    Valid choices are 'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight' and 'nine'.\n    Return the string with numbers sorted from smallest to largest\n    >>> sort_numbers('three one five')\n    'one three five'\n    \"\"\"",
+      "reference_solution": "value_map = {\n        'zero': 0,\n        'one': 1,\n        'two': 2,\n        'three': 3,\n        'four': 4,\n        'five': 5,\n        'six': 6,\n        'seven': 7,\n        'eight': 8,\n        'nine': 9\n    }\n    return ' '.join(sorted([x for x in numbers.split(' ') if x], key=lambda x: value_map[x]))",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/19"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm stuck on this Python problem. I don't know how to start. Here is the prompt:\n\nfrom typing import List\n\n\ndef sort_numbers(numbers: str) -> str:\n    \"\"\" Input is a space-delimited string of numberals from 'zero' to 'nine'.\n    Valid choices are 'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight' and 'nine'.\n    Return the string with numbers sorted from smallest to largest\n    >>> sort_numbers('three one five')\n    'one three five'\n    \"\"\"",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Hello! This is an interesting problem because you're dealing with words that represent numbers, but Python's default sorting for strings is alphabetical. For example, 'five' would come before 'one' alphabetically, but we want it to come after.\n\nTo get started, think about how you can tell Python that 'zero' is smaller than 'one', and 'one' is smaller than 'two'. Is there a data structure you could use to associate each word with its actual numeric value?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I could use a dictionary! Like {'zero': 0, 'one': 1, ...} and so on. But once I have that, how do I actually sort the input string using those values?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly, a dictionary is the perfect choice here. \n\nNow, for the sorting part: the input is a single string of words separated by spaces. Before you can sort them, you'll need to turn that string into a list of individual words. Do you know which string method can help you split the text into a list?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I can use `.split()`. So I'll have a list of words. Then I can use the `sorted()` function. But if I just do `sorted(my_list)`, it will just sort them alphabetically again. How do I make `sorted()` use my dictionary?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've hit the core of the problem! The `sorted()` function has a very useful optional parameter called `key`. \n\nThe `key` parameter allows you to pass a function that tells Python: 'Instead of sorting the items themselves, sort them based on the result of this function.' \n\nIf you have a dictionary called `value_map`, how could you write a small function (perhaps a lambda) that takes a word and returns its corresponding number from that map?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think it would be something like `key=lambda x: value_map[x]`. So the whole line would be `sorted(words, key=lambda x: value_map[x])`. Then I just need to turn the list back into a string with spaces, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's spot on. You've figured out the logic for the sorting key. \n\nAs for the final step, you're correct: `sorted()` returns a list, but the function needs to return a string. Which string method is the opposite of `.split()` and can join a list of strings back together with a specific separator?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'll use `' '.join()`. So the final code would look like this:\n\nvalue_map = {'zero': 0, 'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5, 'six': 6, 'seven': 7, 'eight': 8, 'nine': 9}\nwords = numbers.split()\nsorted_words = sorted(words, key=lambda x: value_map[x])\nreturn ' '.join(sorted_words)\n\nDoes that look right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic is completely correct! You've successfully mapped the word values, split the input, sorted using a custom key, and joined the results back into the required format. Well done!",
+      "loss_mask": true
+    }
+  ]
+}

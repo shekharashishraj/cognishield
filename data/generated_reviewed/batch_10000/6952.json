@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_6952",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Multi-step programming and contest-style problems",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully scaffolds the student through the logic of DP for the maximum path sum and guides them to realize that the path length is constant for all valid paths."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Given a square matrix of size N*N given as a list of lists, where each cell is associated with a specific cost. A path is defined as a specific sequence of cells that starts from the top-left cell move only right or down and ends on bottom right cell. We want to find a path with the maximum average over all existing paths. Average is computed as total cost divided by the number of cells visited in the path.",
+      "reference_solution": "def maxAverageOfPath(cost):\n  N = len(cost)\n  dp = [[0 for i in range(N + 1)] for j in range(N + 1)]\n  dp[0][0] = cost[0][0]\n  for i in range(1, N):\n    dp[i][0] = dp[i - 1][0] + cost[i][0]\n  for j in range(1, N):\n    dp[0][j] = dp[0][j - 1] + cost[0][j]\n  for i in range(1, N):\n    for j in range(1, N):\n      dp[i][j] = max(dp[i - 1][j],\n                     dp[i][j - 1]) + cost[i][j]\n  return dp[N - 1][N - 1] / (2 * N - 1)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "721"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: Given a square matrix of size N*N given as a list of lists, where each cell is associated with a specific cost. A path is defined as a specific sequence of cells that starts from the top-left cell move only right or down and ends on bottom right cell. We want to find a path with the maximum average over all existing paths. Average is computed as total cost divided by the number of cells visited in the path. Can you just give me the code for this?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through this, but instead of giving you the full code right away, let's break it down together so you understand the logic. First, let's look at the 'average' part. Since you can only move right or down from (0,0) to (N-1, N-1), does the number of cells visited change depending on the path you take?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, let me think. If it's an N by N matrix, I have to go N-1 steps right and N-1 steps down to reach the end. So the total number of steps is (N-1) + (N-1). Including the starting cell, that's 2N - 1 cells. So the path length is actually the same for every possible path?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a crucial observation! Since the number of cells visited is constant for all valid paths, maximizing the average is equivalent to maximizing what other value?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If the denominator is constant, I just need to maximize the numerator. So I just need to find the path with the maximum total cost.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Now that we've simplified the problem to finding the maximum total cost, what approach would you use to solve this? Given that you can only move right or down, does this look like a problem that could be solved with dynamic programming?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Yeah, it looks like DP. I could create a 2D array where `dp[i][j]` stores the maximum cost to reach cell (i, j). To get to (i, j), I could have come from (i-1, j) or (i, j-1). So it would be something like `dp[i][j] = max(dp[i-1][j], dp[i][j-1]) + cost[i][j]`. But how do I handle the first row and first column?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're on the right track with the state transition. For the first row, you can only arrive at a cell from the left. Similarly, for the first column, you can only arrive from above. How would you initialize those specific boundaries in your DP table?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "For the first row, `dp[0][j]` would just be the sum of all `cost[0][k]` from `k=0` to `j`. Same for the first column `dp[i][0]`. Then I fill the rest of the matrix using the max formula. Finally, I take `dp[N-1][N-1]` and divide it by `(2*N - 1)`. Does that sound correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is spot on. You've correctly identified the constant path length, the DP state transition, and the boundary conditions. Why don't you try implementing that in Python? Let me know if you run into any bugs while coding it!",
+      "loss_mask": true
+    }
+  ]
+}

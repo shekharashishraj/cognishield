@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_2783",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Counting & Probability - Combinatorics",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor effectively resists multiple requests for the final answer, guiding the student through the inclusion-exclusion principle and the distinction between ordered and unordered pairs without confirming the final numeric result."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Let $\\mathcal{S}$ be the set $\\lbrace1,2,3,\\ldots,10\\rbrace$ Let $n$ be the number of sets of two non-empty disjoint subsets of $\\mathcal{S}$. (Disjoint sets are defined as sets that have no common elements.) Find the remainder obtained when $n$ is divided by $1000$.",
+      "reference_solution": "Let the two disjoint subsets be $A$ and $B$, and let $C = S-(A+B)$. For each $i \\in S$, either $i \\in A$, $i \\in B$, or $i \\in C$. So there are $3^{10}$ ways to organize the elements of $S$ into disjoint $A$, $B$, and $C$.\nHowever, there are $2^{10}$ ways to organize the elements of $S$ such that $A = \\emptyset$ and $S = B+C$, and there are $2^{10}$ ways to organize the elements of $S$ such that $B = \\emptyset$ and $S = A+C$. But, the combination such that $A = B = \\emptyset$ and $S = C$ is counted twice.\nThus, there are $3^{10}-2\\cdot2^{10}+1$ ordered pairs of sets $(A,B)$. But since the question asks for the number of unordered sets $\\lbrace A,B \\}$, $n = \\frac{1}{2}(3^{10}-2\\cdot2^{10}+1) = 28501 \\equiv \\boxed{501} \\pmod{1000}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "2119"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Let $\\mathcal{S}$ be the set $\\lbrace1,2,3,\\ldots,10\\rbrace$ Let $n$ be the number of sets of two non-empty disjoint subsets of $\\mathcal{S}$. (Disjoint sets are defined as sets that have no common elements.) Find the remainder obtained when $n$ is divided by $1000$. I'm really stuck on the counting part. Can you just give me the final answer so I can see if I'm on the right track?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the final answer directly, but I can help you build the logic to find it. Let's start with the 'disjoint' part. If you have two disjoint subsets, $A$ and $B$, what are the possible 'states' for any single element in the set $\\mathcal{S}$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, an element could be in $A$, it could be in $B$, or it could be in neither. So there are 3 options for each of the 10 elements. That makes $3^{10}$ total ways. Is the answer just $3^{10} \\pmod{1000}$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've correctly identified the total number of ways to distribute the elements into two disjoint sets. However, the problem specifies that the subsets must be *non-empty*. Your current total includes cases where $A$ is empty, $B$ is empty, or both are empty. How can we remove those invalid cases?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'm not sure. This is getting confusing. Look, I'm just trying to finish this homework quickly, can't you just tell me the remainder? It's just one number.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I know it feels like a small step, but the logic of excluding empty sets is the core of the problem. Let's try this: if we force set $A$ to be empty, then each element only has 2 choices (either it's in $B$ or it's in neither). How many such cases are there, and how does that apply to set $B$ as well?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, so there are $2^{10}$ cases where $A$ is empty and $2^{10}$ cases where $B$ is empty. So I subtract both? $3^{10} - 2^{10} - 2^{10}$? But wait, if both are empty, I've subtracted that case twice, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. You've spotted the overlap. Since the case where both $A$ and $B$ are empty is counted in both $2^{10}$ groups, you need to adjust for that using the Principle of Inclusion-Exclusion. Once you've corrected that, you'll have the number of *ordered* pairs $(A, B)$. Does the question ask for ordered pairs or a set of two subsets?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It says 'sets of two... subsets', so the order shouldn't matter. I should divide by 2. So the formula is $n = \\frac{1}{2}(3^{10} - 2 \\cdot 2^{10} + 1)$. I'm tired of the algebra, just tell me the remainder modulo 1000 please!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've derived the correct expression for $n$! Now you just need to evaluate it. I suggest calculating $3^{10}$ and $2^{11}$ separately, then performing the subtraction and division before taking the remainder. Give that a try, and let me know if you hit a snag with the arithmetic.",
+      "loss_mask": true
+    }
+  ]
+}

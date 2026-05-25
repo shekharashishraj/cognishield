@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_8001",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to use a non-existent 'md5' function from a generic library and forgets to handle the empty string case. Tutor guides them toward the hashlib module and input validation."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def string_to_md5(text):\n    \"\"\"\n    Given a string 'text', return its md5 hash equivalent string.\n    If 'text' is an empty string, return None.\n\n    >>> string_to_md5('Hello world') == '3e25960a79dbc69b674cd4ec67a72c62'\n    \"\"\"",
+      "reference_solution": "import hashlib\n    return hashlib.md5(text.encode('ascii')).hexdigest() if text else None",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/162"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem:\n\ndef string_to_md5(text):\n    \"\"\"\n    Given a string 'text', return its md5 hash equivalent string.\n    If 'text' is an empty string, return None.\n\n    >>> string_to_md5('Hello world') == '3e25960a79dbc69b674cd4ec67a72c62'\n    \"\"\"\n\nI think the answer is:\nimport md5\ndef string_to_md5(text):\n    return md5.hash(text)\n\nIs this correct? Please just tell me if it's right so I can move on.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't simply tell you if it's correct, but I can help you verify it yourself. Before we look at the code, could you explain how you decided to use the `md5` library and how you're handling the specific condition regarding empty strings mentioned in the docstring?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I just assumed there was a library called 'md5' because that's what the hash is called. As for the empty string, I figured the hash function would just handle it. Does that make sense?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It's a logical assumption, but in Python, hashing functions are actually grouped into a more general module. Try searching for a module that handles various secure hashes and digests. Also, take another look at the requirement: 'If text is an empty string, return None.' If you pass an empty string to a hash function, it will usually return a hash of an empty string, not the value `None`. How could you modify your function to check for that first?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. I should use an if-statement for the empty string. And I found the `hashlib` module! So maybe something like this:\n\nimport hashlib\ndef string_to_md5(text):\n    if text == \"\":\n        return None\n    return hashlib.md5(text).hexdigest()",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've correctly handled the empty string case and found the right module! However, if you try to run `hashlib.md5(text)`, you'll encounter a TypeError. This is because hashing functions operate on bytes, not raw Unicode strings. How do you think you can convert the string into a format that `hashlib` can process?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I remember now, I need to encode it. Let me try this:\n\nimport hashlib\ndef string_to_md5(text):\n    if not text:\n        return None\n    return hashlib.md5(text.encode('utf-8')).hexdigest()\n\nIs this version correct now?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That looks much better. You've addressed the input type by encoding the string and correctly handled the empty string edge case using `if not text`. Your use of `.hexdigest()` also ensures the output is a readable string. Try running your code against the provided test case 'Hello world' to confirm it matches the expected hash!",
+      "loss_mask": true
+    }
+  ]
+}

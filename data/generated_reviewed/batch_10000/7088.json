@@ -1,0 +1,109 @@
+{
+  "conversation_id": "mt_7088",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Complex Systems",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student incorrectly assumes a=b=c case leads to the answer; tutor guides them to use the 'distinct' constraint to isolate the correct quadratic."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Let $a,$ $b,$ $c$ be distinct complex numbers such that\n\\[\\frac{a}{1 - b} = \\frac{b}{1 - c} = \\frac{c}{1 - a} = k.\\]Find the sum of all possible values of $k.$",
+      "reference_solution": "From the given equation,\n\\begin{align*}\na &= k(1 - b), \\\\\nb &= k(1 - c), \\\\\nc &= k(1 - a).\n\\end{align*}Then\n\\begin{align*}\na &= k(1 - b) \\\\\n&= k(1 - k(1 - c)) \\\\\n&= k(1 - k(1 - k(1 - a))).\n\\end{align*}Expanding, we get $ak^3 + a - k^3 + k^2 - k = 0,$ which factors as\n\\[(k^2 - k + 1)(ak + a - k) = 0.\\]If $ak + a - k = 0,$ then $a = \\frac{k}{k + 1},$ in which case $b = c = \\frac{k}{k + 1}.$  This is not allowed, as $a,$ $b,$ and $c$ are distinct, so $k^2 - k + 1 = 0.$  The sum of the roots is $\\boxed{1}.$\n\nNote: The roots of $k^2 - k + 1 = 0$ are\n\\[\\frac{1 \\pm i \\sqrt{3}}{2}.\\]For either value of $k,$ we can take $a = 0,$ $b = 1,$ and $c = k.$",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "2455"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm working on this problem: Let $a,$ $b,$ $c$ be distinct complex numbers such that\n\\[\\frac{a}{1 - b} = \\frac{b}{1 - c} = \\frac{c}{1 - a} = k.\\]Find the sum of all possible values of $k.$\n\nI think the answer is 0. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't tell you if that's correct just yet. Could you walk me through your reasoning and show me the steps you took to arrive at 0?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, I thought that since the expressions are symmetric, maybe $a+b+c=0$ or something similar, and that would make $k=0$. If $k=0$, then $a=0, b=0, c=0$. That seems simple enough.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Take a closer look at the problem statement. Does the condition $a=0, b=0, c=0$ satisfy all the constraints given in the problem?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, it says $a, b, c$ must be distinct. If they are all 0, they aren't distinct. So $k$ can't be 0. How should I start then?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a key observation. Since they must be distinct, we need to find a relationship for $k$ that allows $a, b,$ and $c$ to be different. Try expressing $a$ in terms of $b$, $b$ in terms of $c$, and $c$ in terms of $a$ using the constant $k$. Then, try substituting them into each other to create a single equation for $a$.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, so $a = k(1-b)$, $b = k(1-c)$, and $c = k(1-a)$. \nSubstituting $b$ into $a$: $a = k(1 - k(1-c))$.\nThen substituting $c$: $a = k(1 - k(1 - k(1-a)))$.\nExpanding this: $a = k - k^2 + k^3(1-a) = k - k^2 + k^3 - k^3a$.\nSo $a + k^3a = k - k^2 + k^3$, which is $a(1+k^3) = k(1 - k + k^2)$.\nIf $1+k^3 = 0$, then $k$ could be $-1$. If $k=-1$, then $a = -(1-b) = b-1$, $b = c-1$, $c = a-1$. This means $a=a-3$, which is impossible. So $a = \\frac{k(1-k+k^2)}{1+k^3}$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've made great progress with the substitution. Now, consider the expressions for $b$ and $c$ as well. If $a = \\frac{k(1-k+k^2)}{1+k^3}$, what does that imply about $b$ and $c$ in terms of $k$? Keep in mind the requirement that $a, b, c$ must be distinct.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If I solve for $b$ and $c$ the same way, I'll get the same expression: $b = \\frac{k(1-k+k^2)}{1+k^3}$ and $c = \\frac{k(1-k+k^2)}{1+k^3}$. But that means $a=b=c$, which is forbidden! How can they be distinct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've hit the core of the problem. The only way for $a, b, c$ to be distinct is if the equation you derived from the substitution doesn't force them to be equal. Look back at your expanded equation: $a(1+k^3) = k(1-k+k^2)$. \n\nRecall that $1+k^3$ can be factored as $(1+k)(1-k+k^2)$. What happens if both sides of your equation are zero regardless of the value of $a$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If $1-k+k^2 = 0$, then the right side is $k(0) = 0$. And the left side becomes $a(1+k)(0) = 0$. This means $0=0$, which is true for any $a$! So $k$ must satisfy $k^2 - k + 1 = 0$. This is a quadratic equation. The sum of the roots for $Ax^2 + Bx + C = 0$ is $-B/A$. So the sum is $-(-1)/1 = 1$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've correctly identified the condition that allows $a, b,$ and $c$ to remain distinct and found the resulting quadratic for $k$. Your application of Vieta's formulas to find the sum of the possible values of $k$ is the correct final step.",
+      "loss_mask": true
+    }
+  ]
+}

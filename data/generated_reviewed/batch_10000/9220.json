@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_9220",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Geometry",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor guides the student from a wrong answer (B) by asking for the derivation, identifying a failure to optimize the variable x, and leading them toward the AM-GM or calculus approach."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Triangle $ABC$ has $\\angle C = 60^{\\circ}$ and $BC = 4$. Point $D$ is the midpoint of $BC$. What is the largest possible value of $\\tan{\\angle BAD}$?\n$\\mathrm{(A)}\\ \\frac{\\sqrt{3}}{6}\\qquad\\mathrm{(B)}\\ \\frac{\\sqrt{3}}{3}\\qquad\\mathrm{(C)}\\ \\frac{\\sqrt{3}}{2\\sqrt{2}}\\qquad\\mathrm{(D)}\\ \\frac{\\sqrt{3}}{4\\sqrt{2}-3}\\qquad\\mathrm{(E)}\\ 1$",
+      "reference_solution": "[asy]unitsize(12mm); pair C=(0,0), B=(4 * dir(60)), A = (8,0), D=(2 * dir(60)); pair E=(1,0), F=(2,0); draw(C--B--A--C); draw(A--D);draw(D--E);draw(B--F); dot(A);dot(B);dot(C);dot(D);dot(E);dot(F); label(\"\\(C\\)\",C,SW); label(\"\\(B\\)\",B,N); label(\"\\(A\\)\",A,SE); label(\"\\(D\\)\",D,NW); label(\"\\(E\\)\",E,S); label(\"\\(F\\)\",F,S); label(\"\\(60^\\circ\\)\",C+(.1,.1),ENE); label(\"\\(2\\)\",1*dir(60),NW); label(\"\\(2\\)\",3*dir(60),NW); label(\"\\(\\theta\\)\",(7,.4)); label(\"\\(1\\)\",(.5,0),S); label(\"\\(1\\)\",(1.5,0),S); label(\"\\(x-2\\)\",(5,0),S);[/asy]\nLet $x = CA$. Then $\\tan\\theta = \\tan(\\angle BAF - \\angle DAE)$, and since $\\tan\\angle BAF = \\frac{2\\sqrt{3}}{x-2}$ and $\\tan\\angle DAE = \\frac{\\sqrt{3}}{x-1}$, we have\n\\[\\tan\\theta = \\frac{\\frac{2\\sqrt{3}}{x-2} - \\frac{\\sqrt{3}}{x-1}}{1 + \\frac{2\\sqrt{3}}{x-2}\\cdot\\frac{\\sqrt{3}}{x-1}}= \\frac{x\\sqrt{3}}{x^2-3x+8}\\]\nWith calculus, taking the derivative and setting equal to zero will give the maximum value of $\\tan \\theta$. Otherwise, we can apply AM-GM:\n\\begin{align*} \\frac{x^2 - 3x + 8}{x} = \\left(x + \\frac{8}{x}\\right) -3 &\\geq 2\\sqrt{x \\cdot \\frac 8x} - 3 = 4\\sqrt{2} - 3\\\\ \\frac{x}{x^2 - 3x + 8} &\\leq \\frac{1}{4\\sqrt{2}-3}\\\\ \\frac{x\\sqrt{3}}{x^2 - 3x + 8} = \\tan \\theta &\\leq \\frac{\\sqrt{3}}{4\\sqrt{2}-3}\\end{align*}\nThus, the maximum is at $\\boxed{\\frac{\\sqrt{3}}{4\\sqrt{2}-3}}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "1671"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm working on this geometry problem: Triangle $ABC$ has $\\angle C = 60^{\\circ}$ and $BC = 4$. Point $D$ is the midpoint of $BC$. What is the largest possible value of $\\tan{\\angle BAD}$?\n$\\mathrm{(A)}\\ \\frac{\\sqrt{3}}{6}\\qquad\\mathrm{(B)}\\ \\frac{\\sqrt{3}}{3}\\qquad\\mathrm{(C)}\\ \\frac{\\sqrt{3}}{2\\sqrt{2}}\\qquad\\mathrm{(D)}\\ \\frac{\\sqrt{3}}{4\\sqrt{2}-3}\\qquad\\mathrm{(E)}\\ 1$\n\nI think the answer is (B) $\\frac{\\sqrt{3}}{3}$. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't tell you if that's correct just yet. To help you verify it, could you walk me through how you arrived at that answer? What was your approach to setting up the problem?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, so I set up a coordinate system. I put C at the origin (0,0) and let A be on the x-axis at (x, 0). Since angle C is 60 degrees and BC is 4, B is at (4 cos 60, 4 sin 60), which is (2, 2*sqrt(3)). Since D is the midpoint of BC, D is at (1, sqrt(3)). Then I used the formula for the angle between two lines to find tan(BAD). I just plugged in a few values for x and it seemed like it peaked around sqrt(3)/3.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your coordinate setup is spot on! Putting C at the origin and A at (x, 0) is a great way to parameterize the problem. However, 'plugging in a few values' might not reveal the true maximum, especially since the expression for $\\tan \\angle BAD$ could be complex. \n\nCan you derive the general expression for $\\tan \\angle BAD$ in terms of x? Once you have that function, how can we find its absolute maximum?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let me try. Let theta = angle BAD. I'll use the tangent subtraction formula. Let alpha be the angle BAD makes with the x-axis, but it's easier to use angles relative to the x-axis. \nAngle DAC has tan(DAC) = sqrt(3)/1 = sqrt(3). Wait, no, D is (1, sqrt(3)) and A is (x, 0), so the slope of AD is (sqrt(3)-0)/(1-x). \nSlope of AB is (2*sqrt(3)-0)/(2-x). \nSo tan(theta) = |(m1 - m2) / (1 + m1*m2)|. \nLet's see... tan(theta) = |( (2*sqrt(3)/(2-x)) - (sqrt(3)/(1-x)) ) / (1 + (2*sqrt(3)/(2-x))(sqrt(3)/(1-x)))|.\nSimplifying that... I get (x * sqrt(3)) / (x^2 - 3x + 8).",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is a perfect derivation! You've successfully expressed $\\tan \\angle BAD$ as a function of $x$: $f(x) = \\frac{x\\sqrt{3}}{x^2 - 3x + 8}$. \n\nNow, to find the largest possible value, we need to maximize this expression for $x > 2$ (since A must be outside the projection of B on the x-axis for the triangle to be formed as described). How would you find the maximum of a fraction like this?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could take the derivative and set it to zero. \nLet g(x) = (x^2 - 3x + 8) / x = x - 3 + 8/x. \nTo maximize f(x), I should minimize g(x). \ng'(x) = 1 - 8/x^2. \nSetting g'(x) = 0 gives x^2 = 8, so x = 2*sqrt(2). \nNow I plug x = 2*sqrt(2) back into f(x). \nf(2*sqrt(2)) = (2*sqrt(2)*sqrt(3)) / ((2*sqrt(2))^2 - 3(2*sqrt(2)) + 8) = (2*sqrt(6)) / (8 - 6*sqrt(2) + 8) = (2*sqrt(6)) / (16 - 6*sqrt(2)) = sqrt(6) / (8 - 3*sqrt(2)). \nWait, this doesn't look like (B). Let me simplify it... multiply by (8 + 3*sqrt(2))? \nActually, let me look at the options. (D) is sqrt(3) / (4*sqrt(2) - 3). \nIf I divide my result by sqrt(2), I get sqrt(3) / (8/sqrt(2) - 3) = sqrt(3) / (4*sqrt(2) - 3). \nSo the answer is (D)!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've nailed it! By transforming the problem into minimizing $g(x) = x + \\frac{8}{x} - 3$, you found the exact value of $x$ that maximizes the tangent. Your simplification matches option (D) perfectly. Well done on correcting your initial guess and following through with the calculus!",
+      "loss_mask": true
+    }
+  ]
+}

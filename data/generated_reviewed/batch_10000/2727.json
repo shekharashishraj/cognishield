@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_2727",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Polynomial Symmetry",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Created a multi-turn scaffolding conversation where the tutor guides the student to discover the point of symmetry of the cubic polynomial to solve the sum efficiently."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "The cubic polynomial $p(x)$ satisfies $p(2) = 1,$ $p(7) = 19,$ $p(15) = 11,$ and $p(20) = 29.$  Find\n\\[p(1) + p(2) + p(3) + \\dots + p(21).\\]",
+      "reference_solution": "The cubic passes through the points $(2,1),$ $(7,19),$ $(15,11),$ and $(20,29).$  When these points are plotted, we find that they form the vertices of a parallelogram, whose center is $(11,15).$  We take advantage of this as follows.\n\n[asy]\nunitsize(0.2 cm);\n\nreal func (real x) {\n  real y = 23*x^3/585 - 253*x^2/195 + 7396*x/585 - 757/39;\n\t\n\treturn(y);\n}\n\npair A, B, C, D;\n\nA = (2,1);\nB = (7,19);\nC = (15,11);\nD = (20,29);\n\ndraw(graph(func,1.5,20.5),red);\ndraw(A--B--D--C--cycle,dashed);\n\nlabel(\"$(11,15)$\", (11,15), NE, UnFill);\ndot(\"$(2,1)$\", A, SW);\ndot(\"$(7,19)$\", B, W);\ndot(\"$(15,11)$\", C, SE);\ndot(\"$(20,29)$\", D, NE);\ndot((11,15));\n[/asy]\n\nLet $f(x) = p(x + 11) - 15.$  Then\n\\begin{align*}\nf(-9) &= p(2) - 15 = -14, \\\\\nf(-4) &= p(7) - 15 = 4, \\\\\nf(4) &= p(15) - 15 = -4, \\\\\nf(9) &= p(20) - 15 = 14.\n\\end{align*}Now, let $g(x) = -f(-x).$  Then\n\\begin{align*}\ng(-9) &= -f(9) = -14, \\\\\ng(-4) &= -f(4) = 4, \\\\\ng(4) &= -f(-4) = -4, \\\\\ng(9) &= -f(-9) = 14.\n\\end{align*}Both $f(x)$ and $g(x)$ are cubic polynomials, and they agree at four different values, so by the Identity Theorem, they are the same polynomial.  In other words,\n\\[-f(-x) = f(x).\\]Then\n\\[15 - p(11 - x) = p(x + 11) - 15,\\]so\n\\[p(11 - x) + p(x + 11) = 30\\]for all $x.$\n\nLet\n\\[S = p(1) + p(2) + p(3) + \\dots + p(21).\\]Then\n\\[S = p(21) + p(20) + p(19) + \\dots + p(1),\\]so\n\\[2S = [p(1) + p(21)] + [p(2) + p(20)] + [p(3) + p(19)] + \\dots + [p(21) + p(1)].\\]Since $p(11 - x) + p(x + 11) = 30,$ each of these summands is equal to 30.  Therefore,\n\\[2S = 21 \\cdot 30 = 630,\\]and $S = 630/2 = \\boxed{315}.$",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "2595"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: The cubic polynomial $p(x)$ satisfies $p(2) = 1,$ $p(7) = 19,$ $p(15) = 11,$ and $p(20) = 29.$ Find\n\\[p(1) + p(2) + p(3) + \\dots + p(21).\\]\nI tried setting up a system of equations for $ax^3 + bx^2 + cx + d$, but the numbers are getting huge. Is there a faster way?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're right that solving for the coefficients directly can be very tedious. In problems like this, there's often a symmetry or a property of the polynomial that can simplify the sum. \n\nTake a look at the x-values given: 2, 7, 15, and 20. Do you notice any relationship between them, perhaps in terms of their averages or spacing?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let's see... $2+20 = 22$ and $7+15 = 22$. So they are symmetric around 11. Does that help?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great observation! Now look at the corresponding y-values. \n\n$p(2) = 1$ and $p(20) = 29$.\n$p(7) = 19$ and $p(15) = 11$.\n\nWhat do you notice about the sums of these pairs of y-values?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "$1 + 29 = 30$ and $19 + 11 = 30$. Wow, they both sum to 30. Does this mean $p(x) + p(22-x) = 30$ for all $x$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've hit on the key insight. While we only know this is true for those specific pairs, a cubic polynomial is uniquely determined by four points. If a cubic satisfies a symmetry property at four distinct points, it must satisfy it everywhere. \n\nIf $p(x) + p(22-x) = 30$ is indeed the general property, how can you use that to evaluate the sum $p(1) + p(2) + \\dots + p(21)$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I can pair them up! $p(1)$ with $p(21)$, $p(2)$ with $p(20)$, and so on. Since $1+21=22$, each pair would sum to 30. But there's an odd number of terms. What happens to the middle term?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. You have terms from $x=1$ to $x=21$. If you pair them as $(p(1), p(21)), (p(2), p(20)), \\dots$, which term is left without a partner, and how can you find its value using the symmetry equation $p(x) + p(22-x) = 30$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The middle term is $p(11)$. If I plug $x=11$ into the symmetry equation, I get $p(11) + p(22-11) = 30$, which is $2p(11) = 30$, so $p(11) = 15$. Now I just need to count how many pairs there are and add $p(11)$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the method perfectly. Just determine the number of pairs and the value of the middle term to find the final sum. You're all set to calculate the result!",
+      "loss_mask": true
+    }
+  ]
+}

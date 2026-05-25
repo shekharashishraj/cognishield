@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_564",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Precalculus - Matrix Norms",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student incorrectly assumes the norm is the maximum of the diagonal elements; tutor guides them toward the quadratic form and discriminant method."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Find the smallest positive real number $C$ for which\n\\[\\left\\| \\begin{pmatrix} 2 & 3 \\\\ 0 & -2 \\end{pmatrix} \\bold{v} \\right\\| \\le C \\|\\bold{v}\\|\\]for all two-dimensional vectors $\\bold{v}.$\n\nNote that for a two-dimensional vector $\\mathbf{a},$ $\\|\\mathbf{a}\\|$ is the magnitude of $\\mathbf{a}.$",
+      "reference_solution": "Let $\\bold{v} = \\begin{pmatrix} x \\\\ y \\end{pmatrix}$.  Then\n\\[\\|\\bold{v}\\| = \\left\\| \\begin{pmatrix} x \\\\ y \\end{pmatrix} \\right\\| = \\sqrt{x^2 + y^2},\\]and\n\\begin{align*}\n\\left\\| \\begin{pmatrix} 2 & 3 \\\\ 0 & -2 \\end{pmatrix} \\bold{v} \\right\\| &= \\left\\| \\begin{pmatrix} 2 & 3 \\\\ 0 & -2 \\end{pmatrix} \\begin{pmatrix} x \\\\ y \\end{pmatrix} \\right\\| \\\\\n&= \\left\\| \\begin{pmatrix} 2x + 3y \\\\ -2y \\end{pmatrix} \\right\\| \\\\\n&= \\sqrt{(2x + 3y)^2 + (-2y)^2} \\\\\n&= \\sqrt{4x^2 + 12xy + 13y^2},\n\\end{align*}so the given inequality becomes\n\\[\\sqrt{4x^2 + 12xy + 13y^2} \\le C \\sqrt{x^2 + y^2},\\]or\n\\[\\sqrt{\\frac{4x^2 + 12xy + 13y^2}{x^2 + y^2}} \\le C.\\]Thus, we can think of $C$ as the maximum value of the expression in the left-hand side.\n\nMaximizing the expression in the left-hand side is equivalent to maximizing its square, namely\n\\[\\frac{4x^2 + 12xy + 13y^2}{x^2 + y^2}.\\]Let $k$ be a possible value of this expression, which means the equation\n\\[\\frac{4x^2 + 12xy + 13y^2}{x^2 + y^2} = k\\]has a solution in $x$ and $y$.  We can re-write this equation as\n\\[(4 - k) x^2 + 12xy + (13 - k) y^2 = 0.\\]For this quadratic expression to have a solution in $x$ and $y$, its discriminant must be nonnegative.  In other words,\n\\[12^2 - 4 (4 - k)(13 - k) \\ge 0,\\]or $4k^2 - 68k + 64 \\le 0$.  This inequality factors as $4(k - 1)(k - 16) \\le 0$.  The largest value of $k$ that satisfies this inequality is 16, so the value of $C$ we seek is $\\sqrt{16} = \\boxed{4}$.  Note that equality occurs for\n\\[\\bold{v} = \\begin{pmatrix} 1 \\\\ 2 \\end{pmatrix}.\\]",
+      "seed_dataset": "HuggingFaceH4/MATH-500/test",
+      "seed_example_id": "test/precalculus/675.json"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm working on this problem: Find the smallest positive real number $C$ for which\n\\[\\left\\| \\begin{pmatrix} 2 & 3 \\\\ 0 & -2 \\end{pmatrix} \\bold{v} \\right\\| \\le C \\|\\bold{v}\\|\\]for all two-dimensional vectors $\\bold{v}.$\n\nNote that for a two-dimensional vector $\\mathbf{a},$ $\\|\\mathbf{a}\\|$ is the magnitude of $\\mathbf{a}.$\n\nI think the answer is 3 because that's the largest value in the matrix. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see where you're coming from—it's tempting to look at the largest entry in the matrix. However, the value of $C$ (which is the operator norm of the matrix) depends on how the matrix transforms a vector, not just the individual entries. \n\nTo see if 3 is correct, could you try testing it with a specific vector $\\bold{v}$? For example, what happens if you pick $\\bold{v} = \\begin{pmatrix} 1 \\\\ 1 \\end{pmatrix}$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let me check. If $\\bold{v} = \\begin{pmatrix} 1 \\\\ 1 \\end{pmatrix}$, then $\\|\\bold{v}\\| = \\sqrt{1^2+1^2} = \\sqrt{2}$.\nThe matrix multiplication is $\\begin{pmatrix} 2 & 3 \\\\ 0 & -2 \\end{pmatrix} \\begin{pmatrix} 1 \\\\ 1 \\end{pmatrix} = \\begin{pmatrix} 5 \\\\ -2 \\end{pmatrix}$.\nThe magnitude of that is $\\sqrt{5^2 + (-2)^2} = \\sqrt{25+4} = \\sqrt{29}$.\nSo the inequality is $\\sqrt{29} \\le C \\sqrt{2}$.\nThis means $C \\ge \\sqrt{29/2} \\approx \\sqrt{14.5} \\approx 3.8$. \nWait, so 3 is definitely too small. My bad!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. That counterexample shows that $C$ must be at least 3.8, so 3 cannot be the smallest $C$ that works for *all* vectors. \n\nTo find the exact value of $C$, I suggest starting by letting $\\bold{v} = \\begin{pmatrix} x \\\\ y \\end{pmatrix}$. Can you write out the expression for $\\| \\begin{pmatrix} 2 & 3 \\\\ 0 & -2 \\end{pmatrix} \\bold{v} \\|^2$ in terms of $x$ and $y$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, the product is $\\begin{pmatrix} 2x + 3y \\\\ -2y \\end{pmatrix}$.\nSo the squared magnitude is $(2x + 3y)^2 + (-2y)^2$.\nExpanding that: $4x^2 + 12xy + 9y^2 + 4y^2 = 4x^2 + 12xy + 13y^2$. \nNow what?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Great progress. Now, remember the original inequality is $\\|M\\bold{v}\\| \\le C \\|\\bold{v}\\|$. If we square both sides, we get $\\|M\\bold{v}\\|^2 \\le C^2 \\|\\bold{v}\\|^2$.\n\nSubstituting what you found, we have $4x^2 + 12xy + 13y^2 \\le C^2(x^2 + y^2)$. \nCan you rearrange this into a form where you're trying to maximize a ratio of $x$ and $y$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I can divide by $x^2 + y^2$, so I need to find the maximum of $\\frac{4x^2 + 12xy + 13y^2}{x^2 + y^2}$. \nIf I let $k = C^2$, then $4x^2 + 12xy + 13y^2 = k(x^2 + y^2)$ for the maximum value. \nThat's $(4-k)x^2 + 12xy + (13-k)y^2 = 0$. \nSince this is a quadratic in terms of $x$ and $y$, for it to have a non-zero solution, the discriminant must be $\\ge 0$. \n$12^2 - 4(4-k)(13-k) \\ge 0$.\n$144 - 4(52 - 17k + k^2) \\ge 0$\n$144 - 208 + 68k - 4k^2 \\ge 0$\n$-4k^2 + 68k - 64 \\ge 0$\nDividing by -4: $k^2 - 17k + 16 \\le 0$. \nThis factors as $(k-16)(k-1) \\le 0$. \nSo $k$ is between 1 and 16. The maximum $k$ is 16. \nSince $k = C^2$, then $C = 4$. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic is spot on. You correctly identified the quadratic form, used the discriminant to find the range of possible values for $k$, and solved for $C$. \n\nSince you've shown that $k=16$ is the maximum value for the ratio, $C = \\sqrt{16} = 4$ is indeed the smallest constant that satisfies the inequality for all $\\bold{v}$. Well done!",
+      "loss_mask": true
+    }
+  ]
+}

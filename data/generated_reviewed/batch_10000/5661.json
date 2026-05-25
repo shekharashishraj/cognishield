@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_5661",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Regular Expressions and String Validation",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The student initially confuses numerical value with string representation. The tutor corrects this misconception and guides them toward using regular expressions without providing the final code."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to check whether a given string is a decimal number with a precision of 2.",
+      "reference_solution": "def is_decimal(num):\n    import re\n    dnumre = re.compile(r\"\"\"^[0-9]+(\\.[0-9]{1,2})?$\"\"\")\n    result = dnumre.search(num)\n    return bool(result)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "759"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Write a function to check whether a given string is a decimal number with a precision of 2. I'm really stuck, can you just give me the answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the full solution, but I'd be happy to guide you through the logic so you can write it yourself! To get us started, how were you thinking about checking the 'precision' of the number?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I thought I could just cast the string to a float and then use something like `round(num, 2) == num`. That should work, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is a common way to think about numerical values, but consider the input string \"10.5\". If you cast that to a float and round it to 2 places, it remains 10.5, so your check would return True. However, does the string \"10.5\" actually show a precision of 2 decimal places?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. I was thinking about the value, but the problem is asking about the string format. So \"10.50\" would be okay, but \"10.5\" wouldn't be? Wait, actually, the problem says 'a precision of 2', maybe it means it can't have *more* than 2?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a key distinction. In many programming contexts, 'precision of 2' means the number of digits after the decimal point should be at most 2. Since we are validating the format of a string rather than the value of a number, have you considered using regular expressions?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I've seen regex before. I know `[0-9]` matches a digit. So maybe something like `[0-9]+\\.[0-9]{2}`? But how do I make it so it can be 1 or 2 digits, and also handle cases where there is no decimal at all?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're making great progress. For the range of digits, you can use a comma inside the curly braces, like `{min,max}`. As for making the entire decimal portion optional, you can group that part of the expression and use a quantifier that indicates 'zero or one' occurrences. Do you remember which symbol handles that?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Is it the question mark `?`? So maybe `[0-9]+(\\.[0-9]{1,2})?`. I think that's it! Now I just need to put it in a function with `re.search` or `re.match`.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the core pattern down! One last thing to consider: what happens if the string has extra characters at the beginning or end, like \"abc12.34\"? You might want to look into 'anchors' to ensure the pattern matches the entire string from start to finish.",
+      "loss_mask": true
+    }
+  ]
+}

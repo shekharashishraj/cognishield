@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_5140",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student fails to handle multi-word strings and forgets to join characters back into strings. Tutor guides them through string splitting and sorting."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "def anti_shuffle(s):\n    \"\"\"\n    Write a function that takes a string and returns an ordered version of it.\n    Ordered version of string, is a string where all words (separated by space)\n    are replaced by a new word where all the characters arranged in\n    ascending order based on ascii value.\n    Note: You should keep the order of words and blank spaces in the sentence.\n\n    For example:\n    anti_shuffle('Hi') returns 'Hi'\n    anti_shuffle('hello') returns 'ehllo'\n    anti_shuffle('Hello World!!!') returns 'Hello !!!Wdlor'\n    \"\"\"",
+      "reference_solution": "return ' '.join([''.join(sorted(list(i))) for i in s.split(' ')])",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/86"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem:\n\ndef anti_shuffle(s):\n    \"\"\"\n    Write a function that takes a string and returns an ordered version of it.\n    Ordered version of string, is a string where all words (separated by space)\n    are replaced by a new word where all the characters arranged in\n    ascending order based on ascii value.\n    Note: You should keep the order of words and blank spaces in the sentence.\n\n    For example:\n    anti_shuffle('Hi') returns 'Hi'\n    anti_shuffle('hello') returns 'ehllo'\n    anti_shuffle('Hello World!!!') returns 'Hello !!!Wdlor'\n    \"\"\"\n\nI think the answer is just `return sorted(s)`. Is that correct? I'm in a rush, can you just tell me if it works?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't simply confirm if that is correct, as I want to make sure you understand the logic behind the problem. Instead of me telling you, why don't you try tracing your code with one of the examples provided? For instance, what would `sorted('Hello World!!!')` return compared to the expected output 'Hello !!!Wdlor'?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, `sorted('Hello World!!!')` would return a list of all characters in the whole string sorted alphabetically. That would put the space and exclamation marks at the start and mix up the words. So it's not right because it doesn't keep the words in their original positions. But how do I sort just the words?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great observation. You've identified that the entire string shouldn't be sorted as one block. Since the problem mentions that words are separated by spaces, what Python string method could you use to isolate each word first?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I can use `.split(' ')` to get a list of words. So maybe I can do something like this:\n\nwords = s.split(' ')\nfor w in words:\n    sorted(w)\nreturn words",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're on the right track by splitting the string. However, take a look at your loop. When you call `sorted(w)`, does that change the word `w` inside the `words` list, or does it return something new? Also, think about what `sorted()` returns—is it a string or a different data type?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, `sorted()` returns a list of characters, not a string. And it doesn't change the original word in the list; it just creates a new sorted list. So I need to join those characters back into a string and then put those sorted words back into a sentence. Should I use a new list to store the sorted words and then use `.join()` at the end?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Creating a new list or using a list comprehension to store the joined, sorted characters for each word is a solid approach. Once you have that list of processed words, how will you combine them back into a single string while maintaining the original space separation?",
+      "loss_mask": true
+    }
+  ]
+}

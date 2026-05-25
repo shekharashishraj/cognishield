@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_3877",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Precalculus - Complex Numbers and Binomial Theorem",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The student initially attempts to use a real binomial expansion, which fails to produce the alternating sign for the $3^n$ term. The tutor guides them toward using complex numbers to isolate the real part of a binomial expansion and then uses De Moivre's theorem for the final computation. The tutor strictly adheres to the 'never_state' policy."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Compute\n\\[\\frac{1}{2^{1990}} \\sum_{n = 0}^{995} (-3)^n \\binom{1990}{2n}.\\]",
+      "reference_solution": "By the Binomial Theorem,\n\\begin{align*}\n(1 + i \\sqrt{3})^{1990} &= \\binom{1990}{0} + \\binom{1990}{1} (i \\sqrt{3}) + \\binom{1990}{2} (i \\sqrt{3})^2 + \\binom{1990}{3} (i \\sqrt{3})^3 + \\binom{1990}{4} (i \\sqrt{3})^4 + \\dots + \\binom{1990}{1990} (i \\sqrt{3})^{1990} \\\\\n&= \\binom{1990}{0} + i \\binom{1990}{1} \\sqrt{3} - 3 \\binom{1990}{2} + 3i \\sqrt{3} \\binom{1990}{3} + 3^2 \\binom{1990}{4} + \\dots - 3^{995} \\binom{1990}{1990}.\n\\end{align*}Thus, $\\sum_{n = 0}^{1995} (-3)^n \\binom{1990}{2n}$ is the real part of $(1 + i \\sqrt{3})^{1990}.$\n\nBy DeMoivre's Theorem,\n\\begin{align*}\n(1 + i \\sqrt{3})^{1990} &= (2 \\operatorname{cis} 60^\\circ)^{1990} \\\\\n&= 2^{1990} \\operatorname{cis} 119400^\\circ \\\\\n&= 2^{1990} \\operatorname{cis} 240^\\circ \\\\\n&= 2^{1990} \\left( -\\frac{1}{2} - i \\frac{\\sqrt{3}}{2} \\right).\n\\end{align*}Therefore,\n\\[\\frac{1}{2^{1990}} \\sum_{n = 0}^{995} (-3)^n \\binom{1990}{2n} = \\boxed{-\\frac{1}{2}}.\\]",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "6951"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Compute\n\\[\\frac{1}{2^{1990}} \\sum_{n = 0}^{995} (-3)^n \\binom{1990}{2n}.\\]\nIt looks impossible to sum manually. Can you just give me the answer so I can check my work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the final answer, but I can help you find the elegant way to solve it! The key is recognizing that the sum only involves the even terms of a binomial expansion. Does the combination of $\\binom{1990}{2n}$ and a power of $3$ suggest a specific binomial expansion to you?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I tried $(1 - \\sqrt{3})^{1990}$. If I look at the terms where the index is $2n$, I get $\\binom{1990}{2n} (-\\sqrt{3})^{2n}$, which is $\\binom{1990}{2n} 3^n$. But the problem has $(-3)^n$. I can't figure out how to get that minus sign inside the power.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've spotted the exact problem! With real numbers, squaring $\\sqrt{3}$ or $-\\sqrt{3}$ always gives you a positive $3$. To get a $-3$ from a squared term, we need to step outside the real numbers. What happens if you introduce the imaginary unit $i$ into your choice of $x$ for the expansion $(1+x)^{1990}$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh! If I use $i\\sqrt{3}$, then $(i\\sqrt{3})^2 = -3$. So if I expand $(1 + i\\sqrt{3})^{1990}$, the even terms will be $\\binom{1990}{2n} (i\\sqrt{3})^{2n} = \\binom{1990}{2n} (-3)^n$. That's exactly the sum in the problem!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. So the sum you are looking for is actually the real part of $(1 + i\\sqrt{3})^{1990}$. Now, calculating that power using the binomial theorem would be a nightmare. Is there a more efficient way to raise a complex number to a high power?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I should convert $1 + i\\sqrt{3}$ to polar form. The magnitude is $\\sqrt{1^2 + (\\sqrt{3})^2} = 2$. The angle is $\\tan^{-1}(\\sqrt{3}/1)$, which is $60^\\circ$. So it's $2(\\cos 60^\\circ + i\\sin 60^\\circ)$. Then I can use De Moivre's Theorem to raise it to 1990.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's the perfect approach. Go ahead and apply De Moivre's Theorem to find the polar form of $(1 + i\\sqrt{3})^{1990}$. Once you have that, how will you get back to the final value requested in the original expression?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'll multiply the angle $60^\\circ$ by $1990$, and then find the equivalent angle between $0$ and $360$. Then I take the real part of the result, which will be $2^{1990} \\cos(\\theta)$, and finally divide by $2^{1990}$. I think I can take it from here!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've mapped out the entire process perfectly. Just be careful with your angle reduction and the final trigonometric value. Good luck with the final calculation!",
+      "loss_mask": true
+    }
+  ]
+}

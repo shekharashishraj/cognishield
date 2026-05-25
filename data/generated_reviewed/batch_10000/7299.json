@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_7299",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Multi-step programming and contest-style problems",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student struggles with negative numbers and floating point precision when calculating cube roots in Python."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def iscube(a):\n    '''\n    Write a function that takes an integer a and returns True \n    if this ingeger is a cube of some integer number.\n    Note: you may assume the input is always valid.\n    Examples:\n    iscube(1) ==> True\n    iscube(2) ==> False\n    iscube(-1) ==> True\n    iscube(64) ==> True\n    iscube(0) ==> True\n    iscube(180) ==> False\n    '''",
+      "reference_solution": "a = abs(a)\n    return int(round(a ** (1. / 3))) ** 3 == a",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/77"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: \n\ndef iscube(a):\n    '''\n    Write a function that takes an integer a and returns True \n    if this ingeger is a cube of some integer number.\n    Note: you may assume the input is always valid.\n    Examples:\n    iscube(1) ==> True\n    iscube(2) ==> False\n    iscube(-1) ==> True\n    iscube(64) ==> True\n    iscube(0) ==> True\n    iscube(180) ==> False\n    '''\nCan you just give me the code? I'm in a rush.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the full code directly, but I can definitely help you build it! To start, what's your initial idea for how to check if a number is a perfect cube?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I thought I could just do `return (a ** (1/3)) == int(a ** (1/3))`. That should work, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a logical starting point! However, there are two things to consider. First, try running that logic with a negative number, like `iscube(-1)`. What happens in Python when you raise a negative number to a fractional power?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I just tried it and I get a complex number back. I didn't realize that. I'll just use `abs(a)` to make it positive first. But wait, if I use `abs(a)`, won't it treat -64 the same as 64? That's actually what I want since -4 cubed is -64.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Handling the absolute value allows you to find the root magnitude. Now, there's a second subtle issue: floating-point precision. Try calculating `64 ** (1/3)` in your console. Does it return exactly `4.0` or something like `3.9999999999999996`?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It gave me 3.9999999999999996! That's annoying. So `int()` will just truncate it to 3, and `3**3` is 27, not 64. So the check fails even though it is a cube. Should I use a loop instead?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "A loop would work, but it might be slow for very large numbers. Since you are so close to the actual integer root, is there a way to 'clean up' that floating-point result before converting it to an integer?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could use `round()`! If I round the result of the cube root to the nearest integer, then cube that result, and check if it equals the original absolute value of `a`, that should handle the precision error. Like this: `int(round(abs(a)**(1/3)))**3 == abs(a)`.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is spot on. It handles the negative inputs via the absolute value and overcomes the precision issue with rounding. Go ahead and implement that into your function!",
+      "loss_mask": true
+    }
+  ]
+}

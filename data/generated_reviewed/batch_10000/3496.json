@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_3496",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Algorithms and data structures",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The student proposes a greedy approach for a path-sum problem. The tutor guides them to realize that local optima do not guarantee global optima and steers them toward Dynamic Programming."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Given a square matrix of size N*N given as a list of lists, where each cell is associated with a specific cost. A path is defined as a specific sequence of cells that starts from the top-left cell move only right or down and ends on bottom right cell. We want to find a path with the maximum average over all existing paths. Average is computed as total cost divided by the number of cells visited in the path.",
+      "reference_solution": "def maxAverageOfPath(cost):\n  N = len(cost)\n  dp = [[0 for i in range(N + 1)] for j in range(N + 1)]\n  dp[0][0] = cost[0][0]\n  for i in range(1, N):\n    dp[i][0] = dp[i - 1][0] + cost[i][0]\n  for j in range(1, N):\n    dp[0][j] = dp[0][j - 1] + cost[0][j]\n  for i in range(1, N):\n    for j in range(1, N):\n      dp[i][j] = max(dp[i - 1][j],\n                     dp[i][j - 1]) + cost[i][j]\n  return dp[N - 1][N - 1] / (2 * N - 1)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "721"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: Given a square matrix of size N*N given as a list of lists, where each cell is associated with a specific cost. A path is defined as a specific sequence of cells that starts from the top-left cell move only right or down and ends on bottom right cell. We want to find a path with the maximum average over all existing paths. Average is computed as total cost divided by the number of cells visited in the path.\n\nI think the best way is to use a greedy algorithm: at every step, just look at the cell to the right and the cell below, and pick the one with the higher cost. Is this correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Before I tell you if that works, let's think about the nature of the problem. Could you explain why picking the immediate maximum at each step would guarantee the highest average for the entire path?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, the number of cells in the path is always the same regardless of the route, so maximizing the average is just maximizing the total sum. If I always take the biggest number available right now, the sum should end up being the largest possible.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're correct that the path length is constant, so we are indeed just maximizing the total sum. However, consider a scenario where taking a smaller number now allows you to reach a much larger number in the next step. Would a greedy approach be able to 'see' that future benefit?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. If I pick a 5 now but that forces me into a path of 1s, while picking a 2 now would have led me to a 100 later, I'd miss out. So greedy doesn't work. I guess I have to check every possible path using recursion?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Recursion would certainly find the answer, but it would be very slow for large matrices because it recalculates the same paths many times. Since the optimal path to a cell (i, j) only depends on the optimal paths to its neighbors (i-1, j) and (i, j-1), is there a way we can store those results as we go?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I can use Dynamic Programming! I'll make a DP table where `dp[i][j]` is the maximum sum to reach that cell. The value would be `cost[i][j] + max(dp[i-1][j], dp[i][j-1])`. Then I just divide the final cell's value by the total number of cells in the path. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a solid plan. You've correctly identified the state transition. To implement this, how would you handle the boundaries—specifically the first row and the first column—where you don't have both a top and a left neighbor?",
+      "loss_mask": true
+    }
+  ]
+}

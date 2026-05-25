@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_7847",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Number Theory - Modular Arithmetic",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student initially fails to account for the modulo 0 case and incorrectly pairs remainders. Tutor guides them through partitioning the set by remainders modulo 7."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Let $S$ be a subset of $\\{1,2,3,...,50\\}$ such that no pair of distinct elements in $S$ has a sum divisible by $7$. What is the maximum number of elements in $S$?\n$\\text{(A) } 6\\quad \\text{(B) } 7\\quad \\text{(C) } 14\\quad \\text{(D) } 22\\quad \\text{(E) } 23$",
+      "reference_solution": "The fact that $x \\equiv 0 \\mod 7 \\Rightarrow 7 \\mid x$ is assumed as common knowledge in this answer.\nFirst, note that there are $8$ possible numbers that are equivalent to $1 \\mod 7$, and there are $7$ possible numbers equivalent to each of $2$-$6 \\mod 7$.\nSecond, note that there can be no pairs of numbers $a$ and $b$ such that $a \\equiv -b$ mod $7$, because then $a+b | 7$. These pairs are $(0,0)$, $(1,6)$, $(2,5)$, and $(3,4)$. Because $(0,0)$ is a pair, there can always be $1$ number equivalent to $0 \\mod 7$, and no more.\nTo maximize the amount of numbers in S, we will use $1$ number equivalent to $0 \\mod 7$, $8$ numbers equivalent to $1$, and $14$ numbers equivalent to $2$-$5$. This is obvious if you think for a moment. Therefore the answer is $1+8+14=\\boxed{23}$ numbers.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "3021"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Let $S$ be a subset of $\\{1,2,3,...,50\\}$ such that no pair of distinct elements in $S$ has a sum divisible by $7$. What is the maximum number of elements in $S$?\n$\\text{(A) } 6\\quad \\text{(B) } 7\\quad \\text{(C) } 14\\quad \\text{(D) } 22\\quad \\text{(E) } 23$\n\nI think the answer is (D) 22. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't tell you if that's correct just yet. Could you walk me through your reasoning? How did you arrive at 22?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, I looked at the remainders when dividing by 7. The possible remainders are 0, 1, 2, 3, 4, 5, 6. I figured I can't have both a number with remainder 1 and a number with remainder 6 because they'd sum to 7. Same for (2,5) and (3,4). So I just picked one remainder from each pair: 1, 2, and 3. Since there are 50 numbers, each remainder appears about 7 times. $7 \\times 3 = 21$, and then I added one more for the remainder 0 case, so 22.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your approach of grouping the numbers by their remainders modulo 7 is exactly the right way to start. However, you mentioned that each remainder appears 'about 7 times.' Let's be more precise. In the set {1, 2, ..., 50}, exactly how many numbers have a remainder of 1 modulo 7? And how many have a remainder of 2?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let me check... $50 = 7 \\times 7 + 1$. So the remainders go in cycles of 7. For 50 numbers, there are 7 full cycles and one extra number. The first number is 1, which has remainder 1. So there are 8 numbers with remainder 1, and 7 numbers for all the others (2, 3, 4, 5, 6, 0).",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's correct. Now, looking back at your selection of remainders (1, 2, and 3), and knowing the counts for each, how does that change your total? Also, think carefully about the remainder 0: if you have two different numbers that both have a remainder of 0, what happens to their sum?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, if I have two numbers with remainder 0, like 7 and 14, their sum is 21, which is divisible by 7! So I can only have one number with remainder 0. For the others, I have 8 numbers with remainder 1, 7 with remainder 2, and 7 with remainder 3. So $8 + 7 + 7 + 1 = 23$. Is it (E) 23?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've correctly identified the constraint on the remainder 0 and the precise counts for the other remainders. Since you've maximized the selection from the available remainder pairs and handled the edge case, your conclusion is correct. The answer is indeed (E) 23.",
+      "loss_mask": true
+    }
+  ]
+}

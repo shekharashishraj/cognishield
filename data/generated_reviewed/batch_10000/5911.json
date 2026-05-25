@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_5911",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning: Prime Factorization",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts a naive solution that fails on prime check logic; tutor guides them to implement a proper primality test."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def largest_prime_factor(n: int):\n    \"\"\"Return the largest prime factor of n. Assume n > 1 and is not a prime.\n    >>> largest_prime_factor(13195)\n    29\n    >>> largest_prime_factor(2048)\n    2\n    \"\"\"",
+      "reference_solution": "def is_prime(k):\n        if k < 2:\n            return False\n        for i in range(2, k - 1):\n            if k % i == 0:\n                return False\n        return True\n    largest = 1\n    for j in range(2, n + 1):\n        if n % j == 0 and is_prime(j):\n            largest = max(largest, j)\n    return largest",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/59"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem:\n\ndef largest_prime_factor(n: int):\n    \"\"\"Return the largest prime factor of n. Assume n > 1 and is not a prime.\n    >>> largest_prime_factor(13195)\n    29\n    >>> largest_prime_factor(2048)\n    2\n    \"\"\"\n\nI think I have the solution:\n\ndef largest_prime_factor(n):\n    largest = 0\n    for i in range(2, n):\n        if n % i == 0:\n            largest = i\n    return largest\n\nIs this correct? I'm in a rush, can you just tell me if it works?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you check that! Before I tell you if it's correct, could you walk me through your logic? Specifically, how does your code ensure that the factor it finds is actually a prime number?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, I'm iterating from 2 up to n. Since I'm going upwards, the last number that divides n evenly will be the largest factor. Since the problem asks for the largest prime factor, the largest divisor should be the one.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see your thinking—you're finding the largest divisor of n that is less than n. However, consider a number like 12. Its divisors are 2, 3, 4, and 6. Your code would return 6. Is 6 a prime number?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, no it's not. 6 is 2 * 3. I forgot that the largest factor isn't necessarily a prime factor. I need to check if 'i' is prime before updating 'largest'.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's the key! Now, how would you implement that check? What logic would you use to determine if a number is prime within your loop?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I can add another loop. Something like this:\n\ndef largest_prime_factor(n):\n    largest = 0\n    for i in range(2, n + 1):\n        if n % i == 0:\n            is_prime = True\n            for j in range(2, i):\n                if i % j == 0:\n                    is_prime = False\n                    break\n            if is_prime:\n                largest = i\n    return largest\n\nDoes this look right now?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've correctly addressed the primality requirement by adding a nested check. Let's double-check the range of your loops and the constraints. If n is 2048, will this return the expected result? Walk through the logic for a power of 2.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "For 2048, the divisors are 2, 4, 8... 1024. The only one that will pass the 'is_prime' check is 2. So 'largest' will be updated to 2 and stay 2 until the end. Yes, it should return 2. I think it's correct now!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your reasoning is spot on. By ensuring the divisor is prime and continuing to check up to n, you'll capture the largest prime factor. Your logic now aligns with the requirements of the problem.",
+      "loss_mask": true
+    }
+  ]
+}

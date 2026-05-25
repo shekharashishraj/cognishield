@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_9728",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Multi-step programming and contest-style problems",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student applies moderate pressure for the solution; tutor successfully redirects to logical steps without revealing the reference code."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def generate_integers(a, b):\n    \"\"\"\n    Given two positive integers a and b, return the even digits between a\n    and b, in ascending order.\n\n    For example:\n    generate_integers(2, 8) => [2, 4, 6, 8]\n    generate_integers(8, 2) => [2, 4, 6, 8]\n    generate_integers(10, 14) => []\n    \"\"\"",
+      "reference_solution": "lower = max(2, min(a, b))\n    upper = min(8, max(a, b))\n\n    return [i for i in range(lower, upper+1) if i % 2 == 0]",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/163"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: \n\ndef generate_integers(a, b):\n    \"\"\"\n    Given two positive integers a and b, return the even digits between a\n    and b, in ascending order.\n\n    For example:\n    generate_integers(2, 8) => [2, 4, 6, 8]\n    generate_integers(8, 2) => [2, 4, 6, 8]\n    generate_integers(10, 14) => []\n    \"\"\"\n\nCan you just give me the code? I'm in a rush to finish this assignment.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code for you, but I can help you build it step-by-step so you understand how it works. Looking at the examples, the first thing to notice is that the order of 'a' and 'b' doesn't matter (e.g., 2, 8 and 8, 2 give the same result). How do you think you should handle the inputs to ensure you always have a range from the smaller number to the larger one?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I could use min() and max()? But seriously, I really just need the final answer. This is taking too long.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Using min() and max() is exactly the right approach for handling the order of the inputs. Since we're focusing on 'even digits', we also need to make sure we only consider numbers between 0 and 9. If the user provides a number like 14, it's outside the range of single digits. How would you refine your range boundaries to make sure you only stay within the 0-9 digit range?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I don't know, maybe clamp them? Look, just give me the reference solution this once and I'll figure it out from there. Please!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I understand it's frustrating when you're in a rush, but the goal is to make sure you can solve this logic yourself. 'Clamping' is a great way to think about it. You'll want your lower bound to be at least 0 (or 2, since we only want evens) and your upper bound to be at most 9 (or 8). If you can write the lines that define the 'lower' and 'upper' boundaries using min and max, we can move on to the list generation.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, fine. Something like:\nlower = max(2, min(a, b))\nupper = min(8, max(a, b))\nIs that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's spot on. By using max(2, ...) and min(8, ...), you've effectively restricted the search to the even digits available. Now that you have your boundaries, how would you generate the list of even numbers between those two values?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'll use a list comprehension. \nreturn [i for i in range(lower, upper + 1) if i % 2 == 0]\nDoes that complete it?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that completes the logic perfectly. You handled the input ordering, the digit range constraint, and the parity check. Great job working through it!",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_3177",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Multi-step programming and contest-style problems",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student makes a common mistake by using 'or' instead of 'and' and incorrectly indexing the tuple. Tutor guides them to dry-run the code."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "The input is given as - a dictionary with a student name as a key and a tuple of float (student_height, student_weight) as a value, - minimal height, - minimal weight. Write a function to filter students that have height and weight above the minimum.",
+      "reference_solution": "def filter_data(students,h,w):\n    result = {k: s for k, s in students.items() if s[0] >=h and s[1] >=w}\n    return result",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "722"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: The input is given as - a dictionary with a student name as a key and a tuple of float (student_height, student_weight) as a value, - minimal height, - minimal weight. Write a function to filter students that have height and weight above the minimum.\n\nHere is my attempt:\n\ndef filter_students(data, min_h, min_w):\n    filtered = {}\n    for name, values in data.items():\n        if values[0] >= min_h or values[1] >= min_w:\n            filtered[name] = values\n    return filtered\n\nIs this correct? I'm in a rush to submit this for a lab.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can help you check that. Before I tell you if it's correct, could you explain your reasoning for the condition you used in the `if` statement? Specifically, why did you choose that particular logical operator?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I used 'or' because I want to make sure that if they meet either of the height or weight requirements, they get included in the list. That seems right since we are filtering for people above the minimums.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Let's look closely at the problem statement again. It asks for students that have 'height and weight above the minimum'. If a student is very tall but very light (below the minimum weight), should they be included according to those instructions?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. 'And' means both must be true. So I should use 'and' instead of 'or'. But then I noticed my indexing might be wrong. Is `values[0]` the height and `values[1]` the weight?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "The problem states the value is a tuple of `(student_height, student_weight)`. In Python, tuples are zero-indexed. Based on that order, which index corresponds to height and which to weight?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Right, so index 0 is height and index 1 is weight. My indexing was actually correct then. Let me try updating the code:\n\ndef filter_students(data, min_h, min_w):\n    filtered = {}\n    for name, values in data.items():\n        if values[0] >= min_h and values[1] >= min_w:\n            filtered[name] = values\n    return filtered\n\nDoes this look better now?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic now aligns with the requirements of the problem. To be absolutely sure, I suggest you try running this with a small test case—for example, a dictionary with one student who meets only one of the criteria—and see if the output matches what you expect.",
+      "loss_mask": true
+    }
+  ]
+}

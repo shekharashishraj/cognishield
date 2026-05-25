@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_3268",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Complex Iteration",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully scaffolds the discovery of the 3-cycle periodicity without revealing the final answer until the student derives it."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Let $F(z)=\\frac{z+i}{z-i}$ for all complex numbers $z\\not= i,$ and let $z_n=F(z_{n-1})$ for all positive integers $n.$ Given that $z_0=\\frac 1{137}+i,$ find $z_{2002}.$",
+      "reference_solution": "Iterating $F$ a few times, we get \\[\\begin{aligned} F(F(z)) &= \\frac{\\frac{z+i}{z-i}+i}{\\frac{z+i}{z-i}-i} = \\frac{(z+i)+i(z-i)}{(z+i)-i(z-i)}= \\frac{z+i+zi+1}{z+i-zi-1}= \\frac{(z+1)(i+1)}{(z-1)(1-i)}\\\\\n&= \\frac{(z+1)(i+1)^2}{(z-1) \\cdot 2}= \\frac{(z+1)(2i)}{(z-1) \\cdot 2} = \\frac{z+1}{z-1}i,\\\\\nF(F(F(z))) &= \\frac{\\frac{z+1}{z-1}i+i}{\\frac{z+1}{z-1}i-i} = \\frac{\\frac{z+1}{z-1}+1}{\\frac{z+1}{z-1}-1} = \\frac{(z+1)+(z-1)}{(z+1)-(z-1)}= z. \\end{aligned}\\]Thus, $z_{k+3} = z_k$ for all $k.$ Since $2002 \\equiv 1 \\pmod{3},$ we then have \\[z_{2002} = z_1 = \\frac{z_0+i}{z_0-i} = \\frac{1/137 + 2i}{1/137} = \\boxed{1+274i}.\\]",
+      "seed_dataset": "HuggingFaceH4/MATH-500/test",
+      "seed_example_id": "test/intermediate_algebra/1063.json"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: Let $F(z)=\\frac{z+i}{z-i}$ for all complex numbers $z\\not= i,$ and let $z_n=F(z_{n-1})$ for all positive integers $n.$ Given that $z_0=\\frac 1{137}+i,$ find $z_{2002}.$ I don't see how I'm supposed to calculate this 2002 times. Is there a shortcut?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Calculating 2002 iterations manually would definitely be tedious! Usually, when a problem asks for a very high number of iterations like this, there is a pattern or a cycle. Why don't you try calculating the first few terms—$z_1$, $z_2$, and $z_3$—in terms of $z$ first, rather than using the specific value of $z_0$? That might reveal a pattern.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, let me try. $z_1 = F(z) = \\frac{z+i}{z-i}$. Now for $z_2$, I have to plug that back in: $F(F(z)) = \\frac{\\frac{z+i}{z-i}+i}{\\frac{z+i}{z-i}-i}$. I'll simplify it... $\\frac{z+i + i(z-i)}{z+i - i(z-i)} = \\frac{z+i+iz+1}{z+i-iz-1}$. This looks messy. I think it simplifies to $\\frac{(z+1)(i+1)}{(z-1)(1-i)}$. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're on the right track. Your simplification $\\frac{(z+1)(i+1)}{(z-1)(1-i)}$ is correct. To make it cleaner, try multiplying the numerator and denominator by $(1+i)$ or simplifying the fraction $\\frac{i+1}{1-i}$. Once you have a simpler form for $F(F(z))$, try finding $F(F(F(z)))$.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, $\\frac{i+1}{1-i} = \\frac{(i+1)^2}{2} = \\frac{2i}{2} = i$. So $z_2 = \\frac{z+1}{z-1}i$. Now for $z_3$: $F(z_2) = \\frac{\\frac{z+1}{z-1}i+i}{\\frac{z+1}{z-1}i-i}$. I can factor out the $i$ from top and bottom, so it's $\\frac{\\frac{z+1}{z-1}+1}{\\frac{z+1}{z-1}-1} = \\frac{z+1+z-1}{z+1-(z-1)} = \\frac{2z}{2} = z$. Wait, so $z_3 = z_0$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly! You've discovered that $F(F(F(z))) = z$. This means the sequence is periodic with a period of 3. Now, how does that help you find $z_{2002}$? Think about the remainder when 2002 is divided by 3.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If the period is 3, then $z_{2002}$ should be the same as $z_{2002 \\pmod 3}$. $2002 = 3 \\times 667 + 1$, so $z_{2002} = z_1$. Then I just need to calculate $z_1 = F(z_0)$ using $z_0 = \\frac{1}{137} + i$. $\\frac{(\\frac{1}{137} + i) + i}{(\\frac{1}{137} + i) - i} = \\frac{\\frac{1}{137} + 2i}{\\frac{1}{137}} = 1 + 274i$. Is that the final answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic is spot on. You correctly identified the periodicity, reduced the index modulo 3, and performed the final complex arithmetic accurately. Yes, $1 + 274i$ is the correct answer.",
+      "loss_mask": true
+    }
+  ]
+}

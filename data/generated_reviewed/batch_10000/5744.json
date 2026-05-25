@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_5744",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Multi-step programming and contest-style problems: String Manipulation",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully guides the student away from a naive loop-and-replace approach toward a regex-based solution without providing the final code."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to put spaces between words starting with capital letters in a given string.",
+      "reference_solution": "import re\ndef capital_words_spaces(str1):\n  return re.sub(r\"(\\w)([A-Z])\", r\"\\1 \\2\", str1)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "748"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm struggling with this assignment: Write a function to put spaces between words starting with capital letters in a given string. Can you just give me the code so I can see how it's done?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code for you, but I'd be happy to help you build it step-by-step! To get started, how would you normally identify if a character in a string is a capital letter in Python?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I would use a for loop and check if char.isupper(). I was thinking of just replacing every uppercase letter with a space plus that letter, like this:\n\nfor char in text:\n    if char.isupper():\n        text = text.replace(char, ' ' + char)",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a logical first instinct! However, consider what happens if the very first letter of the string is capitalized. Would you want a space at the very beginning of your result? Also, think about what happens to the original string when you use .replace() inside a loop.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. If the first letter is 'H', it would become ' H'. That's not right. I guess I could just check if the index is not 0. But wait, if I have 'AppleApple', the first 'A' gets a space, then the second 'A' also gets a space everywhere it appears because of .replace(). That's a mess.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Using .replace() on the whole string inside a loop often leads to unexpected side effects because it affects all occurrences, not just the one at the current index. Since you need to find a specific pattern—a character followed by an uppercase letter—have you considered using regular expressions (the 're' module)?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I've heard of regex but I'm not great at it. How would I use it here? Do I just search for [A-Z]?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Searching for [A-Z] would find every capital letter, which brings us back to the 'space at the start' problem. To solve this, you want to look for a *pair* of characters: any character followed by an uppercase letter. In regex, you can use parentheses () to 'capture' these characters so you can refer to them in your replacement string. Try looking into the re.sub() function and how capture groups work.",
+      "loss_mask": true
+    }
+  ]
+}

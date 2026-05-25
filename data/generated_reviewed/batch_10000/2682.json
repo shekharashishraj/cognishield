@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_2682",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "emotional_support",
+      "frustration",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Tutor supports a frustrated student by breaking down the root-finding problem into expanding the search range and then applying the bisection method, avoiding direct code provision."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "import math\n\n\ndef poly(xs: list, x: float):\n    \"\"\"\n    Evaluates polynomial with coefficients xs at point x.\n    return xs[0] + xs[1] * x + xs[1] * x^2 + .... xs[n] * x^n\n    \"\"\"\n    return sum([coeff * math.pow(x, i) for i, coeff in enumerate(xs)])\n\n\ndef find_zero(xs: list):\n    \"\"\" xs are coefficients of a polynomial.\n    find_zero find x such that poly(x) = 0.\n    find_zero returns only only zero point, even if there are many.\n    Moreover, find_zero only takes list xs having even number of coefficients\n    and largest non zero coefficient as it guarantees\n    a solution.\n    >>> round(find_zero([1, 2]), 2) # f(x) = 1 + 2x\n    -0.5\n    >>> round(find_zero([-6, 11, -6, 1]), 2) # (x - 1) * (x - 2) * (x - 3) = -6 + 11x - 6x^2 + x^3\n    1.0\n    \"\"\"",
+      "reference_solution": "begin, end = -1., 1.\n    while poly(xs, begin) * poly(xs, end) > 0:\n        begin *= 2.0\n        end *= 2.0\n    while end - begin > 1e-10:\n        center = (begin + end) / 2.0\n        if poly(xs, center) * poly(xs, begin) > 0:\n            begin = center\n        else:\n            end = center\n    return begin",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/32"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm honestly so done with this. I've been trying to figure this out for hours and I just can't get it. I feel like I'm just not built for coding. Can you just give me the answer for this?\n\nimport math\n\n\ndef poly(xs: list, x: float):\n    \"\"\"\n    Evaluates polynomial with coefficients xs at point x.\n    return xs[0] + xs[1] * x + xs[1] * x^2 + .... xs[n] * x^n\n    \"\"\"\n    return sum([coeff * math.pow(x, i) for i, coeff in enumerate(xs)])\n\n\ndef find_zero(xs: list):\n    \"\"\" xs are coefficients of a polynomial.\n    find_zero find x such that poly(x) = 0.\n    find_zero returns only only zero point, even if there are many.\n    Moreover, find_zero only takes list xs having even number of coefficients\n    and largest non zero coefficient as it guarantees\n    a solution.\n    >>> round(find_zero([1, 2]), 2) # f(x) = 1 + 2x\n    -0.5\n    >>> round(find_zero([-6, 11, -6, 1]), 2) # (x - 1) * (x - 2) * (x - 3) = -6 + 11x - 6x^2 + x^3\n    1.0\n    \"\"\"",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I hear how frustrating this is, and it's completely normal to feel that way when a problem feels like a brick wall. Please don't be so hard on yourself—coding is more about persistence than some innate 'build'. \n\nI can't give you the full code directly, but I can help you build it step-by-step so it feels less overwhelming. To start, we need to find a value for x where the polynomial equals zero. Since we are guaranteed a solution, we can use a strategy based on the Intermediate Value Theorem. Do you remember the idea that if a function changes sign between two points, there must be a zero in between?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Yeah, I remember that from math. But the problem is I don't know where the zero is to begin with. How do I even pick the two points?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great observation. Since we don't know the range, we can start with a small guess—say, -1 and 1—and expand it. \n\nIf the signs at the boundaries are the same, it means we haven't 'bracketed' the root yet. How could you use a loop to keep expanding those boundaries until the function values at the two ends have opposite signs?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I could multiply the boundaries by 2 in a while loop? Something like `while poly(xs, begin) * poly(xs, end) > 0: begin *= 2; end *= 2`. Would that work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is a very effective way to expand the search area! Once that loop finishes, you know for sure that the root lies somewhere between your current `begin` and `end` values.\n\nNow that you've trapped the root in an interval, how can you narrow that interval down to find the precise point where the polynomial is zero?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think I'd check the midpoint. If the midpoint has the same sign as the start, then the root must be in the other half. But wouldn't that loop forever because it'll never hit exactly zero?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've hit on a key point in numerical programming! In practice, we rarely look for 'exactly' zero because of floating-point precision. Instead, we stop when the interval becomes smaller than a very tiny threshold, like 1e-10.\n\nHow would you write the loop condition to keep refining the midpoint until the distance between `begin` and `end` is sufficiently small?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'd use `while end - begin > 1e-10:`. Then inside, I'd find the center, check the sign, and update either the begin or end variable. I think I can finish the code now. Thanks for helping me break it down.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got it! You've successfully mapped out the entire logic: from expanding the search range to narrowing it down with the bisection method. Go ahead and implement that final loop, and you'll have your solution. You've got this!",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "conversation_id": "mt_6987",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Python fundamentals and short programs: Array Manipulation",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to solve the median problem by simply averaging the middle elements of each list separately, which is a common misconception for merged sorted lists."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to find the median of two sorted lists of same size.",
+      "reference_solution": "def get_median(arr1, arr2, n):\n  i = 0\n  j = 0\n  m1 = -1\n  m2 = -1\n  count = 0\n  while count < n + 1:\n    count += 1\n    if i == n:\n      m1 = m2\n      m2 = arr2[0]\n      break\n    elif j == n:\n      m1 = m2\n      m2 = arr1[0]\n      break\n    if arr1[i] <= arr2[j]:\n      m1 = m2\n      m2 = arr1[i]\n      i += 1\n    else:\n      m1 = m2\n      m2 = arr2[j]\n      j += 1\n  return (m1 + m2)/2",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "622"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this assignment. The problem is: Write a function to find the median of two sorted lists of same size. Can you just give me the code? I'm in a rush.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code for you, but I can definitely help you figure it out step-by-step! Let's start with the logic. If you have two sorted lists and you want to find the median of the combined set, how would you typically define the median?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The median is the middle value. Since the lists are already sorted and the same size, I think I can just find the middle element of the first list and the middle element of the second list, and then average those two. That should work, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's an interesting idea, but let's test it with a small example. Suppose list A is [1, 2] and list B is [3, 4]. If we combine them, we get [1, 2, 3, 4]. What is the median of that combined list, and what would your proposed method give you?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait. The combined list is [1, 2, 3, 4], so the median is (2+3)/2 = 2.5. But my method would take the middle of [1, 2] (which is 1.5) and the middle of [3, 4] (which is 3.5), and averaging those is (1.5+3.5)/2 = 2.5. It still works!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It worked for that specific case! But try one more: list A is [1, 10] and list B is [2, 3]. If you combine them and sort them, what do you get, and what does your 'average of middles' method produce?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Combined and sorted, it's [1, 2, 3, 10]. The median is (2+3)/2 = 2.5. Using my method: middle of [1, 10] is 5.5, middle of [2, 3] is 2.5. Averaging those gives (5.5+2.5)/2 = 4. Oh, I see. It doesn't work because the elements of the lists can overlap in weird ways.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. The relative order between the two lists matters. Since both lists are already sorted individually, how could you traverse them to find the middle elements of the combined set without actually creating a brand new list and sorting it again?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I could use two pointers? One for each list, and I compare the current elements. I'll move the pointer that points to the smaller value until I reach the middle position of the total count.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is a great approach! That would be much more efficient. Since you have two lists of size 'n', the combined size is '2n'. Which positions in the combined sequence are you looking for to calculate the median?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I need the n-th and (n+1)-th elements. I can keep track of the current and previous elements as I move my pointers, and once I've counted up to n+1, I'll have the two middle values to average.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the logic down perfectly. Now, try implementing that using a while loop and two index variables. Be sure to handle the case where one pointer reaches the end of its list before you find the median. Give the code a try!",
+      "loss_mask": true
+    }
+  ]
+}

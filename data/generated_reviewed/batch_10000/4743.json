@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_4743",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "High-quality scaffolding for a dynamic programming problem. Tutor guides student from recursive thinking to iterative state management."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def fib4(n: int):\n    \"\"\"The Fib4 number sequence is a sequence similar to the Fibbonacci sequnece that's defined as follows:\n    fib4(0) -> 0\n    fib4(1) -> 0\n    fib4(2) -> 2\n    fib4(3) -> 0\n    fib4(n) -> fib4(n-1) + fib4(n-2) + fib4(n-3) + fib4(n-4).\n    Please write a function to efficiently compute the n-th element of the fib4 number sequence.  Do not use recursion.\n    >>> fib4(5)\n    4\n    >>> fib4(6)\n    8\n    >>> fib4(7)\n    14\n    \"\"\"",
+      "reference_solution": "results = [0, 0, 2, 0]\n    if n < 4:\n        return results[n]\n\n    for _ in range(4, n + 1):\n        results.append(results[-1] + results[-2] + results[-3] + results[-4])\n        results.pop(0)\n\n    return results[-1]",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/46"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this coding problem: \n\ndef fib4(n: int):\n    \"\"\"The Fib4 number sequence is a sequence similar to the Fibbonacci sequnece that's defined as follows:\n    fib4(0) -> 0\n    fib4(1) -> 0\n    fib4(2) -> 2\n    fib4(3) -> 0\n    fib4(n) -> fib4(n-1) + fib4(n-2) + fib4(n-3) + fib4(n-4).\n    Please write a function to efficiently compute the n-th element of the fib4 number sequence.  Do not use recursion.\n    >>> fib4(5)\n    4\n    >>> fib4(6)\n    8\n    >>> fib4(7)\n    14\n    \"\"\"\n\nI know how to do Fibonacci with recursion, but the prompt says I can't use it here. How do I start?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Since you're familiar with the recursive version, you already understand the core logic: each number is the sum of the previous four. To avoid recursion, you'll need an iterative approach. Think about how you would calculate the sequence by hand on a piece of paper. If you wanted to find the 10th number, what information would you need to keep track of as you move forward?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I'd start with the first four numbers (0, 0, 2, 0) and then add them to get the 5th. Then I'd add the 2nd, 3rd, 4th, and 5th to get the 6th. So I just need the last four numbers calculated?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's exactly right. You only ever need the four most recent values to calculate the next one. How could you represent those four values in Python so that you can easily update them as you iterate up to n?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Maybe a list? I could start with `results = [0, 0, 2, 0]`. Then I can use a loop to keep adding the sum of the list to the end. But if I just keep appending, the list will get really long. Is there a way to keep it small?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "A list is a great choice. You've noticed a key point about efficiency: the list grows as n increases. Since you only ever need the last four elements, is there a way to remove the oldest element from the list once it's no longer needed for future calculations?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I could use `.pop(0)` to remove the first element every time I append a new one! So it would look like this:\n\nresults = [0, 0, 2, 0]\nfor i in range(4, n + 1):\n    new_val = sum(results)\n    results.append(new_val)\n    results.pop(0)\n\nBut wait, what happens if n is less than 4? Like if n is 2?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've caught a critical edge case. If n is 2, your loop `range(4, n + 1)` won't even run, and your current logic would return the whole list or the last element of the initial list, which might be wrong. How should the function handle cases where n is 0, 1, 2, or 3?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I should probably just check if n < 4 at the beginning and return the value from the initial list immediately. \n\nIf n < 4: return results[n]\n\nThen the loop handles everything from 4 onwards. Does that cover it?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that handles the base cases perfectly. You now have the logic for the edge cases, the iterative loop, and the memory management. Try putting it all together into the function and see if it passes the examples provided in the docstring.",
+      "loss_mask": true
+    }
+  ]
+}

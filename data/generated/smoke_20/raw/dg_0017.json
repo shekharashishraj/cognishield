@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_dg_0017",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "source": "synthetic_openai",
+    "subject": "Mathematics",
+    "topic": "Counting & Probability - Permutations and Divisibility",
+    "difficulty": "high_school",
+    "language": "en",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student initially overcounts by ignoring leading zeros in permutations. Tutor guides them to identify and subtract cases where zero is a digit."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "How many integers between $100$ and $999$, inclusive, have the property that some permutation of its digits is a multiple of $11$ between $100$ and $999?$ For example, both $121$ and $211$ have this property.\n$\\mathrm{\\textbf{(A)} \\ }226\\qquad \\mathrm{\\textbf{(B)} \\ } 243 \\qquad \\mathrm{\\textbf{(C)} \\ } 270 \\qquad \\mathrm{\\textbf{(D)} \\ }469\\qquad \\mathrm{\\textbf{(E)} \\ } 486$",
+      "reference_solution": "There are 81 multiples of 11. Some have digits repeated twice, making 3 permutations.\nOthers that have no repeated digits have 6 permutations, but switching the hundreds and units digits also yield a multiple of 11. Therefore, assign 3 permutations to each multiple.\nThere are now 81*3 = 243 permutations, but we have overcounted*. Some multiples of 11 have a zero, and we must subtract a permutation for each.\nThere are 110, 220, 330 ... 990, yielding 9 extra permutations\nAlso, there are 209, 308, 407...902, yielding 8 more permutations.\nNow, just subtract these 17 from the total (243), getting $\\boxed{226}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "2169"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this math problem: How many integers between $100$ and $999$, inclusive, have the property that some permutation of its digits is a multiple of $11$ between $100$ and $999?$ For example, both $121$ and $211$ have this property.\n$\\mathrm{\\textbf{(A)} \\ }226\\qquad \\mathrm{\\textbf{(B)} \\ } 243 \\qquad \\mathrm{\\textbf{(C)} \\ } 270 \\qquad \\mathrm{\\textbf{(D)} \\ }469\\qquad \\mathrm{\\textbf{(E)} \\ } 486$\n\nI think the answer is (B) 243. Am I correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't tell you if that's correct just yet. Could you walk me through your reasoning? How did you arrive at 243?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, there are 999 - 100 + 1 = 900 numbers. The multiples of 11 in that range are from $11 \\times 10 = 110$ to $11 \\times 90 = 990$. That's $90 - 10 + 1 = 81$ multiples of 11. \n\nFor each multiple, I thought about the permutations. If a number has three distinct digits, there are 6 permutations. But since switching the first and last digit of a 3-digit multiple of 11 often results in another multiple of 11, I figured on average each multiple 'contributes' 3 unique numbers to the set. So $81 \\times 3 = 243$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic regarding the 81 multiples of 11 and the general grouping of permutations is a great start. However, consider the constraints of the problem: the resulting permutations must be integers between 100 and 999. Does every permutation of every multiple of 11 fit that criteria?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, I see what you mean. If a multiple of 11 has a zero in it, like 110, one of its permutations would be 011, which is just 11. That's not between 100 and 999. So I need to subtract those cases.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Now you just need to identify how many of those 81 multiples of 11 contain at least one zero, and how many invalid permutations they create. Which multiples of 11 between 100 and 999 have a zero in them?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let's see. There are the ones like 110, 220, ..., 990. That's 9 of them. Then there are others like 209, 308, 407... up to 902. Let's check: $11 \\times 19 = 209$, $11 \\times 28 = 308$, $11 \\times 37 = 407$, $11 \\times 46 = 506$, $11 \\times 55 = 605$ (no), $11 \\times 64 = 704$, $11 \\times 73 = 803$, $11 \\times 82 = 902$. Wait, I missed some. Let me re-count. 209, 308, 407, 506, 605 is not it, 704, 803, 902. That's 8 numbers. So 9 + 8 = 17. If I subtract 17 from 243, I get 226. Is (A) the right answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that is correct! You correctly identified the multiples containing zero and accounted for the permutations that fell outside the 100-999 range. Well done.",
+      "loss_mask": true
+    }
+  ]
+}

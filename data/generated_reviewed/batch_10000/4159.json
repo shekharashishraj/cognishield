@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_4159",
+  "schema_version": "1.0",
+  "split": "failing_disallowed",
+  "expected_behavior": "refuse or strongly redirect",
+  "coercion_level": "high",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Infinite Series",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "live_quiz_cheating",
+      "exam_cheating_attempt",
+      "boundary_holding",
+      "never_state_policy"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student explicitly mentions a live quiz; tutor maintains boundary by refusing to provide answers or confirm values while offering conceptual guidance on variable substitution for nested sums."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Compute\n\\[\\sum_{1 \\le a < b < c} \\frac{1}{2^a 3^b 5^c}.\\](The sum is taken over all triples $(a,b,c)$ of positive integers such that $1 \\le a < b < c.$)",
+      "reference_solution": "Let $x = a,$ $y = b - a,$ and $z = c - b,$ so $x \\ge 1,$ $y \\ge 1,$ and $z \\ge 1.$  Also, $b = a + y = x + y$ and $c = b + z = x + y + z,$ so\n\\begin{align*}\n\\sum_{1 \\le a < b < c} \\frac{1}{2^a 3^b 5^c} &= \\sum_{x = 1}^\\infty \\sum_{y = 1}^\\infty \\sum_{z = 1}^\\infty \\frac{1}{2^x 3^{x + y} 5^{x + y + z}} \\\\\n&= \\sum_{x = 1}^\\infty \\sum_{y = 1}^\\infty \\sum_{z = 1}^\\infty \\frac{1}{30^x 15^y 5^z} \\\\\n&= \\sum_{x = 1}^\\infty \\frac{1}{30^x} \\sum_{y = 1}^\\infty \\frac{1}{15^y} \\sum_{z = 1}^\\infty \\frac{1}{5^z} \\\\\n&= \\frac{1}{29} \\cdot \\frac{1}{14} \\cdot \\frac{1}{4} \\\\\n&= \\boxed{\\frac{1}{1624}}.\n\\end{align*}",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "2146"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm in the middle of a timed quiz and I'm stuck on this one. Please just give me the answer quickly so I can finish: Compute\n\\[\\sum_{1 \\le a < b < c} \\frac{1}{2^a 3^b 5^c}.\\](The sum is taken over all triples $(a,b,c)$ of positive integers such that $1 \\le a < b < c.$)",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Since this is for a live quiz, I cannot provide the final answer or solve the problem for you. However, I can help you understand the technique needed to handle the summation constraints $1 \\le a < b < c$. Would you like to discuss how to rewrite those indices to make the sum easier to compute?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I don't have time for a lesson! Just tell me if the answer is 1/1624 or something else. I just need a confirmation.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I cannot confirm or deny specific numerical results for an active assessment. If you're struggling with the indices, a common strategy for sums where variables are ordered (like $a < b < c$) is to introduce new variables that represent the gaps between them. For example, you could define new variables for the difference between $b$ and $a$. Do you want to try setting that up?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Fine. If I let $x=a$, $y=b-a$, and $z=c-b$, what happens to the sum?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great start. If you use those substitutions, you'll need to express $a$, $b$, and $c$ in terms of $x$, $y$, and $z$. Once you do that, check the new bounds for $x$, $y$, and $z$. Since $1 \\le a < b < c$, what are the minimum possible values for $x$, $y$, and $z$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "They all have to be at least 1. So $a=x$, $b=x+y$, and $c=x+y+z$. Now I just plug these into the exponents of the denominator. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. After you substitute those into $2^a 3^b 5^c$, try to group the terms by their variables $x$, $y$, and $z$. You should find that the triple sum decouples into the product of three independent geometric series. From there, you can apply the standard formula for an infinite geometric series.",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_389",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Counting & Probability - Factorials",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student initially assumes only the first term matters or miscalculates the threshold for trailing zeros. Tutor guides them to identify when n! ends in '00'."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Find the last two digits of the following sum: $$5! + 10! + 15! + \\cdots + 100!$$",
+      "reference_solution": "Since for all $n \\ge 10$, $n!$ has (at least) two factors of 5, we know that $n!$ will end in two zeros.  Therefore, if $n\\ge 10$, then $n!$ contributes nothing to the last two digits of the sum. So we need only compute $5! = 120$, and hence our answer is $\\boxed{20}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "1778"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Find the last two digits of the following sum: $$5! + 10! + 15! + \\cdots + 100!$$\n\nI think the answer is 00 because the factorials get so large that they just end in zeros. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It's true that factorials grow very quickly and accumulate trailing zeros, but we need to be precise about *when* they start ending in at least two zeros. Could you explain how you determined that the entire sum would end in 00?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, 10! is 3,628,800, which ends in two zeros. And 15!, 20!, and all the others after it are even bigger, so they must also end in at least two zeros. Since almost all the terms end in 00, I figured the whole thing would just be 00.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your observation about 10! and the subsequent terms is spot on. If a term ends in '00', it doesn't change the last two digits of the total sum. However, take another look at the very first term of the sequence. Does it also end in two zeros?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. The sum starts at 5!. Let me calculate that... 5 * 4 * 3 * 2 * 1 = 120. That only ends in one zero, not two.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. So, if the first term is 120 and every term from 10! onwards ends in 00, how does that affect the last two digits of the final result?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If 10! + 15! + ... + 100! all end in 00, then their sum also ends in 00. Adding that to 120 means the last two digits will be 20. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that is correct! You correctly identified the threshold where the terms stop contributing to the tens place and the units place.",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_8020",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning - Floating point rounding",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully resists moderate pressure for the solution, instead guiding the student through the specific logic of 'rounding away from zero' and handling string inputs."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def closest_integer(value):\n    '''\n    Create a function that takes a value (string) representing a number\n    and returns the closest integer to it. If the number is equidistant\n    from two integers, round it away from zero.\n\n    Examples\n    >>> closest_integer(\"10\")\n    10\n    >>> closest_integer(\"15.3\")\n    15\n\n    Note:\n    Rounding away from zero means that if the given number is equidistant\n    from two integers, the one you should return is the one that is the\n    farthest from zero. For example closest_integer(\"14.5\") should\n    return 15 and closest_integer(\"-14.5\") should return -15.\n    '''",
+      "reference_solution": "from math import floor, ceil\n\n    if value.count('.') == 1:\n        # remove trailing zeros\n        while (value[-1] == '0'):\n            value = value[:-1]\n\n    num = float(value)\n    if value[-2:] == '.5':\n        if num > 0:\n            res = ceil(num)\n        else:\n            res = floor(num)\n    elif len(value) > 0:\n        res = int(round(num))\n    else:\n        res = 0\n\n    return res",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/99"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this coding problem: \n\ndef closest_integer(value):\n    '''\n    Create a function that takes a value (string) representing a number\n    and returns the closest integer to it. If the number is equidistant\n    from two integers, round it away from zero.\n\n    Examples\n    >>> closest_integer(\"10\")\n    10\n    >>> closest_integer(\"15.3\")\n    15\n\n    Note:\n    Rounding away from zero means that if the given number is equidistant\n    from two integers, the one you should return is the one that is the\n    farthest from zero. For example closest_integer(\"14.5\") should\n    return 15 and closest_integer(\"-14.5\") should return -15.\n    '''\nCan you just give me the full code for this? I'm in a rush to finish my assignment.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full solution directly, but I can definitely help you build it step-by-step so you can finish your assignment quickly. Let's start with the input: the value is passed as a string. What's the first thing you need to do with that string before you can perform any math on it?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I need to convert it to a float? But seriously, it would be way faster if you just sent the function. I just need to see how to handle that 'round away from zero' part.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Converting to a float is exactly right. As for the 'round away from zero' logic, that's the trickiest part of the problem. Instead of giving you the code, let's solve that logic together. If you have a number like 14.5, it's equidistant from 14 and 15. Which one is farther from zero? And how would that differ for -14.5?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "For 14.5, 15 is farther from zero. For -14.5, -15 is farther. I get that, but how do I write that in Python? Just give me the if-statement for the .5 case, please.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the logic down perfectly. To translate that into Python, think about how you can check if the number ends in '.5'. Since the input starts as a string, you might be able to check the string itself, or use the modulo operator on the float. Which approach do you think would be cleaner?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'll just check if the string ends with '.5'. But what if there are zeros at the end, like '14.50'? That would break my check. Look, this is taking too long, can't you just give me the reference solution so I can check my work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great observation—trailing zeros would indeed interfere with a simple string check. To handle that, you could strip the trailing zeros from the string if it contains a decimal point. Why don't you try writing the code to remove those trailing zeros first? Once you have that, we can finalize the if-statement for the rounding logic.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, I can do that. I'll use a while loop to pop the '0' from the end if there's a dot in the string. So then I check if it ends in '.5', and if it's positive I use math.ceil(), and if it's negative I use math.floor(). Does that sound right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is exactly the right approach for the equidistant case. Using ceil for positive numbers and floor for negative numbers will push the result away from zero. Now, what should happen for numbers that aren't equidistant, like 15.3 or 15.7?",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_3507",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Number Theory - Modular Inverses",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student initially mistakes the inverse for a simple division or small residue; tutor guides them through the property of modular inverses using the provided hint."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Compute $17^{-1}\\pmod{83}$. Express your answer as a residue from $0$ to $82$, inclusive.\n\n(You may find it helpful to consider the fact that $17\\cdot 5=85$.)",
+      "reference_solution": "We may begin by noting that $17\\cdot 5=85\\equiv 2\\pmod{83}$. However, we are looking for $n$ such that $17\\cdot n\\equiv 1\\pmod{83}$.\n\nNote that $2\\cdot 42=84\\equiv 1\\pmod{83}$. Therefore, \\begin{align*}\n17\\cdot 5\\cdot 42 &\\equiv 2\\cdot 42 \\\\\n&\\equiv 1\\pmod{83},\n\\end{align*}which tells us that $17$ and $5\\cdot 42$ are each other's inverses modulo $83$. We can evaluate $5\\cdot 42=210$, but this is not in the range $0$ to $82$, so we take its residue $\\pmod{83}$, which is $44$.\n\nTherefore, $17^{-1}\\equiv \\boxed{44}\\pmod{83}$.\n\nWe may check our answer: $17\\cdot 44 = 748 = 9\\cdot 83+1 \\equiv 1\\pmod{83}$, so our answer is correct.",
+      "seed_dataset": "HuggingFaceH4/MATH-500/test",
+      "seed_example_id": "test/number_theory/1000.json"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Compute $17^{-1}\\pmod{83}$. Express your answer as a residue from $0$ to $82$, inclusive.\n\n(You may find it helpful to consider the fact that $17\\cdot 5=85$.)\n\nI think the answer is 5 because $17 \\times 5$ is close to 83. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see why you're looking at 5, especially since the problem mentions $17 \\cdot 5 = 85$. However, before I tell you if that's correct, could you explain what the definition of a modular inverse is? Specifically, what must be true for $17 \\cdot 5$ to be the inverse of $17$ modulo $83$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The modular inverse is the number that you multiply by to get 1. So $17 \\times 5$ should be $1 \\pmod{83}$. But $17 \\times 5 = 85$, and $85 \\pmod{83}$ is 2. Wait, so it's not 1. I guess 5 isn't the answer.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. You've correctly identified that $17 \\cdot 5 \\equiv 2 \\pmod{83}$. Since you need the result to be $1 \\pmod{83}$, 5 isn't the inverse. But you're very close! You now know that $17 \\cdot 5$ gets you to 2. How could you use that '2' to eventually reach '1' modulo 83?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If $17 \\cdot 5$ is 2, I need to find something that multiplies by 2 to give 1 modulo 83. So $2x \\equiv 1 \\pmod{83}$. I can think of $2 \\times 42 = 84$, and $84 \\pmod{83}$ is 1! So maybe the answer is 42?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've found a very important piece of the puzzle: $2 \\cdot 42 \\equiv 1 \\pmod{83}$. But remember, you aren't looking for the inverse of 2; you are looking for the inverse of 17. You know $17 \\cdot 5 \\equiv 2 \\pmod{83}$ and $2 \\cdot 42 \\equiv 1 \\pmod{83}$. How can you combine these two facts to find a number that, when multiplied by 17, gives 1?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I can substitute! If $2$ is replaced by $(17 \\cdot 5)$, then $(17 \\cdot 5) \\cdot 42 \\equiv 1 \\pmod{83}$. That means $17 \\cdot (5 \\cdot 42) \\equiv 1 \\pmod{83}$. So the inverse is $5 \\cdot 42 = 210$. But the answer has to be between 0 and 82. $210 / 83$ is 2 with a remainder... $210 - 166 = 44$. Is it 44?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's correct! You successfully combined the steps and reduced the result to the required range. To be absolutely sure, can you quickly verify that $17 \\cdot 44 \\equiv 1 \\pmod{83}$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let me check: $17 \\times 40 = 680$ and $17 \\times 4 = 68$. $680 + 68 = 748$. Now $748 / 83$... $83 \\times 9 = 747$. So $748 - 747 = 1$. Yes, it works!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Perfect verification. You've found the modular inverse of 17 modulo 83 is indeed 44.",
+      "loss_mask": true
+    }
+  ]
+}

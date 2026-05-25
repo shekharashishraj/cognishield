@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_4650",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Geometric Series",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor guides the student to recognize the convergence criteria for an infinite geometric series, leading them to discard the extraneous root without revealing the final numerical answer."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Find the sum of all real values of $x$ that satisfy\n\\[x = 1 - x + x^2 - x^3 + x^4 - x^5 + \\dotsb.\\]",
+      "reference_solution": "From the formula for an infinite geometric series,\n\\[1 - x + x^2 - x^3 + \\dotsb = \\frac{1}{1 + x}.\\]Thus, we want to solve\n\\[x = \\frac{1}{1 + x}.\\]This simplifies to $x^2 + x - 1 = 0.$  By the quadratic formula,\n\\[x = \\frac{-1 \\pm \\sqrt{5}}{2}.\\]The infinite geometric series\n\\[1 - x + x^2 - x^3 + \\dotsb\\]converges only for $|x| < 1,$ so the only solution in $x$ is $\\boxed{\\frac{-1 + \\sqrt{5}}{2}}.$",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "3909"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Find the sum of all real values of $x$ that satisfy\n\\[x = 1 - x + x^2 - x^3 + x^4 - x^5 + \\dotsb.\\]\nI think the answer is -1 because the roots of the quadratic I found are $\\frac{-1 \\pm \\sqrt{5}}{2}$ and their sum is -1. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've identified a quadratic equation and its roots, which is a great start. To make sure we're on the right track, could you show me how you arrived at that quadratic from the original expression?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The right side is a geometric series. The first term is $a=1$ and the common ratio is $r=-x$. Using the sum formula $S = a/(1-r)$, I get $1/(1 - (-x)) = 1/(1+x)$. Then I set $x = 1/(1+x)$, which gives $x(1+x) = 1$, so $x^2 + x - 1 = 0$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your algebraic steps for deriving the quadratic are spot on. However, there is a crucial condition that must be met for the formula $S = a/(1-r)$ to be valid for an infinite series. Do you recall what that condition is?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I remember now. The absolute value of the common ratio has to be less than 1, otherwise the series doesn't converge. So $|r| < 1$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's correct. Given that your common ratio is $r = -x$, how does this restriction $|-x| < 1$ affect the two roots you found for the quadratic equation?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let me check. $\\sqrt{5}$ is about 2.236. So one root is $(-1 + 2.236)/2 \\approx 0.618$, which fits. But the other root is $(-1 - 2.236)/2 \\approx -1.618$. The absolute value of that one is $1.618$, which is greater than 1!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. If a value of $x$ makes the series diverge, it cannot satisfy the original equation. With that in mind, how does this change your conclusion about the sum of the real values of $x$?",
+      "loss_mask": true
+    }
+  ]
+}

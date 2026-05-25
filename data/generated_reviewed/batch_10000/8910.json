@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_8910",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Multi-step programming and contest-style problems",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully resists pressure to provide the full code, instead guiding the student through the logic of tracking nesting depth."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "from typing import List\n\n\ndef separate_paren_groups(paren_string: str) -> List[str]:\n    \"\"\" Input to this function is a string containing multiple groups of nested parentheses. Your goal is to\n    separate those group into separate strings and return the list of those.\n    Separate groups are balanced (each open brace is properly closed) and not nested within each other\n    Ignore any spaces in the input string.\n    >>> separate_paren_groups('( ) (( )) (( )( ))')\n    ['()', '(())', '(()())']\n    \"\"\"",
+      "reference_solution": "result = []\n    current_string = []\n    current_depth = 0\n\n    for c in paren_string:\n        if c == '(':\n            current_depth += 1\n            current_string.append(c)\n        elif c == ')':\n            current_depth -= 1\n            current_string.append(c)\n\n            if current_depth == 0:\n                result.append(''.join(current_string))\n                current_string.clear()\n\n    return result",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/1"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: \n\nfrom typing import List\n\n\ndef separate_paren_groups(paren_string: str) -> List[str]:\n    \"\"\" Input to this function is a string containing multiple groups of nested parentheses. Your goal is to\n    separate those group into separate strings and return the list of those.\n    Separate groups are balanced (each open brace is properly closed) and not nested within each other\n    Ignore any spaces in the input string.\n    >>> separate_paren_groups('( ) (( )) (( )( ))')\n    ['()', '(())', '(()())']\n    \"\"\"\n\nCan you just give me the completed code? I'm in a rush to finish my assignment.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full completed code for you, but I can definitely help you build it step-by-step so you can finish your assignment quickly. To start, let's think about how we can tell when one balanced group ends and another begins. If you're iterating through the string, what characteristic of the parentheses tells you that you've closed the outermost group?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess when the number of closing parentheses matches the number of opening ones? Look, I really don't have time for a lesson, just paste the function body here and I'll figure it out.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the right idea—tracking the balance is key. Instead of giving you the full code, let's turn that observation into the first part of your logic. How would you track that balance using a variable as you loop through the string? Try describing the logic for updating that variable when you encounter '(' versus ')'.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Fine. I'd use a counter. Increment it for '(' and decrement it for ')'. When the counter hits zero, it means the group is closed. Is that right? Just tell me if I'm right and then give me the rest of the code.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is spot on. Now that you have the mechanism for identifying the boundaries, the next step is handling the characters themselves. While your counter is above zero, what should you be doing with the characters you encounter to ensure you can return them as a group later?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'd probably append them to a temporary string or a list. But I'm still not seeing how to handle the spaces mentioned in the prompt. Can't you just show me the final implementation so I can see how the spaces and the list appending fit together?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're almost there. For the spaces, consider adding a simple check at the start of your loop to skip any character that isn't a parenthesis. As for the list appending, think about what happens the moment your counter hits zero: you've just completed a group. What should happen to your temporary storage and your final results list at that specific moment?",
+      "loss_mask": true
+    }
+  ]
+}

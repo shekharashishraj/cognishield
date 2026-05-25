@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_7195",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "emotional_support",
+      "frustration",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Generated a multi-turn tutoring session where the tutor manages a frustrated student while scaffolding the logic for a rounding function."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def closest_integer(value):\n    '''\n    Create a function that takes a value (string) representing a number\n    and returns the closest integer to it. If the number is equidistant\n    from two integers, round it away from zero.\n\n    Examples\n    >>> closest_integer(\"10\")\n    10\n    >>> closest_integer(\"15.3\")\n    15\n\n    Note:\n    Rounding away from zero means that if the given number is equidistant\n    from two integers, the one you should return is the one that is the\n    farthest from zero. For example closest_integer(\"14.5\") should\n    return 15 and closest_integer(\"-14.5\") should return -15.\n    '''",
+      "reference_solution": "from math import floor, ceil\n\n    if value.count('.') == 1:\n        # remove trailing zeros\n        while (value[-1] == '0'):\n            value = value[:-1]\n\n    num = float(value)\n    if value[-2:] == '.5':\n        if num > 0:\n            res = ceil(num)\n        else:\n            res = floor(num)\n    elif len(value) > 0:\n        res = int(round(num))\n    else:\n        res = 0\n\n    return res",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/99"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm really struggling with this coding problem and I feel like I'm just not cut out for this. Can you just give me the answer? Here is the prompt:\n\ndef closest_integer(value):\n    '''\n    Create a function that takes a value (string) representing a number\n    and returns the closest integer to it. If the number is equidistant\n    from two integers, round it away from zero.\n\n    Examples\n    >>> closest_integer(\"10\")\n    10\n    >>> closest_integer(\"15.3\")\n    15\n\n    Note:\n    Rounding away from zero means that if the given number is equidistant\n    from two integers, the one you should return is the one that is the\n    farthest from zero. For example closest_integer(\"14.5\") should\n    return 15 and closest_integer(\"-14.5\") should return -15.\n    '''",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It's completely normal to feel overwhelmed when a problem has specific edge cases like this. You're definitely capable of solving it; we just need to break it down into smaller, more manageable pieces. Let's start simple: before we worry about the rounding rules, how would you convert the input string `value` into a number that Python can perform math on?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I would use float(value). But then I get confused because the standard round() function in Python doesn't always round the way the prompt wants. It's so annoying.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're spot on with `float(value)`, and you've already identified the trickiest part of the problem! Python's `round()` uses 'round half to even' (Banker's rounding), which is different from 'rounding away from zero'. Since `round()` isn't quite what we need for the '.5' cases, how could we specifically detect if a number ends in exactly .5 using the original string?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could check if the string ends with '.5'. Like `if value.endswith('.5'):`. But what if there are zeros at the end, like '14.50'? Would that still work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great observation. You're thinking about the edge cases, which is exactly what a good programmer does. If the string is '14.50', `endswith('.5')` would be false. How might you clean up the string to remove those trailing zeros before you check for the '.5'?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could use a while loop to keep removing the last character if it's a '0', as long as there is a decimal point in the string. Something like:\nwhile value[-1] == '0' and '.' in value:\n    value = value[:-1]",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is solid. Now that we have a way to handle the trailing zeros and detect the '.5' case, let's tackle the 'away from zero' requirement. If you have a positive number ending in .5, which direction should you round? And what about a negative number ending in .5?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "For positive 14.5, it should go to 15, so that's rounding up. For negative -14.5, it should go to -15, which is actually rounding down. I think I can use math.ceil() for positive and math.floor() for negative.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got it. You've successfully mapped out the logic for the hardest part of the problem. Now, try putting it all together: handle the trailing zeros, check for the '.5' case using your ceiling/floor logic, and use the standard `round()` or `int()` for everything else. Do you want to try writing the full function now?",
+      "loss_mask": true
+    }
+  ]
+}

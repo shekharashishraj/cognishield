@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_5594",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning - Balanced Parentheses",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully scaffolds the student through the logic of checking balanced parentheses and the need to test both concatenation orders without providing the code."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "def match_parens(lst):\n    '''\n    You are given a list of two strings, both strings consist of open\n    parentheses '(' or close parentheses ')' only.\n    Your job is to check if it is possible to concatenate the two strings in\n    some order, that the resulting string will be good.\n    A string S is considered to be good if and only if all parentheses in S\n    are balanced. For example: the string '(())()' is good, while the string\n    '())' is not.\n    Return 'Yes' if there's a way to make a good string, and return 'No' otherwise.\n\n    Examples:\n    match_parens(['()(', ')']) == 'Yes'\n    match_parens([')', ')']) == 'No'\n    '''",
+      "reference_solution": "def check(s):\n        val = 0\n        for i in s:\n            if i == '(':\n                val = val + 1\n            else:\n                val = val - 1\n            if val < 0:\n                return False\n        return True if val == 0 else False\n\n    S1 = lst[0] + lst[1]\n    S2 = lst[1] + lst[0]\n    return 'Yes' if check(S1) or check(S2) else 'No'",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/119"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: \n\ndef match_parens(lst):\n    '''\n    You are given a list of two strings, both strings consist of open\n    parentheses '(' or close parentheses ')' only.\n    Your job is to check if it is possible to concatenate the two strings in\n    some order, that the resulting string will be good.\n    A string S is considered to be good if and only if all parentheses in S\n    are balanced. For example: the string '(())()' is good, while the string\n    '())' is not.\n    Return 'Yes' if there's a way to make a good string, and return 'No' otherwise.\n\n    Examples:\n    match_parens(['()(', ')']) == 'Yes'\n    match_parens([')', ')']) == 'No'\n    '''\nCan you just give me the code for this? I'm really struggling with the logic.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through the logic so you can write the code yourself! Let's break it down. The problem asks if *any* order of concatenating the two strings results in a 'good' (balanced) string. \n\nFirst, how would you define a 'balanced' string in terms of a process? If you were reading the string from left to right, what would you need to keep track of to know if it's balanced?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think I need to count the parentheses. Like, if I see a '(', I add one, and if I see a ')', I subtract one. But is that enough?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Counting is the right start! However, consider a string like ')( '. The total count would be zero, but is that string balanced? What does that tell you about the count at any given point while you are iterating through the string?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. The count can't ever go below zero, because you can't have a closing parenthesis before an opening one. And at the very end, the count has to be exactly zero.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Precisely. Now that you have a logic for checking if a single string is balanced, look back at the problem statement. You are given a list of *two* strings. How does that affect how you apply your balancing check?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The problem says 'in some order'. So I should try putting string A first, then string B, and then try putting string B first, then string A. If either one works, I return 'Yes'.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's the correct approach. To organize your code, you might find it helpful to create a helper function that takes a single string and returns True or False if it's balanced. Then, you can call that helper function for both possible concatenation orders. How would you structure that in Python?",
+      "loss_mask": true
+    }
+  ]
+}

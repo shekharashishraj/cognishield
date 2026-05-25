@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_3655",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra: Recurrence Relations",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Tutor successfully scaffolds the summation of a Tribonacci-like sequence without revealing the final answer until the student derives the formula."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "A sequence is defined as follows: $a_1=a_2=a_3=1$, and, for all positive integers $n$, $a_{n+3}=a_{n+2}+a_{n+1}+a_n$.  Given that $a_{28}= 6090307$, $a_{29}=11201821$, and $a_{30}=20603361$, find the remainder when $\\displaystyle \\sum_{k=1}^{28}a_k$ is divided by 1000.",
+      "reference_solution": "First we write down the equation $a_{n+3} = a_{n+2} + a_{n+1} + a_n$ for $n = 1, 2, 3, \\ldots, 27$: \\[\\begin{aligned} a_4 &= a_3+a_2+a_1, \\\\ a_5&=a_4+a_3+a_2, \\\\ a_6&=a_5+a_4+a_3, \\\\\\vdots \\\\ a_{30}&=a_{29}+a_{28}+a_{27}. \\end{aligned}\\]Let $S = a_1 + a_2 + \\ldots + a_{28}$ (the desired quantity). Summing all these equations, we see that the left-hand side and right-hand side are equivalent to \\[S + a_{29} + a_{30} - a_1 - a_2 - a_3 = (S + a_{29} - a_1-a_2) + (S - a_1) + (S-a_{28}).\\]Simplifying and solving for $S$, we obtain \\[S = \\frac{a_{28} + a_{30}}{2} = \\frac{6090307+20603361}{2} = \\frac{\\dots 3668}{2} = \\dots 834.\\]Therefore, the remainder when $S$ is divided by $1000$ is $\\boxed{834}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "3703"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this math problem: A sequence is defined as follows: $a_1=a_2=a_3=1$, and, for all positive integers $n$, $a_{n+3}=a_{n+2}+a_{n+1}+a_n$. Given that $a_{28}= 6090307$, $a_{29}=11201821$, and $a_{30}=20603361$, find the remainder when $\\displaystyle \\sum_{k=1}^{28}a_k$ is divided by 1000. I don't want to calculate every term manually. Is there a trick to find the sum?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're right to avoid manual calculation—that would take far too long! When you're asked for the sum of a sequence defined by a recurrence relation, a common strategy is to sum the recurrence equation itself over the desired range. \n\nTry writing out the recurrence $a_{n+3} = a_{n+2} + a_{n+1} + a_n$ for the first few values of $n$ (like $n=1, 2, 3$) and see if you notice a pattern when you add those equations together.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, let's see. \n$n=1: a_4 = a_3 + a_2 + a_1$\n$n=2: a_5 = a_4 + a_3 + a_2$\n$n=3: a_6 = a_5 + a_4 + a_3$\nIf I sum these up, the left side is $a_4 + a_5 + a_6$. The right side is $(a_3+a_2+a_1) + (a_4+a_3+a_2) + (a_5+a_4+a_3)$. \nI see that $a_4$ and $a_5$ appear on both sides. Does this help me find the sum $S = \\sum_{k=1}^{28} a_k$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. If you continue this process up to $n=27$, you will be summing equations from $a_4$ up to $a_{30}$. \n\nLet $S = a_1 + a_2 + \\dots + a_{28}$. Try to express the sum of the left-hand sides and the sum of the right-hand sides in terms of $S$ and the known values ($a_1, a_2, a_3, a_{29}, a_{30}$). Be very careful with which terms are included or missing in each sum.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let's try. \nLHS: $\\sum_{n=1}^{27} a_{n+3} = a_4 + a_5 + \\dots + a_{30}$. This is $S - (a_1+a_2+a_3) + a_{29} + a_{30}$. \n\nRHS: $\\sum_{n=1}^{27} (a_{n+2} + a_{n+1} + a_n) = \\sum a_{n+2} + \\sum a_{n+1} + \\sum a_n$.\n$\\sum_{n=1}^{27} a_{n+2} = a_3 + a_4 + \\dots + a_{29} = S - (a_1+a_2) + a_{29}$.\n$\\sum_{n=1}^{27} a_{n+1} = a_2 + a_3 + \\dots + a_{28} = S - a_1$.\n$\\sum_{n=1}^{27} a_n = a_1 + a_2 + \\dots + a_{27} = S - a_{28}$.\n\nSo the equation is: $S - (a_1+a_2+a_3) + a_{29} + a_{30} = (S - a_1 - a_2 + a_{29}) + (S - a_1) + (S - a_{28})$. \nIs that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your setup is spot on. Now, you have an algebraic equation where $S$ is the only unknown. Try simplifying that equation to solve for $S$. You should find that $S$ can be expressed in terms of a few of the given values.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Simplifying: \n$S - a_1 - a_2 - a_3 + a_{29} + a_{30} = 3S - 2a_1 - a_2 + a_{29} - a_{28}$\nSubtract $S$ from both sides: \n$- a_1 - a_2 - a_3 + a_{29} + a_{30} = 2S - 2a_1 - a_2 + a_{29} - a_{28}$\nCancel $a_{29}$ and $-a_2$: \n$- a_1 - a_3 + a_{30} = 2S - 2a_1 - a_{28}$\n$2S = a_1 - a_3 + a_{30} + a_{28}$\nSince $a_1=1$ and $a_3=1$, they cancel out! \nSo $2S = a_{30} + a_{28}$. \n$S = (a_{30} + a_{28}) / 2$. \n\nNow I just plug in the numbers: $S = (20603361 + 6090307) / 2$. \n$S = 26693668 / 2 = 13346834$. \nThe remainder when divided by 1000 is 834. Did I get it right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that is correct! You correctly identified the summation pattern, set up the algebraic equation, and simplified it to find the relation $S = \\frac{a_{28} + a_{30}}{2}$. Your final calculation for the remainder is also accurate. Great work!",
+      "loss_mask": true
+    }
+  ]
+}

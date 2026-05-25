@@ -1,0 +1,109 @@
+{
+  "conversation_id": "mt_7220",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Precalculus - Analytic Geometry",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to solve the problem by simply subtracting the distance between centers from the semi-minor axis, ignoring the actual geometry of the distance function. Tutor guides them to define the shapes and optimize the distance."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Rational Man and Irrational Man both buy new cars, and they decide to drive around two racetracks from time $t = 0$ to $t = \\infty.$  Rational Man drives along the path parameterized by\n\\begin{align*}\nx &= \\cos t, \\\\\ny &= \\sin t,\n\\end{align*}and Irrational Man drives along the path parameterized by\n\\begin{align*}\nx &= 1 + 4 \\cos \\frac{t}{\\sqrt{2}}, \\\\\ny &= 2 \\sin \\frac{t}{\\sqrt{2}}.\n\\end{align*}If $A$ is a point on Rational Man's racetrack, and $B$ is a point on Irrational Man's racetrack, then find the smallest possible distance $AB.$",
+      "reference_solution": "Rational Man's racetrack is parameterized by $x = \\cos t$ and $y = \\sin t.$  We can eliminate $t$ by writing\n\\[x^2 + y^2 = \\cos^2 t + \\sin^2 t = 1.\\]Thus, Rational Man's racetrack is the circle centered at $(0,0)$ with radius 1.\n\nIrrational Man's racetrack is parameterized by $x = 1 + 4 \\cos \\frac{t}{\\sqrt{2}}$ and $y = 2 \\sin \\frac{t}{\\sqrt{2}}.$  Similarly,\n\\[\\frac{(x - 1)^2}{16} + \\frac{y^2}{4} = \\cos^2 \\frac{t}{\\sqrt{2}} + \\sin^2 \\frac{t}{\\sqrt{2}} = 1.\\]Thus, Irrational Man's race track is the ellipse centered at $(1,0)$ with semi-major axis 4 and semi-minor axis 2.\n\nLet $O = (0,0),$ the center of the circle.\n\n[asy]\nunitsize(1 cm);\n\npair A, B, O;\n\npath rm = Circle((0,0),1);\npath im = shift((1,0))*yscale(2)*xscale(4)*rm;\n\nO = (0,0);\nA = dir(120);\nB = (1 + 4*Cos(100), 2*Sin(100));\n\ndraw(rm,red);\ndraw(im,blue);\ndraw(A--B--O--cycle);\n\ndot(\"$A$\", A, NW);\ndot(\"$B$\", B, N);\ndot(\"$O$\", O, S);\n[/asy]\n\nBy the Triangle Inequality, $OA + AB \\ge OB,$ so\n\\[AB \\ge OB - OA = OB - 1.\\]If $B = (x,y),$ then\n\\[\\frac{(x - 1)^2}{16} + \\frac{y^2}{4} = 1,\\]so $y^2 = -\\frac{x^2}{4} + \\frac{x}{2} + \\frac{15}{4}.$  Then\n\\[OB^2 = x^2 + y^2 = \\frac{3x^2}{4} + \\frac{x}{2} + \\frac{15}{4} = \\frac{3}{4} \\left( x + \\frac{1}{3} \\right)^2 + \\frac{11}{3}.\\]This is minimized when $x = -\\frac{1}{3},$ in which case $OB = \\sqrt{\\frac{11}{3}} = \\frac{\\sqrt{33}}{3}.$\n\nIf we take $A$ as the intersection of $\\overline{OB}$ with the circle, then\n\\[AB = OB - 1 = \\boxed{\\frac{\\sqrt{33} - 3}{3}}.\\]",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "6814"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: \n\nRational Man and Irrational Man both buy new cars, and they decide to drive around two racetracks from time $t = 0$ to $t = \\infty.$  Rational Man drives along the path parameterized by\n\\begin{align*}\nx &= \\cos t, \\\\\ny &= \\sin t,\n\\end{align*}and Irrational Man drives along the path parameterized by\n\\begin{align*}\nx &= 1 + 4 \\cos \\frac{t}{\\sqrt{2}}, \\\\\ny &= 2 \\sin \\frac{t}{\\sqrt{2}}.\n\\end{align*}If $A$ is a point on Rational Man's racetrack, and $B$ is a point on Irrational Man's racetrack, then find the smallest possible distance $AB.$\n\nI think the answer is 1. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't tell you if that's correct just yet! To help us figure it out, could you walk me through how you arrived at 1? What did you notice about the two paths?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, the first one is a circle with radius 1 centered at (0,0). The second one is an ellipse centered at (1,0). The semi-minor axis of the ellipse is 2. Since the distance between the centers is 1, I just did 2 - 1 = 1.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've correctly identified the shapes and their centers! However, the distance between the two tracks isn't necessarily determined solely by the distance between centers and the semi-minor axis. \n\nThink about the geometry: the semi-minor axis of the ellipse is vertical (along the y-axis), but the centers are shifted horizontally (along the x-axis). Does the closest point on the ellipse to the origin necessarily lie on the minor axis?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. The center of the ellipse is at (1,0), so the 'top' and 'bottom' points of the minor axis are at (1, 2) and (1, -2). Those aren't the closest points to the origin. So I need to find the point B on the ellipse that is closest to the origin, and then subtract the radius of the circle?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's exactly right. Since the circle is centered at the origin with radius 1, any point A on the circle is 1 unit away from (0,0). To minimize the distance AB, you want A to lie on the line segment connecting the origin to the closest point B on the ellipse.\n\nHow would you go about finding the point B on the ellipse that minimizes the distance to the origin?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I can use the equation of the ellipse. It's ((x-1)^2 / 16) + (y^2 / 4) = 1. I want to minimize OB^2 = x^2 + y^2. I can solve for y^2 in the ellipse equation and substitute it into the distance formula.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That sounds like a solid plan. Go ahead and try that substitution. What expression do you get for the squared distance in terms of x?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "From the ellipse equation, y^2 = 4(1 - (x-1)^2/16) = 4 - (x-1)^2/4. \nThen OB^2 = x^2 + 4 - (x^2 - 2x + 1)/4 = x^2 + 4 - x^2/4 + x/2 - 1/4 = (3/4)x^2 + x/2 + 15/4.\nTo find the minimum, I'll take the derivative: (3/2)x + 1/2 = 0, so x = -1/3.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your calculations are spot on. Now that you have the x-coordinate of the closest point B, find the minimum distance OB, and then remember to account for the radius of Rational Man's track to find the final distance AB.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If x = -1/3, then OB^2 = (3/4)(-1/3)^2 + (-1/3)/2 + 15/4 = (3/4)(1/9) - 1/6 + 15/4 = 1/12 - 2/12 + 45/12 = 44/12 = 11/3.\nSo OB = sqrt(11/3) = sqrt(33)/3.\nThen the distance AB = OB - 1 = (sqrt(33) - 3) / 3.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Excellent work! You correctly identified the geometric relationship, set up the optimization problem, and solved for the minimum distance. Your final answer is correct.",
+      "loss_mask": true
+    }
+  ]
+}

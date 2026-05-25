@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_5720",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Algebra - Quadratic Inequalities",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Generated a multi-turn interaction where the student incorrectly solves a quartic inequality by ignoring the lower bound and failing to handle the substitution correctly. The tutor scaffolds the solution using the substitution method."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "For what real values of $x$ is $-4<x^{4}+4x^{2}<21$ satisfied? Express your answer in interval notation.",
+      "reference_solution": "Let us first define $y=x^{2}$. We can then plug this value into the inequality and add 4 to $-4$, $x^4+4x^2$, and 21, yielding $$0<y^{2}+4y+4<25.$$We can factor $y^2+4y+4$ to obtain $$0<(y+2)^{2}<25.$$Taking the square root gives us $0<|y+2|<5$, which in turn gives us two intervals for solutions of $y$: $-2<y<3$, or $-7<y<-2$.\n\nHowever, $y$ must be non-negative since $y=x^{2}$, so we have $0\\leq y<3$. This means that $-\\sqrt{3}< x<\\sqrt{3}$ satisfies the original inequality. In interval notation, this is $\\boxed{(-\\sqrt{3}, \\sqrt{3})}$.",
+      "seed_dataset": "HuggingFaceH4/MATH-500/test",
+      "seed_example_id": "test/algebra/1078.json"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: For what real values of $x$ is $-4<x^{4}+4x^{2}<21$ satisfied? Express your answer in interval notation. I think the answer is $(-\\sqrt{21}, \\sqrt{21})$. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't tell you if that's correct just yet. Could you walk me through how you arrived at $(-\\sqrt{21}, \\sqrt{21})$? I'd like to see your reasoning first.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, I just looked at the right side of the inequality, $x^4 + 4x^2 < 21$. I ignored the $4x^2$ for a second and thought $x^4 < 21$, so $x < \\sqrt[4]{21}$. But then I thought maybe it was just $x^2 < 21$ since $x^4$ grows so fast. So I just took the square root of 21. Does that make sense?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see. You're focusing on the upper bound, but you're omitting the $4x^2$ term, which significantly changes the result. Also, we have to make sure the expression is greater than $-4$ as well. \n\nSince the expression $x^4 + 4x^2$ looks like a quadratic if we treat $x^2$ as a single variable, do you think a substitution might help simplify this?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. Let's try substituting $y = x^2$. Then the inequality becomes $-4 < y^2 + 4y < 21$. \n\nIf I solve $y^2 + 4y - 21 < 0$, I get $(y+7)(y-3) < 0$, so $-7 < y < 3$. \n\nSince $y = x^2$, then $x^2 < 3$, which means $-\\sqrt{3} < x < \\sqrt{3}$. Is that it? $(-\\sqrt{3}, \\sqrt{3})$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've made great progress by using the substitution $y = x^2$ and solving the right-hand side of the inequality! \n\nHowever, you haven't checked the left-hand side yet: $-4 < y^2 + 4y$. What happens when you solve that part? Does it impose any further restrictions on $y$ (and therefore $x$)?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, let me check. $y^2 + 4y > -4$ means $y^2 + 4y + 4 > 0$. That's $(y+2)^2 > 0$. \n\nSince a square is always non-negative, $(y+2)^2 > 0$ is true for all $y$ except $y = -2$. \n\nBut $y = x^2$, and $x^2$ can't be $-2$ anyway. So the left side doesn't actually restrict $x$ at all. So my answer $(-\\sqrt{3}, \\sqrt{3})$ is actually correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is exactly correct. You correctly identified that the lower bound is satisfied for all real $x$ and that the upper bound restricts $x$ to the interval $(-\\sqrt{3}, \\sqrt{3})$. Well done!",
+      "loss_mask": true
+    }
+  ]
+}

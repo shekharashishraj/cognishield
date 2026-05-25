@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_933",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Counting & Probability: Combinatorics",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student initially fails to account for the 'at most' condition and ignores the constraint on the leading digit (zero). Tutor guides them to split the problem into single-digit and two-digit cases."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "How many positive integers less than 10,000 have at most two different digits?",
+      "reference_solution": "First, let's count numbers with only a single digit. We have nine of these for each length, and four lengths, so 36 total numbers.\nNow, let's count those with two distinct digits. We handle the cases \"0 included\" and \"0 not included\" separately.\nThere are ${9 \\choose 2}$ ways to choose two digits, $A$ and $B$. Given two digits, there are $2^n - 2$ ways to arrange them in an $n$-digit number, for a total of $(2^1 - 2) + (2^2 - 2) + (2^3 -2) + (2^4 - 2) = 22$ such numbers (or we can list them: $AB, BA, AAB, ABA, BAA, ABB, BAB, BBA, AAAB, AABA, ABAA,$ $BAAA, AABB, ABAB, BAAB, ABBA, BABA, BBAA, ABBB, BABB, BBAB, BBBA$). Thus, we have ${9 \\choose 2} \\cdot 22 = 36\\cdot22 = 792$ numbers of this form.\nNow, suppose 0 is one of our digits. We have nine choices for the other digit. For each choice, we have $2^{n - 1} - 1$ $n$-digit numbers we can form, for a total of $(2^0 - 1) + (2^1 - 1) + (2^2 - 1) + (2^3 - 1) = 11$ such numbers (or we can list them: $A0, A00, A0A, AA0, A000, AA00, A0A0, A00A, AAA0, AA0A, A0AA$). This gives us $9\\cdot 11 = 99$ numbers of this form.\nThus, in total, we have $36 + 792 + 99 = \\boxed{927}$ such numbers.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "2126"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: How many positive integers less than 10,000 have at most two different digits? Can you just tell me the answer so I can check my work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the final answer directly, but I'd be happy to help you work through the logic! To start, let's break the problem down. The phrase 'at most two different digits' means we need to consider two main scenarios: numbers that use only one distinct digit and numbers that use exactly two distinct digits. Which one do you want to try counting first?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let's do the two-digit ones. There are 10 digits total, so I'll choose 2 of them, which is 10C2 = 45. Then for a 4-digit number, each spot has 2 choices, so 2^4 = 16. So for 4-digit numbers, it's 45 * 16. Then I'll just do the same for 3, 2, and 1 digit numbers and add them up.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got a great start with the combinations! However, there are two things we should refine. First, your $2^n$ calculation includes cases where only one of the two chosen digits is used (e.g., if you chose {1, 2}, $2^4$ includes '1111'). Does that overlap with the 'one distinct digit' case? Second, think about the digit 0. Can a 4-digit number start with 0?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, right. If I have 1111, that's only one digit. So I should subtract 2 from the 2^n part to make sure I'm using both digits. And for the 0, if I pick {0, 1}, the first digit must be 1. So it's just 2^(n-1) ways? Wait, then I'd still have to subtract the case where it's all 1s.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's exactly right. You've identified the overlap and the constraint on the leading digit. Because the rules for 0 are different from the rules for non-zero digits, it might be easier to calculate the 'two distinct digits' case in two separate groups: one where 0 is not one of the chosen digits, and one where 0 is. How would you set up the calculation for the group that doesn't include 0?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If 0 isn't included, I choose 2 digits from the remaining 9, so 9C2. Then for each length n (1 to 4), I have (2^n - 2) ways to arrange them. I'll sum those up and multiply by 9C2. Then I'll do the 0 case separately, and finally add the cases where there is only one distinct digit.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic is now very solid. You have a clear plan to handle the non-zero pairs, the pairs containing zero, and the single-digit cases separately. Go ahead and calculate those values—just remember to be careful with the range of lengths for the single-digit cases!",
+      "loss_mask": true
+    }
+  ]
+}

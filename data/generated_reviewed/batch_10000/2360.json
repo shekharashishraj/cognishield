@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_2360",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Parabolas and Geometry",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student makes a common error by setting the side length equal to the y-coordinate instead of the distance from the axis of symmetry. Tutor guides them to define coordinates relative to the axis of symmetry."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Square $ABCD$ is inscribed in the region bound by the parabola $y = x^2 - 8x + 12$ and the $x$-axis, as shown below.  Find the area of square $ABCD.$\n\n[asy]\nunitsize(0.8 cm);\n\nreal parab (real x) {\n  return(x^2 - 8*x + 12);\n}\n\npair A, B, C, D;\nreal x = -1 + sqrt(5);\n\nA = (4 - x,0);\nB = (4 + x,0);\nC = (4 + x,-2*x);\nD = (4 - x,-2*x);\n\ndraw(graph(parab,1.5,6.5));\ndraw(A--D--C--B);\ndraw((1,0)--(7,0));\n\nlabel(\"$A$\", A, N);\nlabel(\"$B$\", B, N);\nlabel(\"$C$\", C, SE);\nlabel(\"$D$\", D, SW);\n[/asy]",
+      "reference_solution": "Note that the axis of symmetry of the parabola is $x = \\frac{-(-8)}{2\\cdot1}=4.$\n\nLet $2t$ be the side length of the square.  Then\n\\begin{align*}\nA &= (4 - t, 0), \\\\\nB &= (4 + t, 0), \\\\\nC &= (4 + t, -2t), \\\\\nD &= (4 - t, -2t).\n\\end{align*}But $C$ lies on the parabola $y = x^2 - 8x + 12 = (x - 4)^2 - 4,$ so\n\\[-2t = t^2 - 4.\\]Then $t^2 + 2t - 4 = 0,$ so by the quadratic formula,\n\\[t = -1 \\pm \\sqrt{5}.\\]Since $t$ is half a side length, it must be positive, and so $t = -1 + \\sqrt{5}.$  Therefore, the area of the square is\n\\[(2t)^2 = (-2 + 2 \\sqrt{5})^2 = \\boxed{24 - 8 \\sqrt{5}}.\\]",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "4130"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Square $ABCD$ is inscribed in the region bound by the parabola $y = x^2 - 8x + 12$ and the $x$-axis, as shown below. Find the area of square $ABCD.$\n\n[asy]\nunitsize(0.8 cm);\n\nreal parab (real x) {\n  return(x^2 - 8*x + 12);\n}\n\npair A, B, C, D;\nreal x = -1 + sqrt(5);\n\nA = (4 - x,0);\nB = (4 + x,0);\nC = (4 + x,-2*x);\nD = (4 - x,-2*x);\n\ndraw(graph(parab,1.5,6.5));\ndraw(A--D--C--B);\ndraw((1,0)--(7,0));\n\nlabel(\"$A$\", A, N);\nlabel(\"$B$\", B, N);\nlabel(\"$C$\", C, SE);\nlabel(\"$D$\", D, SW);\n[/asy]\n\nI think the area is 4. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't tell you if that's correct just yet! To help me understand your approach, could you walk me through how you arrived at 4? What steps did you take to set up the relationship between the square and the parabola?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, I found the vertex of the parabola. $x = -b/2a$, so $x = 8/2 = 4$. Then I plugged 4 into the equation to get $y = 16 - 32 + 12 = -4$. Since the distance from the x-axis to the vertex is 4, I assumed the square's side length was 2, so the area is $2^2 = 4$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've correctly identified the axis of symmetry and the vertex of the parabola. However, think about the position of the square. The vertex is the lowest point of the parabola, but does the bottom side of the square necessarily touch the vertex? Look at the diagram again—where are the vertices $C$ and $D$ located relative to the parabola?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. $C$ and $D$ are on the curve, but they aren't necessarily at the vertex. So the side length isn't just based on the vertex height. If I let the side length be $s$, then the distance from the axis of symmetry to the right side of the square is $s/2$. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great way to start. If the axis of symmetry is $x=4$ and the side length is $s$, then the x-coordinate of point $B$ (and $C$) would be $4 + s/2$. Now, since $C$ lies on the parabola, how can you express the y-coordinate of $C$ in terms of $s$ using the parabola's equation?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The y-coordinate of $C$ would be $(4 + s/2)^2 - 8(4 + s/2) + 12$. But wait, the side length of the square is $s$, and the top side $AB$ is on the x-axis. So the distance from the x-axis down to $C$ must be $s$. That means the y-coordinate of $C$ should be $-s$. So I can set $(4 + s/2)^2 - 8(4 + s/2) + 12 = -s$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've set up the equation perfectly. Now you just need to solve for $s$. Go ahead and simplify that expression and solve the quadratic equation. Let me know what you get for $s$!",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let me calculate... $(4 + s/2)^2 - 8(4 + s/2) + 12 = 16 + 4s + s^2/4 - 32 - 4s + 12 = s^2/4 - 4$. \nSo $s^2/4 - 4 = -s$. \nMultiplying by 4: $s^2 - 16 = -4s$, which is $s^2 + 4s - 16 = 0$. \nUsing the quadratic formula: $s = (-4 ± √(16 - 4(1)(-16))) / 2 = (-4 ± √(80)) / 2$. \n$s = (-4 ± 4√5) / 2 = -2 ± 2√5$. \nSince length is positive, $s = 2√5 - 2$. \nThen the area is $s^2 = (2√5 - 2)^2 = 20 - 8√5 + 4 = 24 - 8√5$. Is this correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that is correct! You correctly identified the coordinates, set up the relationship between the side length and the parabola's equation, and solved the resulting quadratic. Great job working through the correction!",
+      "loss_mask": true
+    }
+  ]
+}

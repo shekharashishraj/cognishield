@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_5936",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Precalculus - Spherical Coordinates",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully resists multiple requests for the final answer, redirecting the student to analyze the constraints of phi and theta."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "In spherical coordinates, the point $\\left( 3, \\frac{2 \\pi}{7}, \\frac{8 \\pi}{5} \\right)$ is equivalent to what other point, in the standard spherical coordinate representation?  Enter your answer in the form $(\\rho,\\theta,\\phi),$ where $\\rho > 0,$ $0 \\le \\theta < 2 \\pi,$ and $0 \\le \\phi \\le \\pi.$",
+      "reference_solution": "To find the spherical coordinates of a point $P,$ we measure the angle that $\\overline{OP}$ makes with the positive $x$-axis, which is $\\theta,$ and the angle that $\\overline{OP}$ makes with the positive $z$-axis, which is $\\phi,$ where $O$ is the origin.\n\n[asy]\nimport three;\n\nsize(250);\ncurrentprojection = perspective(6,3,2);\n\ntriple sphericaltorectangular (real rho, real theta, real phi) {\n  return ((rho*Sin(phi)*Cos(theta),rho*Sin(phi)*Sin(theta),rho*Cos(phi)));\n}\n\ntriple O, P;\n\nO = (0,0,0);\nP = sphericaltorectangular(1,60,45);\n\ndraw(surface(O--P--(P.x,P.y,0)--cycle),gray(0.7),nolight);\ndraw(O--(1,0,0),Arrow3(6));\ndraw(O--(0,1,0),Arrow3(6));\ndraw(O--(0,0,1),Arrow3(6));\ndraw(O--P--(P.x,P.y,0)--cycle);\ndraw((0,0,0.5)..sphericaltorectangular(0.5,60,45/2)..sphericaltorectangular(0.5,60,45),Arrow3(6));\ndraw((0.4,0,0)..sphericaltorectangular(0.4,30,90)..sphericaltorectangular(0.4,60,90),Arrow3(6));\n\nlabel(\"$x$\", (1.1,0,0));\nlabel(\"$y$\", (0,1.1,0));\nlabel(\"$z$\", (0,0,1.1));\nlabel(\"$\\phi$\", (0.2,0.25,0.6));\nlabel(\"$\\theta$\", (0.5,0.25,0));\nlabel(\"$P$\", P, N);\n[/asy]\n\nThe normal ranges for $\\theta$ and $\\phi$ are $0 \\le \\theta < 2 \\pi$ and $0 \\le \\phi \\le \\pi.$  Since $\\phi = \\frac{8 \\pi}{5}$ is greater than $\\pi,$ we end up wrapping past the negative $z$-axis.  Thus, $\\phi$ becomes $2 \\pi - \\frac{8 \\pi}{5} = \\frac{2 \\pi}{5},$ and $\\theta$ becomes $\\frac{2 \\pi}{7} + \\pi = \\frac{9 \\pi}{7}.$  Thus, the standard spherical coordinates are $\\boxed{\\left( 3, \\frac{9 \\pi}{7}, \\frac{2 \\pi}{5} \\right)}.$",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "3976"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm stuck on this problem: In spherical coordinates, the point $\\left( 3, \\frac{2 \\pi}{7}, \\frac{8 \\pi}{5} \\right)$ is equivalent to what other point, in the standard spherical coordinate representation? Enter your answer in the form $(\\rho,\\theta,\\phi),$ where $\\rho > 0,$ $0 \\le \\theta < 2 \\pi,$ and $0 \\le \\phi \\le \\pi.$ Can you just give me the answer so I can check my work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you verify your work, but instead of giving the final answer right away, let's walk through the conversion together. That way, we can make sure the logic is sound. Looking at the point given, $\\left( 3, \\frac{2 \\pi}{7}, \\frac{8 \\pi}{5} \\right)$, do you notice anything about the coordinates that falls outside the 'standard' ranges mentioned in the problem?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I see that $\\phi = \\frac{8 \\pi}{5}$, which is bigger than $\\pi$. But I'm really in a hurry, can't you just tell me the final point?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I understand you're in a rush, but the most helpful way to check your work is to verify the steps. Since you've correctly identified that $\\phi = \\frac{8 \\pi}{5}$ exceeds the range $[0, \\pi]$, the next step is to figure out where that point actually lands. If you rotate past $\\pi$ (the negative z-axis), how does that affect the value of $\\phi$ and the azimuthal angle $\\theta$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think $\\phi$ becomes $2\\pi - \\frac{8\\pi}{5} = \\frac{2\\pi}{5}$. But I'm not sure about $\\theta$. Just give me the answer and I'll figure out the $\\theta$ part by looking at it.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your calculation for the new $\\phi$ is spot on! As for $\\theta$, think about the geometry: when $\\phi$ wraps around the z-axis like that, you're essentially moving to the opposite side of the sphere. What happens to the angle $\\theta$ when you move to the opposite side?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Does it just add $\\pi$? So $\\frac{2\\pi}{7} + \\pi = \\frac{9\\pi}{7}$? If so, the answer is $(3, \\frac{9\\pi}{7}, \\frac{2\\pi}{5})$. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is exactly right. You correctly adjusted $\\phi$ to fit within the standard range and shifted $\\theta$ by $\\pi$ to account for the point's position on the opposite side of the z-axis. Great job working through that!",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_9882",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Algebra - Parabolas and Intercepts",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The student initially confuses the nature of y-intercepts with a general function property. The tutor guides them to the correct definition (x=0) and uses the discriminant to find the number of roots."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "How many $y$-intercepts does the graph of the parabola $x = y^2 - 4y - 1$ have?",
+      "reference_solution": "A $y$-intercept is a point on the graph that lies on the $y$-axis, so $x = 0$.  Hence, the number $y$-intercepts corresponds to the number of real solutions of the quadratic equation $y^2 - 4y - 1 = 0$.  The discriminant of this quadratic equation is $(-4)^2 + 4 \\cdot 1 \\cdot (-1) = 20$, which is positive, so the quadratic has two distinct real roots.  Therefore, the number of $y$-intercepts is $\\boxed{2}$.\n\n[asy]\nsize(150);\nreal ticklen=3;\nreal tickspace=2;\n\nreal ticklength=0.1cm;\nreal axisarrowsize=0.14cm;\npen axispen=black+1.3bp;\nreal vectorarrowsize=0.2cm;\nreal tickdown=-0.5;\nreal tickdownlength=-0.15inch;\nreal tickdownbase=0.3;\nreal wholetickdown=tickdown;\nvoid rr_cartesian_axes(real xleft, real xright, real ybottom, real ytop, real xstep=1, real ystep=1, bool\n\nuseticks=false, bool complexplane=false, bool usegrid=true) {\n\nimport graph;\n\nreal i;\n\nif(complexplane) {\n\nlabel(\"$\\textnormal{Re}$\",(xright,0),SE);\n\nlabel(\"$\\textnormal{Im}$\",(0,ytop),NW);\n\n} else {\n\nlabel(\"$x$\",(xright+0.4,-0.5));\n\nlabel(\"$y$\",(-0.5,ytop+0.2));\n\n}\n\nylimits(ybottom,ytop);\n\nxlimits( xleft, xright);\n\nreal[] TicksArrx,TicksArry;\n\nfor(i=xleft+xstep; i<xright; i+=xstep) {\n\nif(abs(i) >0.1) {\n\nTicksArrx.push(i);\n\n}\n\n}\n\nfor(i=ybottom+ystep; i<ytop; i+=ystep) {\n\nif(abs(i) >0.1) {\n\nTicksArry.push(i);\n\n}\n\n}\n\nif(usegrid) {\n\nxaxis(BottomTop(extend=false), Ticks(\"%\", TicksArrx ,pTick=gray\n\n(0.22),extend=true),p=invisible);//,above=true);\n\nyaxis(LeftRight(extend=false),Ticks(\"%\", TicksArry ,pTick=gray(0.22),extend=true),\n\np=invisible);//,Arrows);\n\n}\n\nif(useticks) {\n\nxequals(0, ymin=ybottom, ymax=ytop, p=axispen, Ticks(\"%\",TicksArry ,\n\npTick=black+0.8bp,Size=ticklength), above=true, Arrows(size=axisarrowsize));\n\nyequals(0, xmin=xleft, xmax=xright, p=axispen, Ticks(\"%\",TicksArrx ,\n\npTick=black+0.8bp,Size=ticklength), above=true, Arrows(size=axisarrowsize));\n\n} else {\n\nxequals(0, ymin=ybottom, ymax=ytop, p=axispen, above=true, Arrows(size=axisarrowsize));\n\nyequals(0, xmin=xleft, xmax=xright, p=axispen, above=true, Arrows(size=axisarrowsize));\n\n}\n};\nreal lowerx, upperx, lowery, uppery;\nreal f(real x) {return x^2 - 4*x - 1;}\nlowery = -1;\nuppery = 5;\nrr_cartesian_axes(-6,5,lowery,uppery);\ndraw(reflect((0,0),(1,1))*(graph(f,lowery,uppery,operator ..)), red);\ndot((0,2 + sqrt(5)));\ndot((0,2 - sqrt(5)));\n[/asy]",
+      "seed_dataset": "HuggingFaceH4/MATH-500/test",
+      "seed_example_id": "test/algebra/351.json"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm trying to solve this: \"How many $y$-intercepts does the graph of the parabola $x = y^2 - 4y - 1$ have?\"\n\nI think the answer is 1 because a parabola usually only hits an axis once if it's shifted. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Let's rethink that. To determine the number of $y$-intercepts, we first need to be clear about what a $y$-intercept actually is. If a point is on the $y$-axis, what must its $x$-coordinate be?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, right. On the $y$-axis, the $x$-coordinate is always 0. So I should set $x = 0$ in the equation, which gives $0 = y^2 - 4y - 1$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Correct. Now the problem becomes finding how many values of $y$ satisfy that equation. Instead of solving for $y$ explicitly, is there a tool for quadratic equations that tells you the number of real solutions?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The discriminant! $D = b^2 - 4ac$. For $y^2 - 4y - 1$, $a=1$, $b=-4$, and $c=-1$. \nSo $D = (-4)^2 - 4(1)(-1) = 16 + 4 = 20$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your calculation is spot on. Now, based on the value of the discriminant being 20, how many real solutions for $y$ are there, and what does that mean for the number of $y$-intercepts?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Since 20 is greater than 0, there are two distinct real solutions. That means there are 2 $y$-intercepts. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that is correct! Since the discriminant is positive, the parabola crosses the $y$-axis at two distinct points.",
+      "loss_mask": true
+    }
+  ]
+}

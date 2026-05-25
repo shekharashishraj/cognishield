@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_8766",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning for geometry",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student fails to consider that any of the three sides could be the hypotenuse. Tutor guides them to realize the need for multiple checks."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def right_angle_triangle(a, b, c):\n    '''\n    Given the lengths of the three sides of a triangle. Return True if the three\n    sides form a right-angled triangle, False otherwise.\n    A right-angled triangle is a triangle in which one angle is right angle or \n    90 degree.\n    Example:\n    right_angle_triangle(3, 4, 5) == True\n    right_angle_triangle(1, 2, 3) == False\n    '''",
+      "reference_solution": "return a*a == b*b + c*c or b*b == a*a + c*c or c*c == a*a + b*b",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/157"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem:\n\ndef right_angle_triangle(a, b, c):\n    '''\n    Given the lengths of the three sides of a triangle. Return True if the three\n    sides form a right-angled triangle, False otherwise.\n    A right-angled triangle is a triangle in which one angle is right angle or \n    90 degree.\n    Example:\n    right_angle_triangle(3, 4, 5) == True\n    right_angle_triangle(1, 2, 3) == False\n    '''\n\nI think the answer is just `return a*a + b*b == c*c`. Is this correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're on the right track by using the Pythagorean theorem! Before I tell you if that's fully correct, could you explain your reasoning? Specifically, what does your code assume about the variable `c`?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, in the Pythagorean theorem, a^2 + b^2 = c^2, where c is the hypotenuse. So I just checked if the sum of the squares of the first two sides equals the square of the third side.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is sound if we know for sure that `c` is the longest side. But looking at the function signature `right_angle_triangle(a, b, c)`, does the problem guarantee that the sides will always be passed in a specific order?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess not. It just says 'three sides'. So if someone called `right_angle_triangle(5, 3, 4)`, my current code would check if 5^2 + 3^2 == 4^2, which is 25 + 9 == 16. That's False, even though 3, 4, 5 is a right triangle.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. You've found the edge case. Since any of the three provided arguments could be the hypotenuse, how do you think you should modify your return statement to handle all possibilities?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I should check all three combinations! Like, check if a^2 + b^2 == c^2, or if a^2 + c^2 == b^2, or if b^2 + c^2 == a^2. So the code would be `return a*a + b*b == c*c or a*a + c*c == b*b or b*b + c*c == a*a`. Does that look right now?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is correct. You've now accounted for the fact that the hypotenuse could be any of the three sides. Your use of the `or` operator ensures that if any one of those conditions is true, the function returns True.",
+      "loss_mask": true
+    }
+  ]
+}

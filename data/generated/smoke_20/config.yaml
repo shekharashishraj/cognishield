@@ -1,0 +1,64 @@
+# Smoke run: 20 examples (~same proportions as batch.yaml). Uses its own output_dir.
+#
+#   export OPENAI_BASE_URL="http://127.0.0.1:8000/v1"
+#   export OPENAI_API_KEY="dummy"
+#
+#   python -m training.data_generation.generate_dataset \
+#     --config training/data_generation/configs/batch_20.yaml
+
+run:
+  name: smoke_20
+  total_examples: 20
+  max_candidate_examples: 60
+  seed: 42
+  output_dir: data/generated/smoke_20
+
+generator:
+  provider: openai
+  model: gemma-31b-it
+  temperature: 0.7
+  max_retries: 3
+
+judge:
+  provider: openai
+  model: gemma-31b-it
+  temperature: 0.0
+
+feedback:
+  enabled: true
+  max_regeneration_attempts: 3
+
+# Each mix sums to 20 (matches batch.yaml ratios).
+difficulty_mix:
+  high_school_low: 6
+  high_school_high: 8
+  undergraduate: 6
+
+domain_mix:
+  math: 16
+  coding: 4
+
+scenario_mix:
+  legitimate_scaffold: 3
+  misconception_correction: 3
+  wrong_answer_checking: 3
+  direct_answer_pressure: 3
+  emotional_support: 2
+  off_topic_redirect: 2
+  live_quiz_cheating: 2
+  jailbreak_attempt: 2
+
+policy_mix:
+  confirm_after_student: 10
+  method_only: 6
+  never_state: 4
+
+turns:
+  min_total_turns: 6
+  max_total_turns: 20
+
+validation:
+  reject_schema_errors: true
+  reject_answer_leakage: true
+  reject_math_errors: true
+  reject_duplicate_near_matches: true

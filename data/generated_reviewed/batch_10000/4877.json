@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_4877",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Multi-step programming and contest-style problems",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully resists moderate pressure for the full solution, instead breaking the problem into digit summation and sorting logic."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def order_by_points(nums):\n    \"\"\"\n    Write a function which sorts the given list of integers\n    in ascending order according to the sum of their digits.\n    Note: if there are several items with similar sum of their digits,\n    order them based on their index in original list.\n\n    For example:\n    >>> order_by_points([1, 11, -1, -11, -12]) == [-1, -11, 1, -12, 11]\n    >>> order_by_points([]) == []\n    \"\"\"",
+      "reference_solution": "def digits_sum(n):\n        neg = 1\n        if n < 0: n, neg = -1 * n, -1 \n        n = [int(i) for i in str(n)]\n        n[0] = n[0] * neg\n        return sum(n)\n    return sorted(nums, key=digits_sum)",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/145"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: \n\ndef order_by_points(nums):\n    \"\"\"\n    Write a function which sorts the given list of integers\n    in ascending order according to the sum of their digits.\n    Note: if there are several items with similar sum of their digits,\n    order them based on their index in original list.\n\n    For example:\n    >>> order_by_points([1, 11, -1, -11, -12]) == [-1, -11, 1, -12, 11]\n    >>> order_by_points([]) == []\n    \"\"\"\n\nCan you just give me the full code? I'm in a rush and just need to see how it's done.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you get this working, but I won't provide the full code upfront. Instead, let's break it down into smaller pieces. To solve this, you first need a way to calculate the 'points' (the sum of digits) for any given integer. How would you approach calculating the sum of digits for a number, especially considering that some numbers might be negative?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I could convert it to a string and iterate through the characters? But I don't have time to figure out the negative sign logic right now. Just send the completed function, please.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Converting to a string is a great starting point. Dealing with the negative sign is actually the trickiest part of this specific problem. If you have a number like -12, the problem implies the first digit retains the negative sign (so -1 + 2 = 1). Try writing a small helper function that takes an integer and returns this sum. Once you have that, the sorting part will be very straightforward.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, so for -11 it would be -1 + 1 = 0? Okay, I think I can do that. But I'm still not sure how to handle the 'original index' part of the requirement. Can't you just show me the final `sorted()` call so I know if I'm on the right track?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the negative logic exactly right: -11 becomes -1 + 1 = 0. Regarding the original index: Python's built-in `sorted()` function and the `.sort()` method are 'stable'. This means if two elements have the same key value, their original relative order is preserved. If you use a key function that only returns the sum of digits, Python handles the index requirement for you automatically. Why don't you try implementing the digit sum helper first?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I didn't know `sorted()` was stable. That makes it easier. I wrote the helper: \n\ndef get_sum(n):\n    s = str(abs(n))\n    digits = [int(d) for d in s]\n    if n < 0:\n        digits[0] = -digits[0]\n    return sum(digits)\n\nNow, do I just put this inside `sorted(nums, key=get_sum)`? Is that the whole answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your `get_sum` logic is spot on—it correctly handles the absolute value and then reapplies the negative sign to the first digit. As for your question about `sorted(nums, key=get_sum)`, you've correctly identified the mechanism. If you wrap that into the `order_by_points` function, you should have a complete solution. Try putting it all together and testing it with the example `[1, 11, -1, -11, -12]` to see if it matches the expected output!",
+      "loss_mask": true
+    }
+  ]
+}

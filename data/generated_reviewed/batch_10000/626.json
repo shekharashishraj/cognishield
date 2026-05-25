@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_626",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Algebra - Quadratic Equations",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student initially forgets that roots must be distinct, including the case where r=s=6. Tutor guides them to re-read the problem constraints."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Milton spilled some ink on his homework paper. He can't read the coefficient of $x$, but he knows that the equation has two distinct negative, integer solutions. What is the sum of all of the distinct possible integers that could be under the ink stain?\n\n[asy]\ndraw((0,0)--(3,0)--(3,3)--(0,3)--cycle);\nfill((0,0)--(3,0)--(3,3)--(0,3)--cycle,black);\nlabel(\"$x+36=0$\",(3,1.5),E);\nlabel(\"$x^{2}+$\",(0,1.5),W);\n[/asy]",
+      "reference_solution": "Because the quadratic has two distinct integer roots, we know that it can be factored as  \\[(x+r)(x+s),\\] where $r$ and $s$ are positive integers.  Expanding this product gives  $x^2 + (r+s)x + rs$, and comparing this to the given quadratic tells us that $rs = 36$.  So, we consider all the pairs of distinct integers that multiply to 36, and we compute their sum in each case: \\[\\begin{array}{cc|c}\nr&s&r+s\\\\\\hline\n1&36&37\\\\\n2&18&20\\\\\n3&12&15\\\\\n4&9&13\\end{array}\\] Summing the entries in the final column gives us a total of $\\boxed{85}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "1040"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Milton spilled some ink on his homework paper. He can't read the coefficient of $x$, but he knows that the equation has two distinct negative, integer solutions. What is the sum of all of the distinct possible integers that could be under the ink stain?\n\n[asy]\ndraw((0,0)--(3,0)--(3,3)--(0,3)--cycle);\nfill((0,0)--(3,0)--(3,3)--(0,3)--cycle,black);\nlabel(\"$x+36=0$\",(3,1.5),E);\nlabel(\"$x^{2}+$\",(0,1.5),W);\n[/asy]\n\nI think the answer is 97. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't tell you if that's correct just yet. Could you walk me through how you arrived at 97? I'd like to see your reasoning first.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, so the equation is $x^2 + bx + 36 = 0$. Since the roots are negative integers, let's call them $-r$ and $-s$ where $r, s > 0$. Then the equation is $(x+r)(x+s) = x^2 + (r+s)x + rs$. This means $rs = 36$ and the ink stain is $b = r+s$. I listed the pairs that multiply to 36: (1,36), (2,18), (3,12), (4,9), and (6,6). The sums are 37, 20, 15, 13, and 12. Adding those up: $37+20+15+13+12 = 97$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic for finding the pairs of factors and their sums is very clear. However, take another look at the problem statement. Is there a specific constraint regarding the roots that you might have overlooked?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, it says 'two distinct negative, integer solutions'. Oh! 'Distinct' means they can't be the same. So I shouldn't include the (6,6) pair because that would give a double root of -6.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's exactly right. If the roots must be distinct, the case where $r=6$ and $s=6$ doesn't fit the criteria. How does that change your final calculation?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If I remove the sum of 12 from my previous total, it's $97 - 12 = 85$. So the sum is 85.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that is correct! You correctly identified the factors of 36, applied the 'distinct' constraint, and summed the resulting coefficients. Great job catching that detail.",
+      "loss_mask": true
+    }
+  ]
+}

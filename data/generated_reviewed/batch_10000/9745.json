@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_9745",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Counting & Probability",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The student initially assumes all pairs summing to 7 have the same probability. The tutor guides them to distinguish between the unfair pair and the fair pairs. The assistant strictly adheres to the 'never_state' policy by not confirming the final numeric value of m+n."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "When rolling a certain unfair six-sided die with faces numbered 1, 2, 3, 4, 5, and 6, the probability of obtaining face $F$ is greater than $1/6$, the probability of obtaining the face opposite face $F$ is less than $1/6$, the probability of obtaining each of the other faces is $1/6$, and the sum of the numbers on each pair of opposite faces is 7. When two such dice are rolled, the probability of obtaining a sum of 7 is $ \\frac{47}{288} $. Given that the probability of obtaining face $F$ is $m/n$, where $m$ and $n$ are relatively prime positive integers, find $m+n$.",
+      "reference_solution": "Let $p(a,b)$ denote the probability of obtaining  $a$ on the first die and $b$ on the second.  Then the probability of obtaining a sum of 7 is $$p(1,6)+p(2,5)+p(3,4)+p(4,3)+p(5,2)+p(6,1).$$Let the probability of obtaining face $F$ be $(1/6)+x$.  Then the probability of obtaining the face opposite face $F$ is $(1/6)-x$. Therefore $$\\begin{aligned}{{47}\\over{288}}&=\n4\\left({1\\over6}\\right)^2+2\\left({1\\over6}+x\\right)\n\\left({1\\over6}-x\\right)\\cr&=\n{4\\over36}+2\\left({1\\over36}-x^2\\right)\\cr&=\n{1\\over6}-2x^2.\\end{aligned}$$Then $2x^2=1/288$, and so $x=1/24$. The probability of obtaining face $F$ is therefore $(1/6)+(1/24)=5/24$, and $m+n=\\boxed{29}$.",
+      "seed_dataset": "HuggingFaceH4/MATH-500/test",
+      "seed_example_id": "test/counting_and_probability/1003.json"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm trying to solve this: When rolling a certain unfair six-sided die with faces numbered 1, 2, 3, 4, 5, and 6, the probability of obtaining face $F$ is greater than $1/6$, the probability of obtaining the face opposite face $F$ is less than $1/6$, the probability of obtaining each of the other faces is $1/6$, and the sum of the numbers on each pair of opposite faces is 7. When two such dice are rolled, the probability of obtaining a sum of 7 is $ \\frac{47}{288} $. Given that the probability of obtaining face $F$ is $m/n$, where $m$ and $n$ are relatively prime positive integers, find $m+n$. I'm a bit lost, can you just give me the answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the final answer, but I'd be happy to help you work through the steps! Let's start by setting up the probabilities for a single die. If we let the probability of face $F$ be $1/6 + x$, what would the probability of the face opposite to $F$ be, according to the problem?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Since the other four faces are each $1/6$, the total probability is $4(1/6) + (1/6 + x) + P(\text{opposite})$. For this to equal 1, $P(\text{opposite})$ must be $1/6 - x$. Now, for the sum of two dice to be 7, we need the pairs (1,6), (2,5), (3,4), (4,3), (5,2), (6,1). Since there are 6 such pairs, I'll just say the probability is $6 \times (1/6 + x)(1/6 - x) = 47/288$. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've correctly identified the pairs that sum to 7 and the probabilities for the opposite faces. However, take a closer look at those 6 pairs. Do all of them consist of face $F$ and its opposite? If some pairs consist of the faces that have a probability of exactly $1/6$, how would that change your equation?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. Only one pair of opposite faces is 'unfair'. So if $F$ and its opposite are, say, 1 and 6, then only the pairs (1,6) and (6,1) use the $1/6+x$ and $1/6-x$ probabilities. The other four pairs—(2,5), (5,2), (3,4), and (4,3)—would just use $1/6 \times 1/6$. Does that mean the equation should be $4(1/6 \times 1/6) + 2((1/6 + x)(1/6 - x)) = 47/288$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is exactly right. You've correctly partitioned the outcomes based on the probabilities of the faces involved. Now, try solving that equation for $x$.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay: $4/36 + 2(1/36 - x^2) = 47/288$. \n$1/9 + 1/18 - 2x^2 = 47/288$. \n$3/18 - 2x^2 = 47/288$. \n$1/6 - 2x^2 = 47/288$. \n$2x^2 = 48/288 - 47/288 = 1/288$. \n$x^2 = 1/576$, so $x = 1/24$. \nThen the probability of face $F$ is $1/6 + 1/24 = 4/24 + 1/24 = 5/24$. \nSo $m=5, n=24$, and $m+n = 29$. Did I get it right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your derivation of $x$ and the probability of face $F$ is mathematically sound, and you've correctly applied the condition that $m$ and $n$ must be relatively prime. You have followed the logic through to the end! If you have any other questions about this type of probability problem, feel free to ask.",
+      "loss_mask": true
+    }
+  ]
+}

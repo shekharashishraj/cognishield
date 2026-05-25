@@ -1,0 +1,109 @@
+{
+  "conversation_id": "mt_9888",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Precalculus - Trigonometry",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to solve the problem by assuming a specific triangle type (isosceles) and reaches an incorrect answer. Tutor guides them to use a general coordinate or altitude approach."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "In triangle $ABC,$ if median $\\overline{AD}$ makes an angle of $45^\\circ$ with side $\\overline{BC},$ then find the value of $|\\cot B - \\cot C|.$",
+      "reference_solution": "Let $P$ be the foot of the altitude from $A$ to $\\overline{BC}.$  Let $x = BD = CD,$ and let $y = BP.$  Since $\\angle ADP = 45^\\circ,$ $AP = PD = x + y.$\n\n[asy]\nunitsize(2 cm);\n\npair A, B, C ,D, P;\n\nD = (0,0);\nB = (-1,0);\nC = (1,0);\nA = D + 2*dir(135);\nP = (A.x,0);\n\ndraw(A--P--C--cycle);\ndraw(A--B);\ndraw(A--D);\n\nlabel(\"$A$\", A, NW);\nlabel(\"$B$\", B, S);\nlabel(\"$C$\", C, SE);\nlabel(\"$D$\", D, S);\nlabel(\"$P$\", P, SW);\nlabel(\"$x$\", (B + D)/2, S, red);\nlabel(\"$x$\", (C + D)/2, S, red);\nlabel(\"$y$\", (B + P)/2, S, red);\nlabel(\"$x + y$\", (A + P)/2, W, red);\n[/asy]\n\nThen\n\\[\\cot B = -\\cot \\angle ABP = -\\frac{y}{x + y},\\]and\n\\[\\cot C = \\frac{2x + y}{x + y}.\\]Hence,\n\\[|\\cot B - \\cot C| = \\left| -\\frac{2x + 2y}{x + y} \\right| = \\boxed{2}.\\]",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "6919"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this geometry problem: \"In triangle $ABC,$ if median $\\overline{AD}$ makes an angle of $45^\\circ$ with side $\\overline{BC},$ then find the value of $|\\cot B - \\cot C|.$\"\n\nI think the answer is 1. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't tell you if that's correct just yet. Could you walk me through how you arrived at 1? I'd like to see your reasoning first.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, I assumed the triangle was isosceles with $AB = AC$ to make it easier. If it's isosceles, then the median $AD$ is also the altitude, so the angle it makes with $BC$ is $90^\\circ$. But the problem says it's $45^\\circ$, so I tried adjusting the angles and thought maybe the difference in cotangents would just be 1 because of the $45^\\circ$ angle.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see what you did there. However, assuming the triangle is isosceles might be leading you astray, especially since the median $AD$ cannot be the altitude if it meets $BC$ at $45^\\circ$. \n\nInstead of assuming a specific type of triangle, try using a more general approach. What happens if you drop an altitude from $A$ to the side $BC$? Let's call the foot of that altitude $P$. How does the length of $AP$ relate to the distance $PD$ given the $45^\\circ$ angle?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If I drop an altitude $AP$, then triangle $ADP$ is a right triangle with $\\angle ADP = 45^\\circ$. That means it's an isosceles right triangle, so $AP = PD$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great start. Now, let's define some lengths. Let $BD = DC = x$ (since $AD$ is a median). Let the distance $BP = y$. \n\nCan you express the length of $PD$ in terms of $x$ and $y$? And then, using your previous observation, what would $AP$ be?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If $P$ is between $B$ and $D$, then $PD = BD - BP = x - y$. So $AP = x - y$. \nWait, if $P$ is outside $BD$, it would be $x + y$. Let's assume $P$ is to the left of $B$. Then $BP = y$ and $PD = y + x$. So $AP = x + y$. \n\nNow I need $\\cot B$ and $\\cot C$. In $\\triangle ABP$, $\\cot B = BP / AP = y / (x + y)$. And in $\\triangle APC$, $\\cot C = PC / AP$. $PC$ would be $PD + DC = (x + y) + x = 2x + y$. \nSo $\\cot C = (2x + y) / (x + y)$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're on the right track with the expressions! Just be careful with the signs based on the orientation of the angles. If $P$ is outside the segment $BC$ (to the left of $B$), the angle $B$ is actually obtuse, which would affect the sign of $\\cot B$. \n\nTry calculating $|\\cot B - \\cot C|$ using those expressions you just found. What do you get?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If I take the absolute difference: $|y/(x+y) - (2x+y)/(x+y)| = |(y - 2x - y) / (x+y)| = |-2x / (x+y)|$. That doesn't seem to simplify to a constant. \n\nWait, if $P$ is between $B$ and $D$, then $PD = x - y$. Then $AP = x - y$. \n$\\cot B = y / (x-y)$ and $\\cot C = (x + (x-y)) / (x-y) = (2x-y)/(x-y)$. \nThen $|\\cot B - \\cot C| = |(y - 2x + y) / (x-y)| = |(2y - 2x) / (x-y)| = |-2(x-y) / (x-y)| = 2$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've successfully navigated through the geometry! You found that the variables $x$ and $y$ cancel out, leaving you with a constant value. Does this result match your initial guess?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "No, my initial guess was 1, but the calculation shows it's 2. So the answer is 2!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is correct. By using a general altitude and expressing the cotangents in terms of segment lengths, you were able to prove that the value is always 2 regardless of the specific dimensions of the triangle.",
+      "loss_mask": true
+    }
+  ]
+}

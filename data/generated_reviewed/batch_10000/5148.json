@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_5148",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Coordinate Geometry",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student initially mistakes the side length for the area and fails to account for the distance between parallel lines. Tutor guides them through the geometry of the square and the distance formula."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "For a certain square, two vertices lie on the line $y = 2x - 17,$ and the other two vertices lie on the parabola $y = x^2.$  Find the smallest possible area of the square.",
+      "reference_solution": "The two vertices that lie on $y = x^2$ must lie on a line of the form $y = 2x + k.$  Setting $y = x^2,$ we get $x^2 = 2x + k,$ so $x^2 - 2x - k = 0.$  Let $x_1$ and $x_2$ be the roots of this quadratic, so by Vieta's formulas, $x_1 + x_2 = 2$ and $x_1 x_2 = -k.$\n\nThe two vertices on the parabola are then $(x_1, 2x_1 + k)$ and $(x_2, 2x_2 + k),$ and the square of the distance between them is\n\\begin{align*}\n(x_1 - x_2)^2 + (2x_1 - 2x_2)^2 &= 5(x_1 - x_2)^2 \\\\\n&= 5[(x_1 + x_2)^2 - 4x_1 x_2] \\\\\n&= 5 (4 + 4k) \\\\\n&= 20(k + 1).\n\\end{align*}[asy]\nunitsize(0.3 cm);\n\nreal parab (real x) {\n  return(x^2);\n}\n\npair A, B, C, D;\n\nA = (-1,1);\nB = (3,9);\nC = (11,5);\nD = (7,-3);\n\ndraw(graph(parab,-3.5,3.5));\ndraw(interp(D,C,-0.4)--interp(D,C,1.4));\ndraw(interp(A,B,-0.4)--interp(A,B,1.4));\ndraw(A--D);\ndraw(B--C);\n\nlabel(\"$y = x^2$\", (3.5,3.5^2), N);\nlabel(\"$y = 2x - 17$\", interp(D,C,1.4), N);\n[/asy]\n\nThe point $(0,k)$ lies on the line $y = 2x + k,$ and its distance to the line $y - 2x + 17 = 0$ is\n\\[\\frac{|k + 17|}{\\sqrt{5}}.\\]Hence,\n\\[20 (k + 1) = \\frac{(k + 17)^2}{5}.\\]This simplifies to $k^2 - 66k + 189 = 0,$ which factors as $(k - 3)(k - 63) = 0.$  Hence, $k = 3$ or $k = 63.$\n\nWe want to find the smallest possible area of the square, so we take $k = 3.$  This gives us $20(k + 1) = \\boxed{80}.$",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "2175"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm working on this problem: For a certain square, two vertices lie on the line $y = 2x - 17,$ and the other two vertices lie on the parabola $y = x^2.$ Find the smallest possible area of the square. I think the answer is 20. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't tell you if that's correct just yet. Could you walk me through how you arrived at 20? I'd like to see your reasoning first.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, I thought the side of the square must be related to the distance between the line and the parabola. I tried to find a point on the parabola closest to the line, and I got a distance of $\\sqrt{20}$, so I thought the area was just 20.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see. You're looking at the minimum distance between the curve and the line. However, remember that the problem specifies a square. If two vertices are on the parabola and two are on the line, the segment connecting the two vertices on the parabola must be a side of the square, and it must be parallel to the given line. Does the minimum distance between the parabola and the line necessarily represent the side length of such a square?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. The side on the parabola isn't just a single point. So the two vertices on the parabola must lie on a line parallel to $y = 2x - 17$. That means they lie on $y = 2x + k$ for some $k$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Now, if those two vertices are on both $y = x^2$ and $y = 2x + k$, you can find their coordinates in terms of $k$. Once you have that, how can you express the length of that side (the distance between those two points) in terms of $k$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'll set $x^2 = 2x + k$, so $x^2 - 2x - k = 0$. The roots are $x = 1 \\pm \\sqrt{1+k}$. The distance squared between $(x_1, y_1)$ and $(x_2, y_2)$ is $(x_1-x_2)^2 + (y_1-y_2)^2$. Since the slope is 2, $(y_1-y_2) = 2(x_1-x_2)$. So the distance squared is $5(x_1-x_2)^2$. \n\n$(x_1-x_2) = 2\\sqrt{1+k}$, so the distance squared is $5(4(1+k)) = 20(k+1)$. This is the area $S$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've correctly found the area $S$ in terms of $k$. But $k$ isn't arbitrary; the distance between the two parallel lines (the side of the square) must also equal the side length of the square. How can you use the distance between $y = 2x + k$ and $y = 2x - 17$ to find $k$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The distance between two parallel lines $Ax + By + C_1 = 0$ and $Ax + By + C_2 = 0$ is $|C_1 - C_2| / \\sqrt{A^2 + B^2}$. \nHere the lines are $2x - y + k = 0$ and $2x - y - 17 = 0$. \nDistance $d = |k - (-17)| / \\sqrt{2^2 + (-1)^2} = |k + 17| / \\sqrt{5}$. \nSince $d^2$ is the area, $20(k+1) = (k+17)^2 / 5$. \n$100k + 100 = k^2 + 34k + 289$ \n$k^2 - 66k + 189 = 0$. \nSolving for $k$, I get $(k-3)(k-63) = 0$. So $k=3$ or $k=63$. \nFor $k=3$, the area is $20(3+1) = 80$. For $k=63$, the area is $20(64) = 1280$. \nSo the smallest area is 80.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is correct! You successfully identified that the side length must be consistent across both dimensions of the square and solved for the minimal $k$. Great job working through the coordinate geometry.",
+      "loss_mask": true
+    }
+  ]
+}

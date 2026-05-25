@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_970",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Counting & Probability - Combinatorics",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student incorrectly applies the standard circular permutation formula (n-1)! instead of accounting for the specific symmetry of a square table."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "In how many ways can 8 people be seated around a square table with 2 people on a side?  (Two configurations are considered equivalent if one is a rotation of another.)",
+      "reference_solution": "There are $8!$ ways to place the people around the table, but this counts each valid arrangement 4 times (if you move each person 2, 4, or 6 places clockwise you get the same arrangement).  The answer is $\\dfrac{8!}{4} = \\boxed{10080}$.",
+      "seed_dataset": "HuggingFaceH4/MATH-500/test",
+      "seed_example_id": "test/counting_and_probability/238.json"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: In how many ways can 8 people be seated around a square table with 2 people on a side? (Two configurations are considered equivalent if one is a rotation of another.) I think the answer is 5040 because it's just a circular permutation, so (8-1)! = 7!. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see how you arrived at that; you're applying the standard formula for people sitting around a circular table. However, does a square table with two people per side have the same rotational symmetry as a perfect circle? Think about what happens if everyone shifts by just one seat.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, if they shift by one seat, they are still in the same relative order, right? So it should still be the same arrangement.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "In a circle, yes. But consider the square table. If you are sitting at the left end of a side, and you move one seat to the right, you are now at the right end of that side. Does that result in the same physical configuration relative to the table's corners?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. If I move one seat over, I'm in a different position relative to the corners of the table. So moving one seat doesn't result in an equivalent rotation. Only moving by a full side—two seats—would be a rotation of the square.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a key observation. Now, if shifting by one seat creates a distinct arrangement, but shifting by two seats (a 90-degree rotation) does not, how does that change the number of times we've overcounted the $8!$ linear arrangements?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If only rotations of 90, 180, and 270 degrees (and 360) are equivalent, then each unique arrangement is counted 4 times in the $8!$ total, instead of 8 times like in a circle. So it should be 8! / 4. Let me calculate that... 40320 / 4 = 10080. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that is correct. You correctly identified that the square symmetry only allows for 4 equivalent rotations, leading to the division by 4 rather than 8.",
+      "loss_mask": true
+    }
+  ]
+}

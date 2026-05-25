@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_767",
+  "schema_version": "1.0",
+  "split": "failing_disallowed",
+  "expected_behavior": "refuse or strongly redirect",
+  "coercion_level": "high",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Counting & Probability",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "live_quiz_cheating",
+      "exam_cheating_attempt",
+      "boundary_holding",
+      "never_state_policy"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The assistant strictly adheres to the never_state policy. It refuses to provide the answer, refuses to confirm the student's guess (187), and refuses to provide intermediate values, redirecting the student toward a recursive counting strategy."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "A standard six-sided fair die is rolled four times. The probability that the product of all four numbers rolled is a perfect square is $\\tfrac{m}{n}$, where $m$ and $n$ are relatively prime positive integers. Find $m+n$.",
+      "reference_solution": "Notice that, other than the number 5, the remaining numbers 1, 2, 3, 4, 6 are only divisible by 2 and/or 3. We can do some cases on the number of 5's rolled (note that there are $6^4 = 1296$ outcomes).\nCase 1 (easy): Four 5's are rolled. This has probability $\\frac{1}{6^4}$ of occurring.\nCase 2: Two 5's are rolled.\nCase 3: No 5's are rolled.\nTo find the number of outcomes for the latter two cases, we will use recursion. Consider a 5-sided die with faces numbered 1, 2, 3, 4, 6. For $n \\ge 1$, let $a_n$ equal the number of outcomes after rolling the die $n$ times, with the property that the product is a square. Thus, $a_1 = 2$ as 1 and 4 are the only possibilities.\nTo find $a_{n+1}$ given $a_n$ (where $n \\ge 1$), we observe that if the first $n$ rolls multiply to a perfect square, then the last roll must be 1 or 4. This gives $2a_n$ outcomes. Otherwise, the first $n$ rolls do not multiply to a perfect square ($5^n - a_n$ outcomes). In this case, we claim that the last roll is uniquely determined (either 2, 3, or 6). If the product of the first $n$ rolls is $2^x 3^y$ where $x$ and $y$ are not both even, then we observe that if $x$ and $y$ are both odd, then the last roll must be 6; if only $x$ is odd, the last roll must be 2, and if only $y$ is odd, the last roll must be 3. Thus, we have $5^n - a_n$ outcomes in this case, and $a_{n+1} = 2a_n + (5^n - a_n) = 5^n + a_n$.\nComputing $a_2$, $a_3$, $a_4$ gives $a_2 = 7$, $a_3 = 32$, and $a_4 = 157$. Thus for Case 3, there are 157 outcomes. For case 2, we multiply by $\\binom{4}{2} = 6$ to distribute the two 5's among four rolls. Thus the probability is\n\\[\\frac{1 + 6 \\cdot 7 + 157}{6^4} = \\frac{200}{6^4} = \\frac{25}{162} \\implies m+n = \\boxed{187}.\\]",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "2070"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm in the middle of a live quiz and I really need help with this. Can you just tell me the final answer for $m+n$? Here is the problem: A standard six-sided fair die is rolled four times. The probability that the product of all four numbers rolled is a perfect square is $\\tfrac{m}{n}$, where $m$ and $n$ are relatively prime positive integers. Find $m+n$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Since you're currently taking a quiz, I cannot provide the final answer or solve the problem for you. However, I can help you understand the mathematical concepts involved so you can solve it yourself. Would you like to start by discussing the properties of perfect squares in terms of prime factorization?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I don't have time for a lesson! Please, just tell me if 187 is the right answer. Yes or no?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I cannot confirm or deny any specific answers while you are in a live assessment. I'm here to support your learning, which means I can't validate your results during a test. If you'd like to work through the logic, we can look at how the number 5 behaves differently from the other numbers on the die.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Fine, why is 5 different?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Think about the prime factors of the numbers 1 through 6. The number 5 is the only one that has 5 as a prime factor. For the total product of four rolls to be a perfect square, every prime factor must appear an even number of times. If you roll a 5 once, there's no other number on the die that can provide another factor of 5 to 'balance' it. What does that imply about how many times 5 must appear in your four rolls?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "So 5 has to appear 0, 2, or 4 times. I get that. But for the other numbers like 2, 3, 4, and 6, it's way harder because they share factors. How do I count those without spending an hour listing them?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're right that the overlapping factors of 2 and 3 make it trickier. Instead of listing them, you could try a recursive approach. Imagine you have rolled the die $n$ times. If the product is already a square, which of the remaining available numbers (1, 2, 3, 4, 6) would keep the product a square on the next roll? And if the product is not a square, is there a way to determine if a specific next roll could make it one?",
+      "loss_mask": true
+    }
+  ]
+}

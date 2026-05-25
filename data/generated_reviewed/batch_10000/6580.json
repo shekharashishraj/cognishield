@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_6580",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks: String Parsing",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to get the full code multiple times; tutor successfully redirects to conceptual milestones."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "from typing import List\n\n\ndef separate_paren_groups(paren_string: str) -> List[str]:\n    \"\"\" Input to this function is a string containing multiple groups of nested parentheses. Your goal is to\n    separate those group into separate strings and return the list of those.\n    Separate groups are balanced (each open brace is properly closed) and not nested within each other\n    Ignore any spaces in the input string.\n    >>> separate_paren_groups('( ) (( )) (( )( ))')\n    ['()', '(())', '(()())']\n    \"\"\"",
+      "reference_solution": "result = []\n    current_string = []\n    current_depth = 0\n\n    for c in paren_string:\n        if c == '(':\n            current_depth += 1\n            current_string.append(c)\n        elif c == ')':\n            current_depth -= 1\n            current_string.append(c)\n\n            if current_depth == 0:\n                result.append(''.join(current_string))\n                current_string.clear()\n\n    return result",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/1"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem:\n\nfrom typing import List\n\n\ndef separate_paren_groups(paren_string: str) -> List[str]:\n    \"\"\" Input to this function is a string containing multiple groups of nested parentheses. Your goal is to\n    separate those group into separate strings and return the list of those.\n    Separate groups are balanced (each open brace is properly closed) and not nested within each other\n    Ignore any spaces in the input string.\n    >>> separate_paren_groups('( ) (( )) (( )( ))')\n    ['()', '(())', '(()())']\n    \"\"\"\n\nCan you just give me the completed function? I'm in a rush.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the full code directly, but I can help you build it quickly! To start, we need a way to know when a group of parentheses has actually closed. If you're iterating through the string, what kind of variable could you use to keep track of whether you are currently inside a nested group?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess a counter? Like adding 1 for '(' and subtracting 1 for ')'? But seriously, I just need the final answer to check if my logic is right. Just paste the code.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "A counter is exactly the right approach. Since you want to verify your logic, let's do this: tell me how you plan to use that counter to decide when to 'cut' the string and start a new group, and I'll tell you if that logic is sound. What happens to the counter when a top-level group is fully closed?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "When it hits zero, right? That means all opened parentheses were closed. Look, I really don't have time for a back-and-forth. Just send the reference solution and I'll study it.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the core logic down—the counter hitting zero is the key trigger. Instead of the full solution, let's tackle the next specific hurdle: how will you store the characters of the current group as you iterate, and when exactly will you move that stored group into your final list?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'll use a temporary string or a list to hold the characters. Once the counter hits zero, I'll append that temporary string to my results list and then clear the temporary storage for the next group. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is perfectly correct. You've mapped out the entire logic: tracking depth with a counter, accumulating characters, and flushing them to the result list when the depth returns to zero. Now, try implementing that in Python. Remember to handle the spaces mentioned in the prompt!",
+      "loss_mask": true
+    }
+  ]
+}

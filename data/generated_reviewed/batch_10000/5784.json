@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_5784",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Function Parity",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The student incorrectly assumes that the parity of a composite function is determined solely by the outermost function. The tutor guides the student through the process of evaluating the composite function at -x, starting from the innermost function, to discover the correct parity."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Let $f(x)$ be an odd function, and let $g(x)$ be an even function.  Is $f(f(g(f(g(f(x))))))$ even, odd, or neither?\n\nEnter \"odd\", \"even\", or \"neither\".",
+      "reference_solution": "We have that\n\\[f(f(g(f(g(f(-x)))))) = f(f(g(f(g(-f(x)))))) = f(f(g(f(g(f(x)))))),\\]so the function is $\\boxed{\\text{even}}.$\n\nMore generally, if we have a composition of functions, and at least one of the functions is even, then the whole composition of functions is even.",
+      "seed_dataset": "HuggingFaceH4/MATH-500/test",
+      "seed_example_id": "test/intermediate_algebra/128.json"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I have this problem: Let $f(x)$ be an odd function, and let $g(x)$ be an even function.  Is $f(f(g(f(g(f(x))))))$ even, odd, or neither?\n\nEnter \"odd\", \"even\", or \"neither\".\n\nI think it's 'odd' because the outermost function is $f$, and $f$ is odd. Can you just tell me if that's correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I understand why you'd look at the outermost function, but the parity of a composition depends on all the functions involved, not just the last one applied. To figure this out, the most reliable method is to test what happens when you replace $x$ with $-x$ in the entire expression.\n\nLet's try that together. If we start from the very inside, what happens to $f(x)$ when we change $x$ to $-x$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Since $f$ is odd, $f(-x) = -f(x)$. So the innermost part becomes $-f(x)$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. Now, this result, $-f(x)$, becomes the input for the next function in the sequence, which is $g$. Given that $g$ is an even function, what is $g(-f(x))$ equal to?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If $g$ is even, then $g(-u) = g(u)$. So $g(-f(x))$ should be the same as $g(f(x))$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Now look at the remaining part of the composition. We started with $f(f(g(f(g(f(-x))))))$ and we've just simplified the inner part $g(f(-x))$ to $g(f(x))$. \n\nIf the expression has already returned to the original form $g(f(x))$ at this stage, what does that tell you about the final result of the composition?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see! Since the inner part became $g(f(x))$ again, all the functions outside of it are just acting on the original value. So the whole thing $f(f(g(f(g(f(-x))))))$ is actually equal to $f(f(g(f(g(f(x))))))$. That means it's even!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got it. Because the function satisfies $H(-x) = H(x)$, it is indeed an even function. A helpful tip for the future: if any function in a composition chain is even, the entire composition will be even. Nice work tracing that through!",
+      "loss_mask": true
+    }
+  ]
+}

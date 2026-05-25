@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_9307",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Number Theory - Perfect Squares",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Generated a high-quality tutoring session where the student makes a common error regarding the density of squares, and the tutor guides them to discover the gap threshold."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Let $S_i$ be the set of all integers $n$ such that $100i\\leq n < 100(i + 1)$. For example, $S_4$ is the set ${400,401,402,\\ldots,499}$. How many of the sets $S_0, S_1, S_2, \\ldots, S_{999}$ do not contain a perfect square?",
+      "reference_solution": "The difference between consecutive squares is $(x + 1)^2 - x^2 = 2x + 1$, which means that all squares above $50^2 = 2500$ are more than $100$ apart.\nThen the first $26$ sets ($S_0,\\cdots S_{25}$) each have at least one perfect square. Also, since $316^2 < 100000$ (which is when $i = 1000$), there are $316 - 50 = 266$ other sets after $S_{25}$ that have a perfect square.\nThere are $1000 - 266 - 26 = \\boxed{708}$ sets without a perfect square.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "5301"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Let $S_i$ be the set of all integers $n$ such that $100i\\leq n < 100(i + 1)$. For example, $S_4$ is the set ${400,401,402,\\ldots,499}$. How many of the sets $S_0, S_1, S_2, \\ldots, S_{999}$ do not contain a perfect square?\n\nI think the answer is 684 because there are 316 squares up to 100,000 and 1000 sets total, so 1000 - 316 = 684. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see how you arrived at that number, but it's not quite correct. You're assuming that each perfect square falls into a unique set $S_i$. Could you explain why that might or might not be the case for smaller numbers?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, can two squares be in the same set? The sets are 100 numbers wide. For example, $S_0$ is 0 to 99. In that set, we have $0^2, 1^2, 2^2, …, 9^2$. That's 10 squares in one set! So my subtraction was too simple.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. For small values of $n$, multiple squares can fit into a single interval of 100. As the squares get larger, however, the distance between them increases. At what point do you think the gap between consecutive squares becomes larger than 100?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I need to find when $(x+1)^2 - x^2 > 100$. \nThat's $x^2 + 2x + 1 - x^2 > 100$, so $2x + 1 > 100$, which means $2x > 99$, or $x > 49.5$. \nSo starting from $x=50$, the gap is more than 100. That means for $x ≥ 50$, each square must be in a different set $S_i$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great observation. Now that you've identified the threshold where squares stop sharing sets, how would you calculate the total number of sets that *do* contain at least one square? Think about the sets before $x=50$ and the sets after.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, for $x=0$ to $49$, the squares are $0, 1, …, 2401$. The largest square here is $49^2 = 2401$, which is in $S_{24}$. Wait, $50^2 = 2500$, which is the start of $S_{25}$. So sets $S_0$ through $S_{25}$ definitely have squares. That's 26 sets. \nThen for squares from $51^2$ up to the limit, each square is in its own set. The limit is $100,000$. $\\sqrt{100000}$ is about $316.22$, so the largest square is $316^2$. \nSo we have squares from $x=51$ to $x=316$. That is $316 - 51 + 1 = 266$ sets. \nTotal sets with squares = $26 + 266 = 292$. \nSets without squares = $1000 - 292 = 708$. Is this correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your reasoning is spot on, and your calculations are correct. You successfully accounted for both the overlapping squares in the early sets and the unique sets for the larger squares. Well done!",
+      "loss_mask": true
+    }
+  ]
+}

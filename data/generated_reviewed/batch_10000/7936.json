@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_7936",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student initially confuses a rolling maximum with a global maximum (sorting approach). Tutor uses counter-examples to correct the misconception and guides them toward state-tracking during iteration."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "from typing import List, Tuple\n\n\ndef rolling_max(numbers: List[int]) -> List[int]:\n    \"\"\" From a given list of integers, generate a list of rolling maximum element found until given moment\n    in the sequence.\n    >>> rolling_max([1, 2, 3, 2, 3, 4, 2])\n    [1, 2, 3, 3, 3, 4, 4]\n    \"\"\"",
+      "reference_solution": "running_max = None\n    result = []\n\n    for n in numbers:\n        if running_max is None:\n            running_max = n\n        else:\n            running_max = max(running_max, n)\n\n        result.append(running_max)\n\n    return result",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/9"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: \n\nfrom typing import List, Tuple\n\n\ndef rolling_max(numbers: List[int]) -> List[int]:\n    \"\"\" From a given list of integers, generate a list of rolling maximum element found until given moment\n    in the sequence.\n    >>> rolling_max([1, 2, 3, 2, 3, 4, 2])\n    [1, 2, 3, 3, 3, 4, 4]\n    \"\"\"\n\nI'm in a rush, can you just give me the solution code?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code for you, but I can help you figure out the logic so you can write it yourself quickly! Let's look at the example: `[1, 2, 3, 2, 3, 4, 2]` becomes `[1, 2, 3, 3, 3, 4, 4]`. In your own words, how is each number in the output list being decided?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It looks like it's just the maximum value of the list. Maybe I can just sort the input list in descending order and then use that first value for every index of the result list?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Let's test that idea. If we sort `[1, 2, 3, 2, 3, 4, 2]` in descending order, the first element is 4. If we used that for every index, our result would be `[4, 4, 4, 4, 4, 4, 4]`. Does that match the example output provided in the docstring?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. It's not the maximum of the whole list, but the maximum of everything we've seen *up to that point*. So for the first index, it's just the first number. For the second, it's the max of the first and second, and so on.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly! Now, think about how to implement this efficiently. If you're using a loop to go through the numbers one by one, do you need to re-examine the entire prefix of the list at every step, or is there a way to remember the 'current winner' as you go?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could use a variable to store the maximum value I've seen so far. Every time I move to the next number in the loop, I'll compare it to my stored maximum and update the variable if the new number is bigger. Then I just add that variable to my results list.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great plan. One edge case to consider: what should you initialize your 'maximum seen so far' variable to? If you initialize it to 0, but the input list only contains negative numbers, will your code still work?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Hmm, no, it wouldn't. It would just keep returning 0. I should probably set it to the first element of the list or use something like `None` to signal that I haven't seen any numbers yet.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's the right way to handle it. Now you have the logic: a way to track the state across iterations and a plan for initialization. Why don't you try writing the code now? Let me know if you hit any snags!",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_7311",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student incorrectly attempts to search from the left and misses the 'between two consonants' constraint. Tutor guides them to iterate backwards and check neighbors."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def get_closest_vowel(word):\n    \"\"\"You are given a word. Your task is to find the closest vowel that stands between \n    two consonants from the right side of the word (case sensitive).\n    \n    Vowels in the beginning and ending doesn't count. Return empty string if you didn't\n    find any vowel met the above condition. \n\n    You may assume that the given string contains English letter only.\n\n    Example:\n    get_closest_vowel(\"yogurt\") ==> \"u\"\n    get_closest_vowel(\"FULL\") ==> \"U\"\n    get_closest_vowel(\"quick\") ==> \"\"\n    get_closest_vowel(\"ab\") ==> \"\"\n    \"\"\"",
+      "reference_solution": "if len(word) < 3:\n        return \"\"\n\n    vowels = {\"a\", \"e\", \"i\", \"o\", \"u\", \"A\", \"E\", 'O', 'U', 'I'}\n    for i in range(len(word)-2, 0, -1):\n        if word[i] in vowels:\n            if (word[i+1] not in vowels) and (word[i-1] not in vowels):\n                return word[i]\n    return \"\"",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/118"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem. Can you just give me the solution so I can see how it's done?\n\nProblem:\ndef get_closest_vowel(word):\n    \"\"\"You are given a word. Your task is to find the closest vowel that stands between \n    two consonants from the right side of the word (case sensitive).\n    \n    Vowels in the beginning and ending doesn't count. Return empty string if you didn't\n    find any vowel met the above condition. \n\n    You may assume that the given string contains English letter only.\n\n    Example:\n    get_closest_vowel(\"yogurt\") ==> \"u\"\n    get_closest_vowel(\"FULL\") ==> \"U\"\n    get_closest_vowel(\"quick\") ==> \"\"\n    get_closest_vowel(\"ab\") ==> \"\"\n    \"\"\"",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full solution directly, but I'd be happy to help you build it! Let's start by breaking down the requirements. The goal is to find a vowel that is surrounded by consonants, specifically the one closest to the right end of the word. How would you approach searching the word from the right side?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think I can just use a for loop to go through the word and check if the character is in 'aeiou'. If it is, I'll return it. Like this:\n\nfor char in word:\n    if char in 'aeiou':\n        return char",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the basic idea of checking for vowels, but there are two important details we need to address. First, the problem asks for the vowel closest to the *right* side. Your current loop starts from the left. Second, the vowel must be between two consonants. If you just return the first vowel you find, would that satisfy the 'between two consonants' rule?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I forgot about the consonants. I can just check if the character before it and after it are not vowels. But if I use `for char in word`, I don't have the index. I'll use `range(len(word))` instead. And since it's from the right, I'll just reverse the word first using `word[::-1]` and then search from the start.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Reversing the word is one way to handle the direction, but be careful! If you reverse the string, the indices of the 'neighboring' characters also shift. It might be simpler to use a `range` that counts backwards. Also, consider what happens if the vowel is at the very first or very last position of the word—does the problem allow that?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Right, it says vowels at the beginning and ending don't count. So if I use a loop like `for i in range(len(word)-2, 0, -1):`, that avoids the first and last index. Then I can check `if word[i] in vowels` and then check `if word[i-1] not in vowels and word[i+1] not in vowels`. Does that sound right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is spot on. You've correctly handled the right-to-left search, excluded the boundaries, and implemented the consonant check. One final detail: the problem mentions the search is case sensitive and provides examples like \"FULL\" returning \"U\". How will you ensure your vowel check handles both uppercase and lowercase letters?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I should probably make my vowels set include both: `vowels = {'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'}`. So the final logic would be: check length, loop backwards from `len(word)-2` down to `1`, check if the current char is a vowel and neighbors aren't, and return the char immediately. If the loop finishes without finding anything, return an empty string.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is exactly the correct logic. You've accounted for the direction, the boundary constraints, the neighbor requirements, and the case sensitivity. Go ahead and implement that into your function!",
+      "loss_mask": true
+    }
+  ]
+}

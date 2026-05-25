@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_7115",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to solve the problem by sorting the list once and using two pointers, but fails to account for the modification of the list during the process or the specific order of extraction. Tutor guides them toward a loop-based approach."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def strange_sort_list(lst):\n    '''\n    Given list of integers, return list in strange order.\n    Strange sorting, is when you start with the minimum value,\n    then maximum of the remaining integers, then minimum and so on.\n\n    Examples:\n    strange_sort_list([1, 2, 3, 4]) == [1, 4, 2, 3]\n    strange_sort_list([5, 5, 5, 5]) == [5, 5, 5, 5]\n    strange_sort_list([]) == []\n    '''",
+      "reference_solution": "res, switch = [], True\n    while lst:\n        res.append(min(lst) if switch else max(lst))\n        lst.remove(res[-1])\n        switch = not switch\n    return res",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/70"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this coding problem. Can you just give me the solution? Here is the prompt:\n\ndef strange_sort_list(lst):\n    '''\n    Given list of integers, return list in strange order.\n    Strange sorting, is when you start with the minimum value,\n    then maximum of the remaining integers, then minimum and so on.\n\n    Examples:\n    strange_sort_list([1, 2, 3, 4]) == [1, 4, 2, 3]\n    strange_sort_list([5, 5, 5, 5]) == [5, 5, 5, 5]\n    strange_sort_list([]) == []\n    '''",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the full code right away, but I can definitely help you figure it out! Let's start by breaking down the logic. If you have a list, you need to repeatedly pick the smallest, then the largest, then the smallest again. How would you approach picking those elements one by one?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think I can just sort the list first using .sort(). Then I can use two pointers, one at the start (index 0) and one at the end (index len(lst)-1). I'll just alternate between them. Does that work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a very common and intuitive approach! Using two pointers on a sorted list is often efficient. However, let's trace it carefully. If you use two pointers on the original sorted list, how do you handle the case where the pointers meet in the middle? And more importantly, does the problem ask you to return a new list or modify the existing one?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'll return a new list. For the middle, I'll just stop when the pointers cross. But wait, if I just use the indices of the sorted list, I'm not actually removing the elements from the original set. Is that a problem?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It's not necessarily a problem to use a new list, but consider the requirement: 'maximum of the remaining integers'. If you sort the list once, the 'remaining' integers are just the ones you haven't pointed to yet. Your two-pointer idea actually works for the logic, but it might be trickier to implement without off-by-one errors. What if you didn't sort the list first, but instead looked for the min and max dynamically in each step?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. So I could use a while loop that runs as long as the list isn't empty. Inside, I'd find the min, add it to my result, and then remove it from the list. Then I'd find the max, add it, and remove it. Then repeat.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That sounds like a solid plan! It directly follows the description of picking from the 'remaining' integers. How would you keep track of whether it's time to pick the minimum or the maximum in each iteration of the loop?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could use a boolean variable, like `is_min_turn = True`. At the end of each loop iteration, I'll just flip it: `is_min_turn = not is_min_turn`. So it goes True, False, True, False...",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a perfect way to handle the alternation. You've now mapped out the logic: a loop, a toggle for the min/max choice, and removing elements as you go. Why don't you try writing the code now and let me know if you run into any issues?",
+      "loss_mask": true
+    }
+  ]
+}

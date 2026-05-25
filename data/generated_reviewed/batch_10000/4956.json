@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_4956",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully guides the student through a complex area problem involving floor functions, correcting a misconception about the continuity of the function and guiding them toward a piecewise summation approach."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "For each integer $n \\ge 2$, let $A(n)$ be the area of the region in the coordinate plane defined by the inequalities $1\\le x \\le n$ and $0\\le y \\le x \\left\\lfloor \\sqrt x \\right\\rfloor$, where $\\left\\lfloor \\sqrt x \\right\\rfloor$ is the greatest integer not exceeding $\\sqrt x$. Find the number of values of $n$ with $2\\le n \\le 1000$ for which $A(n)$ is an integer.",
+      "reference_solution": "Let $k$ be a positive integer.  Then for $k^2 \\le x < (k + 1)^2,$\n\\[x \\lfloor \\sqrt{x} \\rfloor = kx.\\]Thus, on this interval, the graph of $0 \\le y \\le x \\lfloor \\sqrt{x} \\rfloor$ is a trapezoid, with left height $k^3,$ right height $k(k + 1)^2,$ and base $(k + 1)^2 - k^2 = 2k + 1,$ so its area is\n\\[\\frac{k^3 + k(k + 1)^2}{2} \\cdot (2k + 1) = 2k^4 + 3k^3 + 2k^2 + \\frac{k}{2}.\\]Let $n$ be a positive integer such that $k^2 + 1 \\le n \\le (k + 1)^2.$  Then for $k^2 \\le x < n,$ the graph of $0 \\le y \\le x \\lfloor \\sqrt{x} \\rfloor$ is a trapezoid with left height $k^3,$ right height $kn,$ and base $n - k^2,$ so its area is\n\\[\\frac{k^3 + kn}{2} \\cdot (n - k^2) = \\frac{k(k^2 + n)(n - k^2)}{2} = \\frac{k(n^2 - k^4)}{2}.\\]We want to compute the area of the graph for $1 \\le x \\le n$; in particular, we want this area to be an integer.  We know that the area for $k^2 \\le x \\le (k + 1)^2$ is\n\\[2k^4 + 3k^3 + 2k^2 + \\frac{k}{2}.\\]Since $2k^4 + 3k^3 + 2k^2$ is always an integer, for our purposes, we keep only the $\\frac{k}{2}$ term.  This gives us\n\\begin{align*}\n\\sum_{i = 1}^{k - 1} \\frac{i}{2} + \\frac{k(n^2 - k^4)}{2} &= \\frac{1}{2} \\cdot \\frac{(k - 1)k}{2} + \\frac{k(n^2 - k^4)}{2} \\\\\n&= \\frac{k(k - 1)}{4} + \\frac{k(n^2 - k^4)}{2} \\\\\n&= \\frac{k[2k(n^2 - k^4) + k - 1]}{4}.\n\\end{align*}Thus, we want $k[2k(n^2 - k^4) + k - 1]$ to be divisible by 4.  We compute $k[2k(n^2 - k^4) + k - 1]$ modulo 4 for $0 \\le k \\le 3$ and $0 \\le n \\le 3,$ and obtain the following results:\n\n\\[\n\\begin{array}{c||c|c|c|c}\nk \\backslash n & 0 & 1 & 2 & 3 \\\\ \\hline \\hline\n0 & 0 & 0 & 0 & 0 \\\\ \\hline\n1 & 2 & 0 & 2 & 0 \\\\ \\hline\n2 & 2 & 2 & 2 & 2 \\\\ \\hline\n3 & 0 & 2 & 0 & 2\n\\end{array}\n\\]Case 1: $k = 4m$ for some integer $m.$\n\nAll integers $n$ in the range $k^2 + 1 \\le n \\le (k + 1)^2$ work, for a total of $2k + 1$ integers.\n\nCase 2: $k = 4m + 1$ for some integer $m.$\n\nOnly odd integers $n$ in the range $k^2 + 1 \\le n \\le (k + 1)^2$ work.  These are $k^2 + 2,$ $k^2 + 4,$ $\\dots,$ $(k + 1)^2 - 1,$ for a total of $k$ integers.\n\nCase 3: $k = 4m + 2$ for some integer $m.$\n\nNo integers $n$ in the range $k^2 + 1 \\le n \\le (k + 1)^2$ work.\n\nCase 4: $k = 4m + 3$ for some integer $m.$\n\nOnly even integers $n$ in the range $k^2 + 1 \\le n \\le (k + 1)^2$ work.  These are $k^2 + 1,$ $k^2 + 3,$ $\\dots,$ $(k + 1)^2,$ for a total of $k + 1$ integers.\n\nThus, the four cases $k = 4m + 1,$ $4m + 2,$ $4m + 3,$ and $4m + 4$ contribute\n\\[4m + 1 + 4m + 4 + 2(4m + 4) + 1 = 16m + 14.\\]integers.\n\nSumming over $0 \\le m \\le 6$ covers the cases $2 \\le n \\le 841,$ and gives us\n\\[\\sum_{m = 0}^6 (16m + 14) = 434\\]integers.\n\nFor $k = 29,$ which covers the cases $529 \\le n \\le 900,$ we have another 29 integers.\n\nFor $k = 30,$ which covers the cases $901 \\le n \\le 961,$ there are no integers.\n\nFor $k = 31,$ only the even integers in the range $962 \\le n \\le 1024$ work.  We want the integers up to 1000, which are\n\\[962, 964, \\dots, 1000,\\]and there are 20 of them.\n\nThus, the total number of integers we seek is $434 + 29 + 20 = \\boxed{483}.$",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "2396"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm stuck on this problem: For each integer $n \\ge 2$, let $A(n)$ be the area of the region in the coordinate plane defined by the inequalities $1\\le x \\le n$ and $0\\le y \\le x \\left\\lfloor \\sqrt x \\right\\rfloor$, where $\\left\\lfloor \\sqrt x \\right\\rfloor$ is the greatest integer not exceeding $\\sqrt x$. Find the number of values of $n$ with $2\\le n \\le 1000$ for which $A(n)$ is an integer. Can you just give me the answer so I can check my work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through the problem, but I can't provide the final answer right away. The goal is to figure out the pattern together! Let's start by looking at the expression for the area $A(n)$. Since $A(n)$ is the area under the curve $y = x \\lfloor \\sqrt{x} \\rfloor$ from $x=1$ to $x=n$, how would you set up the calculation for this area?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, it's just an integral, right? So $A(n) = \\int_1^n x \\lfloor \\sqrt{x} \\rfloor dx$. Since $\\lfloor \\sqrt{x} \\rfloor$ is basically just $\\sqrt{x}$, I'll just integrate $x \\sqrt{x}$, which is $x^{3/2}$. The integral is $\\frac{2}{5}x^{5/2}$. So I just need to see when $\\frac{2}{5}(n^{5/2} - 1)$ is an integer.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see where you're going with that, but there's a catch! The floor function $\\lfloor \\sqrt{x} \\rfloor$ isn't exactly the same as $\\sqrt{x}$. It stays constant over certain intervals. For example, if $1 \\le x < 4$, then $\\lfloor \\sqrt{x} \\rfloor = 1$. If $4 \\le x < 9$, then $\\lfloor \\sqrt{x} \\rfloor = 2$. How does this change the way you would compute the integral?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. So it's a piecewise function. I have to break the integral into parts where $\\lfloor \\sqrt{x} \\rfloor$ is a constant $k$. So for $k^2 \\le x < (k+1)^2$, the function is just $y = kx$. That's a line! So the area on each of those intervals is just a trapezoid. Let me try that. For $k=1$, from $x=1$ to $x=4$, the area is $\\int_1^4 1 \\cdot x dx = [x^2/2]_1^4 = 8 - 0.5 = 7.5$. For $k=2$, from $x=4$ to $x=9$, it's $\\int_4^9 2x dx = [x^2]_4^9 = 81 - 16 = 65$. So $A(9) = 7.5 + 65 = 72.5$. This is not an integer. Does that look right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic for breaking the integral into intervals is spot on! Your calculations for $A(4)$ and $A(9)$ are also correct. Now, let's generalize. If $n$ falls in the middle of an interval, say $k^2 < n < (k+1)^2$, the total area $A(n)$ will be the sum of the areas of the full intervals from $k=1$ to $k-1$, plus the area of the partial trapezoid from $k^2$ to $n$. Can you find a general formula for the area of a full interval from $k^2$ to $(k+1)^2$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, for a full interval $k$, the area is $\\int_{k^2}^{(k+1)^2} kx dx = [\\frac{k}{2}x^2]_{k^2}^{(k+1)^2} = \\frac{k}{2}((k+1)^4 - (k^2)^2)$. Wait, that's not right. The integral of $kx$ is $\\frac{k}{2}x^2$. So it's $\\frac{k}{2}((k+1)^2)^2 - \\frac{k}{2}(k^2)^2 = \\frac{k}{2}((k+1)^4 - k^4)$. Let me re-calculate. $\\frac{k}{2}(k^4 + 4k^3 + 6k^2 + 4k + 1 - k^4) = \\frac{k}{2}(4k^3 + 6k^2 + 4k + 1) = 2k^4 + 3k^3 + 2k^2 + \\frac{k}{2}$. This matches the reference if I were looking at one, but I'm doing it myself. So for the total area to be an integer, the sum of these $\\frac{k}{2}$ terms plus the final partial trapezoid must be an integer. Is that the right path?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've nailed the general formula for the full intervals! You've correctly identified that the 'integer-ness' of $A(n)$ depends on the sum of those $\\frac{k}{2}$ terms and the area of the final partial interval. Let's focus on that partial interval. If $k^2 \\le n < (k+1)^2$, the area from $k^2$ to $n$ is $\\int_{k^2}^n kx dx$. What is that expression, and how does it combine with the previous sums to determine if $A(n)$ is an integer?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The partial area is $\\int_{k^2}^n kx dx = [\\frac{k}{2}x^2]_{k^2}^n = \\frac{k(n^2 - k^4)}{2}$. So the total area $A(n)$ is $\\sum_{i=1}^{k-1} (2i^4 + 3i^3 + 2i^2 + \\frac{i}{2}) + \\frac{k(n^2 - k^4)}{2}$. Since the polynomial parts are always integers, I just need $\\sum_{i=1}^{k-1} \\frac{i}{2} + \\frac{k(n^2 - k^4)}{2}$ to be an integer. This is $\\frac{(k-1)k}{4} + \\frac{k(n^2 - k^4)}{2}$. For this to be an integer, the numerator $k(k-1) + 2k(n^2 - k^4)$ must be divisible by 4. Now I just need to count how many $n$ satisfy this for $k$ up to $\\lfloor \\sqrt{1000} \\rfloor = 31$. This looks like a lot of case work based on $k \\pmod 4$. Should I proceed with that?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is exactly the correct approach. Analyzing $k \\pmod 4$ will allow you to find a pattern for how many values of $n$ work within each block of 4 consecutive $k$ values. Go ahead and test the cases for $k \\equiv 0, 1, 2, 3 \\pmod 4$ and see how many $n$ in the range $k^2 < n \\le (k+1)^2$ satisfy the condition for each case. Let me know what you find!",
+      "loss_mask": true
+    }
+  ]
+}

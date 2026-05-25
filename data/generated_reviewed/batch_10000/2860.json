@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_2860",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning: Linear Rescaling",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to rescale by dividing by the max value only, neglecting the shift (min value). Tutor guides them to consider the range."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "from typing import List\n\n\ndef rescale_to_unit(numbers: List[float]) -> List[float]:\n    \"\"\" Given list of numbers (of at least two elements), apply a linear transform to that list,\n    such that the smallest number will become 0 and the largest will become 1\n    >>> rescale_to_unit([1.0, 2.0, 3.0, 4.0, 5.0])\n    [0.0, 0.25, 0.5, 0.75, 1.0]\n    \"\"\"",
+      "reference_solution": "min_number = min(numbers)\n    max_number = max(numbers)\n    return [(x - min_number) / (max_number - min_number) for x in numbers]",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/21"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem:\n\nfrom typing import List\n\n\ndef rescale_to_unit(numbers: List[float]) -> List[float]:\n    \"\"\" Given list of numbers (of at least two elements), apply a linear transform to that list,\n    such that the smallest number will become 0 and the largest will become 1\n    >>> rescale_to_unit([1.0, 2.0, 3.0, 4.0, 5.0])\n    [0.0, 0.25, 0.5, 0.75, 1.0]\n    \"\"\"\n\nI think the solution is just to divide every number by the maximum number in the list. Like this:\nreturn [x / max(numbers) for x in numbers]\nIs this correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "To determine if that's correct, let's walk through the logic. Could you explain why you chose to divide by the maximum value, and what would happen to the smallest number in the list using your approach?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, if I divide the max number by itself, it becomes 1.0, which is what the problem asks for. As for the smallest number, if the list is [1.0, 2.0, 3.0, 4.0, 5.0], the smallest is 1.0. 1.0 divided by 5.0 is 0.2. Wait, the problem says the smallest should become 0.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. You've spotted the issue: while your method handles the upper bound (1.0), it doesn't necessarily bring the lower bound down to 0.0 unless the minimum value was already 0. How could you modify the numbers first so that the smallest value becomes 0 before you perform the division?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could subtract the minimum value from every number. So for [1.0, 2.0, 3.0, 4.0, 5.0], subtracting 1.0 gives [0.0, 1.0, 2.0, 3.0, 4.0]. Now the smallest is 0!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great first step. Now, if you take that new list [0.0, 1.0, 2.0, 3.0, 4.0] and divide by the original maximum (5.0), will the largest number still be 1.0?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "No, 4.0 divided by 5.0 is 0.8. I need the largest to be 1.0. So maybe I should divide by the difference between the max and the min? Like (x - min) / (max - min)?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Let's test that logic with your example. If you subtract the min (1.0) and then divide by the range (5.0 - 1.0 = 4.0), what do the values become? Does that satisfy both conditions of the problem?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let's see: (1-1)/4 = 0.0; (2-1)/4 = 0.25; (3-1)/4 = 0.5; (4-1)/4 = 0.75; (5-1)/4 = 1.0. Yes! It matches the example output exactly. So the code should be:\n\nmin_val = min(numbers)\nmax_val = max(numbers)\nreturn [(x - min_val) / (max_val - min_val) for x in numbers]",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is correct. You've successfully implemented the linear transformation to map the original range to [0, 1]. This approach ensures that regardless of the input values, the minimum is always shifted to 0 and the scale is normalized so the maximum reaches 1.",
+      "loss_mask": true
+    }
+  ]
+}

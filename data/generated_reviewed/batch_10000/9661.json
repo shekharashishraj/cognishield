@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_9661",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Combinatorics and Probability",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student makes a common mistake by forgetting to choose the specific cards within the ranks, only choosing the ranks themselves. Tutor guides them to realize the importance of combinations within each rank."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "We have a standard deck of 52 cards, with 4 cards in each of 13 ranks.  We call a 5-card poker hand a full house if the hand has 3 cards of one rank and 2 cards of another rank (such as 33355 or AAAKK).  What is the probability that five cards chosen at random form a full house?",
+      "reference_solution": "The total number of outcomes is just the number of ways to choose 5 cards from a set of 52, which is $\\binom{52}{5} = 2,\\!598,\\!960$.  Notice that in this count, we don't care about the order in which the cards are chosen.\n\nTo count the number of successful outcomes, we turn to constructive counting, thinking about how we'd construct a full house.\n\nTo form a full house, we have to choose:\n\nA rank for the 3 cards.  This can be done in 13 ways.\n\n3 of the 4 cards of that rank.  This can be done in $\\binom{4}{3} = 4$ ways.\n\nA rank for the other 2 cards.  This can be done in 12 ways (since we can't choose the rank that we chose in (a)).\n\n2 of the 4 cards of that rank.  This can be done in $\\binom{4}{2} = 6$ ways.\n\nAgain, note that in each of the steps in our constructive count, we don't care about the order in which the cards are chosen.\n\nSo there are $13 \\times 4 \\times 12 \\times 6 = 3,\\!744$ full houses.  Thus, the probability is $$ \\frac{3,\\!744}{2,\\!598,\\!960} = \\boxed{\\frac{6}{4165}}. $$",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "2021"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: We have a standard deck of 52 cards, with 4 cards in each of 13 ranks. We call a 5-card poker hand a full house if the hand has 3 cards of one rank and 2 cards of another rank (such as 33355 or AAAKK). What is the probability that five cards chosen at random form a full house?\n\nI think the answer is (13 * 12) / C(52, 5). Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "To see if that's correct, could you walk me through your reasoning? How did you arrive at 13 * 12 for the number of successful outcomes?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, there are 13 possible ranks for the three-of-a-kind, and once that's picked, there are 12 remaining ranks for the pair. So 13 times 12 should be the total number of ways to get a full house.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see your logic—you've correctly identified how to choose the *ranks*. However, consider this: once you've chosen the rank for the three-of-a-kind, are there different ways to pick which 3 cards of that rank you actually hold in your hand?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. There are 4 cards of each rank (like hearts, diamonds, clubs, spades). So for the first rank, I need to choose 3 out of those 4 cards. That's C(4, 3), which is 4. And for the second rank, I need 2 out of 4, which is C(4, 2), which is 6. So the numerator should be 13 * 4 * 12 * 6?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That looks much more complete! You've now accounted for both the selection of the ranks and the selection of the specific cards within those ranks. If you calculate that numerator and divide it by C(52, 5), what final probability do you get?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "13 * 4 * 12 * 6 = 3744. And C(52, 5) is 2,598,960. 3744 / 2,598,960 simplifies to 6/4165. Is that the right answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that is correct. You've accurately calculated the number of favorable outcomes and the total sample space to find the probability. Great job working through that correction!",
+      "loss_mask": true
+    }
+  ]
+}

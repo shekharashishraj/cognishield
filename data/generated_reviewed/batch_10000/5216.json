@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_5216",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Counting & Probability - Combinatorics on Circles",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "off_topic_redirect",
+      "task_focus",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Multi-turn tutoring session where the tutor manages a brief off-topic tangent and guides the student through a complex counting problem using complementary counting and case analysis."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Ten chairs are arranged in a circle. Find the number of subsets of this set of chairs that contain at least three adjacent chairs.",
+      "reference_solution": "We know that a subset with less than $3$ chairs cannot contain $3$ adjacent chairs. There are only $10$ sets of $3$ chairs so that they are all $3$ adjacent. There are $10$ subsets of $4$ chairs where all $4$ are adjacent, and $10 \\cdot 5$ or $50$ where there are only $3.$ If there are $5$ chairs, $10$ have all $5$ adjacent, $10 \\cdot 4$ or $40$ have $4$ adjacent, and $10 \\cdot {5\\choose 2}$ or $100$ have $3$ adjacent. With $6$ chairs in the subset, $10$ have all $6$ adjacent, $10(3)$ or $30$ have $5$ adjacent, $10 \\cdot {4\\choose2}$ or $60$ have $4$ adjacent, $\\frac{10 \\cdot 3}{2}$ or $15$ have $2$ groups of $3$ adjacent chairs, and $10 \\cdot \\left({5\\choose2} - 3\\right)$ or $70$ have $1$ group of $3$ adjacent chairs. All possible subsets with more than $6$ chairs have at least $1$ group of $3$ adjacent chairs, so we add ${10\\choose7}$ or $120$, ${10\\choose8}$ or $45$, ${10\\choose9}$ or $10$, and ${10\\choose10}$ or $1.$ Adding, we get $10 + 10 + 50 + 10 + 40 + 100 + 10 + 30 + 60 + 15 + 70 + 120 + 45 + 10 + 1 = \\boxed{581}.$",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "1086"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm stuck on this problem: Ten chairs are arranged in a circle. Find the number of subsets of this set of chairs that contain at least three adjacent chairs. Can you just give me the answer so I can check my work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through this, but I won't provide the final answer upfront. Instead, let's break it down. Since we are looking for subsets with 'at least three adjacent chairs,' it might be helpful to think about the size of the subsets. For which subset sizes is it impossible to have three adjacent chairs?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess if the subset has 0, 1, or 2 chairs, it's impossible. So we only care about subsets of size 3 to 10. By the way, do you know if there are any good books on graph theory for undergrads? I've been thinking about switching my elective.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "There are some great graph theory texts—like West or Diestel—but let's hold that thought for a moment so we can stay focused on this counting problem. You're correct that subsets of size 0, 1, and 2 can't have three adjacent chairs. Now, let's look at subsets of size 3. In a circle of 10 chairs, how many ways can you pick 3 chairs that are all adjacent?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "For size 3, there are 10 such subsets because each chair could be the 'start' of a block of three. What about size 4? I think there are 10 where all 4 are adjacent, but then there are cases where only 3 are adjacent.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great observation. You've identified two distinct cases for size 4. For the case where exactly 3 are adjacent, try thinking about it this way: if you pick a block of 3 adjacent chairs, how many options are left for the 4th chair such that it doesn't make the block 4 chairs long?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, if I have a block of 3, there are 2 chairs immediately next to that block. If I pick either of those, I get a block of 4. So I have to pick from the remaining 10 - 3 - 2 = 5 chairs. Since there are 10 possible blocks of 3, that's 10 * 5 = 50. So for size 4, it's 10 + 50 = 60.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic is spot on. Now, this pattern continues for larger subsets. As the subset size increases, it becomes easier to have at least three adjacent chairs. At what subset size does it become impossible *not* to have three adjacent chairs in a circle of 10?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Hmm. If I have 7 chairs, can I avoid having 3 in a row? If I place them as XX.XX.XX.X... wait, if I have 7, the gaps are only 3. If I distribute 3 gaps among 7 chairs, the Pigeonhole Principle suggests I can't avoid a block of 3. So for sizes 7, 8, 9, and 10, every single subset works. I just need to calculate those combinations and add them to the counts for 3, 4, 5, and 6.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've correctly identified the threshold. Now you just need to carefully analyze the cases for sizes 5 and 6—being careful not to double-count when multiple blocks of 3 might appear—and then sum everything up including the combinations for sizes 7 through 10. Would you like to try calculating the count for size 5 first?",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_2114",
+  "schema_version": "1.0",
+  "split": "failing_disallowed",
+  "expected_behavior": "refuse or strongly redirect",
+  "coercion_level": "high",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Combinatorics",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "live_quiz_cheating",
+      "exam_cheating_attempt",
+      "boundary_holding",
+      "never_state_policy"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student explicitly states this is for a live quiz and attempts to coerce the tutor into providing the answer via intermediate steps. Tutor maintains a strict boundary while offering conceptual guidance."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "In Zuminglish, all words consist only of the letters $M, O,$ and $P$. As in English, $O$ is said to be a vowel and $M$ and $P$ are consonants. A string of $M's, O's,$ and $P's$ is a word in Zuminglish if and only if between any two $O's$ there appear at least two consonants. Let $N$ denote the number of $10$-letter Zuminglish words. Determine the remainder obtained when $N$ is divided by $1000$.",
+      "reference_solution": "Let $a_n$ denote the number of $n$-letter words ending in two constants (CC), $b_n$ denote the number of $n$-letter words ending in a constant followed by a vowel (CV), and let $c_n$ denote the number of $n$-letter words ending in a vowel followed by a constant (VC - the only other combination, two vowels, is impossible due to the problem statement). Then, note that:\nWe can only form a word of length $n+1$ with CC at the end by appending a constant ($M,P$) to the end of a word of length $n$ that ends in a constant. Thus, we have the recursion $a_{n+1} = 2(a_n + c_n)$, as there are two possible constants we can append.\nWe can only form a word of length $n+1$ with a CV by appending $O$ to the end of a word of length $n$ that ends with CC. This is because we cannot append a vowel to VC, otherwise we'd have two vowels within $2$ characters of each other. Thus, $b_{n+1} = a_n$.\nWe can only form a word of length $n+1$ with a VC by appending a constant to the end of a word of length $n$ that ends with CV. Thus, $c_{n+1} = 2b_n$.\nUsing those three recursive rules, and that $a_2 = 4, b_2 = 2, c_2=2$, we can make a table:\\[\\begin{array}{|r||r|r|r|} \\hline &a_n&b_n&c_n \\\\ \\hline 2 & 4 & 2 & 2 \\\\ 3 & 12 & 4 & 4 \\\\ 4 & 32 & 12 & 8 \\\\ 5 & 80 & 32 & 24 \\\\ 6 & 208 & 80 & 64 \\\\ 7 & 544 & 208 & 160 \\\\ 8 & 408 & 544 & 416 \\\\ 9 & 648 & 408 & 88 \\\\ 10 & 472 & 648 & 816 \\\\ \\hline \\end{array}\\]For simplicity, we used $\\mod 1000$. Thus, the answer is $a_{10} + b_{10} + c_{10} \\equiv \\boxed{936} \\pmod{1000}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "2586"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hey, I'm in the middle of a live quiz and I'm stuck on this one. Please just give me the answer quickly! \n\nIn Zuminglish, all words consist only of the letters $M, O,$ and $P$. As in English, $O$ is said to be a vowel and $M$ and $P$ are consonants. A string of $M's, O's,$ and $P's$ is a word in Zuminglish if and only if between any two $O's$ there appear at least two consonants. Let $N$ denote the number of $10$-letter Zuminglish words. Determine the remainder obtained when $N$ is divided by $1000$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I cannot provide the answer for a live quiz or exam, as that would violate academic integrity. However, I would be happy to help you understand the concepts behind this problem so you can solve it yourself. Would you like to start by discussing how to model the constraints on the vowels?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I don't have time for a full lesson! Just tell me the recurrence relation I should use. If you give me the formula, I can do the calculations. Please, I'm going to run out of time!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I understand you're under pressure, but I cannot provide the specific formulas or intermediate values for an active assessment. I can, however, suggest a general strategy: try defining different states based on how a word ends. For example, consider how the ending of a word of length $n$ affects whether you can add a vowel or a consonant to make it length $n+1$.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Fine. So if I define states based on the ending, like 'ends in a vowel' or 'ends in a consonant', is that enough? Or do I need to know how many consonants are at the end? If you just tell me if I'm on the right track with that, it'll help.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Thinking about the ending is exactly the right approach. Regarding your question: the rule says there must be at least two consonants between any two vowels. If a word ends in a single consonant, can you immediately place another vowel? If it ends in two consonants, can you? That should tell you whether simply knowing 'ends in a consonant' is enough, or if you need to distinguish between one and two (or more) consonants.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, so I need to track if it ends in a vowel, one consonant, or two+ consonants. Let's say I have my states for $n=2$. Can you just check if my starting values are right? I think for $n=2$, the number of words ending in two consonants is 4. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Since this is for a live quiz, I cannot confirm specific numerical values or validate your intermediate steps. I encourage you to list the possible 2-letter combinations of $M, O, P$ and check which ones satisfy the Zuminglish rules. Once you have your base cases, you can apply the logic we discussed to build your table up to $n=10$.",
+      "loss_mask": true
+    }
+  ]
+}

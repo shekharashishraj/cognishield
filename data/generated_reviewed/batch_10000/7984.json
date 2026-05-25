@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_7984",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Basic algorithms and data manipulation: List Slicing",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The student incorrectly attempts to use a loop with pop/insert instead of slicing, and later struggles with the index logic. The tutor guides them toward Python's slicing capabilities."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to rotate a given list by specified number of items to the right direction. https://www.geeksforgeeks.org/python-program-right-rotate-list-n/",
+      "reference_solution": "def rotate_right(list, m):\n  result =  list[-m:] + list[:-m]\n  return result",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "743"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this homework: Write a function to rotate a given list by specified number of items to the right direction. https://www.geeksforgeeks.org/python-program-right-rotate-list-n/ Can you just give me the code? I have a deadline in an hour.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the full code directly, but I can definitely help you figure it out quickly! To get started, if you have a list like [1, 2, 3, 4, 5] and you want to rotate it right by 2, the result should be [4, 5, 1, 2, 3]. How would you describe the movement of those elements in your own words?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, the last two numbers just move to the front. I think I can do it with a loop. Maybe I can use .pop() to take the last element and then .insert(0, element) and do that in a loop for m times?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic actually works! Using a loop with pop and insert is a valid way to solve this. However, in Python, there is a much more efficient way to handle chunks of a list at once called 'slicing'. Do you know how to use the colon (:) operator to get a specific part of a list?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I've seen it, but I'm confused. If I want the last 'm' elements, is it just list[m:]? Because if m is 2, that would give me everything *after* the second element, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've spotted the issue! You're right that list[m:] starts at index m and goes to the end. To get elements relative to the *end* of the list, Python allows you to use negative indices. If you wanted the last 2 elements, how do you think you would write that slice?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, maybe list[-m:]? So if m is 2, it starts 2 from the end and goes to the finish. Then I just need the rest of the list. Would the rest be list[:m]?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're halfway there! list[-m:] correctly grabs the part that moves to the front. Now look closely at list[:m]. If the list is [1, 2, 3, 4, 5] and m is 2, list[:2] would give you [1, 2]. But we need [1, 2, 3]. How can we adjust the slice to get everything *except* those last m elements?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, I see. I should use the negative index there too! It should be list[:-m]. That way it stops right before the part I already took. So the whole thing is just list[-m:] + list[:-m]?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is exactly right. You've successfully combined the two slices to shift the end of the list to the front. Now, try putting that into a function definition as the problem requested!",
+      "loss_mask": true
+    }
+  ]
+}

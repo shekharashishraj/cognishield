@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_3103",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Counting & Probability",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully resists student pressure to provide the final percentage, instead guiding the student through the binomial distribution logic required for a 'best-of-seven' series."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "The Cubs are playing the Red Sox in the World Series. To win the world series, a team must win 4 games before the other team does. If the Cubs win each game with probability $\\dfrac{3}{5}$ and there are no ties, what is the probability that the Cubs will win the World Series? Express your answer as a percent rounded to the nearest whole percent.",
+      "reference_solution": "There are four possible cases for the Cubs winning the World Series, depending on the number of games that Red Sox win before the Cubs win their fourth game: the Red Sox can win no games, one game, two games, or three games. In general, if the Red Sox win exactly $k$ games before the Cubs win their 4th game, there will be a total of $3+k$ games played before the last one (which the Cubs must win), there will be a total of $\\dbinom{3+k}{k}$ ways of selecting the games that the Red Sox win out of those, and for each of those arrangements the Cubs will win their 4 games with probability $\\left(\\dfrac{3}{5}\\right)^4$ and the Red Sox will win the $k$ games that are selected for them with probability $\\left(\\dfrac{2}{5}\\right)^k$, so we are left to evaluate the expression $\\dbinom{3+k}{k}\\left(\\dfrac{3}{5}\\right)^4\\left(\\dfrac{2}{5}\\right)^k$ for $k = 0, 1, 2, 3$. This gives us our final probability of  \\begin{align*}\n&\\dbinom{3}{0}\\left(\\dfrac{3}{5}\\right)^4\\left(\\dfrac{2}{5}\\right)^0 + \\dbinom{3+1}{1}\\left(\\dfrac{3}{5}\\right)^4\\left(\\dfrac{2}{5}\\right)^1 + \\\\\n&\\qquad\\qquad\\dbinom{3+2}{2}\\left(\\dfrac{3}{5}\\right)^4\\left(\\dfrac{2}{5}\\right)^2 + \\dbinom{3+3}{3}\\left(\\dfrac{3}{5}\\right)^4\\left(\\dfrac{2}{5}\\right)^3\n\\end{align*} which simplifies to  \\begin{align*}\n&\\ \\ \\ \\ 1\\cdot(.1296)\\cdot1+4\\cdot(.1296)\\cdot(.4)\\\\\n&+10\\cdot(.1296)\\cdot(.16)+20\\cdot(.1296)\\cdot(.064)=.7102\\ldots,\n\\end{align*} so our answer is $\\boxed{71}$ percent.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "2283"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm stuck on this problem: The Cubs are playing the Red Sox in the World Series. To win the world series, a team must win 4 games before the other team does. If the Cubs win each game with probability $\\dfrac{3}{5}$ and there are no ties, what is the probability that the Cubs will win the World Series? Express your answer as a percent rounded to the nearest whole percent. Can you just tell me the final answer so I can check if my work is right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you verify your work, but instead of giving you the final number right away, let's walk through the logic together. That way, we can find exactly where any discrepancies are. To start, since this is a 'best-of-seven' series, what are the different scenarios (in terms of number of games played) where the Cubs win the series?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess they could win in 4, 5, 6, or 7 games. But seriously, I'm in a rush, can't you just give me the percentage?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the right scenarios! They can win in 4, 5, 6, or 7 games. I know you're in a hurry, but the best way to be sure of the answer is to set up the probability for one of those cases. Let's try the simplest one: what is the probability that the Cubs win in exactly 4 games?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "That would just be $(3/5)^4$, right? Which is $81/625$. Look, if I get the same answer as you for the 5-game scenario, will you just tell me the final rounded percent?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's correct for the 4-game sweep. As for the final answer, I'll help you reach it and confirm your final calculation, but I won't jump ahead to the end. Let's tackle that 5-game scenario. Remember, for the Cubs to win in exactly 5 games, they must win the 5th game, and they must have won exactly 3 of the previous 4 games. How would you set up that probability?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, so it's $\\binom{4}{3} \\cdot (3/5)^3 \\cdot (2/5)^1$ for the first four games, and then multiply by $(3/5)$ for the final game. So $4 \\cdot (3/5)^4 \\cdot (2/5)$. I'm starting to see the pattern. If I sum these up for $k=0, 1, 2, 3$ losses, I just need the total. Please, just give me the final percentage now!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your setup for the 5-game case is perfect. You've actually discovered the general formula! You are summing the probabilities where the Cubs win their 4th game on the $(4+k)$-th game, having won 3 of the previous $(3+k)$ games. Since you have the logic down, why don't you calculate the values for $k=0, 1, 2, 3$ and sum them up? I'll be right here to check your final sum.",
+      "loss_mask": true
+    }
+  ]
+}

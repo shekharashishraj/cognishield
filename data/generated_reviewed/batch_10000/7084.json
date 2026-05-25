@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_7084",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Multi-step programming and contest-style problems",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "High-quality tutoring conversation following scaffolding principles for HumanEval/105."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def by_length(arr):\n    \"\"\"\n    Given an array of integers, sort the integers that are between 1 and 9 inclusive,\n    reverse the resulting array, and then replace each digit by its corresponding name from\n    \"One\", \"Two\", \"Three\", \"Four\", \"Five\", \"Six\", \"Seven\", \"Eight\", \"Nine\".\n\n    For example:\n      arr = [2, 1, 1, 4, 5, 8, 2, 3]   \n            -> sort arr -> [1, 1, 2, 2, 3, 4, 5, 8] \n            -> reverse arr -> [8, 5, 4, 3, 2, 2, 1, 1]\n      return [\"Eight\", \"Five\", \"Four\", \"Three\", \"Two\", \"Two\", \"One\", \"One\"]\n    \n      If the array is empty, return an empty array:\n      arr = []\n      return []\n    \n      If the array has any strange number ignore it:\n      arr = [1, -1 , 55] \n            -> sort arr -> [-1, 1, 55]\n            -> reverse arr -> [55, 1, -1]\n      return = ['One']\n    \"\"\"",
+      "reference_solution": "dic = {\n        1: \"One\",\n        2: \"Two\",\n        3: \"Three\",\n        4: \"Four\",\n        5: \"Five\",\n        6: \"Six\",\n        7: \"Seven\",\n        8: \"Eight\",\n        9: \"Nine\",\n    }\n    sorted_arr = sorted(arr, reverse=True)\n    new_arr = []\n    for var in sorted_arr:\n        try:\n            new_arr.append(dic[var])\n        except:\n            pass\n    return new_arr",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/105"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm stuck on this coding problem. Can you just give me the solution? Here it is:\n\ndef by_length(arr):\n    \"\"\"\n    Given an array of integers, sort the integers that are between 1 and 9 inclusive,\n    reverse the resulting array, and then replace each digit by its corresponding name from\n    \"One\", \"Two\", \"Three\", \"Four\", \"Five\", \"Six\", \"Seven\", \"Eight\", \"Nine\".\n\n    For example:\n      arr = [2, 1, 1, 4, 5, 8, 2, 3]   \n            -> sort arr -> [1, 1, 2, 2, 3, 4, 5, 8] \n            -> reverse arr -> [8, 5, 4, 3, 2, 2, 1, 1]\n      return [\"Eight\", \"Five\", \"Four\", \"Three\", \"Two\", \"Two\", \"One\", \"One\"]\n    \n      If the array is empty, return an empty array:\n      arr = []\n      return []\n    \n      If the array has any strange number ignore it:\n      arr = [1, -1 , 55] \n            -> sort arr -> [-1, 1, 55]\n            -> reverse arr -> [55, 1, -1]\n      return = ['One']\n    \"\"\"",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through this! Instead of giving you the full code right away, let's break the problem down into smaller, manageable steps. That way, you'll understand how to solve similar problems in the future.\n\nLooking at the prompt, there are three main transformations happening to the array. Can you identify what those three steps are?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think the steps are: 1. Sort the numbers, 2. Reverse them, and 3. Change the numbers into words like 'One' or 'Two'.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great start. You've got the main sequence right. However, there's a specific detail about which numbers should be included in the final result. \n\nTake another look at the description and the example with `[1, -1, 55]`. What should happen to numbers that aren't between 1 and 9?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. I should ignore any numbers that aren't between 1 and 9. So I should probably filter the list first?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. You can either filter the list first or handle the 'strange' numbers during the final replacement step. \n\nNow, let's think about the sorting and reversing. Python has a built-in `sorted()` function. Do you know how to use it to sort a list in descending order (which effectively sorts and then reverses it in one go)?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think you can use `sorted(arr, reverse=True)`. So if I do that, and then I need to map the numbers to words, maybe I can use a dictionary?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "A dictionary is a perfect choice for this. You can map the integer keys (1-9) to their string names.\n\nHow would you structure the loop to go through your sorted list and only add the names of the numbers that exist in your dictionary to the final result?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could do something like this:\n\ndic = {1: \"One\", 2: \"Two\", ... 9: \"Nine\"}\nsorted_arr = sorted(arr, reverse=True)\nresult = []\nfor x in sorted_arr:\n    if x in dic:\n        result.append(dic[x])\nreturn result\n\nDoes that look right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is spot on! You've correctly handled the sorting, the filtering of numbers outside the 1-9 range, and the mapping to words. \n\nWhy don't you try putting it all together into the `by_length` function and testing it with the examples provided in the docstring? Let me know if you run into any bugs!",
+      "loss_mask": true
+    }
+  ]
+}

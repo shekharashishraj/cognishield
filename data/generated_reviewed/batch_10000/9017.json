@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_9017",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Multi-step programming and contest-style problems",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student fails to track the maximum run correctly, resetting the global max too early. Tutor guides them to distinguish between current run and best run."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to find maximum run of uppercase characters in the given string.",
+      "reference_solution": "def max_run_uppercase(test_str):\n  cnt = 0\n  res = 0\n  for idx in range(0, len(test_str)):\n    if test_str[idx].isupper():\n      cnt += 1\n    else:\n      res = cnt\n      cnt = 0\n  if test_str[len(test_str) - 1].isupper():\n    res = cnt\n  return (res)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "806"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Write a function to find maximum run of uppercase characters in the given string. I think I have it: \n\n```python\ndef max_run_uppercase(test_str):\n    count = 0\n    for char in test_str:\n        if char.isupper():\n            count += 1\n        else:\n            count = 0\n    return count\n```\nIs this correct? I'm in a rush, can you just tell me if it works?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you check that. Before I tell you if it's correct, could you walk me through how your code handles a string like \"ABCdeFGHI\"? What would the value of `count` be at the end of the loop?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let's see... for \"ABCdeFGHI\", it hits 'A', 'B', 'C', so count is 3. Then it hits 'd', so count becomes 0. Then 'e', still 0. Then 'F', 'G', 'H', 'I', so count becomes 4. It returns 4. That's the longest run, so it works!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "In that specific case, it does return the correct answer. But what if the string was \"ABCDEfgh\"? Walk through that one and tell me what your function returns.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait. For \"ABCDEfgh\", it counts to 5, but then it hits 'f' and resets `count` to 0. Then 'g' and 'h' keep it at 0. It returns 0. Oh, that's wrong! It should be 5.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. The issue is that you're resetting your only counter without saving the highest value you've seen so far. How could you modify the function to remember the longest run encountered even after the current run is interrupted?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I need another variable to keep track of the maximum. Something like:\n\n```python\ndef max_run_uppercase(test_str):\n    count = 0\n    max_count = 0\n    for char in test_str:\n        if char.isupper():\n            count += 1\n            if count > max_count:\n                max_count = count\n        else:\n            count = 0\n    return max_count\n```\nDoes this look right now?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is much more robust. You're now tracking the peak value independently of the current streak. Try testing it with a few different edge cases—like an empty string or a string with no uppercase letters—to be sure it's fully covered.",
+      "loss_mask": true
+    }
+  ]
+}

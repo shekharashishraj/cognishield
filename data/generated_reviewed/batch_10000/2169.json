@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_2169",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra: Recurrence Relations",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to find a linear pattern in the terms themselves rather than the product of consecutive terms. Tutor redirects them to manipulate the recurrence formula."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Let $m$ be a positive integer, and let $a_0, a_1, \\dots , a_m$ be a sequence of real numbers such that $a_0 = 37$, $a_1 = 72$, $a_m=0$, and $$ a_{k+1} = a_{k-1} - \\frac{3}{a_k} $$for $k = 1,\n2, \\dots, m-1$. Find $m$.",
+      "reference_solution": "We rewrite the given recursion as \\[a_ka_{k+1} = a_{k-1}a_k - 3.\\]This implies that the numbers $a_0a_1, a_1a_2, a_2a_3, \\ldots$ form an arithmetic sequence with common difference $-3$. We have $a_0a_1 = 37 \\cdot 72$ and $a_{m-1}a_m = 0$ (because $a_m = 0$). Since those two terms are $m-1$ terms apart, we have \\[a_{m-1}a_m - a_0a_1 = 0 - 37 \\cdot 72 = -3 (m-1),\\]so \\[m = 37 \\cdot 24 + 1 = \\boxed{889}.\\]",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "3390"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm stuck on this math problem: Let $m$ be a positive integer, and let $a_0, a_1, \\dots , a_m$ be a sequence of real numbers such that $a_0 = 37$, $a_1 = 72$, $a_m=0$, and $$ a_{k+1} = a_{k-1} - \\frac{3}{a_k} $$for $k = 1, 2, \\dots, m-1$. Find $m$. Can you just tell me the answer? I'm in a rush.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through this, but I won't give you the final answer right away. Let's try to find a pattern in the sequence. Looking at the recurrence formula $a_{k+1} = a_{k-1} - \\frac{3}{a_k}$, what happens if you try to clear the fraction by multiplying both sides by $a_k$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If I multiply by $a_k$, I get $a_k a_{k+1} = a_{k-1} a_k - 3$. I see that, but I don't see how that helps. I thought maybe the sequence $a_k$ itself was arithmetic or geometric? If $a_0=37$ and $a_1=72$, maybe the difference is 35? But $a_m=0$, so $37 + 35(m) = 0$ doesn't make sense since $m$ must be positive.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It's a common instinct to look for a linear pattern in the terms themselves, but in this case, the terms $a_k$ aren't changing by a constant amount. However, look closely at the equation you just derived: $a_k a_{k+1} = a_{k-1} a_k - 3$. Instead of looking at $a_k$, what do you notice about the *products* of consecutive terms, like $a_0 a_1, a_1 a_2, a_2 a_3, \\dots$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, if $a_k a_{k+1} = a_{k-1} a_k - 3$, then each product is exactly 3 less than the previous product. So the sequence of products $P_k = a_k a_{k+1}$ is an arithmetic progression with a common difference of $-3$!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great observation! Now that you've identified that the products form an arithmetic sequence, how can you use the information about $a_0, a_1,$ and $a_m$ to set up an equation for $m$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, the first term is $P_0 = a_0 a_1 = 37 \\times 72$. The last term is $P_{m-1} = a_{m-1} a_m$. Since $a_m = 0$, then $P_{m-1} = 0$. The formula for the $n$-th term of an arithmetic sequence is $P_n = P_0 + n d$. Here, $n = m-1$ and $d = -3$. So $0 = (37 \\times 72) + (m-1)(-3)$. Let me calculate... $37 \\times 72 = 2664$. So $3(m-1) = 2664$, which means $m-1 = 888$, so $m = 889$. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your reasoning is spot on and your calculations are correct. You successfully identified the hidden arithmetic progression in the products of the terms. Well done!",
+      "loss_mask": true
+    }
+  ]
+}

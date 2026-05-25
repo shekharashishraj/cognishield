@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_667",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Geometry",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully guides the student away from the misconception that the area is 1/4 of the total, using a step-by-step decomposition of the triangle."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "In triangle $ABC$, we have that $E$ and $F$ are midpoints of sides $\\overline{AC}$ and $\\overline{AB}$, respectively. The area of $\\triangle ABC$ is 24 square units. How many square units are in the area of $\\triangle CEF$?",
+      "reference_solution": "We first draw a diagram: [asy]\npair A, B, C, E, F;\nA = (0, 4);\nB = (-3, 0);\nC = (7, 0);\nE = 0.5 * A + 0.5 * C;\nF = 0.5 * A + 0.5 * B;\ndraw(A--B--C--cycle);\ndraw(C--E--F--cycle);\nlabel(\"$A$\", A, N);\nlabel(\"$B$\", B, NW);\nlabel(\"$C$\", C, NE);\nlabel(\"$E$\", E, NE);\nlabel(\"$F$\", F, NW);\n[/asy] Since $F$ is the midpoint of $\\overline{AB}$, the area of $\\triangle AFC$ is half of the area of $\\triangle ABC,$ or 12 square units. Following the same reasoning, we see that $E$ is the midpoint of $\\overline{AC},$ so the area of $\\triangle CEF$ is half that of $\\triangle AFC,$ or $\\boxed{6}$ square units.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "1432"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm working on this geometry problem: In triangle $ABC$, we have that $E$ and $F$ are midpoints of sides $\\overline{AC}$ and $\\overline{AB}$, respectively. The area of $\\triangle ABC$ is 24 square units. How many square units are in the area of $\\triangle CEF$? I think the answer is 6, but I'm not sure. Wait, actually, since it's midpoints, maybe it's 1/4 of the area? So 6? Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can help you verify that. To make sure we're on the right track, could you walk me through how you arrived at the idea that the area of $\\triangle CEF$ is 1/4 of the area of $\\triangle ABC$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, I remember that if you connect the midpoints of all three sides, you get four smaller congruent triangles, each with 1/4 the area. Since $E$ and $F$ are midpoints, I assumed $\\triangle CEF$ was one of those four triangles.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great property to recall! However, let's look closely at the vertices of the triangle you're calculating. The four congruent triangles created by midpoints are formed by connecting the midpoints to *each other*. In this problem, you are looking at $\\triangle CEF$. Is vertex $C$ a midpoint of a side, or is it a vertex of the original triangle $ABC$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, $C$ is a vertex of the original triangle. So $\\triangle CEF$ isn't one of those small middle triangles. I guess I need to calculate it differently. How should I start?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. A good strategy here is to break the problem into steps. First, consider $\\triangle AFC$. Since $F$ is the midpoint of $\\overline{AB}$, how does the area of $\\triangle AFC$ compare to the area of the original $\\triangle ABC$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Since they share the same altitude from $C$ to the line $AB$, and the base $AF$ is half of the base $AB$, the area of $\\triangle AFC$ should be half of $\\triangle ABC$. So that's 12.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. Now, apply that same logic to $\\triangle CEF$ within the context of $\\triangle AFC$. $E$ is the midpoint of $\\overline{AC}$. How does that affect the area of $\\triangle CEF$ relative to $\\triangle AFC$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If $E$ is the midpoint of $\\overline{AC}$, then $\\triangle CEF$ has half the base of $\\triangle AFC$ (if we take $AC$ as the base) while sharing the same altitude from $F$. So the area of $\\triangle CEF$ is half of 12, which is 6. Wait, I got 6 again! Was my first instinct actually right, just for the wrong reason?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You did arrive at the same numerical result, but your reasoning is now mathematically sound! It's important to distinguish between the 'midsegment triangle' (which is 1/4 of the area) and a triangle formed by a vertex and two midpoints. Based on the steps you just took, you've successfully derived the area. Do you feel confident in this method now?",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_3229",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning: Stack-based parsing",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student incorrectly attempts to split the string by spaces instead of tracking parenthesis depth. Tutor guides them toward the depth-tracking approach."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "from typing import List\n\n\ndef separate_paren_groups(paren_string: str) -> List[str]:\n    \"\"\" Input to this function is a string containing multiple groups of nested parentheses. Your goal is to\n    separate those group into separate strings and return the list of those.\n    Separate groups are balanced (each open brace is properly closed) and not nested within each other\n    Ignore any spaces in the input string.\n    >>> separate_paren_groups('( ) (( )) (( )( ))')\n    ['()', '(())', '(()())']\n    \"\"\"",
+      "reference_solution": "result = []\n    current_string = []\n    current_depth = 0\n\n    for c in paren_string:\n        if c == '(':\n            current_depth += 1\n            current_string.append(c)\n        elif c == ')':\n            current_depth -= 1\n            current_string.append(c)\n\n            if current_depth == 0:\n                result.append(''.join(current_string))\n                current_string.clear()\n\n    return result",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/1"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem. Can you just give me the code? Here is the prompt:\n\nfrom typing import List\n\n\ndef separate_paren_groups(paren_string: str) -> List[str]:\n    \"\"\" Input to this function is a string containing multiple groups of nested parentheses. Your goal is to\n    separate those group into separate strings and return the list of those.\n    Separate groups are balanced (each open brace is properly closed) and not nested within each other\n    Ignore any spaces in the input string.\n    >>> separate_paren_groups('( ) (( )) (( )( ))')\n    ['()', '(())', '(()())']\n    \"\"\"",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code for you, but I can certainly help you work through the logic! Let's start by thinking about how we know when one group ends and another begins. If you look at the example `( ) (( ))`, what is the indicator that a group is 'complete'?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think I can just use `.split()` since there are spaces between the groups in the example. Like, if I split by space, I'll get the groups, and then I can just remove the spaces from each group. Does that work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's an intuitive first thought! However, take a closer look at the requirements. The prompt says to 'Ignore any spaces in the input string.' This implies that the spaces might not always be there, or there might be multiple spaces in places we don't expect. If the input was `(( ))(( ))` without a space in the middle, would `.split()` still be able to tell where the first group ends and the second begins?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. If there are no spaces, split won't work. So I have to look at the parentheses themselves. I guess I can just count the number of '(' and ')'? If I see a ')', that's the end of a group?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're on the right track by counting! But be careful: in a nested group like `(( ))`, the first `)` you encounter doesn't actually end the whole group—it only closes the inner pair. How could you use a counter to keep track of how 'deep' you are inside nested parentheses so you know exactly when the outermost group is closed?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "So I should increment a counter when I see '(' and decrement it when I see ')'. When the counter hits zero, that means the outermost group is closed, right? Then I can save that group and start over for the next one.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's exactly right. Now, think about the implementation details. As you iterate through the string, how will you keep track of the characters that belong to the current group before you decide to save it to your list?",
+      "loss_mask": true
+    }
+  ]
+}

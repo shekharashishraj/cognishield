@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_5175",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Algorithms and data structures - Sorting and Custom Keys",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Tutor successfully scaffolds the problem by guiding the student through the digit sum logic for negative numbers and the stability of Python's sort."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def order_by_points(nums):\n    \"\"\"\n    Write a function which sorts the given list of integers\n    in ascending order according to the sum of their digits.\n    Note: if there are several items with similar sum of their digits,\n    order them based on their index in original list.\n\n    For example:\n    >>> order_by_points([1, 11, -1, -11, -12]) == [-1, -11, 1, -12, 11]\n    >>> order_by_points([]) == []\n    \"\"\"",
+      "reference_solution": "def digits_sum(n):\n        neg = 1\n        if n < 0: n, neg = -1 * n, -1 \n        n = [int(i) for i in str(n)]\n        n[0] = n[0] * neg\n        return sum(n)\n    return sorted(nums, key=digits_sum)",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/145"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm stuck on this coding problem. Can you help me solve it? Here is the prompt:\n\ndef order_by_points(nums):\n    \"\"\"\n    Write a function which sorts the given list of integers\n    in ascending order according to the sum of their digits.\n    Note: if there are several items with similar sum of their digits,\n    order them based on their index in original list.\n\n    For example:\n    >>> order_by_points([1, 11, -1, -11, -12]) == [-1, -11, 1, -12, 11]\n    >>> order_by_points([]) == []\n    \"\"\"",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I'd be happy to help you work through this! To get started, let's break the problem down. You need to sort a list based on a specific criterion (the sum of digits) rather than the value of the number itself. \n\nDo you know how to perform a sort in Python using a custom key or a specific function to determine the sorting order?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think I can use the `sorted()` function with the `key` parameter. But I'm confused about how to handle the 'sum of digits' part, especially with negative numbers. For example, if the number is -11, is the sum -2 or 2?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great question. Let's look at the example provided: `order_by_points([1, 11, -1, -11, -12])` results in `[-1, -11, 1, -12, 11]`. \n\nIf we look at -1 and -11, they come before 1 and 11. This suggests that for negative numbers, the sign should be preserved for the leading digit. For -11, the digits are -1 and 1, which sum to -1 + 1 = 0. For -1, the sum is just -1. \n\nHow would you implement a helper function that takes an integer and calculates this specific sum of digits?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, so for -12, it would be -1 + 2 = 1. I could convert the number to a string to iterate through the digits. But the minus sign is a character, not a digit. Maybe I can check if it's negative first, take the absolute value, and then handle the first digit separately?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic is spot on. Converting to a string is a common way to access digits. If you treat the absolute value of the number as a string, you can convert each character back to an integer. Just remember to apply the negative sign to the very first digit of that sequence before summing them up.\n\nOnce you have that helper function, how will you handle the requirement that items with the same sum should maintain their original relative order?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I remember reading that Python's `sorted()` function and `.sort()` method are 'stable'. Does that mean if two elements have the same key, they stay in their original order automatically?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Python's sorting algorithms are stable, so you don't need to explicitly include the index in your sorting key; the original order is preserved by default for tied keys.\n\nWhy don't you try putting the pieces together? Try writing the helper function for the digit sum and then using it as the key in `sorted()`. Let me know what you come up with!",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think I've got it! Here is my approach:\n\ndef order_by_points(nums):\n    def digits_sum(n):\n        if n == 0: return 0\n        is_neg = n < 0\n        s = str(abs(n))\n        digits = [int(d) for d in s]\n        if is_neg:\n            digits[0] = -digits[0]\n        return sum(digits)\n    \n    return sorted(nums, key=digits_sum)\n\nDoes this look correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your implementation correctly handles the negative sign by applying it only to the first digit and leverages the stability of `sorted()` to maintain the original indices. This matches the requirements and the logic we discussed. Great job solving it!",
+      "loss_mask": true
+    }
+  ]
+}

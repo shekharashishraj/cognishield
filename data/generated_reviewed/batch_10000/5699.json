@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_5699",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Algorithms and data structures - String Parsing and Validation",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully guides the student through a date validation problem, identifying a logic error regarding month-day constraints without revealing the full solution."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "def valid_date(date):\n    \"\"\"You have to write a function which validates a given date string and\n    returns True if the date is valid otherwise False.\n    The date is valid if all of the following rules are satisfied:\n    1. The date string is not empty.\n    2. The number of days is not less than 1 or higher than 31 days for months 1,3,5,7,8,10,12. And the number of days is not less than 1 or higher than 30 days for months 4,6,9,11. And, the number of days is not less than 1 or higher than 29 for the month 2.\n    3. The months should not be less than 1 or higher than 12.\n    4. The date should be in the format: mm-dd-yyyy\n\n    for example: \n    valid_date('03-11-2000') => True\n\n    valid_date('15-01-2012') => False\n\n    valid_date('04-0-2040') => False\n\n    valid_date('06-04-2020') => True\n\n    valid_date('06/04/2020') => False\n    \"\"\"",
+      "reference_solution": "try:\n        date = date.strip()\n        month, day, year = date.split('-')\n        month, day, year = int(month), int(day), int(year)\n        if month < 1 or month > 12:\n            return False\n        if month in [1,3,5,7,8,10,12] and day < 1 or day > 31:\n            return False\n        if month in [4,6,9,11] and day < 1 or day > 30:\n            return False\n        if month == 2 and day < 1 or day > 29:\n            return False\n    except:\n        return False\n\n    return True",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/124"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm working on this problem:\n\ndef valid_date(date):\n    \"\"\"You have to write a function which validates a given date string and\n    returns True if the date is valid otherwise False.\n    The date is valid if all of the following rules are satisfied:\n    1. The date string is not empty.\n    2. The number of days is not less than 1 or higher than 31 days for months 1,3,5,7,8,10,12. And the number of days is not less than 1 or higher than 30 days for months 4,6,9,11. And, the number of days is not less than 1 or higher than 29 for the month 2.\n    3. The months should not be less than 1 or higher than 12.\n    4. The date should be in the format: mm-dd-yyyy\n\n    for example: \n    valid_date('03-11-2000') => True\n\n    valid_date('15-01-2012') => False\n\n    valid_date('04-0-2040') => False\n\n    valid_date('06-04-2020') => True\n\n    valid_date('06/04/2020') => False\n    \"\"\"\n\nI think I have it. Can you just tell me if this is right?\n\ndef valid_date(date):\n    parts = date.split('-')\n    if len(parts) != 3:\n        return False\n    m, d, y = int(parts[0]), int(parts[1]), int(parts[2])\n    if m < 1 or m > 12:\n        return False\n    if d < 1 or d > 31:\n        return False\n    return True",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see you've handled the basic structure and the month range. To help you verify this yourself, could you walk me through how your current code handles the different day limits for different months? For instance, what would happen if the input was '04-31-2020'?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, '04-31-2020'... April only has 30 days. My code would check if 31 is between 1 and 31, which it is, so it would return True. But it should be False. Oh, I forgot to check the specific months!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great catch. You've identified a key part of the requirements. How do you think you could modify your logic to ensure that the day limit depends on which month is being provided?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I can use if statements for the different month groups. Like this:\n\nif m in [1,3,5,7,8,10,12] and (d < 1 or d > 31):\n    return False\nif m in [4,6,9,11] and (d < 1 or d > 30):\n    return False\nif m == 2 and (d < 1 or d > 29):\n    return False\n\nDoes that fix it?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic for the day constraints now aligns with the rules provided in the problem statement. However, consider what happens if the input string is not formatted correctly—for example, if the user passes a string with letters instead of numbers, or an empty string. How would your current code handle those cases?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If there are letters, `int()` will throw a ValueError and the program will crash. I should probably wrap the parsing logic in a try-except block to return False instead of crashing. Is that the best way to do it?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Using a try-except block is a very effective way to handle those unexpected input types in Python, as it allows you to catch conversion errors and return False as the problem requires. Once you integrate that and ensure you're handling the empty string case, you'll have a robust solution. Why don't you try putting it all together?",
+      "loss_mask": true
+    }
+  ]
+}

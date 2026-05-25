@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_3541",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks: Roman Numeral Conversion",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts a simple loop without handling subtractive notation (like IV or IX). Tutor guides them to recognize the need for a mapping of these special cases."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def int_to_mini_roman(number):\n    \"\"\"\n    Given a positive integer, obtain its roman numeral equivalent as a string,\n    and return it in lowercase.\n    Restrictions: 1 <= num <= 1000\n\n    Examples:\n    >>> int_to_mini_roman(19) == 'xix'\n    >>> int_to_mini_roman(152) == 'clii'\n    >>> int_to_mini_roman(426) == 'cdxxvi'\n    \"\"\"",
+      "reference_solution": "num = [1, 4, 5, 9, 10, 40, 50, 90, \n           100, 400, 500, 900, 1000] \n    sym = [\"I\", \"IV\", \"V\", \"IX\", \"X\", \"XL\",  \n           \"L\", \"XC\", \"C\", \"CD\", \"D\", \"CM\", \"M\"] \n    i = 12\n    res = ''\n    while number: \n        div = number // num[i] \n        number %= num[i] \n        while div: \n            res += sym[i] \n            div -= 1\n        i -= 1\n    return res.lower()",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/156"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem:\n\ndef int_to_mini_roman(number):\n    \"\"\"\n    Given a positive integer, obtain its roman numeral equivalent as a string,\n    and return it in lowercase.\n    Restrictions: 1 <= num <= 1000\n\n    Examples:\n    >>> int_to_mini_roman(19) == 'xix'\n    >>> int_to_mini_roman(152) == 'clii'\n    >>> int_to_mini_roman(426) == 'cdxxvi'\n    \"\"\"\n\nI think I have it. Is this correct?\n\ndef int_to_mini_roman(number):\n    mapping = {1000: 'm', 500: 'd', 100: 'c', 50: 'l', 10: 'x', 5: 'v', 1: 'i'}\n    res = ''\n    for val, sym in mapping.items():\n        while number >= val:\n            res += sym\n            number -= val\n    return res",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got a great start with the mapping and the greedy subtraction logic! However, it's not quite correct for all cases. Before I point out where, could you try tracing your code with one of the examples, like `int_to_mini_roman(19)`? What output does your current function produce for that?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let's see... for 19, it would take 10 (x), then 5 (v), then 1, 1, 1, 1 (iiii). So it returns 'xviiii'. Wait, the example says it should be 'xix'. Why is mine different?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Your code produces 'xviiii', but Roman numerals use a 'subtractive' rule to avoid having four of the same characters in a row. For example, 9 is written as 'IX' (10 minus 1) rather than 'VIIII'. How could you modify your `mapping` or your logic to handle these special cases like 4, 9, 40, or 90?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see! I need to treat those subtractive pairs as their own unique symbols. So I should add things like 9: 'ix' and 4: 'iv' to my dictionary. If I add them in descending order, the greedy loop should pick them up first, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is a perfect observation. If you include those specific values in your mapping and ensure the loop processes them from largest to smallest, the function will correctly prioritize 'ix' over 'v' and 'iiii'. Why don't you try updating your code and showing me the revised version?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, here is the update:\n\ndef int_to_mini_roman(number):\n    mapping = {\n        1000: 'm', 900: 'cm', 500: 'd', 400: 'cd', \n        100: 'c', 90: 'xc', 50: 'l', 40: 'xl', \n        10: 'x', 9: 'ix', 5: 'v', 4: 'iv', 1: 'i'\n    }\n    res = ''\n    for val, sym in mapping.items():\n        while number >= val:\n            res += sym\n            number -= val\n    return res\n\nDoes this look right now?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, this logic now correctly handles the subtractive notation and follows the greedy approach required for Roman numerals. It will now produce 'xix' for 19 and 'cdxxvi' for 426. Great job identifying the missing cases!",
+      "loss_mask": true
+    }
+  ]
+}

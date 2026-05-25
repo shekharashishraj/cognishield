@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_4937",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Geometry - Power of a Point",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student provides an incorrect answer based on a misunderstanding of the Power of a Point theorem application. Tutor guides them to set up the equations correctly."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Let $A$, $B$, $C$, and $D$ be points on a circle such that $AB = 11$ and $CD = 19.$ Point $P$ is on segment $AB$ with $AP = 6$, and $Q$ is on segment $CD$ with $CQ = 7$. The line through $P$ and $Q$ intersects the circle at $X$ and $Y$. If $PQ = 27$, find $XY$.",
+      "reference_solution": "First of all, suppose $X, P, Q, Y$ lie in that order. We make a sketch (diagram not to scale!): [asy]\nimport graph;\ndefaultpen(linewidth(0.7));\npair A,B,C,D,X,Y;\nA=dir(100)*(20,0);\nB=dir(40)*(20,0);\nC=dir(200)*(20,0);\nD=dir(320)*(20,0);\nX=dir(80)*(20,0);\nY=dir(280)*(20,0);\ndraw(circle((0,0),20));\ndraw(A--B);\ndraw(C--D);\ndraw(X--Y);\nlabel(\"$A$\",A,NW);\nlabel(\"$B$\",B,NE);\nlabel(\"$C$\",C,SW);\nlabel(\"$D$\",D,SE);\nlabel(\"$X$\",X,N);\nlabel(\"$Y$\",Y,S);\nlabel(\"$P$\",(1,15));\nlabel(\"$Q$\",(5.5,-8.5));\n[/asy] Let $PX = x$ and $QY = y$. By power of a point from $P$, $x\\cdot(27+y) = 30$, and by power of a point from $Q$, $y\\cdot(27+x) = 84$. Subtracting the first from the second, $27\\cdot(y-x) = 54$, so $y = x+2$. Now, $x\\cdot(29+x) = 30$, and we find $x = 1, -30$. Since $-30$ makes no sense, we take $x = 1$ and obtain $XY = 1 + 27 + 3 = \\boxed{31}.$",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "1632"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Let $A$, $B$, $C$, and $D$ be points on a circle such that $AB = 11$ and $CD = 19.$ Point $P$ is on segment $AB$ with $AP = 6$, and $Q$ is on segment $CD$ with $CQ = 7$. The line through $P$ and $Q$ intersects the circle at $X$ and $Y$. If $PQ = 27$, find $XY$. I think the answer is 30. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't tell you if that's correct just yet. To help me understand your approach, could you walk me through how you arrived at 30? What geometric properties did you use?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, I used the Power of a Point theorem. For point P, I saw that $AP = 6$ and $PB = 11 - 6 = 5$. So the power of point P is $6 \\times 5 = 30$. Then I thought since $PQ$ is 27, maybe the total length $XY$ is just $PQ + 3$, but I ended up just guessing 30 because it seemed like a round number based on the power of P. I'm not entirely sure how to connect $PX$ and $PY$ to the answer.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're on the right track by calculating the power of point $P$ as $6 \\times 5 = 30$. That value is indeed equal to the product of the segments of any chord passing through $P$. In this case, the chord is $XY$. If we let $PX = x$, how would you express the length of the other segment $PY$ in terms of $x$, $PQ$, and the segment $QY$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If $X, P, Q, Y$ are in that order, then $PY$ would be $PQ + QY$. So if $PX = x$ and $QY = y$, then $PY = 27 + y$. So the equation for $P$ is $x(27 + y) = 30$. That makes sense. But now I have two variables. Do I do the same thing for point $Q$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Apply the same logic to point $Q$. What is the power of point $Q$ based on the segments $CQ$ and $QD$, and how does that relate to the segments of the chord $XY$ passing through $Q$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "For $Q$, $CQ = 7$ and $QD = 19 - 7 = 12$. So the power is $7 \\times 12 = 84$. The segments from $Q$ on the chord are $QY = y$ and $QX = QP + PX = 27 + x$. So the equation is $y(27 + x) = 84$. Now I have: \n1) $27x + xy = 30$\n2) $27y + xy = 84$\nIf I subtract them, I get $27(y - x) = 54$, so $y - x = 2$, which means $y = x + 2$. Now I can plug this back into the first equation: $x(27 + x + 2) = 30$, so $x(29 + x) = 30$. This gives $x^2 + 29x - 30 = 0$. Solving for $x$, I get $(x + 30)(x - 1) = 0$, so $x = 1$. Then $y = 1 + 2 = 3$. So $XY = x + PQ + y = 1 + 27 + 3 = 31$. Was my first guess of 30 wrong? Yes, it's 31!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've nailed it! Your reasoning is perfectly sound, and you correctly identified the power of both points to set up a system of equations. Your final result of 31 is correct.",
+      "loss_mask": true
+    }
+  ]
+}

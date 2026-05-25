@@ -1,0 +1,108 @@
+{
+  "conversation_id": "mt_6040",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Number Theory - Combinatorial Sums",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student initially tries to use a simple average of all 3-digit numbers, forgetting the 'distinct digits' constraint. Tutor redirects them to consider place values separately."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Let $S$ denote the sum of all of the three digit positive integers with three distinct digits. Compute the remainder when $S$ is divided by $1000$.",
+      "reference_solution": "We find the sum of all possible hundreds digits, then tens digits, then units digits. Every one of $\\{1,2,3,4,5,6,7,8,9\\}$ may appear as the hundreds digit, and there are $9 \\cdot 8 = 72$ choices for the tens and units digits. Thus the sum of the hundreds places is $(1+2+3+\\cdots+9)(72) \\times 100 = 45 \\cdot 72 \\cdot 100 = 324000$.\nEvery one of $\\{0,1,2,3,4,5,6,7,8,9\\}$ may appear as the tens digit; however, since $0$ does not contribute to this sum, we can ignore it. Then there are $8$ choices left for the hundreds digit, and $8$ choices afterwards for the units digit (since the units digit may also be $0$). Thus, the the sum of the tens digit gives $45 \\cdot 64 \\cdot 10 = 28800$.\nThe same argument applies to the units digit, and the sum of them is $45 \\cdot 64 \\cdot 1 = 2880$. Then $S = 324000+28800+2880 = 355\\boxed{680}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "5349"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: Let $S$ denote the sum of all of the three digit positive integers with three distinct digits. Compute the remainder when $S$ is divided by $1000$. Can you just tell me the answer so I can check my work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the final answer directly, but I'd be happy to help you work through the logic! Why don't you show me how you've started, and we can see if you're on the right track?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay. Well, there are three-digit numbers from 100 to 999. The average of these is (100+999)/2 = 549.5. Since there are 900 numbers, the total sum is 900 * 549.5 = 494,550. Then the remainder when divided by 1000 would be 550. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see what you did there—you found the sum of *all* three-digit integers. However, take another look at the problem statement. Does it ask for all three-digit integers, or is there a specific condition about the digits themselves?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, 'three distinct digits'. I totally missed that. So I can't include numbers like 112 or 222. That makes it much harder. Do I have to list them all and add them up?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Listing them all would take a very long time! Instead, try thinking about the contribution of each place value. For example, if we only look at the hundreds place, how many times does the digit '1' appear as the first digit in a three-digit number with distinct digits?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If the first digit is 1, then the second digit can be any of the remaining 9 digits (0-9 except 1), and the third digit can be any of the remaining 8. So that's 9 * 8 = 72 times. Since it's the hundreds place, that contributes 1 * 100 * 72 = 7200 to the sum. If I do this for all digits 1-9, the hundreds sum is (1+2+...+9) * 72 * 100 = 45 * 72 * 100 = 324,000.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great approach! You've correctly handled the hundreds place. Now, apply that same logic to the tens place. Be careful, though—can the digit '0' be in the tens place, and does it affect the number of choices for the hundreds place?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Zero can be in the tens place, but it doesn't add anything to the sum. For any non-zero digit (1-9) in the tens place, the hundreds place has 8 choices (it can't be 0 and it can't be the digit we chose for tens). Then the units place has 8 choices left. So each non-zero digit appears 8 * 8 = 64 times. The tens sum is (1+2+...+9) * 64 * 10 = 45 * 64 * 10 = 28,800.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. You've correctly accounted for the restriction that the hundreds digit cannot be zero. Now, what about the units place? Does it follow the same pattern as the tens place?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Yes, it should be the same. For a non-zero digit in the units place, the hundreds place has 8 choices and the tens place has 8 choices. So it's 45 * 64 * 1 = 2,880. Now I just add them: 324,000 + 28,800 + 2,880 = 355,680. The remainder when divided by 1000 is 680!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is correct! You successfully broke the problem down by place value and handled the constraints on the digits perfectly. Great job.",
+      "loss_mask": true
+    }
+  ]
+}

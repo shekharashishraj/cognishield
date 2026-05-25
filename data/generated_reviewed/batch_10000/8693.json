@@ -1,0 +1,118 @@
+{
+  "conversation_id": "mt_8693",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Infinite Series",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Generated a high-quality scaffolding conversation for a complex series problem involving Sophie Germain's identity and telescoping sums."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Compute the value of the infinite series \\[\n\\sum_{n=2}^{\\infty} \\frac{n^4+3n^2+10n+10}{2^n \\cdot \\left(n^4+4\\right)}\n\\]",
+      "reference_solution": "We factor the denominator: \\[n^4+4 = (n^2+2)^2-(2n)^2 = (n^2-2n+2)(n^2+2n+2).\\]Now,\n\n\\begin{eqnarray*}\n\\frac{n^4+3n^2+10n+10}{n^4+4} & = & 1 + \\frac{3n^2+10n+6}{n^4+4} \\\\\n& = & 1 + \\frac{4}{n^2-2n+2} - \\frac{1}{n^2+2n+2} \\\\\n\\Longrightarrow \\sum_{n=2}^{\\infty} \\frac{n^4+3n^2+10n+10}{2^n \\cdot \\left(n^4+4\\right)} & = & \\sum_{n=2}^{\\infty} \\frac{1}{2^n} + \\frac{4}{2^n\\cdot(n^2-2n+2)} - \\frac{1}{2^n\\cdot(n^2+2n+2)} \\\\\n& = & \\frac{1}{2} + \\sum_{n=2}^{\\infty} \\frac{1}{2^{n-2}\\cdot\\left((n-1)^2+1\\right)} - \\frac{1}{2^n\\cdot\\left((n+1)^2+1\\right)}\n\\end{eqnarray*}The last series telescopes to $\\frac{1}{2} + \\frac{1}{10}$; thus, our our desired answer is $\\frac{1}{2} + \\frac{1}{2} + \\frac{1}{10} = \\boxed{\\frac{11}{10}}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "4587"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this math problem: Compute the value of the infinite series \\[\n\\sum_{n=2}^{\\infty} \\frac{n^4+3n^2+10n+10}{2^n \\cdot \\left(n^4+4\\right)}\n\\]\nIt looks really intimidating. Can you just tell me the answer or show me how to start?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It definitely looks complex at first glance, but the key is usually to simplify the expression inside the summation. Let's start with the denominator $n^4+4$. Does that expression remind you of any factoring identities, or can you think of a way to rewrite it as a product of two quadratics?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I don't recognize it immediately. Maybe I can complete the square? Like $(n^2+2)^2$ is $n^4+4n^2+4$, so $n^4+4 = (n^2+2)^2 - 4n^2$. Oh! That's a difference of squares!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. Since it's a difference of squares, how does that factor the denominator $n^4+4$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It becomes $(n^2+2-2n)(n^2+2+2n)$, or $(n^2-2n+2)(n^2+2n+2)$. Now what? I still have that huge numerator $n^4+3n^2+10n+10$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Now that we have the factors of the denominator, let's look at the fraction $\\frac{n^4+3n^2+10n+10}{n^4+4}$. Since the degrees of the numerator and denominator are the same, a good first step is polynomial division. Try dividing the numerator by the denominator and see what remainder you get.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, if I divide $(n^4+3n^2+10n+10)$ by $(n^4+4)$, I get $1$ with a remainder of $3n^2+10n+6$. So the term is $1 + \\frac{3n^2+10n+6}{n^4+4}$. Does that help?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It helps a lot. Now we need to decompose $\\frac{3n^2+10n+6}{(n^2-2n+2)(n^2+2n+2)}$ using partial fractions. Try to find constants $A, B, C, D$ such that $\\frac{3n^2+10n+6}{n^4+4} = \\frac{An+B}{n^2-2n+2} + \\frac{Cn+D}{n^2+2n+2}$.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "That's a lot of algebra... let me try. After solving, I think I got $\\frac{4}{n^2-2n+2} - \\frac{1}{n^2+2n+2}$. Let me check... $4(n^2+2n+2) - 1(n^2-2n+2) = 4n^2+8n+8-n^2+2n-2 = 3n^2+10n+6$. Yes, it works!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Excellent work. Now substitute this back into the original summation. You'll have $\\sum_{n=2}^{\\infty} \\frac{1}{2^n} + \\sum_{n=2}^{\\infty} \\frac{1}{2^n} \\left( \\frac{4}{n^2-2n+2} - \\frac{1}{n^2+2n+2} \\right)$. The first part is a simple geometric series. For the second part, look closely at the denominators $n^2-2n+2$ and $n^2+2n+2$. Can you rewrite them by completing the square?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The first part $\\sum_{n=2}^{\\infty} (1/2)^n$ is $1/4 / (1-1/2) = 1/2$. For the second part, $n^2-2n+2 = (n-1)^2+1$ and $n^2+2n+2 = (n+1)^2+1$. So the second sum is $\\sum_{n=2}^{\\infty} \\frac{4}{2^n((n-1)^2+1)} - \\frac{1}{2^n((n+1)^2+1)}$. This looks like it might telescope if I adjust the powers of 2.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're very close. Try to rewrite the first term $\\frac{4}{2^n((n-1)^2+1)}$ so that the power of 2 matches the index $(n-1)$. What does that look like, and how does it relate to the second term $\\frac{1}{2^n((n+1)^2+1)}$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If I write $4/2^n$ as $1/2^{n-2}$, then the sum is $\\sum_{n=2}^{\\infty} \\left( \\frac{1}{2^{n-2}((n-1)^2+1)} - \\frac{1}{2^n((n+1)^2+1)} \\right)$. Let $f(n) = \\frac{1}{2^{n-1}(n^2+1)}$. Then this is $\\sum (2f(n-1) - f(n+1))$? No, wait. Let $g(n) = \\frac{1}{2^{n-1}(n^2+1)}$. Then the terms are $g(n-1) - g(n+1)$? No, $g(n-1) = \\frac{1}{2^{n-2}((n-1)^2+1)}$. And $g(n+1) = \\frac{1}{2^n((n+1)^2+1)}$. Yes! It's $\\sum_{n=2}^{\\infty} (g(n-1) - g(n+1))$. This telescopes! The remaining terms are $g(1) + g(2)$. $g(1) = 1/(2^0(1^2+1)) = 1/2$ and $g(2) = 1/(2^1(2^2+1)) = 1/10$. So the total is $1/2 + 1/2 + 1/10 = 1.1$. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic is perfect. You correctly identified the telescoping structure and evaluated the remaining terms. The final sum is indeed $11/10$. Well done for working through those algebraic hurdles!",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_2679",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning: Case-insensitive character counting",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student fails to handle case-insensitivity. Tutor guides them to normalize the string before using a set."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "def count_distinct_characters(string: str) -> int:\n    \"\"\" Given a string, find out how many distinct characters (regardless of case) does it consist of\n    >>> count_distinct_characters('xyzXYZ')\n    3\n    >>> count_distinct_characters('Jerry')\n    4\n    \"\"\"",
+      "reference_solution": "return len(set(string.lower()))",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/16"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem:\n\ndef count_distinct_characters(string: str) -> int:\n    \"\"\" Given a string, find out how many distinct characters (regardless of case) does it consist of\n    >>> count_distinct_characters('xyzXYZ')\n    3\n    >>> count_distinct_characters('Jerry')\n    4\n    \"\"\"\n\nI think the solution is just `return len(set(string))`. Is this correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "To determine if that works, let's look closely at the requirements. Could you explain how your current approach handles the 'regardless of case' part of the prompt?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, the `set()` function takes all the characters and removes the duplicates, so it counts the distinct ones. Since I'm putting the string in a set, it should just work.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Think about how Python treats uppercase and lowercase letters. For example, if the input string was 'Aa', what would `set('Aa')` produce, and how does that compare to the 'regardless of case' requirement?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. `set('Aa')` would be `{'A', 'a'}`, so the length would be 2. But the problem says it should be case-insensitive, so it should only count as 1. My bad!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Since 'A' and 'a' are different characters in Python, the set treats them as distinct. How could you modify the string before passing it to the set so that the case doesn't matter?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could probably use a loop to change every letter to lowercase first, then put it in a set. Like this:\n\nnew_string = \"\"\nfor char in string:\n    new_string += char.lower()\nreturn len(set(new_string))",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is sound! You've solved the case-sensitivity issue. As a side note, do you know of a built-in string method that can convert the entire string to lowercase at once without needing a for-loop?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think there is a `.lower()` method for strings. So I can just do `return len(set(string.lower()))`?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That approach addresses both the case-insensitivity and the need to count distinct characters efficiently. Try running that against the provided test cases to verify it works as expected.",
+      "loss_mask": true
+    }
+  ]
+}

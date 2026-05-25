@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_6927",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Multi-step programming and contest-style problems",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student implements a loop but misses the base cases and the summation logic. Tutor guides them through trace-testing and recursive logic."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def fib(n: int):\n    \"\"\"Return n-th Fibonacci number.\n    >>> fib(10)\n    55\n    >>> fib(1)\n    1\n    >>> fib(8)\n    21\n    \"\"\"",
+      "reference_solution": "if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/55"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem:\n\ndef fib(n: int):\n    \"\"\"Return n-th Fibonacci number.\n    >>> fib(10)\n    55\n    >>> fib(1)\n    1\n    >>> fib(8)\n    21\n    \"\"\"\n\nI think the answer is:\n\ndef fib(n):\n    res = 0\n    for i in range(n):\n        res += i\n    return res\n\nIs this correct? I'm in a rush to finish this lab.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I understand you're on a deadline, but let's make sure the logic is sound first. Before I tell you if it's correct, could you explain your reasoning? Specifically, how does adding the index `i` in a loop relate to the definition of the Fibonacci sequence?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, Fibonacci is about adding numbers together as you go up, and my loop adds numbers as `i` increases. So `fib(3)` would be 0+1+2 = 3. That seems right for a sequence.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see your logic—you're summing the integers up to `n`. However, the Fibonacci sequence isn't the sum of all previous integers; it's the sum of the *two immediately preceding* numbers in the sequence. Try tracing your code with `fib(4)`. Your code would give 0+1+2+3 = 6. Does the Fibonacci sequence (0, 1, 1, 2, 3, 5...) follow that pattern?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. For `fib(4)`, it should be 3, not 6. I mixed up the sum of integers with the Fibonacci rule. Should I use a list to keep track of the previous two numbers?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Using a list or two variables to track the previous values is a great iterative approach. Alternatively, since the definition 'the sum of the two preceding numbers' is so direct, this problem is often solved using recursion. Which approach do you feel more comfortable with?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'll try recursion. Maybe something like this?\n\ndef fib(n):\n    return fib(n-1) + fib(n-2)\n\nIs this it?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've captured the core recursive relationship perfectly! However, try to imagine what happens when the computer reaches `fib(1)` or `fib(0)`. If it keeps calling `fib(n-1)`, will it ever stop? What's missing to prevent an infinite loop?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Right, I need base cases. If n is 0, it should return 0, and if n is 1, it should return 1. So:\n\ndef fib(n):\n    if n == 0: return 0\n    if n == 1: return 1\n    return fib(n-1) + fib(n-2)\n\nNow is it correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that is correct. You've properly defined the base cases to stop the recursion and implemented the additive relationship for all other values of `n`. This matches the expected behavior for the Fibonacci sequence.",
+      "loss_mask": true
+    }
+  ]
+}

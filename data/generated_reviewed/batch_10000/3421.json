@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_3421",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks: Bracket Validation",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student applies moderate pressure for the solution; tutor consistently redirects to conceptual steps."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def correct_bracketing(brackets: str):\n    \"\"\" brackets is a string of \"<\" and \">\".\n    return True if every opening bracket has a corresponding closing bracket.\n\n    >>> correct_bracketing(\"<\")\n    False\n    >>> correct_bracketing(\"<>\")\n    True\n    >>> correct_bracketing(\"<<><>>\")\n    True\n    >>> correct_bracketing(\"><<>\")\n    False\n    \"\"\"",
+      "reference_solution": "depth = 0\n    for b in brackets:\n        if b == \"<\":\n            depth += 1\n        else:\n            depth -= 1\n        if depth < 0:\n            return False\n    return depth == 0",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/56"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this coding problem: \n\ndef correct_bracketing(brackets: str):\n    \"\"\" brackets is a string of \"<\" and \">\".\n    return True if every opening bracket has a corresponding closing bracket.\n\n    >>> correct_bracketing(\"<\")\n    False\n    >>> correct_bracketing(\"<>\")\n    True\n    >>> correct_bracketing(\"<<><>>\")\n    True\n    >>> correct_bracketing(\"><<>\")\n    False\n    \"\"\"\n\nCan you just give me the code? I'm in a rush and really need to see how it's done.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you figure this out, but I won't provide the full code upfront. Instead, let's break it down. To track if brackets are balanced, we need a way to keep count of how many opening brackets are waiting for a closing one. What kind of variable or data structure do you think would be best for tracking that count as we move through the string?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess an integer counter? But honestly, it would be way faster if you just pasted the solution so I can analyze it. Please?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "An integer counter is a great choice. Since we're focusing on the logic, let's use that. If you encounter a '<', what should happen to that counter? And what should happen when you see a '>'?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, fine. I'd increment for '<' and decrement for '>'. But what about the cases where it returns False? Like if it starts with '>'? Just tell me the final return statement and the if-condition for the False case.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the incrementing and decrementing logic right. Now, think about that specific scenario: if the counter ever drops below zero, what does that tell you about the brackets encountered so far? Try to describe that condition in a way that would fit inside your loop.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If it's below zero, it means there was a closing bracket without a matching opening one, so it should return False immediately. So the loop handles the 'too many closing' part. But what about the end? Do I just return True?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're very close. Consider a case like \"<<\". The counter would end up being 2. In that case, is the bracketing correct? Based on that, what should the final return statement check regarding the counter's value after the loop finishes?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. It has to be exactly zero at the end to be True. So I check if counter == 0. I think I have it now. I'll write the code!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's exactly right. You've identified both critical failure points: when the count goes negative during the process and when it doesn't return to zero at the end. Go ahead and implement it!",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_2209",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Prealgebra - Geometry",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student initially guesses 60 degrees based on the equilateral triangle. Tutor guides them to identify the specific triangle containing the mystery angle and calculate the angles of the square and triangle intersection."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "An equilateral triangle and a square are inscribed in a circle as shown. $ABC$ is isosceles. The triangle and square share a common vertex. What is the number of degrees in the measure of the angle indicated by the question mark?\n\n[asy]\n\nimport markers; defaultpen(linewidth(0.8));\n\npair A,B,C,D,E,F,G;\n\ndraw(unitcircle);\n\nA=(-1,0);\nB=(0,-1);\nC=(1,0);\nD=(0,1);\n\ndraw(A--B--C--D--A);\n\nE=(-0.9,-0.45);\nF=(0.9,-0.45);\n\ndraw(D--E--F--D);\n\nG=(-0.76,-0.23);\n\nmarkangle(Label(\"?\"),n=1,radius=10,D,G,A,marker(stickframe(n=0),true));\n\nlabel(\"$A$\",(-0.5,-0.34));\nlabel(\"$B$\",(0.5,-0.34));\nlabel(\"$C$\",B,S);\n\n[/asy]",
+      "reference_solution": "We can determine the other two angles in the triangle with the unknown angle.  Label its vertices $X$, $Y$, and $Z$.\n\n[asy]\nimport markers; defaultpen(linewidth(0.8));\n\npair A,B,C,D,EE,F,G;\n\ndraw(unitcircle);\n\nA=(-1,0);\nB=(0,-1);\nC=(1,0);\nD=(0,1);\n\ndraw(A--B--C--D--A);\n\nEE=(-0.9,-0.45);\nF=(0.9,-0.45);\n\ndraw(D--EE--F--D);\n\nG=(-0.76,-0.23);\n\nmarkangle(Label(\"?\"),n=1,radius=10,D,G,A,marker(stickframe(n=0),true));\n\ndraw(A--D--G--A,red+1bp);\n\nlabel(\"$X$\",D,N);\nlabel(\"$Y$\",A,W);\nlabel(\"$Z$\",G,E);\n\n[/asy]\n\nWe want to find $\\angle XZY$.  Since $\\angle XYZ$ is an angle of a square, $\\angle XYZ=90^\\circ$.  Also, $\\angle YXZ$ is part of an angle of a square.  By symmetry, the large angle at $X$ can be dissected into a sum of three angles, \\[90^\\circ = \\angle YXZ +60^\\circ+\\angle YXZ=2\\angle YXZ+60^\\circ.\\] Therefore $\\angle YXZ=15^\\circ$.  The mystery angle is the third angle of this triangle, so \\[\\angle XZY=180^\\circ-90^\\circ-15^\\circ=\\boxed{75^\\circ}.\\]",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "6423"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this geometry problem: An equilateral triangle and a square are inscribed in a circle as shown. $ABC$ is isosceles. The triangle and square share a common vertex. What is the number of degrees in the measure of the angle indicated by the question mark?\n\n[asy]\n\nimport markers; defaultpen(linewidth(0.8));\n\npair A,B,C,D,E,F,G;\n\ndraw(unitcircle);\n\nA=(-1,0);\nB=(0,-1);\nC=(1,0);\nD=(0,1);\n\ndraw(A--B--C--D--A);\n\nE=(-0.9,-0.45);\nF=(0.9,-0.45);\n\ndraw(D--E--F--D);\n\nG=(-0.76,-0.23);\n\nmarkangle(Label(\"?\"),n=1,radius=10,D,G,A,marker(stickframe(n=0),true));\n\nlabel(\"$A$\",(-0.5,-0.34));\nlabel(\"$B$\",(0.5,-0.34));\nlabel(\"$C$\",B,S);\n\n[/asy]\n\nI think the answer is 60 degrees because of the equilateral triangle. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see why you're thinking of 60 degrees, as that's the internal angle of any equilateral triangle. However, the angle marked with the question mark isn't actually one of the angles inside the equilateral triangle itself. It's formed by the intersection of the triangle's side and the square's side. Could you describe how you arrived at 60 degrees, or try to identify which specific triangle contains the mystery angle?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. I just assumed it was part of the equilateral triangle. If I look closer, the angle is at the intersection point G. So it's part of a smaller triangle formed by the top vertex of the square and the left vertex of the square. Let me try again... maybe it's 45 degrees because the square is symmetric?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've correctly identified that the angle is part of a smaller triangle! Let's focus on that triangle. One of its vertices is the top vertex of the square, one is the left vertex of the square, and the third is the intersection point G. What do we know about the angle at the left vertex of the square (the one that is also a vertex of this smaller triangle)?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "That vertex is a corner of the square, so the angle there must be 90 degrees. So in the small triangle, we have one angle that is 90 degrees. To find the mystery angle, I just need the other angle at the top vertex, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Now, let's look at that top vertex. It's shared by both the square and the equilateral triangle. The total angle of the square's corner is 90 degrees, and the angle of the equilateral triangle is 60 degrees. Because of the symmetry of the figure, how is that 90-degree angle split up by the equilateral triangle?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The equilateral triangle is centered, so it probably splits the remaining space equally. 90 minus 60 is 30. If that's split in two, each side is 15 degrees. So the angle at the top vertex of our small triangle is 15 degrees.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great deduction. Now you have two angles of the small triangle: 90 degrees and 15 degrees. Using that information, what do you think the mystery angle is?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The sum of angles in a triangle is 180. So 180 - 90 - 15 = 75. The answer is 75 degrees!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is correct! You logically broke down the geometry of the intersection and used the properties of both the square and the equilateral triangle to find the result. Well done.",
+      "loss_mask": true
+    }
+  ]
+}

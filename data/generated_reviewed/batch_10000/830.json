@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_830",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Bit Manipulation and Basic Algorithms",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "off_topic_redirect",
+      "task_focus",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student drifts to ask about a gaming PC build; tutor politely redirects back to the bit-toggling problem while maintaining a supportive tone."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Write a python function to toggle bits of the number except the first and the last bit. https://www.geeksforgeeks.org/toggle-bits-number-expect-first-last-bits/",
+      "reference_solution": "def set_middle_bits(n):  \n    n |= n >> 1; \n    n |= n >> 2; \n    n |= n >> 4; \n    n |= n >> 8; \n    n |= n >> 16;  \n    return (n >> 1) ^ 1\ndef toggle_middle_bits(n): \n    if (n == 1): \n        return 1\n    return n ^ set_middle_bits(n)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "735"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm stuck on this homework: Write a python function to toggle bits of the number except the first and the last bit. https://www.geeksforgeeks.org/toggle-bits-number-expect-first-last-bits/ Can you just give me the code? I'm in a rush.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through this! Instead of giving you the full code right away, let's break it down so you understand how it works. To toggle bits, we usually use the XOR (^) operator. Do you know how XOR works with a 'mask' of 1s?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think XOR flips the bit if the other bit is 1, right? But I don't know how to make a mask that only targets the middle bits. Also, totally random question, but do you think I should get an RTX 4070 or a 4080 for a gaming build?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great question about GPUs, and we can definitely chat about PC builds once we finish this! For now, let's stay focused on the bitmask. You're correct about XOR. To toggle only the middle bits, we need a mask that has 1s in every position except the most significant bit (the first) and the least significant bit (the last). How might you create a sequence of 1s that fills the space between the first and last bit?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Right, back to the code. I'm not sure. Maybe I could find the highest bit and then subtract 1? But that would change the first bit too.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're thinking in the right direction. One way to create a block of 1s is to use bitwise OR with right-shifts (e.g., `n |= n >> 1`). This effectively 'spreads' the 1s to the right. If you keep doing this for 2, 4, 8, and 16 positions, what happens to the bits following the most significant bit?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, so it fills everything to the right with 1s! So if I have that, I just need to make sure the very last bit is 0 and the very first bit is 0 so they don't toggle. How do I handle the last bit specifically?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. To handle the last bit, you can use a bitwise operation to ensure it's 0, or shift the mask. Once you have a mask that is 0 at the start and 0 at the end, but 1 everywhere else, you can XOR that mask with your original number. Try drafting the function that creates this mask first.",
+      "loss_mask": true
+    }
+  ]
+}

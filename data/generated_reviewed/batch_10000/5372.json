@@ -1,0 +1,108 @@
+{
+  "conversation_id": "mt_5372",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Counting & Probability - Optimization",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Tutor effectively scaffolds the problem by guiding the student to identify the shortest edges and then testing for path connectivity without revealing the final answer."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "What is the shortest distance that can be travelled if you start at any point, $A$, $B$, $C$, or $D$, and visit the other three points once?\n\n[asy]\npair A,B,C, D;\nA = (-3,3); B = (3,0); C = (0, -4); D = (0,0);\ndraw(D--B--C--cycle); draw(D--A--B--cycle);draw(D--A--C--cycle);\nlabel(\"$A$\", A, NW);label(\"$B$\", B, E); label(\"$C$\", C, S);label(\"$D$\", D, NE);\nlabel(\"3\", D--B, S); label(\"6\", A--B, NE); label(\"6\", A--C, SW); label(\"4\", D--C, NW+N);\nlabel(\"5\", A--D, SE+NE); label(\"5\", C--B, E);\n[/asy]",
+      "reference_solution": "To visit all four points, we notice that we must travel along at least three different segments. The sum of the shortest three segments is $3+4+5=12$, but we quickly notice that it is impossible to start at one point and visit the other three points by traveling on a path with length $12$ ($DB$, $BC$, and $CD$ do not let us visit point $A$, and it is not possible to travel on $AD$, $CD$, and $BD$ in a continuous path). We now look for a path with length $13$ and notice that traveling from point $A$ to $D$ to $B$ to $C$ works. Alternatively, $B$ to $D$ to $C$ to $A$ also works. Both paths have length $\\boxed{13}$.",
+      "seed_dataset": "HuggingFaceH4/MATH-500/test",
+      "seed_example_id": "test/counting_and_probability/199.json"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this geometry/graph problem. What is the shortest distance that can be travelled if you start at any point, $A$, $B$, $C$, or $D$, and visit the other three points once?\n\n[asy]\npair A,B,C, D;\nA = (-3,3); B = (3,0); C = (0, -4); D = (0,0);\ndraw(D--B--C--cycle); draw(D--A--B--cycle);draw(D--A--C--cycle);\nlabel(\"$A$\", A, NW);label(\"$B$\", B, E); label(\"$C$\", C, S);label(\"$D$\", D, NE);\nlabel(\"3\", D--B, S); label(\"6\", A--B, NE); label(\"6\", A--C, SW); label(\"4\", D--C, NW+N);\nlabel(\"5\", A--D, SE+NE); label(\"5\", C--B, E);\n[/asy]",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "To solve this, it helps to think of the points as nodes in a graph and the distances as weighted edges. Since you need to visit all four points exactly once, you are looking for the shortest path that connects all four vertices. \n\nAs a first step, can you list all the available edges and their lengths from the diagram?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, let me list them:\nAD = 5\nAB = 6\nAC = 6\nDB = 3\nDC = 4\nBC = 5",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's correct. Now, to find the shortest path visiting all four points, you'll need to use exactly three edges. If you simply picked the three shortest edges available, which ones would they be, and what would their total length be?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The shortest ones are DB (3), DC (4), and AD (5). That adds up to 12. So the answer is 12?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Not so fast! While 12 is the sum of the three smallest numbers, we have to make sure those edges actually form a single continuous path that visits every point. \n\nLook at the edges you picked: DB, DC, and AD. Can you arrange these three edges into a sequence (like X -> Y -> Z -> W) that visits all four points without jumping?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let me see... AD connects A and D. DC connects D and C. DB connects D and B. \nWait, they all meet at D. So I'd have to go A to D, then D to C... but then I'm at C and I can't get to B using only those edges. I'd have to go back to D. That's not visiting them 'once'. So 12 doesn't work.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. You've discovered that those three edges form a 'star' shape centered at D, not a path. \n\nSince a path of length 12 is impossible, let's look for the next smallest possibility. Try replacing one of the edges in your set with the next shortest available edge. What's the next shortest distance available, and can you find a valid path using it?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The next shortest is BC = 5. If I use DB (3), DC (4), and BC (5), that's 12 again, but that's just a triangle (D-B-C-D), it doesn't include A. \n\nWhat if I use AD (5), DB (3), and BC (5)? That's A -> D -> B -> C. The total is 5 + 3 + 5 = 13. Does that work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Check your path: A to D, D to B, and B to C. Does it visit all four points exactly once? And is there any other combination of edges that could possibly result in a sum smaller than 13 but larger than 12?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Yes, A-D-B-C visits all four. Since the only edges shorter than or equal to 5 are 3, 4, 5, 5, and we already saw that the combination of 3, 4, 5 didn't form a path, 13 must be the shortest. The answer is 13.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is correct. You correctly identified that the absolute minimum sum of three edges didn't form a valid path and then found the smallest possible sum that did. Well done!",
+      "loss_mask": true
+    }
+  ]
+}

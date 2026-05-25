@@ -1,0 +1,109 @@
+{
+  "conversation_id": "mt_065",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Optimization",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student initially guesses 2 by ignoring the coupling of variables. Tutor guides them through the use of the inequality ab <= (a^2 + b^2)/2 to find the correct upper bound and verification."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Find the maximum value of\n\\[f(x,y) = x \\sqrt{1 - y^2} + y \\sqrt{1 - x^2},\\]where $-1 \\le x,$ $y \\le 1.$",
+      "reference_solution": "Let $a$ and $b$ be real numbers.  Then $(a - b)^2 \\ge 0,$ which is equivalent to\n\\[ab \\le \\frac{a^2 + b^2}{2}.\\](This looks like AM-GM, but here, we want to show that it holds for all real numbers, not just nonnegative real numbers.)\n\nSetting $a = x$ and $b = \\sqrt{1 - y^2},$ we get\n\\[x \\sqrt{1 - y^2} \\le \\frac{x^2 + 1 - y^2}{2}.\\]Setting $a = y$ and $b = \\sqrt{1 - x^2},$ we get\n\\[y \\sqrt{1 - x^2} \\le \\frac{y^2 + 1 - x^2}{2}.\\]Therefore,\n\\[x \\sqrt{1 - y^2} +y \\sqrt{1 - x^2} \\le \\frac{x^2 + 1 - y^2}{2} + \\frac{y^2 + 1 - x^2}{2} = 1.\\]Since $f(1,0) = 1,$ the maximum value is $\\boxed{1}.$",
+      "seed_dataset": "HuggingFaceH4/MATH-500/test",
+      "seed_example_id": "test/intermediate_algebra/1151.json"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm trying to solve this: Find the maximum value of\n\\[f(x,y) = x \\sqrt{1 - y^2} + y \\sqrt{1 - x^2},\\]where $-1 \\le x,$ $y \\le 1.$\n\nI think the answer is 2. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't confirm the answer for you directly. Could you explain the steps you took to arrive at 2? I'd like to see your logic first.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I thought that since $x$ and $y$ can be up to 1, the maximum for each square root term is also 1. So if I just make everything 1, I get $1(1) + 1(1) = 2$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Take a closer look at the terms. If you set $x$ to 1 to maximize the coefficient of the first term, what happens to the square root in the second term, $\\sqrt{1-x^2}$? Can both $x$ and $\\sqrt{1-x^2}$ be 1 simultaneously?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, no they can't. If $x=1$, then $\\sqrt{1-1^2} = 0$. So my logic was wrong because the variables are linked. How should I approach this then?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Since you're looking for an upper bound, consider using an inequality that relates a product to a sum of squares. For any real numbers $a$ and $b$, we know $(a-b)^2 \\ge 0$. How can you rewrite that to create a bound for a product like $ab$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If $(a-b)^2 \\ge 0$, then $a^2 - 2ab + b^2 \\ge 0$, which means $ab \\le \\frac{a^2+b^2}{2}$. I can apply this to the first term $x \\sqrt{1-y^2}$ by letting $a=x$ and $b=\\sqrt{1-y^2}$. That gives $x \\sqrt{1-y^2} \\le \\frac{x^2 + 1 - y^2}{2}$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's exactly the right approach. Now, apply that same inequality to the second term, $y \\sqrt{1-x^2}$, and see what happens when you combine the two results.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The second term is $y \\sqrt{1-x^2} \\le \\frac{y^2 + 1 - x^2}{2}$. Adding them together: $\\frac{x^2 + 1 - y^2}{2} + \\frac{y^2 + 1 - x^2}{2} = \\frac{2}{2} = 1$. So the maximum value is 1?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've shown that the function cannot exceed 1. To finish the proof, you just need to demonstrate that this value is actually reachable. Can you find a pair $(x,y)$ within the given constraints that makes the function equal to that value?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If I let $x=1$ and $y=0$, then $f(1,0) = 1\\sqrt{1-0} + 0\\sqrt{1-1} = 1 + 0 = 1$. It works! So the maximum is indeed 1.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Perfect. You established an upper bound using the inequality and then verified it with a specific point. Great job working through that!",
+      "loss_mask": true
+    }
+  ]
+}

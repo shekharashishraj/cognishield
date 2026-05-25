@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_6980",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Number Theory - Modular Arithmetic",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student initially tries to sum the series first before applying modulo; tutor redirects them to use properties of modular addition."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Find the modulo $7$ remainder of the sum $1+3+5+7+9+\\dots+195+197+199.$",
+      "reference_solution": "Instead of adding up the sum and finding the residue, we can find the residue of each number to make computation easier.\n\nEach group of 7 numbers would have the sum of residues $1+3+5+0+2+4+6 \\equiv 21 \\equiv 0 \\pmod7$. Since we only have odd numbers in the sum, every $7$ odd numbers is $14$ integers. Because every group has a residue of $7$, we can ignore them.\n\nThere are $\\left\\lfloor \\frac{199}{14}\\right\\rfloor=14$ sets of $14$ integers, which is equivalent to $7$ odd numbers in our sum. This leaves $197$ and $199$, which have residues $1+3 \\equiv \\boxed{4} \\pmod7$.",
+      "seed_dataset": "HuggingFaceH4/MATH-500/test",
+      "seed_example_id": "test/number_theory/109.json"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this math problem: Find the modulo $7$ remainder of the sum $1+3+5+7+9+\\dots+195+197+199.$ Can you just tell me the answer? I'm in a rush.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the final answer directly, but I can help you work through it quickly! A good first step is to look at the structure of the sum. Do you want to try calculating the total sum first, or is there a property of modular arithmetic that might make this easier?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'll just find the sum of the arithmetic progression first. The first term is 1, the last is 199. The number of terms is $(199-1)/2 + 1 = 100$. So the sum is $(100/2) * (1 + 199) = 50 * 200 = 10,000$. Now I just need to do $10,000 \\pmod 7$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your calculation for the total sum is correct! However, calculating the remainder of a very large number can sometimes be tedious or prone to errors. In number theory, there's a helpful property: the remainder of a sum is equal to the sum of the remainders. How could you apply that to the sequence of odd numbers here?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, so I can find the remainder of each term first? Like $1 \\equiv 1 \\pmod 7$, $3 \\equiv 3 \\pmod 7$, $5 \\equiv 5 \\pmod 7$, $7 \\equiv 0 \\pmod 7$, $9 \\equiv 2 \\pmod 7$... and so on. But that seems like even more work since there are 100 terms.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It seems like more work at first, but look closely at the remainders you just started listing: $1, 3, 5, 0, 2, 4, 6$. Do you notice a pattern? What happens if you sum those first seven remainders together?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let's see... $1+3+5+0+2+4+6 = 21$. And $21 \\pmod 7$ is $0$! So every group of 7 odd numbers just cancels out to 0 in modulo 7.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Now that you've found that every block of 7 odd numbers sums to $0 \\pmod 7$, how many such complete blocks are there in your 100 terms, and what remains?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Since there are 100 terms, $100 \\div 7$ is $14$ with a remainder of $2$. So there are 14 blocks that sum to 0, and then just the last 2 terms are left. The last two terms are 197 and 199. $197 \\pmod 7$ is $1$ (because $196$ is $7 \\times 28$) and $199 \\pmod 7$ is $3$. So $1 + 3 = 4$. The answer is 4!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is correct. You successfully identified the periodic nature of the remainders and used it to simplify the calculation significantly. Great job!",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_2408",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Geometry",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor guides the student through the properties of alternate interior angles and similar triangles to establish an area ratio, strictly adhering to the never_state policy."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Suppose that $ABCD$ is a trapezoid in which $\\overline{AD}|| \\overline{BC}$.  Given $\\overline{AC}\\perp\\overline{CD}$, $\\overline{AC}$ bisects angle $\\angle BAD$, and $[ABCD]=42$, then compute $[\\triangle ACD]$.",
+      "reference_solution": "There are many ways to draw the diagram; one possibility is shown below.  We know that $\\angle BAC \\cong \\angle CAD\\cong \\angle BCA$ since $\\overline{AC}$ bisects $\\angle BAD$ and $\\overline{AD} || \\overline{BC}$.  Therefore $\\triangle BAC$ is isosceles.  In the diagram we have added segment $\\overline{BE}$ splitting $\\triangle BAC$ into two smaller congruent right triangles.  We also know that $\\triangle ACD$ is a right triangle by the givens, so we conclude that $\\triangle ACD \\sim \\triangle CEB$ since we already know that $\\angle CAD\\cong\\angle ECB$.  In fact, $\\triangle ACD $ is exactly four times the size of $\\triangle CEB$ since $AC=2(EC)$.  If we let $[\\triangle CEB]=K$, then $[\\triangle AEB]=K$ while $[\\triangle ACD]=4K$.  Thus $6K=42$, so $K=7$ and $[\\triangle ACD]=4K=\\boxed{28}$.\n\n[asy]\nimport olympiad; import graph; size(150); defaultpen(linewidth(0.8)); dotfactor=4;\nint randangle = 50;\ndraw((-5,0)--(5*dir(randangle))--(5,0)--cycle);\npath x1 = (5*Cos(randangle),5*Sin(randangle))--(-10,5*Sin(randangle));\npath x2 = (-5,0)--(5dir(2*randangle));\npair X = intersectionpoint(x1,x2);\ndraw((-5,0)--X--(5*dir(randangle)));\ndraw(rightanglemark((5,0),(5*dir(50)),(-5,0),s=14));\ndraw(anglemark((5,0),(-5,0),X,18));\ndraw(anglemark(X,5*dir(50),(-5,0),18));\nlabel(\"$A$\",(-5,0),W); label(\"$D$\",(5,0),E); label(\"$C$\",(5*dir(50)),E);\nlabel(\"$B$\",(X),N);\n\npair L = foot(X,(-5,0),5*dir(50));\ndraw(X--L);\ndraw(rightanglemark(X,L,(-5,0),14)); draw(rightanglemark(X,L,(5*dir(50)),14));\nlabel(\"$E$\",L,SE);\n[/asy]",
+      "seed_dataset": "HuggingFaceH4/MATH-500/test",
+      "seed_example_id": "test/geometry/965.json"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Suppose that $ABCD$ is a trapezoid in which $\\overline{AD}|| \\overline{BC}$. Given $\\overline{AC}\\perp\\overline{CD}$, $\\overline{AC}$ bisects angle $\\angle BAD$, and $[ABCD]=42$, then compute $[\\triangle ACD]$. I'm really stuck, can you just tell me the answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can help you solve this, but I won't give you the final answer directly. Let's break it down. First, look at the angle bisector $\\overline{AC}$ and the parallel lines $\\overline{AD} || \\overline{BC}$. What can you say about the relationship between $\\angle BAC$ and $\\angle BCA$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Since $\\overline{AD} || \\overline{BC}$, $\\angle DAC = \\angle BCA$ because they are alternate interior angles. And since $\\overline{AC}$ bisects $\\angle BAD$, then $\\angle BAC = \\angle DAC$. So $\\angle BAC = \\angle BCA$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's correct. Now, if $\\angle BAC = \\angle BCA$, what does that tell you about $\\triangle ABC$? Specifically, what can you conclude about the lengths of sides $AB$ and $BC$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It means $\\triangle ABC$ is isosceles, so $AB = BC$. But I'm not sure how to connect this to the area of $\\triangle ACD$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Let's try this: imagine dropping an altitude from $B$ to the segment $\\overline{AC}$, meeting it at point $E$. Since $\\triangle ABC$ is isosceles with $AB=BC$, what is the relationship between $AE$ and $EC$? Also, can you find a similarity between $\\triangle CEB$ and $\\triangle ACD$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Since it's an isosceles triangle, the altitude $BE$ bisects the base, so $AE = EC$. As for similarity, both $\\triangle CEB$ and $\\triangle ACD$ have a right angle, and we already know $\\angle ECB = \\angle CAD$. So they are similar by AA similarity.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Perfect. Now consider the ratio of their corresponding sides. You found that $AE = EC$, which means $AC = 2(EC)$. Since the triangles are similar, how does this side ratio affect the ratio of their areas $[\\triangle ACD]$ and $[\\triangle CEB]$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The ratio of areas is the square of the ratio of sides. So if the side ratio is 2, the area ratio is $2^2 = 4$. So $[\\triangle ACD] = 4 \\times [\\triangle CEB]$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got it. Now, let's express the total area of the trapezoid $[ABCD]$ in terms of $[\\triangle CEB]$. Remember that the trapezoid is made of $\\triangle ACD$ and $\\triangle ABC$, and $\\triangle ABC$ is made of two congruent triangles ($\\triangle AEB$ and $\\triangle CEB$). If you let $[\\triangle CEB] = K$, how many $K$'s make up the total area of 42?",
+      "loss_mask": true
+    }
+  ]
+}

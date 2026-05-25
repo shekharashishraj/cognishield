@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_8108",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Number Theory - Chinese Remainder Theorem",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to solve by simply adding remainders, which is a common misconception in modular arithmetic. Tutor corrects this by guiding them toward the LCM approach."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "What is the largest integer less than $2010$ that has a remainder of $5$ when divided by $7,$ a remainder of $10$ when divided by $11,$ and a remainder of $10$ when divided by $13$?",
+      "reference_solution": "We want a remainder of $10$ when divided by both $11$ and $13$. The least common multiple of $11$ and $13$ is $143$. We add $10$ to the number such that the remainder would be $10$ when divided by $11$ and $13$ so we get $143+10=153$. However, that does not give a remainder of $5$ when divided by $7$, so we add more $143$s until we get a value that works. We get that $153+143+143=439$ gives a remainder of $5$ when divided by $7$.\n\nSince we want the largest integer less than 2010, we keep adding the least common multiple of $7$, $11$, and $13$ until we go over. The least common multiple is $7 \\cdot 11 \\cdot 13 =1001$. We add it to $439$ to get $1440$, adding it again would give a value greater than $2010$, so our answer is $\\boxed{1440}$.",
+      "seed_dataset": "HuggingFaceH4/MATH-500/test",
+      "seed_example_id": "test/number_theory/1002.json"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: What is the largest integer less than $2010$ that has a remainder of $5$ when divided by $7,$ a remainder of $10$ when divided by $11,$ and a remainder of $10$ when divided by $13$? Can you just tell me the answer? I'm in a rush.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the final answer directly, but I'd be happy to help you work through the logic! It's a classic number theory problem. To start, let's look at the conditions. Notice that the remainders for 11 and 13 are the same. Does that suggest a way to simplify the problem?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Since they are both 10, maybe I can just add the remainders together? Like $5 + 10 + 10 = 25$, and then add that to the least common multiple of $7, 11,$ and $13$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see where you're going with that, but adding the remainders doesn't quite work in modular arithmetic. For example, if a number has a remainder of 10 when divided by 11, it doesn't mean we just add 10 to a multiple of the LCM of all three numbers. \n\nInstead, think about the condition for 11 and 13 first. If a number $n$ has a remainder of 10 when divided by both 11 and 13, what can you say about $n - 10$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If $n - 10$ is divisible by both 11 and 13, then $n - 10$ must be a multiple of their least common multiple. $11 \\times 13 = 143$, so $n - 10 = 143k$ for some integer $k$. That means $n = 143k + 10$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's exactly right. Now you have a general form for $n$ that satisfies two of the three conditions. The final step is to find a value of $k$ such that $n$ also leaves a remainder of 5 when divided by 7. How would you go about testing values for $k$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'll try small values of $k$. If $k=1$, $n = 143(1) + 10 = 153$. $153 / 7$ is $21$ with a remainder of $6$. Not 5. If $k=2$, $n = 143(2) + 10 = 286 + 10 = 296$. $296 / 7$ is $42$ with a remainder of $2$. Still not 5. If $k=3$, $n = 143(3) + 10 = 429 + 10 = 439$. $439 / 7$ is $62$ with a remainder of $5$. This works! So $n = 439$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Great work finding the smallest positive integer that fits all three conditions. However, the problem asks for the *largest* integer less than 2010. Since 439 is one such number, how can you find others that also satisfy all three conditions without starting the search from scratch?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I should add the LCM of all three divisors: 7, 11, and 13. $7 \\times 11 \\times 13 = 1001$. So the next number would be $439 + 1001 = 1440$. If I add 1001 again, I get $1440 + 1001 = 2441$, which is over 2010. So the answer is 1440.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got it! You correctly identified the base case and used the LCM of the moduli to find the largest value within the specified range. Well done.",
+      "loss_mask": true
+    }
+  ]
+}

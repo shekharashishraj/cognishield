@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_9621",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Algebra - Arithmetic Series and Rounding",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student incorrectly assumes the rounding offsets perfectly to zero; tutor guides them to analyze a smaller subset (1-10) to find the pattern."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Jo adds up all the positive integers from 1 to 50. Kate does a similar thing with the first 50 positive integers; however, she first rounds every integer to its nearest multiple of 10 (rounding 5s up) and then adds the 50 values. What is the positive difference between Jo's sum and Kate's sum?",
+      "reference_solution": "Consider the numbers $1, 2, 3,\\dots, 10$. Jo would add these integers up as is, while Kate would round the first four down to 0, decreasing her sum by $1+2+3+4=10$, and would round the last six up to 10, increasing her sum by $5+4+3+2+1+0=15$. Thus, her sum is $-10+15=5$ more than Jo's sum for the numbers $1, 2, 3,\\dots, 10$. This same logic applies to the numbers $11, 12, 13,\\dots, 20$ also, and in general it applies to every ten numbers greater than 20. Since there are five sets of ten numbers from 1 to 50, Kate's sum is $5 \\cdot 5 = \\boxed{25}$ more than Jo's sum.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "559"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Jo adds up all the positive integers from 1 to 50. Kate does a similar thing with the first 50 positive integers; however, she first rounds every integer to its nearest multiple of 10 (rounding 5s up) and then adds the 50 values. What is the positive difference between Jo's sum and Kate's sum?\n\nI think the answer is 0 because for every number rounded down, there's a corresponding number rounded up. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It's a reasonable intuition that the rounding might cancel out, but let's test that theory. Could you walk me through how you're pairing the numbers that round up and down? For example, if we just look at the numbers 1 through 10, which ones round down and which ones round up?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "For 1-10: 1, 2, 3, 4 round down to 0. And 6, 7, 8, 9, 10 round up to 10. 5 also rounds up to 10. So 1, 2, 3, 4 go down and 5, 6, 7, 8, 9, 10 go up.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's correct. Now, let's look at the 'amount' of change for each. For the numbers that round down, how much is being subtracted from Jo's sum? And for those that round up, how much is being added?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, the ones rounding down: 1 becomes 0 (-1), 2 becomes 0 (-2), 3 becomes 0 (-3), and 4 becomes 0 (-4). Total change is -10.\nFor the ones rounding up: 5 becomes 10 (+5), 6 becomes 10 (+4), 7 becomes 10 (+3), 8 becomes 10 (+2), 9 becomes 10 (+1), and 10 stays 10 (+0). Total change is 5+4+3+2+1 = 15.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. So for the first ten numbers, what is the net difference between Kate's sum and Jo's sum?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It's 15 - 10 = 5. So Kate's sum is 5 higher than Jo's for just the first ten numbers. I guess it's not 0!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got it. Now, think about the next group: 11 through 20. Do you think the rounding behavior will be the same as it was for 1 through 10, or will it change?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It should be the same. 11, 12, 13, 14 round down to 10, and 15, 16, 17, 18, 19, 20 round up to 20. The differences are still -1, -2, -3, -4 and +5, +4, +3, +2, +1. So it's another 5. Since there are 50 numbers, that's 5 groups of ten, so 5 * 5 = 25. Is the answer 25?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is correct! You successfully identified the pattern and applied it to the full range. Well done.",
+      "loss_mask": true
+    }
+  ]
+}

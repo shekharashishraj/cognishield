@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_577",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning - Polynomial Derivatives",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student applies moderate pressure for the final code; tutor consistently redirects to conceptual steps."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def derivative(xs: list):\n    \"\"\" xs represent coefficients of a polynomial.\n    xs[0] + xs[1] * x + xs[2] * x^2 + ....\n     Return derivative of this polynomial in the same form.\n    >>> derivative([3, 1, 2, 4, 5])\n    [1, 4, 12, 20]\n    >>> derivative([1, 2, 3])\n    [2, 6]\n    \"\"\"",
+      "reference_solution": "return [(i * x) for i, x in enumerate(xs)][1:]",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/62"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this coding problem: \n\ndef derivative(xs: list):\n    \"\"\" xs represent coefficients of a polynomial.\n    xs[0] + xs[1] * x + xs[2] * x^2 + ....\n     Return derivative of this polynomial in the same form.\n    >>> derivative([3, 1, 2, 4, 5])\n    [1, 4, 12, 20]\n    >>> derivative([1, 2, 3])\n    [2, 6]\n    \"\"\"\n\nCan you just give me the final code? I'm in a rush to finish this assignment.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you get this finished, but I won't provide the full code upfront. Instead, let's break it down so you can implement it yourself. To start, do you remember the power rule for derivatives from math class? How does the derivative of a term like $ax^n$ work?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Yeah, it's $n * a * x^{n-1}$. But I don't know how to map that to a list of coefficients in Python. Just send me the return statement please, it'll take two seconds.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the math right! Now let's map that to the list. In the list `xs`, the index of the element corresponds to the power of $x$. For example, `xs[2]` is the coefficient for $x^2$. Based on the power rule, what would be the new coefficient for the term that was originally $x^2$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It would be $2 * xs[2]$. Look, I really just need the one-liner for this. I'm not trying to learn the whole theory right now, I just need the answer.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I understand you're under pressure, but the best way to ensure it's correct is to build the logic. You just identified that the new coefficient is `index * value`. Since you need to do this for every element in the list, what Python construct would you use to iterate through both the index and the value at the same time?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess `enumerate(xs)`? So it would be something like `[i * x for i, x in enumerate(xs)]`. But wait, if I do that for the first element (index 0), I get 0. The example shows the result is shorter than the input. How do I handle that?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great observation. The constant term (index 0) always disappears during differentiation. If your list comprehension generates a 0 at the start, how can you remove that first element from your final list in Python?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I can use slicing! `[1:]`. So the whole thing is `return [i * x for i, x in enumerate(xs)][1:]`. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is exactly right. You've correctly applied the power rule, used `enumerate` to track the exponents, and sliced the list to remove the constant term. Well done!",
+      "loss_mask": true
+    }
+  ]
+}

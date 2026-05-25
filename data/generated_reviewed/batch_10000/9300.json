@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_9300",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Precalculus - Trigonometric Identities",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student initially attempts to solve by assuming tan(3theta) is simply 3*tan(theta), leading to an incorrect answer. Tutor guides them toward the correct multiple angle identities."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "There is an angle $\\theta$ in the range $0^\\circ < \\theta < 45^\\circ$ which satisfies\n\\[\\tan \\theta + \\tan 2 \\theta + \\tan 3 \\theta = 0.\\]Calculate $\\tan \\theta$ for this angle.",
+      "reference_solution": "Let $t = \\tan \\theta.$  Then $\\tan 2 \\theta = \\frac{2t}{1 - t^2}$ and $\\tan 3 \\theta = \\frac{3t - t^3}{1 - 3t^2},$ so\n\\[t + \\frac{2t}{1 - t^2} + \\frac{3t - t^3}{1 - 3t^2} = 0.\\]This simplifies to $4t^5 - 14t^3 + 6t = 0.$  This factors as $2t(2t^2 - 1)(t^2 - 3) = 0.$\n\nSince $0^\\circ < \\theta < 45^\\circ,$ $0 < t < 1.$  The only solution in this interval is $t = \\boxed{\\frac{1}{\\sqrt{2}}}.$",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "3715"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: There is an angle $\\theta$ in the range $0^\\circ < \\theta < 45^\\circ$ which satisfies\n\\[\\tan \\theta + \\tan 2 \\theta + \\tan 3 \\theta = 0.\\]Calculate $\\tan \\theta$ for this angle.\n\nI think the answer is $\\tan \\theta = 0$, but that doesn't seem right because of the range. Wait, if I just treat $\\tan 2\\theta$ as $2\\tan\\theta$ and $\\tan 3\\theta$ as $3\\tan\\theta$, I get $6\\tan\\theta = 0$. Is there a way to solve this? Maybe the answer is $1/3$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It's a good start to try and simplify the expressions, but we need to be careful with how we handle the multiple angles. In trigonometry, $\\tan(n\\theta)$ is generally not equal to $n\\tan(\\theta)$. Could you show me how you're thinking about the relationship between $\\tan \\theta$, $\\tan 2\\theta$, and $\\tan 3\\theta$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. I just multiplied the coefficient inside the tangent. I remember there are double angle formulas. For $\\tan 2\\theta$, isn't it $\\frac{2\\tan\\theta}{1-\\tan^2\\theta}$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is exactly correct. Now, do you recall a similar identity or a way to derive the expression for $\\tan 3\\theta$ in terms of $\\tan \\theta$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I don't remember the triple angle one. Can I use the sum formula? $\\tan(3\\theta) = \\tan(2\\theta + \\theta)$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that is the perfect approach. Try applying the formula $\\tan(A + B) = \\frac{\\tan A + \\tan B}{1 - \\tan A \\tan B}$ where $A = 2\\theta$ and $B = \\theta$. What expression do you get for $\\tan 3\\theta$ in terms of $t = \\tan \\theta$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, let $t = \\tan \\theta$. Then $\\tan 3\\theta = \\frac{\\frac{2t}{1-t^2} + t}{1 - \\frac{2t}{1-t^2}t} = \\frac{2t + t - t^3}{1 - t^2 - 2t^2} = \\frac{3t - t^3}{1 - 3t^2}$. \n\nNow the equation is $t + \\frac{2t}{1-t^2} + \\frac{3t-t^3}{1-3t^2} = 0$. This looks like a mess. If I simplify it, I get a polynomial. I think it simplifies to $2t(2t^2-1)(t^2-3) = 0$. So $t=0$, $t^2=1/2$, or $t^2=3$. Since $0 < \\theta < 45^\\circ$, then $0 < t < 1$. So $\\tan \\theta = 1/\\sqrt{2}$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your derivation for $\\tan 3\\theta$ is correct, and your factorization of the resulting polynomial is spot on. Given the constraint $0 < \\tan \\theta < 1$, your selection of $t^2 = 1/2$ is the only one that fits. You've correctly identified the value of $\\tan \\theta$.",
+      "loss_mask": true
+    }
+  ]
+}

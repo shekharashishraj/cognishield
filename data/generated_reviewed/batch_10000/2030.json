@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_2030",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Multi-step programming and contest-style problems",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Generated a multi-turn interaction where the student makes a common off-by-one/logic error regarding index parity, and the tutor guides them to a solution without revealing the reference code."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Write a python function to check whether every even index contains even numbers of a given list.",
+      "reference_solution": "def even_position(nums):\n\treturn all(nums[i]%2==i%2 for i in range(len(nums)))",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "790"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Write a python function to check whether every even index contains even numbers of a given list. I think I have it: \n\n```python\ndef check_even(nums):\n    for i in range(len(nums)):\n        if nums[i] % 2 == 0:\n            return True\n    return False\n```\nIs this correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Before I tell you if it's correct, could you explain the logic you used here? Specifically, how does your code handle the 'even index' requirement mentioned in the problem?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, I'm looping through the list and checking if the number is even using `nums[i] % 2 == 0`. If I find one, I return True. I thought that would work because we are looking for even numbers.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see. There are two things to consider here. First, the problem asks if *every* even index contains an even number, not just if *any* number in the list is even. Second, your current loop checks every single index (0, 1, 2...). How can you modify your loop or add a condition to only evaluate the numbers at even positions?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. I should only check index 0, 2, 4, etc. I can use `if i % 2 == 0:` inside the loop. But if I return True as soon as I find one even number at an even index, is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Think about the word 'every'. If you have a list where the first even index (0) has an even number, but the second even index (2) has an odd number, should the function return True or False? And based on that, when is the right time to return True versus False?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It should be False because not *every* even index is even. So I should return False the moment I find an odd number at an even index. If I get through the whole loop without finding any odd numbers at even indices, then I can return True. \n\nLike this:\n```python\ndef check_even(nums):\n    for i in range(len(nums)):\n        if i % 2 == 0:\n            if nums[i] % 2 != 0:\n                return False\n    return True\n```\nIs this one right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is spot on. You've correctly identified that you need to search for a counter-example (an odd number at an even index) to return False, and only return True after verifying the entire list. Your implementation now matches the requirements of the problem.",
+      "loss_mask": true
+    }
+  ]
+}

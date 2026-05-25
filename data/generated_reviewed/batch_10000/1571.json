@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_1571",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "off_topic_redirect",
+      "task_focus",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to pivot to a general question about Python versions; tutor redirects smoothly back to the coordinate sorting logic."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "def get_row(lst, x):\n    \"\"\"\n    You are given a 2 dimensional data, as a nested lists,\n    which is similar to matrix, however, unlike matrices,\n    each row may contain a different number of columns.\n    Given lst, and integer x, find integers x in the list,\n    and return list of tuples, [(x1, y1), (x2, y2) ...] such that\n    each tuple is a coordinate - (row, columns), starting with 0.\n    Sort coordinates initially by rows in ascending order.\n    Also, sort coordinates of the row by columns in descending order.\n    \n    Examples:\n    get_row([\n      [1,2,3,4,5,6],\n      [1,2,3,4,1,6],\n      [1,2,3,4,5,1]\n    ], 1) == [(0, 0), (1, 4), (1, 0), (2, 5), (2, 0)]\n    get_row([], 1) == []\n    get_row([[], [1], [1, 2, 3]], 3) == [(2, 2)]\n    \"\"\"",
+      "reference_solution": "coords = [(i, j) for i in range(len(lst)) for j in range(len(lst[i])) if lst[i][j] == x]\n    return sorted(sorted(coords, key=lambda x: x[1], reverse=True), key=lambda x: x[0])",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/87"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem:\n\ndef get_row(lst, x):\n    \"\"\"\n    You are given a 2 dimensional data, as a nested lists,\n    which is similar to matrix, however, unlike matrices,\n    each row may contain a different number of columns.\n    Given lst, and integer x, find integers x in the list,\n    and return list of tuples, [(x1, y1), (x2, y2) ...] such that\n    each tuple is a coordinate - (row, columns), starting with 0.\n    Sort coordinates initially by rows in ascending order.\n    Also, sort coordinates of the row by columns in descending order.\n    \n    Examples:\n    get_row([\n      [1,2,3,4,5,6],\n      [1,2,3,4,1,6],\n      [1,2,3,4,5,1]\n    ], 1) == [(0, 0), (1, 4), (1, 0), (2, 5), (2, 0)]\n    get_row([], 1) == []\n    get_row([[], [1], [1, 2, 3]], 3) == [(2, 2)]\n    \"\"\"\n\nCan you just give me the code? I have a deadline in an hour.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code for you, but I can certainly help you build it step-by-step so you can meet your deadline. Let's start with the first part: how would you go about finding all the coordinates (row, column) where the value is equal to `x` in a nested list where rows have different lengths?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think I can use a nested for loop. One for the rows and one for the columns in each row. If the element is x, I'll append (i, j) to a list. Does that sound right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is a solid approach. Using a nested loop will allow you to visit every element regardless of the row length. Once you have that list of coordinates, the next challenge is the sorting. The problem asks for two different sorting criteria. How do you plan to handle those?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Actually, before I do that, I was wondering—do you know if Python 3.12 has any new features for sorting lists that would make this easier? I heard something about new typing features but not sure about sorting.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Python 3.12 does have some interesting updates to typing and performance, but for this specific sorting logic, the standard `sorted()` function or `.sort()` method remains the best tool. Let's get back to the requirements: you need the rows in ascending order, but the columns within those rows in descending order. How can you use the `key` parameter in `sorted()` to achieve this?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I remember `key=lambda x: x[0]` sorts by the first element. So I can do that for the rows. But for the columns, I need them descending. Can I just sort the whole thing twice?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's an interesting idea. In Python, `sorted()` is stable, meaning it preserves the relative order of elements that have equal keys. If you sort by the secondary criteria (columns) first and then the primary criteria (rows), what do you think will happen to the column order within each row?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh! If I sort by columns descending first, and then sort by rows ascending, the rows will be in order, and the columns will stay descending because the sort is stable. So I should do `sorted(coords, key=lambda x: x[1], reverse=True)` first, then `sorted(..., key=lambda x: x[0])`.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got it. That's a clever way to handle multiple sorting requirements with different directions. Now that you have the logic for both the search and the sort, try putting it all together into the function.",
+      "loss_mask": true
+    }
+  ]
+}

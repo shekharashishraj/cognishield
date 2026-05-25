@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_8542",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Telescoping Series",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully scaffolds the Sophie Germain identity and the telescoping process without revealing the final answer until the student derives it."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Evaluate the infinite sum $\\sum_{n=1}^{\\infty}\\frac{n}{n^4+4}$.",
+      "reference_solution": "First, we can factor the denominator with a little give and take:\n\\begin{align*}\nn^4 + 4 &= n^4 + 4n^2 + 4 - 4n^2 \\\\\n&= (n^2 + 2)^2 - (2n)^2 \\\\\n&= (n^2 + 2n + 2)(n^2 - 2n + 2).\n\\end{align*}Then\n\\begin{align*}\n\\sum_{n=1}^\\infty \\frac{n}{n^4 + 4} & = \\sum_{n=1}^\\infty \\frac{n}{(n^2 + 2n + 2)(n^2 - 2n + 2)} \\\\\n&= \\frac{1}{4} \\sum_{n = 1}^\\infty \\frac{(n^2 + 2n + 2) - (n^2 - 2n + 2)}{(n^2 + 2n + 2)(n^2 - 2n + 2)} \\\\\n&= \\frac 1 4 \\sum_{n=1}^\\infty \\left( \\frac{1}{n^2 - 2n + 2} - \\frac{1}{n^2 + 2n + 2} \\right) \\\\\n&= \\frac 1 4 \\sum_{n=1}^\\infty \\left( \\frac{1}{(n-1)^2 + 1} - \\frac{1}{(n+1)^2 + 1} \\right) \\\\\n&= \\frac{1}{4} \\left[ \\left( \\frac{1}{0^2 + 1} - \\frac{1}{2^2 + 1} \\right) + \\left( \\frac{1}{1^2 + 1} - \\frac{1}{3^2 + 1} \\right) + \\left( \\frac{1}{2^2 + 1} - \\frac{1}{4^2 + 1} \\right) + \\dotsb \\right].\n\\end{align*}Observe that the sum telescopes. From this we find that the answer is $\\dfrac 1 4 \\left( \\dfrac{1}{0^2 + 1} + \\dfrac 1 {1^2 + 1} \\right) = \\boxed{\\dfrac 3 8}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "2174"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm stuck on this math problem: Evaluate the infinite sum $\\sum_{n=1}^{\\infty}\\frac{n}{n^4+4}$. I don't even know where to start. Can you just give me the answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through this! Instead of giving the answer right away, let's break it down. When you see a sum like this, especially with a polynomial in the denominator, a good first step is to see if you can factor that denominator. Do you think $n^4 + 4$ can be factored into smaller polynomials?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I tried that, but it doesn't look like it factors. It's a sum of squares, so I thought it was irreducible.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a common intuition! However, there's a clever trick here called completing the square. What would happen if you added and then subtracted $4n^2$ from $n^4 + 4$? Try writing that out and see if you recognize a specific algebraic pattern.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, let me try. $n^4 + 4n^2 + 4 - 4n^2$. That's $(n^2 + 2)^2 - (2n)^2$. Oh! That's a difference of squares! So it factors to $(n^2 + 2 - 2n)(n^2 + 2 + 2n)$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. Now that you have the denominator factored as $(n^2 - 2n + 2)(n^2 + 2n + 2)$, how can you rewrite the fraction $\\frac{n}{(n^2 - 2n + 2)(n^2 + 2n + 2)}$ to make the summation easier? Think about partial fraction decomposition.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'll try to split it. If I subtract the two factors in the denominator: $(n^2 + 2n + 2) - (n^2 - 2n + 2) = 4n$. That's almost the numerator! So the term is $\\frac{1}{4} \\left( \\frac{1}{n^2 - 2n + 2} - \\frac{1}{n^2 + 2n + 2} \\right)$. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is exactly right. Now, look closely at those two denominators. Can you rewrite $n^2 - 2n + 2$ and $n^2 + 2n + 2$ by completing the square again? This might reveal a relationship between the two terms in the sum.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let's see... $n^2 - 2n + 2 = (n-1)^2 + 1$ and $n^2 + 2n + 2 = (n+1)^2 + 1$. So the sum is $\\frac{1}{4} \\sum_{n=1}^{\\infty} \\left( \\frac{1}{(n-1)^2 + 1} - \\frac{1}{(n+1)^2 + 1} \\right)$. This looks like it telescopes! If I write out the first few terms, I get: $\\frac{1}{4} [ (\\frac{1}{0+1} - \\frac{1}{4+1}) + (\\frac{1}{1+1} - \\frac{1}{9+1}) + (\\frac{1}{4+1} - \\frac{1}{16+1}) ... ]$. Everything cancels except the first two positive terms? So the answer is $\\frac{1}{4} (1 + \\frac{1}{2}) = \\frac{3}{8}$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You nailed it. Your identification of the telescoping terms was perfect, and your final calculation is correct. The sum evaluates to $\\frac{3}{8}$. Great job working through those algebraic manipulations!",
+      "loss_mask": true
+    }
+  ]
+}

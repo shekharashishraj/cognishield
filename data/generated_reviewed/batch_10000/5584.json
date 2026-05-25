@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_5584",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Prealgebra - Geometry",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student incorrectly calculates perimeter by counting all internal lines; tutor guides them to distinguish between perimeter and internal boundaries."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "In the diagram, rectangle $PQRS$ is divided into three identical squares. If $PQRS$ has perimeter 120 cm, what is its area, in square centimeters? [asy]\n\nsize(4cm);\n\npair p = (0, 1); pair q = (3, 1); pair r = (3, 0); pair s = (0, 0);\n\ndraw(p--q--r--s--cycle);\n\ndraw(shift(1) * (p--s)); draw(shift(2) * (p--s));\n\nlabel(\"$P$\", p, NW); label(\"$Q$\", q, NE); label(\"$R$\", r, SE); label(\"$S$\", s, SW);\n\n[/asy]",
+      "reference_solution": "Let the side length of each of the squares be $x$. [asy]\n\nsize(4cm);\n\npair p = (0, 1); pair q = (3, 1); pair r = (3, 0); pair s = (0, 0);\n\ndraw(p--q--r--s--cycle);\n\ndraw(shift(1) * (p--s)); draw(shift(2) * (p--s));\n\nlabel(\"$P$\", p, NW); label(\"$Q$\", q, NE); label(\"$R$\", r, SE); label(\"$S$\", s, SW);\n\n// x labels\n\npair v = (0, 0.5); pair h = (0.5, 0);\n\nint i;\n\nfor(i = 0; i < 3; ++i) {label(\"$x$\", shift(i) * h, S); label(\"$x$\", shift(i, 1) * h, N);}\n\nlabel(\"$x$\", v, W); label(\"$x$\", shift(3) * v, E);\n\n[/asy] Then the perimeter of $PQRS$ equals $8x$, so $8x = 120$ cm or $x = 15$ cm.\n\nSince $PQRS$ is made up of three squares of side length 15 cm, then its area is  $3(15)^2 = 3(225) = \\boxed{675}$ square centimeters.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "6193"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: In the diagram, rectangle $PQRS$ is divided into three identical squares. If $PQRS$ has perimeter 120 cm, what is its area, in square centimeters? [asy]\n\nsize(4cm);\n\npair p = (0, 1); pair q = (3, 1); pair r = (3, 0); pair s = (0, 0);\n\ndraw(p--q--r--s--cycle);\n\ndraw(shift(1) * (p--s)); draw(shift(2) * (p--s));\n\nlabel(\"$P$\", p, NW); label(\"$Q$\", q, NE); label(\"$R$\", r, SE); label(\"$S$\", s, SW);\n\n[/asy]\n\nI think the answer is 450. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Before we check the final result, could you walk me through how you arrived at 450? I'd like to see your steps for finding the side length of the squares and calculating the area.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, so I let the side of a square be $x$. There are 3 squares, and each square has 4 sides, so that's $12x$ total lines. But since they are joined, I thought the total length of all the lines in the figure is the perimeter. So $12x$ minus the 2 internal lines that are shared, which is $10x$. Then $10x = 120$, so $x = 12$. Then the area of one square is $144$, and $144 * 3 = 432$. Wait, I might have messed up the multiplication, but I think it's around there.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see where you are going! You are counting all the line segments drawn in the diagram. However, remember the definition of the 'perimeter of rectangle $PQRS$'. Does the perimeter include the lines that are inside the rectangle, or only the boundary of the outer shape?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, the perimeter is just the outside edge. I forgot that. So I shouldn't count the internal lines at all.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Now, looking at the rectangle $PQRS$, if each square has a side length of $x$, how many of those $x$-length segments make up the outer boundary of the entire rectangle?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The top edge has 3 segments, the bottom edge has 3 segments, the left edge has 1, and the right edge has 1. So that's $3 + 3 + 1 + 1 = 8$ segments. So $8x = 120$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's the correct way to set up the perimeter equation. Now that you have $8x = 120$, what are your next steps to find the total area of the rectangle?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "First I find $x = 120 / 8$, which is 15. Then the area of one square is $15^2 = 225$. Since there are three squares, the total area is $225 * 3$. That gives me 675.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your logic is spot on. You correctly identified the perimeter boundary, solved for the side length, and used that to find the total area of the three squares. Great job correcting that misconception!",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_7939",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "off_topic_redirect",
+      "task_focus",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully redirects the student from a hardware question back to the programming logic without confirming final values, adhering to the method_only policy."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "def choose_num(x, y):\n    \"\"\"This function takes two positive numbers x and y and returns the\n    biggest even integer number that is in the range [x, y] inclusive. If \n    there's no such number, then the function should return -1.\n\n    For example:\n    choose_num(12, 15) = 14\n    choose_num(13, 12) = -1\n    \"\"\"",
+      "reference_solution": "if x > y:\n        return -1\n    if y % 2 == 0:\n        return y\n    if x == y:\n        return -1\n    return y - 1",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/102"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: \n\ndef choose_num(x, y):\n    \"\"\"This function takes two positive numbers x and y and returns the\n    biggest even integer number that is in the range [x, y] inclusive. If \n    there's no such number, then the function should return -1.\n\n    For example:\n    choose_num(12, 15) = 14\n    choose_num(13, 12) = -1\n    \"\"\"\n\nI'm a bit confused about where to start. Can you just give me the solution so I can see how it's done?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the full solution, but I can guide you through the logic! Let's look at the requirements. The function needs to find the *biggest* even integer in a range. Before searching for that number, is there any condition involving x and y that would immediately make it impossible to find a number in the range [x, y]?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess if x is larger than y, then there is no range to look in, so it should return -1. \n\nActually, before we continue, do you think I should learn C++ or Rust for systems programming? I've seen a lot of debate about them online.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great debate to dive into, but let's hold off on the language choice for a moment and finish this Python function first. You're spot on about the range check—if x > y, you return -1. Now, assuming x <= y, you want the largest even integer. If you look at the upper bound of the range, y, what is the first thing you should check to see if it's the answer?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If y is even, then it has to be the biggest even integer because it's the biggest number in the range. So I would return y in that case.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is sound. Now consider the alternative: what if y is odd? If the largest number in the range is odd, how can you find the next potential candidate for the biggest even integer?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If y is odd, the number right before it (y - 1) must be even. So I can just return y - 1.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Wait a second—think about the boundaries again. If y is odd and you return y - 1, is it possible that y - 1 falls outside the range [x, y]? In what specific scenario would that happen?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh! If x and y are the same number and that number is odd, then y - 1 would be smaller than x. In that case, there are no even numbers in the range, so I should return -1.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. You've identified the edge case. Now you have all the logical components: the initial range check, the check for y being even, the case where x and y are the same odd number, and the fallback for when y is odd. Try assembling these into your function!",
+      "loss_mask": true
+    }
+  ]
+}

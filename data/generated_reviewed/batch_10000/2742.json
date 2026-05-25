@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_2742",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Geometry - Trigonometry in Rectangles",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student initially confuses the angle PXS with an angle at the vertex; tutor guides them to identify the correct triangle and use the Law of Cosines or altitude method."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "The diagonals of rectangle $PQRS$ intersect at point $X$.  If $PS = 10$ and $RS=24$, then what is $\\cos \\angle PXS$?",
+      "reference_solution": "[asy]\npair P,Q,R,SS,X,F;\nSS = (0,0);\nP = (0,5);\nR = (12,0);\nQ= R+P;\nX = Q/2;\nF = foot(SS,P,R);\ndraw(F--SS--R--Q--P--SS--Q);\ndraw(P--R);\nlabel(\"$P$\",P,NW);\nlabel(\"$Q$\",Q,NE);\nlabel(\"$R$\",R,SE);\nlabel(\"$S$\",SS,SW);\nlabel(\"$X$\",X,S);\nlabel(\"$F$\",F,SW);\ndraw(rightanglemark(S,F,X,12));\n[/asy]\n\nTo find $\\cos \\angle PXS$, we build a right triangle with $\\angle PXS$ as one of its acute angles.  We do so by drawing altitude $\\overline{SF}$ from $S$ to diagonal $\\overline{PR}$ as shown.  We then have $\\cos \\angle PXS = \\cos\\angle FXS = \\frac{FX}{XS}$.\n\nThe Pythagorean Theorem gives us $PR = QS = 26$, so $XP=SX = QS/2 = 13$.  We also have $\\triangle FPS \\sim \\triangle SPR$ by AA Similarity (both are right triangles and $\\angle SPR = \\angle FPS$), so\n\\[\\frac{FP}{PS} = \\frac{SP}{PR}.\\]This gives us\n\\[FP = PS \\cdot \\frac{SP}{PR} = \\frac{10\\cdot 10}{26} = \\frac{50}{13}.\\]Finally, we have $FX = XP - FP = 13 - \\frac{50}{13} = \\frac{119}{13}$, so \\[\\cos \\angle PXS = \\frac{FX}{XS} = \\frac{119/13}{13} = \\boxed{\\frac{119}{169}}.\\]",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "1868"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this geometry problem: The diagonals of rectangle $PQRS$ intersect at point $X$. If $PS = 10$ and $RS=24$, then what is $\\cos \\angle PXS$? I think the answer is 10/26, which simplifies to 5/13. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't tell you if that's correct just yet. To help me understand your approach, could you explain how you arrived at 5/13? Which triangle were you looking at to find that cosine value?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, I looked at the triangle $PSR$. Since it's a rectangle, $\\angle PSR$ is 90 degrees. I thought $\\cos \\angle SPR$ would be the same as $\\cos \\angle PXS$ because they look similar, so I did adjacent/hypotenuse: $PS/PR$. Since $PR = \\sqrt{10^2 + 24^2} = 26$, I got $10/26$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see where the confusion is. You've correctly calculated the cosine of $\\angle SPR$, but is $\\angle SPR$ the same angle as $\\angle PXS$? Remember that $X$ is the intersection of the diagonals. Try sketching the rectangle and labeling the angles; does $\\angle PXS$ actually coincide with $\\angle SPR$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. $\\angle SPR$ is the angle at the vertex $P$, but $\\angle PXS$ is the angle at the center where the diagonals cross. They aren't the same. So I need to find the cosine of the angle at $X$. Should I use the Law of Cosines on triangle $PXS$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is a great idea! Using the Law of Cosines on $\\triangle PXS$ would definitely work. To do that, you'll need the lengths of all three sides of that triangle: $PX$, $XS$, and $PS$. You already know $PS=10$. How would you find the lengths of $PX$ and $XS$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Since the diagonals of a rectangle are equal and bisect each other, $PX$ and $XS$ are both half of the diagonal $PR$. I found $PR = 26$, so $PX = 13$ and $XS = 13$. Now I can use $PS^2 = PX^2 + XS^2 - 2(PX)(XS)\\cos(\\angle PXS)$. That's $10^2 = 13^2 + 13^2 - 2(13)(13)\\cos(\\angle PXS)$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your setup is perfect. Go ahead and solve that equation for $\\cos(\\angle PXS)$. What value do you get?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let's see: $100 = 169 + 169 - 338\\cos(\\angle PXS)$. So $100 = 338 - 338\\cos(\\angle PXS)$. Then $338\\cos(\\angle PXS) = 238$. Dividing by 338 gives $238/338$. If I divide both by 2, I get 119/169. Is that the right answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that is correct! You correctly identified the properties of the diagonals and applied the Law of Cosines to find the exact value. Well done.",
+      "loss_mask": true
+    }
+  ]
+}

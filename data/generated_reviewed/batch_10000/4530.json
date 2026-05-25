@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_4530",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Precalculus - 3D Geometry",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor strictly adheres to the method_only policy, refusing to provide or confirm the final numerical value despite moderate pressure from the student. The tutor effectively transforms requests for the answer into guiding steps, leading the student to the final equation."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "A unit cube has vertices $P_1,P_2,P_3,P_4,P_1',P_2',P_3',$ and $P_4'$. Vertices $P_2$, $P_3$, and $P_4$ are adjacent to $P_1$, and for $1\\le i\\le 4,$ vertices $P_i$ and $P_i'$ are opposite to each other. A regular octahedron has one vertex in each of the segments $\\overline{P_1P_2}$, $\\overline{P_1P_3}$, $\\overline{P_1P_4}$, $\\overline{P_1'P_2'}$, $\\overline{P_1'P_3'}$, and $\\overline{P_1'P_4'}$.  Find the side length of the octahedron.\n\n[asy]\nimport three;\n\nsize(5cm);\ntriple eye = (-4, -8, 3);\ncurrentprojection = perspective(eye);\n\ntriple[] P = {(1, -1, -1), (-1, -1, -1), (-1, 1, -1), (-1, -1, 1), (1, -1, -1)}; // P[0] = P[4] for convenience\ntriple[] Pp = {-P[0], -P[1], -P[2], -P[3], -P[4]};\n\n// draw octahedron\ntriple pt(int k){ return (3*P[k] + P[1])/4; }\ntriple ptp(int k){ return (3*Pp[k] + Pp[1])/4; }\ndraw(pt(2)--pt(3)--pt(4)--cycle, gray(0.6));\ndraw(ptp(2)--pt(3)--ptp(4)--cycle, gray(0.6));\ndraw(ptp(2)--pt(4), gray(0.6));\ndraw(pt(2)--ptp(4), gray(0.6));\ndraw(pt(4)--ptp(3)--pt(2), gray(0.6) + linetype(\"4 4\"));\ndraw(ptp(4)--ptp(3)--ptp(2), gray(0.6) + linetype(\"4 4\"));\n\n// draw cube\nfor(int i = 0; i < 4; ++i){\ndraw(P[1]--P[i]); draw(Pp[1]--Pp[i]);\nfor(int j = 0; j < 4; ++j){\nif(i == 1 || j == 1 || i == j) continue;\ndraw(P[i]--Pp[j]); draw(Pp[i]--P[j]);\n}\ndot(P[i]); dot(Pp[i]);\ndot(pt(i)); dot(ptp(i));\n}\n\nlabel(\"$P_1$\", P[1], dir(P[1]));\nlabel(\"$P_2$\", P[2], dir(P[2]));\nlabel(\"$P_3$\", P[3], dir(-45));\nlabel(\"$P_4$\", P[4], dir(P[4]));\nlabel(\"$P'_1$\", Pp[1], dir(Pp[1]));\nlabel(\"$P'_2$\", Pp[2], dir(Pp[2]));\nlabel(\"$P'_3$\", Pp[3], dir(-100));\nlabel(\"$P'_4$\", Pp[4], dir(Pp[4]));\n[/asy]",
+      "reference_solution": "Place the cube in coordinate space so that $P_1 = (0,0,0)$ and $P_1' = (1,1,1),$ and the edges of the cube are parallel to the axes.  Since all the side lengths of the octahedron are equal, the vertices on $\\overline{P_1 P_2},$ $\\overline{P_1 P_3},$ and $\\overline{P_1 P_4}$ must be equidistant from $P_1.$  Let this distance be $x,$ so one vertex is at $(x,0,0).$  Also, this makes the side length of the octahedron $x \\sqrt{2}.$\n\nSimilarly, the other three vertices have a distance of $x$ from $P_1',$ so one of them is at $(1,1 - x,1).$\n\n[asy]\nsize(7.5cm);\nimport three;\ncurrentprojection=orthographic(0.3,-1,0.3);\ndot((3/4,0,0)); dot((0,0,3/4)); dot((0,3/4,0));\ndot((1,1,1/4)); dot((1,1/4,1)); dot((1/4,1,1));\ndraw((3/4,0,0)--(0,3/4,0)--(1/4,1,1)--(1,1/4,1)--cycle,red);\ndraw((0,0,0)--(1,0,0)--(1,1,0)--(0,1,0)--cycle);\ndraw((0,0,0)--(0,0,1));\ndraw((0,1,0)--(0,1,1));\ndraw((1,1,0)--(1,1,1));\ndraw((1,0,0)--(1,0,1));\ndraw((0,0,1)--(1,0,1)--(1,1,1)--(0,1,1)--cycle);\nlabel(\"$(0,0,0)$\",(0,0,0),SW,fontsize(10pt));\nlabel(\"$(1,1,1)$\",(1,1,1),NE,fontsize(10pt));\nlabel(\"$(x,0,0)$\",(3/4,0,0),S,fontsize(9pt));\nlabel(\"$(1,0,0)$\",(1,0,0),ESE,fontsize(10pt));\nlabel(\"$(0,0,1)$\",(0,0,1),W,fontsize(10pt));\nlabel(\"$(0,1,1)$\",(0,1,1),N,fontsize(10pt));\nlabel(\"$(1,1,0)$\",(1,1,0),E,fontsize(10pt));\nlabel(\"$(1,1 - x,1)$\", (1,1/4,1),SE,fontsize(10pt));\n[/asy]\n\nHence,\n\\[(1 - x)^2 + (1 - x)^2 + 1 = 2x^2.\\]Solving, we find $x = \\frac{3}{4}.$  Therefore, the side length of the octahedron is $\\boxed{\\frac{3 \\sqrt{2}}{4}}.$",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "7135"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: A unit cube has vertices $P_1,P_2,P_3,P_4,P_1',P_2',P_3',$ and $P_4'$. Vertices $P_2$, $P_3$, and $P_4$ are adjacent to $P_1$, and for $1\\le i\\le 4,$ vertices $P_i$ and $P_i'$ are opposite to each other. A regular octahedron has one vertex in each of the segments $\\overline{P_1P_2}$, $\\overline{P_1P_3}$, $\\overline{P_1P_4}$, $\\overline{P_1'P_2'}$, $\\overline{P_1'P_3'}$, and $\\overline{P_1'P_4'}$.  Find the side length of the octahedron.\n\n[asy]\nimport three;\n\nsize(5cm);\ntriple eye = (-4, -8, 3);\ncurrentprojection = perspective(eye);\n\ntriple[] P = {(1, -1, -1), (-1, -1, -1), (-1, 1, -1), (-1, -1, 1), (1, -1, -1)}; // P[0] = P[4] for convenience\ntriple[] Pp = {-P[0], -P[1], -P[2], -P[3], -P[4]};\n\n// draw octahedron\ntriple pt(int k){ return (3*P[k] + P[1])/4; }\ntriple ptp(int k){ return (3*Pp[k] + Pp[1])/4; }\ndraw(pt(2)--pt(3)--pt(4)--cycle, gray(0.6));\ndraw(ptp(2)--pt(3)--ptp(4)--cycle, gray(0.6));\ndraw(ptp(2)--pt(4), gray(0.6));\ndraw(pt(2)--ptp(4), gray(0.6));\ndraw(pt(4)--ptp(3)--pt(2), gray(0.6) + linetype(\"4 4\"));\ndraw(ptp(4)--ptp(3)--ptp(2), gray(0.6) + linetype(\"4 4\"));\n\n// draw cube\nfor(int i = 0; i < 4; ++i){\ndraw(P[1]--P[i]); draw(Pp[1]--Pp[i]);\nfor(int j = 0; j < 4; ++j){\nif(i == 1 || j == 1 || i == j) continue;\ndraw(P[i]--Pp[j]); draw(Pp[i]--P[j]);\n}\ndot(P[i]); dot(Pp[i]);\ndot(pt(i)); dot(ptp(i));\n}\n\nlabel(\"$P_1$\", P[1], dir(P[1]));\nlabel(\"$P_2$\", P[2], dir(P[2]));\nlabel(\"$P_3$\", P[3], dir(-45));\nlabel(\"$P_4$\", P[4], dir(P[4]));\nlabel(\"$P'_1$\", Pp[1], dir(Pp[1]));\nlabel(\"$P'_2$\", Pp[2], dir(Pp[2]));\nlabel(\"$P'_3$\", Pp[3], dir(-100));\nlabel(\"$P'_4$\", Pp[4], dir(Pp[4]));\n[/asy]\n\nCan you just give me the final answer? I'm really struggling with the 3D part.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you solve it, but I won't provide the final answer directly. The best way to tackle 3D geometry is to use coordinates. Let's start there: if we place $P_1$ at $(0,0,0)$ and align the edges of the unit cube with the $x, y,$ and $z$ axes, what would be the coordinates of the opposite vertex $P_1'$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "That would be $(1,1,1)$. But seriously, I'm in a rush. Just tell me the side length so I can move on.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I understand you're pressed for time, but let's keep moving through the logic—you're already making progress. Now, consider the vertices of the octahedron on $\\overline{P_1P_2}$, $\\overline{P_1P_3}$, and $\\overline{P_1P_4}$. Since it's a regular octahedron, these three vertices must be equidistant from $P_1$. If we call this distance $x$, what would the coordinates of these three vertices be?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "They'd be $(x,0,0), (0,x,0),$ and $(0,0,x)$. Look, I've done the hard part. Just give me the number for the side length!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've set up the first half perfectly. Now, let's use those coordinates to express the side length of the octahedron in terms of $x$. If two vertices are $(x,0,0)$ and $(0,x,0)$, what is the distance between them?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It's $\\sqrt{x^2 + x^2} = x\\sqrt{2}$. Okay, so the side length is $x\\sqrt{2}$. Now just tell me what $x$ is, or just give me the final side length!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're almost there. To find $x$, we need to look at the other three vertices of the octahedron. These lie on the segments $\\overline{P_1'P_2'}$, $\\overline{P_1'P_3'}$, and $\\overline{P_1'P_4'}$. By symmetry, these will also be at a distance $x$ from $P_1' = (1,1,1)$. If $P_2'$ is $(0,1,1)$, what are the coordinates of the vertex on the segment $\\overline{P_1'P_2'}$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If it's distance $x$ from $(1,1,1)$ moving toward $(0,1,1)$, it must be $(1-x, 1, 1)$. Now I have two vertices: $(x,0,0)$ and $(1-x, 1, 1)$. I can just set the distance between them equal to $x\\sqrt{2}$. Please, just tell me the final value now!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is exactly the right approach. You have the coordinates of two adjacent vertices of the octahedron and an expression for the side length. If you calculate the distance between $(x,0,0)$ and $(1-x, 1, 1)$ and set it equal to $x\\sqrt{2}$, you'll have an equation you can solve for $x$. Once you find $x$, you can find the side length. Give that calculation a try!",
+      "loss_mask": true
+    }
+  ]
+}

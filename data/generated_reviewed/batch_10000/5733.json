@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_5733",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Precalculus - Trigonometric Equations",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "High-quality scaffolding for a complex trig summation problem. Tutor guides the student through analyzing the intersection of sine waves without revealing the final sum."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "For each integer $n$ greater than 1, let $F(n)$ be the number of solutions of the equation $\\sin x = \\sin nx$ on the interval $[0, \\pi]$.  What is $\\sum_{n=2}^{2007} F(n)$?",
+      "reference_solution": "Note that $F(n)$ is the number of points at which the graphs of $y=\\sin x$ and $y=\\sin nx$ intersect on $[0,\\pi]$.  For each $n$, $\\sin nx \\geq 0$ on each interval $\\left[ \\frac{(2k-2) \\pi}{n}, \\frac{(2k-1) \\pi}{n} \\right]$ where $k $ is a positive integer and $2k-1 \\leq n$.  The number of such intervals is $\\frac{n}{2}$ if $n$ is even and $\\frac{n + 1}{2}$ if $n$ is odd.\n\nThe graphs intersect twice on each interval unless $\\sin x = 1 = \\sin nx$ at some point in the interval, in which case the graphs intersect once. This last equation is satisfied if and only if $n \\equiv 1\\pmod 4$ and the interval contains $\\frac{\\pi}{2}$.  If $n$ is even, this count does not include the point of intersection at $(\\pi,0)$.\n\nTherefore $F(n)= 2 \\cdot \\frac{n}{2} + 1=n+1$ if $n$ is even, $F(n)=\\frac{2(n+1)}{2}=n+1$ if $n \\equiv 3\\pmod 4$, and $F(n)=n$ if $n \\equiv 1\\pmod 4$.  Hence,\n\\[\\sum_{n=2}^{2007} F(n)=\\left(\\sum_{n=2}^{2007} (n+1)\\right) - \\left\\lfloor \\frac{2007-1}{4}\\right\\rfloor = \\frac{(2006)(3+2008)}{2}-501 = \\boxed{2{,}016{,}532}.\\]",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "7467"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this math problem: For each integer $n$ greater than 1, let $F(n)$ be the number of solutions of the equation $\\sin x = \\sin nx$ on the interval $[0, \\pi]$.  What is $\\sum_{n=2}^{2007} F(n)$? I don't even know where to start. Can you just give me the answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the final answer directly, but I can definitely help you work through it! This problem looks intimidating because of the summation, but the key is to figure out a general formula for $F(n)$ first. \n\nTo start, think about what $\\sin x = \\sin nx$ means geometrically. If you were to graph $y = \\sin x$ and $y = \\sin nx$ on the interval $[0, \\pi]$, what would the solutions to the equation represent?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "They would be the points where the two graphs intersect. So for a specific $n$, I just need to count how many times $\\sin nx$ crosses $\\sin x$. But $\\sin nx$ oscillates so much faster than $\\sin x$. How do I count those intersections without graphing every single $n$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's the right intuition. Since $\\sin x$ is non-negative on $[0, \\pi]$, intersections can only happen when $\\sin nx$ is also non-negative. \n\nCan you identify the intervals within $[0, \\pi]$ where $\\sin nx \\geq 0$? How many of these 'humps' does $\\sin nx$ have in that range?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "$\\sin nx$ is positive when $0 \\le nx \\le \\pi$, $2\\pi \\le nx \\le 3\\pi$, and so on. So the intervals are $[0, \\pi/n]$, $[2\\pi/n, 3\\pi/n]$, etc. If $n$ is even, say $n=4$, the intervals are $[0, \\pi/4]$ and $[2\\pi/4, 3\\pi/4]$. That's $n/2$ intervals. If $n$ is odd, say $n=5$, they are $[0, \\pi/5]$, $[2\\pi/5, 3\\pi/5]$, and $[4\\pi/5, 5\\pi/5]$. That's $(n+1)/2$ intervals. Does that sound right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. Now, consider one of those intervals where $\\sin nx$ goes from 0 up to 1 and back to 0. Since $\\sin x$ is changing slowly, how many times would $\\sin nx$ typically intersect $\\sin x$ on one of those intervals? Are there any special cases where they might only touch once instead of crossing twice?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Usually, it would hit $\\sin x$ once on the way up and once on the way down, so 2 intersections per interval. But if the peak of $\\sin nx$ is exactly where $\\sin x$ is also at its peak (which is 1), they might only touch once. That happens at $x = \\pi/2$. For $\\sin nx$ to be 1 at $\\pi/2$, $n(\\pi/2)$ must be $\\pi/2 + 2k\\pi$. That means $n = 1 + 4k$, so $n \\equiv 1 \\pmod 4$. Is that the only special case?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've found the critical case! Now you just need to be careful with the boundaries. For example, check if the point $x = \\pi$ is always a solution and whether your '2 intersections per interval' logic already counts it. \n\nOnce you've reconciled the boundary at $\\pi$ and the $n \\equiv 1 \\pmod 4$ case, try to write a piecewise formula for $F(n)$ based on whether $n$ is even, $n \\equiv 1 \\pmod 4$, or $n \\equiv 3 \\pmod 4$.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, let's see. If $n$ is even, there are $n/2$ intervals. $2 \\times (n/2) = n$. Then adding the solution at $x=0$ and $x=\\pi$... wait, the intervals start at 0. Let me re-evaluate. If $n=2$, intervals are $[0, \\pi/2]$. Intersections at $x=0$ and $x=\\pi/2$ (where $\\sin 2x = 0$ and $\\sin x = 1$, no that's not it). Let's check $n=2$ manually: $\\sin x = \\sin 2x \\implies \\sin x = 2\\sin x \\cos x \\implies \\sin x(1 - 2\\cos x) = 0$. So $x=0, \\pi$ and $\\cos x = 1/2 \\implies x=\\pi/3$. That's 3 solutions. My formula $F(2)=2+1=3$ works. \n\nSo $F(n) = n+1$ for even $n$ and $n \\equiv 3 \\pmod 4$, and $F(n) = n$ for $n \\equiv 1 \\pmod 4$. Now I just need to sum this from $n=2$ to $2007$. How do I handle the sum efficiently?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've correctly identified the pattern for $F(n)$! \n\nTo sum it efficiently, notice that $F(n)$ is almost always $n+1$, except when $n \\equiv 1 \\pmod 4$. You can sum $(n+1)$ for all $n$ from 2 to 2007 using the arithmetic series formula, and then subtract 1 for every $n$ in that range that satisfies $n \\equiv 1 \\pmod 4$. \n\nHow many such integers are there between 2 and 2007?",
+      "loss_mask": true
+    }
+  ]
+}

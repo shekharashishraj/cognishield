@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_499",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Polynomial Identities",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor guides the student to discover the correct polynomial by testing specific values and recognizing a linear pattern, adhering to the method_only policy."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Let $a,$ $b,$ and $c$ be distinct real numbers.  Simplify the expression\n\\[\\frac{(x + a)^3}{(a - b)(a - c)} + \\frac{(x + b)^3}{(b - a)(b - c)} + \\frac{(x + c)^3}{(c - a)(c - b)}.\\]",
+      "reference_solution": "Let\n\\[p(x) = \\frac{(x + a)^3}{(a - b)(a - c)} + \\frac{(x + b)^3}{(b - a)(b - c)} + \\frac{(x + c)^3}{(c - a)(c - b)}.\\]Then\n\\begin{align*}\np(-a) &= \\frac{(-a + a)^3}{(a - b)(a - c)} + \\frac{(-a + b)^3}{(b - a)(b - c)} + \\frac{(-a + c)^3}{(c - a)(c - b)} \\\\\n&= \\frac{(b - a)^3}{(b - a)(b - c)} + \\frac{(c - a)^3}{(c - a)(c - b)} \\\\\n&= \\frac{(b - a)^2}{b - c} + \\frac{(c - a)^2}{c - b} \\\\\n&= \\frac{(b - a)^2 - (c - a)^2}{b - c} \\\\\n&= \\frac{[(b - a) + (c - a)][(b - a) - (c - a)]}{b - c} \\\\\n&= \\frac{(b + c - 2a)(b - c)}{b - c} \\\\\n&= b + c - 2a \\\\\n&= (a + b + c) + 3(-a)\n\\end{align*}Similarly,\n\\begin{align*}\np(-b) &= a + c - 2b = (a + b + c) + 3(-b), \\\\\np(-c) &= a + b - 2c = (a + b + c) + 3(-c).\n\\end{align*}Since $p(x) = a + b + c + 3x$ for three distinct values of $x,$ by the Identity Theorem, $p(x) = \\boxed{a + b + c + 3x}$ for all $x.$",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "4194"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this math problem: Let $a,$ $b,$ and $c$ be distinct real numbers. Simplify the expression\n\\[\\frac{(x + a)^3}{(a - b)(a - c)} + \\frac{(x + b)^3}{(b - a)(b - c)} + \\frac{(x + c)^3}{(c - a)(c - b)}.\\]\nI tried some shortcuts and I think the answer is $x + a + b + c$. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "To see if that's the correct simplification, could you explain the reasoning or the steps you used to get $x + a + b + c$? I'd like to see your process.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I didn't really do the full expansion because it looked like it would take forever. I just noticed that the denominators are cyclic and the numerators are cubes, so I guessed that the $x^3$ and $x^2$ terms would cancel out, leaving a linear expression. $x + a + b + c$ seemed like a natural fit for the variables involved.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It's a good instinct to look for symmetry and cancellation in these types of problems. However, guessing the form can be tricky. Instead of doing the full algebraic expansion, is there a way you could test your proposed answer using a specific value for $x$ to see if it holds up?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I could try a value. Let's try $x = -a$. \nIn the original expression, the first term becomes 0. \nThe second term is $\\frac{(-a + b)^3}{(b - a)(b - c)} = \\frac{(b - a)^3}{(b - a)(b - c)} = \\frac{(b - a)^2}{b - c}$. \nThe third term is $\\frac{(-a + c)^3}{(c - a)(c - b)} = \\frac{(c - a)^3}{(c - a)(c - b)} = \\frac{(c - a)^2}{c - b}$. \nSo it's $\\frac{(b - a)^2}{b - c} + \\frac{(c - a)^2}{c - b} = \\frac{(b - a)^2 - (c - a)^2}{b - c}$. \nUsing $u^2 - v^2$, that's $\\frac{(b - a + c - a)(b - a - c + a)}{b - c} = \\frac{(b + c - 2a)(b - c)}{b - c} = b + c - 2a$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That was a very efficient way to handle the expression! Now, look at your proposed answer $x + a + b + c$. If you plug in $x = -a$ into that, what do you get, and does it match the $b + c - 2a$ you just calculated?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If I plug $x = -a$ into $x + a + b + c$, I get $-a + a + b + c = b + c$. \nBut I just calculated that the expression actually equals $b + c - 2a$. \nThey aren't the same! So my guess was wrong. I'm back to square one. Do I actually have to expand the whole thing now?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You aren't back to square one—you've actually found a very important piece of the puzzle. You've discovered that for $x = -a$, the value is $b + c - 2a$. \n\nNotice that $b + c - 2a$ can be written as $(a + b + c) + 3(-a)$. \n\nIf you were to repeat this process for $x = -b$ and $x = -c$, what do you think you would find? And if a polynomial of degree 3 matches a linear pattern at three different points, what does that tell you about the polynomial?",
+      "loss_mask": true
+    }
+  ]
+}

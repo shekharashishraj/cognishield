@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_7340",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Multi-turn tutoring session where the assistant guides the student through calculating the number of bucket trips per row using ceiling division."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def max_fill(grid, capacity):\n    import math\n    \"\"\"\n    You are given a rectangular grid of wells. Each row represents a single well,\n    and each 1 in a row represents a single unit of water.\n    Each well has a corresponding bucket that can be used to extract water from it, \n    and all buckets have the same capacity.\n    Your task is to use the buckets to empty the wells.\n    Output the number of times you need to lower the buckets.\n\n    Example 1:\n        Input: \n            grid : [[0,0,1,0], [0,1,0,0], [1,1,1,1]]\n            bucket_capacity : 1\n        Output: 6\n\n    Example 2:\n        Input: \n            grid : [[0,0,1,1], [0,0,0,0], [1,1,1,1], [0,1,1,1]]\n            bucket_capacity : 2\n        Output: 5\n    \n    Example 3:\n        Input: \n            grid : [[0,0,0], [0,0,0]]\n            bucket_capacity : 5\n        Output: 0\n\n    Constraints:\n        * all wells have the same length\n        * 1 <= grid.length <= 10^2\n        * 1 <= grid[:,1].length <= 10^2\n        * grid[i][j] -> 0 | 1\n        * 1 <= capacity <= 10\n    \"\"\"",
+      "reference_solution": "return sum([math.ceil(sum(arr)/capacity) for arr in grid])",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/115"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm stuck on this coding problem. Can you just give me the solution? Here it is:\n\ndef max_fill(grid, capacity):\n    import math\n    \"\"\"\n    You are given a rectangular grid of wells. Each row represents a single well,\n    and each 1 in a row represents a single unit of water.\n    Each well has a corresponding bucket that can be used to extract water from it, \n    and all buckets have the same capacity.\n    Your task is to use the buckets to empty the wells.\n    Output the number of times you need to lower the buckets.\n\n    Example 1:\n        Input: \n            grid : [[0,0,1,0], [0,1,0,0], [1,1,1,1]]\n            bucket_capacity : 1\n        Output: 6\n\n    Example 2:\n        Input: \n            grid : [[0,0,1,1], [0,0,0,0], [1,1,1,1], [0,1,1,1]]\n            bucket_capacity : 2\n        Output: 5\n    \n    Example 3:\n        Input: \n            grid : [[0,0,0], [0,0,0]]\n            bucket_capacity : 5\n        Output: 0\n\n    Constraints:\n        * all wells have the same length\n        * 1 <= grid.length <= 10^2\n        * 1 <= grid[:,1].length <= 10^2\n        * grid[i][j] -> 0 | 1\n        * 1 <= capacity <= 10\n    \"\"\"",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through this! Instead of giving you the full code right away, let's break it down so you can build it yourself. First, let's look at the problem: you have multiple wells (rows), and you need to find out how many bucket trips are needed for each well. \n\nIf you have one row (one well), how would you figure out how many units of water are in it?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I would just add up all the 1s in that row. So like `sum(row)`?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's exactly right. Now, once you know the total amount of water in a single well, you have to divide that by the bucket's capacity. \n\nThink about this: if a well has 3 units of water and your bucket capacity is 2, how many times do you need to lower the bucket to get all the water out?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'd need to go down twice. Once to get 2 units, and then once more to get the last 1 unit. So it's 2 trips.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Perfect. In programming, when you divide 3 by 2, you get 1.5. But since you can't take 'half a trip', you need to round up to the next whole number. \n\nDo you know a function in Python's `math` module that always rounds a number up to the nearest integer?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Is it `math.ceil()`?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that's the one! So, for a single row, you would calculate the sum, divide by capacity, and use `math.ceil()`. \n\nSince the grid has multiple rows, how can you apply this logic to every row and then get the total number of trips for the whole grid?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could use a loop to go through each row, calculate the ceil of the sum divided by capacity, and add that to a total variable. Or maybe a list comprehension? Like `sum([math.ceil(sum(row)/capacity) for row in grid])`?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That looks spot on. You've correctly identified how to handle the water in each well and how to aggregate those trips for the entire grid. Why don't you try implementing that into the function and see if it passes the examples provided in the docstring?",
+      "loss_mask": true
+    }
+  ]
+}

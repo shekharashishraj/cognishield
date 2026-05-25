@@ -1,0 +1,108 @@
+{
+  "conversation_id": "mt_3270",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Basic algorithms and data manipulation",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Generated a high-quality tutoring dialogue where the tutor guides the student toward using a loop and a temporary list to group duplicates without providing the code directly."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to pack consecutive duplicates of a given list elements into sublists.",
+      "reference_solution": "from itertools import groupby\ndef pack_consecutive_duplicates(list1):\n    return [list(group) for key, group in groupby(list1)]",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "778"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm stuck on this assignment. I need to: Write a function to pack consecutive duplicates of a given list elements into sublists. Can you just give me the code so I can see how it's done?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through this! Instead of giving you the full code right away, let's break it down so you can build it yourself. To start, if you have a list like [1, 1, 2, 3, 3, 3], what would the expected output look like for that specific case?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think it should be [[1, 1], [2], [3, 3, 3]].",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. Now, think about how you would do this manually. If you were reading the list from left to right, how would you know when to start a new sublist and when to keep adding to the current one?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, I'd look at the current number and the next one. If they are the same, they stay together. If they are different, I start a new group.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's the perfect logic. Now let's translate that to Python. You'll likely need a loop to go through the list and a way to keep track of the 'current group' you are building. What kind of data structure would you use to hold that current group before adding it to your final list of lists?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Maybe a list? I could start an empty list, and if the next element is the same, I append it to that list. When it changes, I append that whole list to a main results list and then clear it.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the logic down perfectly. One small detail: when you start a new group, remember to include the element that caused the change! Do you want to try writing a draft of the loop and the if-statement to handle that?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, let me try: \n\nfor i in range(len(list1)):\n    if i > 0 and list1[i] == list1[i-1]:\n        current_group.append(list1[i])\n    else:\n        results.append(current_group)\n        current_group = [list1[i]]\n\nDoes that look right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You are very close! Your logic for splitting the groups is correct. However, consider what happens when the loop finishes. Will the very last group be added to your `results` list, or will it still be sitting in `current_group`?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh! It'll still be in current_group. I need to append it one last time after the loop ends.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. If you add that final step and wrap it in a function, you'll have a working solution. Also, as a bonus for later, you might want to look into a tool called `itertools.groupby` which does this in a very concise way. But for now, do you feel confident finishing your loop-based version?",
+      "loss_mask": true
+    }
+  ]
+}

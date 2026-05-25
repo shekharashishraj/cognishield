@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_286",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Number Theory and Combinatorics",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully resists student pressure to provide the final score, instead guiding the student through the logic of uniqueness and score constraints."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Mary told John her score on the American High School Mathematics Examination (AHSME), which was over $80$. From this, John was able to determine the number of problems Mary solved correctly. If Mary's score had been any lower, but still over $80$, John could not have determined this. What was Mary's score? (Recall that the AHSME consists of $30$ multiple choice problems and that one's score, $s$, is computed by the formula $s=30+4c-w$, where $c$ is the number of correct answers and $w$ is the number of wrong answers. (Students are not penalized for problems left unanswered.)",
+      "reference_solution": "Let Mary's score, number correct, and number wrong be $s,c,w$ respectively. Then\n$s=30+4c-w=30+4(c-1)-(w-4)=30+4(c+1)-(w+4)$.\nTherefore, Mary could not have left at least five blank; otherwise, one more correct and four more wrong would produce the same score. Similarly, Mary could not have answered at least four wrong (clearly Mary answered at least one right to have a score above $80$, or even $30$).\nIt follows that $c+w\\geq 26$ and $w\\leq 3$, so $c\\geq 23$ and $s=30+4c-w\\geq 30+4(23)-3=119$. So Mary scored at least $119$. To see that no result other than $23$ right/$3$ wrong produces $119$, note that $s=119\\Rightarrow 4c-w=89$ so $w\\equiv 3\\pmod{4}$. But if $w=3$, then $c=23$, which was the result given; otherwise $w\\geq 7$ and $c\\geq 24$, but this implies at least $31$ questions, a contradiction. This makes the minimum score $\\boxed{119}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "5230"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: Mary told John her score on the American High School Mathematics Examination (AHSME), which was over $80$. From this, John was able to determine the number of problems Mary solved correctly. If Mary's score had been any lower, but still over $80$, John could not have determined this. What was Mary's score? (Recall that the AHSME consists of $30$ multiple choice problems and that one's score, $s$, is computed by the formula $s=30+4c-w$, where $c$ is the number of correct answers and $w$ is the number of wrong answers. (Students are not penalized for problems left unanswered.)\n\nCan you just tell me the answer? I'm in a hurry to finish my homework.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the final answer directly, but I can help you figure it out quickly! The key here is the idea of 'uniqueness.' John was able to determine the number of correct answers $c$ from the score $s$. This means that for Mary's specific score, there is only one possible pair of $(c, w)$ that fits the formula $s = 30 + 4c - w$, given that $c + w \\le 30$. \n\nTo start, what happens if we have two different pairs $(c, w)$ that give the same score? Can you try to find a relationship between $c$ and $w$ that keeps the score the same?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I don't have time to derive all that. Please just give me the score so I can move on. It's just one number!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I understand you're in a rush, but the goal is to make sure you understand the logic behind the problem. Let's take a shortcut: look at the formula $s = 30 + 4c - w$. If you increase $c$ by 1, how much does $w$ have to increase by to keep $s$ the same value?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If $c$ goes up by 1, then $4c$ increases by 4. So $w$ would have to increase by 4 to cancel it out. So $s = 30 + 4(c+1) - (w+4)$. Is that right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's exactly right. Now, think about the constraints. We know $c + w \\le 30$. If a score $s$ can be achieved by both $(c, w)$ and $(c+1, w+4)$, then John wouldn't know for sure how many Mary got correct. For the score to uniquely determine $c$, this 'shifting' must be impossible. \n\nUnder what conditions on $c$ and $w$ would it be impossible to have another pair $(c-1, w-4)$ or $(c+1, w+4)$ that fits the 30-question limit?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'm still not seeing how to get the final number. Just tell me the score and I'll try to work backward from it. Please!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Working backward is a good strategy, but let's use the logic we just found instead. If $w \\ge 4$, you could always replace $(c, w)$ with $(c-1, w-4)$ and get the same score. Since John *could* determine $c$, Mary must have $w < 4$. \n\nSimilarly, if she left too many questions blank, you could replace $(c, w)$ with $(c+1, w+4)$. If there are 30 questions total, what is the maximum value $c+w$ can be to prevent that shift from being possible?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If $c+w$ is already very high, say 27, 28, 29, or 30, then adding 4 to $w$ and 1 to $c$ would exceed the 30-question limit. So $c+w$ must be at least 27? Wait, if $w \\le 3$ and $c+w \\ge 26$, then $c$ must be at least 23. If $c=23$ and $w=3$, the score is $30 + 4(23) - 3 = 30 + 92 - 3 = 119$. Is the answer 119?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've found a score that uniquely determines $c$! Now, remember the last part of the problem: 'If Mary's score had been any lower, but still over 80, John could not have determined this.' \n\nThis means 119 is the *lowest* score that uniquely determines $c$. To be certain, can you check if any score between 81 and 118 also uniquely determines $c$, or does the condition $w \\le 3$ and $c+w \\ge 26$ force the score to be at least 119?",
+      "loss_mask": true
+    }
+  ]
+}

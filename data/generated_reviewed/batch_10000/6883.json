@@ -1,0 +1,108 @@
+{
+  "conversation_id": "mt_6883",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Recursive Algorithms and Coordinate Geometry",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Tutor guides student through N-dimensional adjacency using recursion and generators. The tutor avoids providing the final code and never confirms specific output values, adhering strictly to the never_state policy."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to extract all the adjacent coordinates of the given coordinate tuple.",
+      "reference_solution": "def adjac(ele, sub = []): \n  if not ele: \n     yield sub \n  else: \n     yield from [idx for j in range(ele[0] - 1, ele[0] + 2) \n                for idx in adjac(ele[1:], sub + [j])] \ndef get_coordinates(test_tup):\n  return list(adjac(test_tup))",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "630"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm struggling with this assignment: Write a function to extract all the adjacent coordinates of the given coordinate tuple. I'm not sure how to handle it because the tuple could have any number of dimensions. Can you just give me the solution so I can see how it's done?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the full solution directly, but I can help you figure it out! Let's start by defining 'adjacent'. If you have a 1D coordinate (just one number), what are the coordinates that would be considered adjacent to it, including the point itself?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "For a single number x, I guess it would be x-1, x, and x+1.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Correct. Now, if you move to 2D, like (x, y), you have to find all combinations of the offsets for x and the offsets for y. Since the problem says the tuple can be any size, you'll need a way to repeat this process for every element in the tuple regardless of its length. What programming concept comes to mind when you need to perform the same operation on a nested or variable-depth structure?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Maybe recursion? Like the function calls itself for the next element in the tuple?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's exactly the right approach. To make recursion work, you'll need two things: a base case and a recursive step. If your function is processing the tuple one element at a time, what should happen when there are no more elements left to process?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If the tuple is empty, I've probably finished building one of the adjacent coordinates. So I should return the coordinate I've built so far. But how do I keep track of the coordinate as I go deeper into the recursion?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You can use an accumulator—an additional argument in your function (like a list) that stores the values you've chosen for the dimensions processed so far. Now, think about the recursive step: for the current element, you need to iterate through its three possible values (minus one, self, plus one). How can you pass the updated accumulator to the next recursive call?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I could use a loop for the three values, and inside that loop, call the function again with the rest of the tuple and the current value added to the list. Would that work?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that's the core logic! Now, since you'll be generating many different coordinates, using a generator with `yield` might be more efficient than building a massive list. Have you used `yield from` before? It's particularly useful when you want a recursive function to yield all the values produced by a nested call.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I've heard of it, but I'm not sure how to use it here. Do I put it before the recursive call?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Instead of just calling the function, you would `yield from` the recursive call. This tells Python to exhaust the generator returned by the recursive call and yield each of its results. Why don't you try sketching out the function now? Start with the base case and then implement the loop with `yield from` for the recursive step.",
+      "loss_mask": true
+    }
+  ]
+}

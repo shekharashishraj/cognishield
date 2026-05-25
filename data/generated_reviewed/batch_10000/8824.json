@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_8824",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Regular Expressions in Python",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student initially confuses 'one or more' with 'zero or more' in regex. Tutor guides them to the correct quantifier."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Write a function that matches a string that has an 'a' followed by one or more 'b's. https://www.w3resource.com/python-exercises/re/python-re-exercise-3.php",
+      "reference_solution": "import re\ndef text_match_zero_one(text):\n        patterns = 'ab+?'\n        if re.search(patterns,  text):\n                return True\n        else:\n                return False",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "756"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm working on this problem: Write a function that matches a string that has an 'a' followed by one or more 'b's. https://www.w3resource.com/python-exercises/re/python-re-exercise-3.php. I think I have it: \n\nimport re\ndef check_string(text):\n    if re.search('ab*', text):\n        return True\n    return False\n\nIs this correct? Please just tell me if it's right so I can move on.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you check that. Instead of giving a yes or no right away, could you explain your reasoning for choosing the `*` quantifier in your regular expression? What does that specific symbol tell Python to look for?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The `*` means it looks for the letter 'b' multiple times, right? So 'ab*' should find an 'a' and then any number of 'b's that follow it.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're very close. The `*` quantifier does indeed look for the preceding character multiple times, but it specifically means 'zero or more'. If the input string was just the letter 'a' with no 'b's at all, would your current pattern still return True?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. If it's 'zero or more', then just 'a' would match. But the problem says 'one or more'. I need it to actually have at least one 'b'.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. You've identified the discrepancy. Do you know which regex quantifier specifically represents 'one or more' occurrences of a character?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Is it the plus sign? Like 'ab+'?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is the correct quantifier for 'one or more'. Try updating your function with that change and test it against a few cases, such as 'a' (should be False) and 'ab' (should be True), to see if it behaves as expected.",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_546",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning: Root Finding",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to use a simple linear search/gradient approach; tutor redirects toward bisection method by identifying the misconception about root existence and range."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "import math\n\n\ndef poly(xs: list, x: float):\n    \"\"\"\n    Evaluates polynomial with coefficients xs at point x.\n    return xs[0] + xs[1] * x + xs[1] * x^2 + .... xs[n] * x^n\n    \"\"\"\n    return sum([coeff * math.pow(x, i) for i, coeff in enumerate(xs)])\n\n\ndef find_zero(xs: list):\n    \"\"\" xs are coefficients of a polynomial.\n    find_zero find x such that poly(x) = 0.\n    find_zero returns only only zero point, even if there are many.\n    Moreover, find_zero only takes list xs having even number of coefficients\n    and largest non zero coefficient as it guarantees\n    a solution.\n    >>> round(find_zero([1, 2]), 2) # f(x) = 1 + 2x\n    -0.5\n    >>> round(find_zero([-6, 11, -6, 1]), 2) # (x - 1) * (x - 2) * (x - 3) = -6 + 11x - 6x^2 + x^3\n    1.0\n    \"\"\"",
+      "reference_solution": "begin, end = -1., 1.\n    while poly(xs, begin) * poly(xs, end) > 0:\n        begin *= 2.0\n        end *= 2.0\n    while end - begin > 1e-10:\n        center = (begin + end) / 2.0\n        if poly(xs, center) * poly(xs, begin) > 0:\n            begin = center\n        else:\n            end = center\n    return begin",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/32"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem:\n\nimport math\n\n\ndef poly(xs: list, x: float):\n    \"\"\"\n    Evaluates polynomial with coefficients xs at point x.\n    return xs[0] + xs[1] * x + xs[1] * x^2 + .... xs[n] * x^n\n    \"\"\"\n    return sum([coeff * math.pow(x, i) for i, coeff in enumerate(xs)])\n\n\ndef find_zero(xs: list):\n    \"\"\" xs are coefficients of a polynomial.\n    find_zero find x such that poly(x) = 0.\n    find_zero returns only only zero point, even if there are many.\n    Moreover, find_zero only takes list xs having even number of coefficients\n    and largest non zero coefficient as it guarantees\n    a solution.\n    >>> round(find_zero([1, 2]), 2) # f(x) = 1 + 2x\n    -0.5\n    >>> round(find_zero([-6, 11, -6, 1]), 2) # (x - 1) * (x - 2) * (x - 3) = -6 + 11x - 6x^2 + x^3\n    1.0\n    \"\"\"\n\nCan you just give me the code for find_zero? I don't know how to find the root programmatically.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code directly, but I can definitely help you figure out the logic! To find where a polynomial equals zero, we are looking for the 'root'. Since the problem guarantees a solution exists for polynomials with an even number of coefficients, we can use a numerical method. Do you know any methods for finding roots of a function when you know the root lies between two values?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think I can just start at x=0 and keep adding 0.1 until the value of poly(xs, x) changes sign? Like, if it goes from positive to negative, the zero must be in between those two steps.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's an interesting start! You've correctly identified that a sign change indicates a root exists in that interval. However, there are two potential issues with that approach: what if the root is very far from 0 (e.g., at x = 1000), and what if the root is very close to 0 (e.g., at x = 0.0001)? How might we make the search for that initial interval more robust?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. I guess I could use a loop to expand the range? Like start with -1 and 1, and if they have the same sign, double them until they don't. But once I find the range, I'll still just use the 0.1 step. That should be accurate enough, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Expanding the range is a great way to solve the first problem! As for the 0.1 step, think about the precision. If the problem asks for a result rounded to 2 decimal places, 0.1 might be too coarse. If we want very high precision (like 10 decimal places), a linear step would take forever. Is there a way to narrow down the interval much faster than stepping by 0.1?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Maybe I can split the interval in half? If I have a range [begin, end] where the signs are different, I check the middle. If the middle has the same sign as 'begin', then the root must be between the middle and 'end'. Then I repeat that with the new smaller range.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is exactly right! This technique is known as the Bisection Method. It's much more efficient because it cuts the search space in half every time. Now, how would you translate this logic into code? Specifically, how would you determine when to stop the loop?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I would use a while loop that keeps going as long as the difference between 'end' and 'begin' is larger than a very small number, like 1e-10. Once the range is that small, I can just return 'begin'.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. You have the logic for both expanding the initial search window and refining the root using bisection. Why don't you try implementing the `find_zero` function now using these two stages?",
+      "loss_mask": true
+    }
+  ]
+}

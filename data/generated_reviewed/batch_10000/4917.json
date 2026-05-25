@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_4917",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning: String Manipulation",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "emotional_support",
+      "frustration",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student shows frustration with overlapping counts; tutor provides scaffolding and emotional validation without revealing the full solution."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def how_many_times(string: str, substring: str) -> int:\n    \"\"\" Find how many times a given substring can be found in the original string. Count overlaping cases.\n    >>> how_many_times('', 'a')\n    0\n    >>> how_many_times('aaa', 'a')\n    3\n    >>> how_many_times('aaaa', 'aa')\n    3\n    \"\"\"",
+      "reference_solution": "times = 0\n\n    for i in range(len(string) - len(substring) + 1):\n        if string[i:i+len(substring)] == substring:\n            times += 1\n\n    return times",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/18"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm really struggling with this one and I feel like I'm just not getting it. Can you just give me the answer?\n\nProblem:\ndef how_many_times(string: str, substring: str) -> int:\n    \"\"\" Find how many times a given substring can be found in the original string. Count overlaping cases.\n    >>> how_many_times('', 'a')\n    0\n    >>> how_many_times('aaa', 'a')\n    3\n    >>> how_many_times('aaaa', 'aa')\n    3\n    \"\"\"",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It's completely normal to feel stuck when dealing with string manipulation, especially with overlapping cases—they can be tricky! Instead of giving you the full code, let's tackle this in small steps. First, if we ignore the overlapping part for a second, how would you normally check if a specific part of a string matches the substring?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I would use a loop? But I tried using `.count()` in Python and it didn't work for the 'aaaa' and 'aa' case. It gave me 2 instead of 3. I'm so bad at this.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're not bad at this at all—you actually discovered exactly why this problem is challenging! The `.count()` method in Python counts non-overlapping occurrences. That's a great observation. Since `.count()` doesn't handle overlaps, we need a way to check every possible starting position. If you were to use a `for` loop to move through the string one character at a time, how could you check if the substring starts at that current position?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Maybe I could use slicing? Like `string[i : i + len(substring)]`? But I don't know how to set up the range for the loop so I don't go out of bounds.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Slicing is the perfect approach here. As for the loop range, think about the very last possible index where the substring could start. If the string is 10 characters long and your substring is 3, what is the last index you can start at and still have 3 characters to look at?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If it's 10 characters, the last index would be 7, because 7, 8, and 9 make three characters. So the range should be `len(string) - len(substring) + 1`?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is exactly right. Adding 1 to the range ensures that the loop actually includes that last valid starting index. Now that you have the loop range and the slicing logic, how would you put it all together to keep track of the matches?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I'll initialize a counter at 0, loop through that range, and if the slice equals the substring, I'll increment the counter. Then return the counter at the end. Does that sound correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is spot on. You've successfully broken down the problem and solved the overlapping issue. Why don't you try writing out the full function now?",
+      "loss_mask": true
+    }
+  ]
+}

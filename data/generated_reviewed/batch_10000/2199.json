@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_2199",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning in Python",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student misses the alphabetical sorting requirement for equal lengths; tutor guides them to discover the tie-breaking rule."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "def sorted_list_sum(lst):\n    \"\"\"Write a function that accepts a list of strings as a parameter,\n    deletes the strings that have odd lengths from it,\n    and returns the resulted list with a sorted order,\n    The list is always a list of strings and never an array of numbers,\n    and it may contain duplicates.\n    The order of the list should be ascending by length of each word, and you\n    should return the list sorted by that rule.\n    If two words have the same length, sort the list alphabetically.\n    The function should return a list of strings in sorted order.\n    You may assume that all words will have the same length.\n    For example:\n    assert list_sort([\"aa\", \"a\", \"aaa\"]) => [\"aa\"]\n    assert list_sort([\"ab\", \"a\", \"aaa\", \"cd\"]) => [\"ab\", \"cd\"]\n    \"\"\"",
+      "reference_solution": "lst.sort()\n    new_lst = []\n    for i in lst:\n        if len(i)%2 == 0:\n            new_lst.append(i)\n    return sorted(new_lst, key=len)",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/149"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem:\n\ndef sorted_list_sum(lst):\n    \"\"\"Write a function that accepts a list of strings as a parameter,\n    deletes the strings that have odd lengths from it,\n    and returns the resulted list with a sorted order,\n    The list is always a list of strings and never an array of numbers,\n    and it may contain duplicates.\n    The order of the list should be ascending by length of each word, and you\n    should return the list sorted by that rule.\n    If two words have the same length, sort the list alphabetically.\n    The function should return a list of strings in sorted order.\n    You may assume that all words will have the same length.\n    For example:\n    assert list_sort([\"aa\", \"a\", \"aaa\"]) => [\"aa\"]\n    assert list_sort([\"ab\", \"a\", \"aaa\", \"cd\"]) => [\"ab\", \"cd\"]\n    \"\"\"\n\nI think this is the correct solution:\n\ndef sorted_list_sum(lst):\n    res = [x for x in lst if len(x) % 2 == 0]\n    return sorted(res, key=len)\n\nIs this right? I'm in a hurry, can you just confirm if it works?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you check that. Before I confirm, could you walk me through how your code handles the case where two strings have the same length? Looking at the problem description, is there a specific requirement for that scenario?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The problem says 'The order of the list should be ascending by length'. My `sorted(res, key=len)` does exactly that. If they are the same length, it doesn't really matter which one comes first, right? So this should be correct.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Take another close look at the prompt. There is a sentence right after the length requirement that specifies what to do when lengths are equal. What does it say about that tie-breaker?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I missed that. It says 'If two words have the same length, sort the list alphabetically.' My current code just keeps them in the original order they appeared in the list because Python's sort is stable. So it's not quite right. How do I sort by two different criteria at once?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great observation about stable sorting! To sort by multiple criteria in Python, you can have the `key` function return a tuple. Python will then sort by the first element of the tuple, and if there's a tie, it will move to the second element. Given the requirements here, what should be the first and second elements of that tuple?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "So I should use something like `key=lambda x: (len(x), x)`? That way it sorts by length first, and then alphabetically by the string itself if the lengths are the same.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is sound. Try implementing that change and testing it with an example like `['ba', 'ab', 'c']`. What result would you expect to see for that input based on the rules?",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_3874",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Functional Equations",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student provides an incorrect answer based on a misunderstanding of variable substitution; tutor guides them to find a specific substitution that cancels terms."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "The function $f$ satisfies \\[f(x) + f(2x+y) + 5xy = f(3x - y) + 2x^2 + 1\\]for all real numbers $x,y$. Determine the value of $f(10)$.",
+      "reference_solution": "Setting $x = 10$ and $y=5$ gives $f(10) + f(25) + 250 = f(25) + 200 + 1$, from which we get $f(10) = \\boxed{-49}$.\n\n$\\text{Remark:}$ By setting $y = \\frac x 2$, we see that the function is $f(x) = -\\frac 1 2 x^2 + 1$, and it can be checked that this function indeed satisfies the given equation.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "2043"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: The function $f$ satisfies \\[f(x) + f(2x+y) + 5xy = f(3x - y) + 2x^2 + 1\\]for all real numbers $x,y$. Determine the value of $f(10)$. I tried some numbers and I think the answer is 51. Is that correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't tell you if that's correct just yet. To help me understand your approach, could you show me the steps you took or the values of $x$ and $y$ you substituted into the equation to get 51?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I just tried setting $x=10$ and $y=0$. That gave me $f(10) + f(20) + 0 = f(30) + 200 + 1$. Then I guessed that $f(20)$ and $f(30)$ might cancel out or be zero, so I got $f(10) = 201$, but then I tried another combination and ended up with 51. I'm not really sure how to handle the other $f$ terms.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Substituting $x=10$ and $y=0$ is a good start to isolate $f(10)$, but as you noticed, it introduces other unknown terms like $f(20)$ and $f(30)$. Since the equation holds for *all* $x$ and $y$, the trick is to find a specific value for $y$ (relative to $x$) that makes the arguments of the other two function terms identical. If $f(2x+y) = f(3x-y)$, they would cancel each other out. Can you figure out what $y$ should be in terms of $x$ to make that happen?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. So I need $2x + y = 3x - y$. If I solve for $y$, that means $2y = x$, so $y = x/2$. Let me try that with $x=10$. That means $y=5$. Plugging those in: $f(10) + f(20+5) + 5(10)(5) = f(30-5) + 2(10)^2 + 1$. This gives $f(10) + f(25) + 250 = f(25) + 200 + 1$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great observation! You've successfully eliminated the unknown $f(25)$ terms. Now, you just need to simplify the remaining equation to find the value of $f(10)$. What do you get when you solve for $f(10)$ from there?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, so $f(10) + 250 = 201$. Subtracting 250 from both sides, I get $f(10) = 201 - 250$, which is $-49$. Is this the right answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that is correct! By choosing $y$ such that the function terms cancelled out, you were able to isolate $f(10)$ perfectly. Well done.",
+      "loss_mask": true
+    }
+  ]
+}

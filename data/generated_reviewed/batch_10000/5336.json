@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_5336",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Geometry - Minkowski Sums and Perimeters",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "emotional_support",
+      "frustration",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor manages a frustrated student by validating their feelings and breaking the geometry problem into two distinct parts: the linear segments and the circular arcs."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "Let $S$ be the union of the set of all points inside a regular nonagon with side length $2$ units and the set of all points less than $1$ unit away from a point on the perimeter of the nonagon.  What, in units, is the perimeter of $S$?",
+      "reference_solution": "$S$ looks like a nonagon with slightly rounded corners.  We draw adjacent sides of the nonagon and look at the boundary of $S$:\n\n[asy]\nsize(200);\ndraw((-7.66,-6.43)--(0,0)--(10,0)--(17.66,-6.43));\ndraw((0,5)--(10,5),blue); draw((13.21,3.83)--(20.87,-2.60),blue);\ndraw(Arc((10,0),5,50,90),red); draw(Arc((0,0),5,90,130),red);\ndraw((10,0)--(10,5),dashed); draw((0,0)--(0,5),dashed);\ndraw((10,0)--(13.21,3.83),dashed);\nlabel(\"2\",(5,0),S); label(\"1\",(10,2.5),W);\ndraw((-3.21,3.83)--(-10.87,-2.60),blue);\ndraw((-3.21,3.83)--(0,0),dashed);\n[/asy] We can split the portion of $S$ that is outside the nonagon into 9 rectangles and 9 circle sectors, thereby breaking the perimeter of $S$ into alternating straight lines (colored blue above) and curved arcs (colored red above).  The perimeter of $S$ is comprised of nine blue lines and nine red arcs.\n\nEach rectangle has side lengths 1 and 2, so each blue line is 2 units long and the total length of the blue portion of the perimeter is $2\\cdot 9 = 18$ units.\n\nAround each vertex of the nonagon, an interior angle, two right angles, and an angle of the circular sector add up to 360 degrees.  The angles inside a nonagon each measure $180(9-2)/9=140$ degrees.  Thus, each circular sector angle measures $360-90-90-140=40$ degrees.  Each sector has radius 1 and arc length $\\frac{40^\\circ}{360^\\circ}(2)(\\pi)(1)=\\frac{1}{9}(2\\pi)$, so nine of these sectors have total arc length $2\\pi$.  Thus the total length of the red portion of the perimeter is $2\\pi$ units.  (Notice that this is equal to the perimeter of a circle with radius 1, which is what the nine sectors add up to.)\n\nFinally, the perimeter of $S$ is $\\boxed{18+2\\pi}$ units.",
+      "seed_dataset": "HuggingFaceH4/MATH-500/test",
+      "seed_example_id": "test/geometry/686.json"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm really struggling with this one. I feel like I'm just not getting geometry. Here's the problem: Let $S$ be the union of the set of all points inside a regular nonagon with side length $2$ units and the set of all points less than $1$ unit away from a point on the perimeter of the nonagon. What, in units, is the perimeter of $S$? Can you just tell me the answer? I've been staring at it for an hour.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "It's completely normal to feel stuck on geometry problems like this; they often require a specific way of visualizing the shape before the math even starts. I can't give you the final answer, but I can help you break this down into smaller, manageable pieces. \n\nFirst, let's try to visualize $S$. If you have a nonagon and you include every point within 1 unit of its boundary, what does the 'outer' edge of that new shape look like compared to the original nonagon?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess it's like a bigger nonagon? But the corners would be weird. I don't even know how to start calculating the perimeter if the corners aren't sharp.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've hit on the most important part! The corners aren't sharp. Imagine you are walking around the perimeter of the original nonagon and you keep a string of length 1 attached to you, pulling it taut and perpendicular to the side you're on. \n\nWhen you reach a vertex (a corner), you have to pivot. That 'pivot' creates a curved arc. \n\nLet's look at the straight parts first. If each side of the original nonagon is 2 units, and the boundary of $S$ is 1 unit away from that side, how long is the straight section of the perimeter of $S$ corresponding to one side of the nonagon?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If it's just shifted out by 1 unit, it should still be 2 units long, right? So for 9 sides, that's $9 \\times 2 = 18$. But I'm probably missing something because this feels too simple.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your intuition is spot on. The straight sections of the new perimeter are exactly the same length as the sides of the original nonagon. Don't second-guess yourself—you just solved the first half of the problem!\n\nNow let's tackle those 'weird' corners. At each vertex, the perimeter of $S$ forms a circular arc with a radius of 1. To find the total length of all those arcs combined, we need to know the angle of each arc. Do you remember how to find the interior angle of a regular nonagon?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think the formula is $(n-2) \\times 180 / n$. So for $n=9$, it's $7 \\times 180 / 9$, which is $7 \\times 20 = 140$ degrees. But how does that help me find the arc angle on the outside?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the interior angle perfectly. Now, imagine the vertex of the nonagon. Around that single point, the total angle is 360 degrees. \n\nAt the vertex, you have: \n1. The interior angle of the nonagon (140 degrees).\n2. Two right angles (90 degrees each) where the straight boundary sections meet the arcs.\n3. The angle of the circular arc itself.\n\nIf those four angles add up to 360, what is the angle of one of those arcs?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, $360 - 140 - 90 - 90 = 40$ degrees. So each arc is 40 degrees. Since there are 9 vertices, the total angle for all arcs is $9 \\times 40 = 360$ degrees. Wait, that's a full circle!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly! That is a very elegant realization. Instead of calculating each arc individually, you've discovered that the rounded corners together form one complete circle with a radius of 1.\n\nNow that you have the total length of the straight sections and the total length of the curved sections, how would you express the total perimeter of $S$?",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_631",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "String manipulation using Regular Expressions",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to use a simple replace method which fails on dynamic content; tutor guides them toward regex."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to remove the parenthesis and what is inbetween them from a string.",
+      "reference_solution": "import re\ndef remove_parenthesis(items):\n for item in items:\n    return (re.sub(r\" ?\\([^)]+\\)\", \"\", item))",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "640"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: 'Write a function to remove the parenthesis and what is inbetween them from a string.' I think I have it! \n\ndef remove_parenthesis(text):\n    return text.replace('(', '').replace(')', '')\n\nIs this correct? I'm in a rush so just let me know if it works.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see what you're trying to do there. Before I tell you if it's correct, could you explain how your code handles the text that is *inside* the parentheses? For example, what would happen if the input string was \"Hello (world) a\"?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, it would just remove the brackets. So \"Hello (world) a\" would become \"Hello world a\". That's what removing parentheses means, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Take another look at the problem statement. It asks to remove the parenthesis *and what is inbetween them*. In the example \"Hello (world) a\", the word 'world' is what is inbetween. Based on that, should 'world' stay in the string or be removed?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, I misunderstood. It wants the whole thing gone. So it should be \"Hello a\". But how do I do that if I don't know what word is inside the parentheses? .replace() only works if I know the exact text.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Since the content inside the parentheses can change, you need a way to describe a *pattern* rather than a specific piece of text. Have you learned about Regular Expressions (the 're' module in Python) yet?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I've heard of it but I'm not sure how to use it. Do I use it to find the brackets?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes! You can use `re.sub()` to find a pattern and replace it with an empty string. A pattern for 'an opening parenthesis, followed by one or more characters that are NOT a closing parenthesis, followed by a closing parenthesis' would look something like `\\([^)]+\\)`. Try incorporating that into your function and show me what you come up with.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, let me try:\n\nimport re\ndef remove_parenthesis(text):\n    return re.sub(r'\\([^)]+\\)', '', text)\n\nDoes this look right now?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's much closer! It correctly removes the parentheses and the content inside. One small detail: if there is a space before the opening parenthesis, you might end up with two spaces in a row. How could you adjust your regex pattern to optionally include that leading space so the resulting sentence looks natural?",
+      "loss_mask": true
+    }
+  ]
+}

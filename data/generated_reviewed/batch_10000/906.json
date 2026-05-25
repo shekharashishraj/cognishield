@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_906",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "High-quality scaffolding for a Fibonacci-prime problem. Tutor guides the student to decompose the problem into primality testing and sequence generation."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def prime_fib(n: int):\n    \"\"\"\n    prime_fib returns n-th number that is a Fibonacci number and it's also prime.\n    >>> prime_fib(1)\n    2\n    >>> prime_fib(2)\n    3\n    >>> prime_fib(3)\n    5\n    >>> prime_fib(4)\n    13\n    >>> prime_fib(5)\n    89\n    \"\"\"",
+      "reference_solution": "import math\n\n    def is_prime(p):\n        if p < 2:\n            return False\n        for k in range(2, min(int(math.sqrt(p)) + 1, p - 1)):\n            if p % k == 0:\n                return False\n        return True\n    f = [0, 1]\n    while True:\n        f.append(f[-1] + f[-2])\n        if is_prime(f[-1]):\n            n -= 1\n        if n == 0:\n            return f[-1]",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/39"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this coding problem. Can you help me solve it?\n\ndef prime_fib(n: int):\n    \"\"\"\n    prime_fib returns n-th number that is a Fibonacci number and it's also prime.\n    >>> prime_fib(1)\n    2\n    >>> prime_fib(2)\n    3\n    >>> prime_fib(3)\n    5\n    >>> prime_fib(4)\n    13\n    >>> prime_fib(5)\n    89\n    \"\"\"",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I'd be happy to help you work through this! To get started, let's break the problem down. The function needs to find a number that satisfies two conditions: it must be part of the Fibonacci sequence, and it must be a prime number. Which of these two parts do you think is easier to implement first?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I think checking if a number is prime is easier. I can write a helper function for that. Like this:\n\ndef is_prime(num):\n    if num < 2: return False\n    for i in range(2, num):\n        if num % i == 0:\n            return False\n    return True",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That logic is correct! It will accurately identify prime numbers. However, as the Fibonacci numbers grow very quickly, checking every number up to 'num' might become slow. Do you know a way to optimize the loop in your `is_prime` function to make it more efficient?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I remember! I only need to check up to the square root of the number. So I can use `range(2, int(num**0.5) + 1)`. Now, how do I integrate this with the Fibonacci part?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. That optimization will save a lot of time. Now for the Fibonacci part: you need to generate Fibonacci numbers one by one and check each one using your `is_prime` function. Since you don't know how many Fibonacci numbers you'll need to check before you find the n-th prime one, what kind of loop would be most appropriate here?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I should probably use a `while` loop. I can start with [0, 1] and keep adding the last two numbers. Every time I find a prime one, I'll decrement n. When n hits 0, I've found the one I need. Is that the right approach?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That sounds like a solid plan. You've identified the sequence generation, the primality test, and the stopping condition. Why don't you try putting it all together into the `prime_fib` function and show me what you come up with?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, here is my attempt:\n\nimport math\n\ndef prime_fib(n):\n    def is_prime(p):\n        if p < 2: return False\n        for k in range(2, int(math.sqrt(p)) + 1):\n            if p % k == 0: return False\n        return True\n    \n    fibs = [0, 1]\n    count = 0\n    while True:\n        next_fib = fibs[-1] + fibs[-2]\n        fibs.append(next_fib)\n        if is_prime(next_fib):\n            count += 1\n        if count == n:\n            return next_fib",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your implementation is correct! You've successfully combined the optimized primality test with a Fibonacci generator and a counter to track the n-th occurrence. Great job working through the logic step-by-step.",
+      "loss_mask": true
+    }
+  ]
+}

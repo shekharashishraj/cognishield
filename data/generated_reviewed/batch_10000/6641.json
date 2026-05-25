@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_6641",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Basic algorithms and data manipulation - String Processing",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts a simple loop but misses the boundary condition and logic for inserting spaces. Tutor guides them toward identifying the transition between lowercase and uppercase characters."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Write a function to put spaces between words starting with capital letters in a given string.",
+      "reference_solution": "import re\ndef capital_words_spaces(str1):\n  return re.sub(r\"(\\w)([A-Z])\", r\"\\1 \\2\", str1)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "748"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem: Write a function to put spaces between words starting with capital letters in a given string. I think I have it! \n\ndef add_spaces(text):\n    for char in text:\n        if char.isupper():\n            text = text + ' '\n    return text\n\nIs this correct? I'm in a rush, can you just tell me if it works?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I understand you're in a hurry, but let's make sure the logic is sound first. Instead of me just saying yes or no, could you walk me through what happens to the string `text` inside your loop when it encounters an uppercase letter?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, the loop goes through every character. If it sees an uppercase letter, it adds a space to the end of the string. So if I have 'HelloWorld', it sees 'H', adds a space, then sees 'W', adds a space. That should separate them, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Let's trace that carefully. If the input is 'HelloWorld', your code adds a space to the end of the entire string every time it finds a capital letter. Where exactly in the string is the space being placed, and is that where it needs to be to separate the words?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I see. It's just tacking spaces onto the very end of the string, not putting them between the letters. My bad. I should probably build a new string instead. Like this:\n\ndef add_spaces(text):\n    result = \"\"\n    for char in text:\n        if char.isupper():\n            result += \" \" + char\n        else:\n            result += char\n    return result\n\nIs this one right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've fixed the placement issue by building a new string! However, try to imagine what happens if the very first letter of the string is capitalized. Based on your current logic, what would the `result` string look like at the very beginning?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, if the first letter is 'H', it will add a space and then 'H', so the string starts with a leading space. I don't want that. How do I stop it from doing that for the first character?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great observation. You need a way to ensure the space is only added if the uppercase letter is not the first character of the string. Think about how you can track the position of the character or check if the `result` string is still empty before adding that space.",
+      "loss_mask": true
+    }
+  ]
+}

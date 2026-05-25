@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_1883",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Number Theory - Modular Arithmetic",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "misconception_correction",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor prevents the student from relying on brute-force calculation of the total sum. Even when the student reaches the correct numeric value, the tutor avoids confirming the final value (per never_state policy) and instead redirects them to a more efficient modular arithmetic method."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "What is the modulo $5$ remainder of the sum $1+2+3+4+5+ \\ldots + 120+121+122+123?$",
+      "reference_solution": "Instead of adding up the sum and finding the residue, we can find the residue of each number to make computation easier.\n\nEach group of $5$ numbers would have the sum of residues $1+2+3+4+0=10$. Since $10 \\equiv 0 \\pmod{5}$, we can ignore every group of $5$.\n\nThis leaves the numbers $121,122,$ and $123$. The sum of the residues is $1+2+3 \\equiv 6 \\equiv \\boxed{1} \\pmod{5}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "5481"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this math problem: What is the modulo $5$ remainder of the sum $1+2+3+4+5+ \\ldots + 120+121+122+123?$\nCan you just give me the answer? I'm in a rush.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the final answer directly, but I can help you find it much faster than adding all those numbers! Since we only care about the remainder when dividing by 5, we can use properties of modular arithmetic. Have you thought about how the remainders behave as you count up from 1?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I could use the sum formula $n(n+1)/2$. So it's $(123 \\times 124)/2 = 123 \\times 62$. That's $7626$. Then $7626 \\pmod{5}$ is $1$. Is that the right answer?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've applied the arithmetic series formula correctly, but calculating such large products can be risky in a test setting and doesn't take advantage of the modular structure. Let's try a different approach: if you look at the remainders of the first five numbers ($1, 2, 3, 4, 5$) modulo 5, what do you see?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The remainders are $1, 2, 3, 4, 0$. And then for $6, 7, 8, 9, 10$, it would be the same thing: $1, 2, 3, 4, 0$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Now, if you sum the remainders of one of those full cycles ($1+2+3+4+0$), what is that sum, and what is its remainder modulo 5?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The sum is $10$, and $10 \\pmod{5}$ is $0$. So every block of five numbers basically cancels out to zero in the final remainder.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's the key insight! Now, consider the total number of terms in the sequence up to $123$. How many full blocks of five are there, and what terms are left over?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Since $123 = 5 \\times 24 + 3$, there are $24$ full blocks. So I only need to worry about the last three terms: $121, 122,$ and $123$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got it. Now, just find the remainders of those last three terms modulo 5 and sum them up to find your final result.",
+      "loss_mask": true
+    }
+  ]
+}

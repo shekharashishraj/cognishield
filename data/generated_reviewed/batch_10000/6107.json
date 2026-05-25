@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_6107",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Counting & Probability: Combinatorial Sums",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully scaffolds the student through the Pascal-like structure and modular arithmetic without revealing the final answer."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "A triangular array of squares has one square in the first row, two in the second, and in general, $k$ squares in the $k$th row for $1 \\leq k \\leq 11.$ With the exception of the bottom row, each square rests on two squares in the row immediately below (illustrated in the given diagram). In each square of the eleventh row, a $0$ or a $1$ is placed. Numbers are then placed into the other squares, with the entry for each square being the sum of the entries in the two squares below it. For how many initial distributions of $0$'s and $1$'s in the bottom row is the number in the top square a multiple of $3$?\n[asy] for (int i=0; i<12; ++i){  for (int j=0; j<i; ++j){    //dot((-j+i/2,-i));    draw((-j+i/2,-i)--(-j+i/2+1,-i)--(-j+i/2+1,-i+1)--(-j+i/2,-i+1)--cycle);  } } [/asy]",
+      "reference_solution": "Label each of the bottom squares as $x_0, x_1 \\ldots x_9, x_{10}$.\nThrough induction, we can find that the top square is equal to ${10\\choose0}x_0 + {10\\choose1}x_1 + {10\\choose2}x_2 + \\ldots {10\\choose10}x_{10}$. (This also makes sense based on a combinatorial argument: the number of ways a number can \"travel\" to the top position going only up is equal to the number of times it will be counted in the final sum.)\nExamine the equation $\\mod 3$. All of the coefficients from $x_2 \\ldots x_8$ will be multiples of $3$ (since the numerator will have a $9$). Thus, the expression boils down to $x_0 + 10x_1 + 10x_9 + x_{10} \\equiv 0 \\mod 3$. Reduce to find that $x_0 + x_1 + x_9 + x_{10} \\equiv 0 \\mod 3$. Out of $x_0,\\ x_1,\\ x_9,\\ x_{10}$, either all are equal to $0$, or three of them are equal to $1$. This gives ${4\\choose0} + {4\\choose3} = 1 + 4 = 5$ possible combinations of numbers that work.\nThe seven terms from $x_2 \\ldots x_8$ can assume either $0$ or $1$, giving us $2^7$ possibilities. The answer is therefore $5 \\cdot 2^7 = \\boxed{640}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "2137"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this math problem: A triangular array of squares has one square in the first row, two in the second, and in general, $k$ squares in the $k$th row for $1 \\leq k \\leq 11.$ With the exception of the bottom row, each square rests on two squares in the row immediately below (illustrated in the given diagram). In each square of the eleventh row, a $0$ or a $1$ is placed. Numbers are then placed into the other squares, with the entry for each square being the sum of the entries in the two squares below it. For how many initial distributions of $0$'s and $1$'s in the bottom row is the number in the top square a multiple of $3$?\n[asy] for (int i=0; i<12; ++i){  for (int j=0; j<i; ++j){    //dot((-j+i/2,-i));    draw((-j+i/2,-i)--(-j+i/2+1,-i)--(-j+i/2+1,-i+1)--(-j+i/2,-i+1)--cycle);  } } [/asy]\nCan you just tell me the answer? I'm in a rush.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't give you the final answer right away, but I can help you figure it out quickly! This problem has a very interesting structure. To start, let's think about how the values in the bottom row contribute to the top square. If you have values $x_0, x_1, \\dots, x_{10}$ in the bottom row, do you notice a pattern in how they sum up as you move up the triangle?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It looks kind of like Pascal's triangle? Like, the middle ones get added more often because there are more paths to the top?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great observation. Exactly. The coefficient of each $x_i$ in the final sum for the top square will be a binomial coefficient. Since there are 11 squares in the bottom row, the top square's value is the sum of $\\binom{10}{i}x_i$ for $i=0$ to $10$. Now, the problem asks when this sum is a multiple of 3. How can we simplify that expression using modular arithmetic?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "So I need $\\sum_{i=0}^{10} \\binom{10}{i}x_i \\equiv 0 \\pmod{3}$. But calculating all those binomial coefficients seems like a lot of work. Is there a shortcut for $\\binom{10}{i} \\pmod{3}$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "There is! You can look at the prime factorization of the binomial coefficients or use Lucas's Theorem. Try calculating $\\binom{10}{i} \\pmod{3}$ for a few values. For example, what are $\\binom{10}{0}, \\binom{10}{1}, \\binom{10}{2}, \\dots$ modulo 3? You might find that many of them vanish.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Let's see... $\\binom{10}{0}=1$, $\\binom{10}{1}=10 \\equiv 1 \\pmod{3}$. $\\binom{10}{2} = (10 \\times 9)/2 = 45$, which is $0 \\pmod{3}$. Wait, if there's a 9 in the numerator and no 3 in the denominator, it'll be 0. So $\\binom{10}{2}$ through $\\binom{10}{8}$ are all $0 \\pmod{3}$? Let me check $\\binom{10}{9} = 10 \\equiv 1 \\pmod{3}$ and $\\binom{10}{10} = 1$. So the sum is just $x_0 + x_1 + x_9 + x_{10} \\equiv 0 \\pmod{3}$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. You've simplified the condition significantly. Now we just need to count the number of ways to choose $x_0, x_1, x_9, x_{10} \\in \\{0, 1\\}$ such that their sum is a multiple of 3, and then consider the other $x_i$ values. How many combinations of those four variables satisfy that condition?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "If they are all 0, the sum is 0, which works. If three of them are 1 and one is 0, the sum is 3, which also works. If only one or two are 1, it's not a multiple of 3. If all four are 1, the sum is 4, which doesn't work. So it's $\\binom{4}{0} + \\binom{4}{3} = 1 + 4 = 5$ ways for those four. And the other 7 variables can be anything, so $2^7$ ways. So the total is $5 \\times 128 = 640$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Your reasoning is perfect. You correctly identified the combinations for the restricted variables and accounted for the independent choices of the remaining variables. The final result is indeed 640.",
+      "loss_mask": true
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_9167",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Intermediate Algebra - Polynomial Interpolation",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "legitimate_scaffold",
+      "scaffolding",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "The tutor successfully guides the student to recognize the structure of the equations as values of a quadratic polynomial without revealing the final answer."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "Assume that $x_1,x_2,\\ldots,x_7$ are real numbers such that\n\\[\\begin{aligned} x_1+4x_2+9x_3+16x_4+25x_5+36x_6+49x_7 &= 1 \\\\ \n4x_1+9x_2+16x_3+25x_4+36x_5+49x_6+64x_7 &= 12 \\\\\n9x_1+16x_2+25x_3+36x_4+49x_5+64x_6+81x_7 &= 123. \\end{aligned}\\]Find the value of $16x_1+25x_2+36x_3+49x_4+64x_5+81x_6+100x_7$.",
+      "reference_solution": "Let \\[f(t) = x_1(t+1)^2 + x_2(t+2)^2 + \\cdots + x_7(t+7)^2.\\]Then the three given equations say $f(0) = 1$, $f(1) = 12$, and $f(2) = 123$, and we want to find $f(3)$.\n\nSince $f(t)$ is a quadratic, we may let $f(t) = At^2 + Bt + C$, where $A, B, C$ are constant. Then we have the equations \\[\\begin{aligned} C &= 1, \\\\ A+B+C &= 12, \\\\ 4A+2B+C &= 123. \\end{aligned} \\]Substituting $C=1$ into the second and third equations gives $A+B=11$ and $4A+2B=122.$ Then $2A+B=61,$ so $A = (2A+B)-(A+B) = 61-11=50.$ Then $B=11-A=-39,$ and so \\[f(3) = 9A+3B+C=9(50)+3(-39)+1= \\boxed{334}.\\]",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train/Level_4_5",
+      "seed_example_id": "2617"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi, I'm stuck on this math problem. It looks like a huge system of equations, but there are way more variables than equations. How am I supposed to solve this?\n\nAssume that $x_1,x_2,\\ldots,x_7$ are real numbers such that\n\\[\\begin{aligned} x_1+4x_2+9x_3+16x_4+25x_5+36x_6+49x_7 &= 1 \\\\ \n4x_1+9x_2+16x_3+25x_4+36x_5+49x_6+64x_7 &= 12 \\\\\n9x_1+16x_2+25x_3+36x_4+49x_5+64x_6+81x_7 &= 123. \\end{aligned}\\]Find the value of $16x_1+25x_2+36x_3+49x_4+64x_5+81x_6+100x_7$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're right that solving for each $x_i$ individually would be nearly impossible since you have 7 variables and only 3 equations. This suggests that we don't actually need to find the individual values of $x_1, \\ldots, x_7$. Instead, look closely at the coefficients. Do you notice a pattern in the numbers $1, 4, 9, 16, \\dots$ and how they change from the first equation to the second and third?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "They are all perfect squares. In the first equation, the coefficients are $1^2, 2^2, \\dots, 7^2$. In the second, they are $2^2, 3^2, \\dots, 8^2$. And in the third, $3^2, 4^2, \\dots, 9^2$. The one we need to find is $4^2, 5^2, \\dots, 10^2$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Since the coefficients are squares of consecutive integers, this structure suggests we could define a function. If we let a variable $t$ represent the 'shift' between equations, can you think of a way to write a function $f(t)$ such that $f(0)$ gives the first equation, $f(1)$ the second, and so on?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Maybe something like $f(t) = x_1(t+1)^2 + x_2(t+2)^2 + \\dots + x_7(t+7)^2$? Then $f(0)$ would be the first equation, and $f(1)$ would be the second. That works!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great observation. Now, consider the form of $f(t)$. If you expand those squares, what kind of polynomial is $f(t)$ in terms of $t$? And based on that, how many coefficients would you need to determine the general form of $f(t)$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Since it's a sum of $(t+k)^2$ terms, it's a quadratic polynomial. So it should look like $f(t) = At^2 + Bt + C$. I have three values: $f(0)=1$, $f(1)=12$, and $f(2)=123$. I can use these to find $A, B$, and $C$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Precisely. Once you solve for $A, B$, and $C$ using those three points, what would be your final step to find the value requested in the problem statement?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The problem asks for $16x_1 + 25x_2 + \\dots + 100x_7$, which is just $f(3)$. So I just need to plug $t=3$ into my quadratic equation.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the method perfectly. Go ahead and solve for the coefficients and calculate $f(3)$. Let me know if you run into any trouble with the algebra!",
+      "loss_mask": true
+    }
+  ]
+}

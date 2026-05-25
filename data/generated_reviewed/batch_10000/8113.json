@@ -1,0 +1,88 @@
+{
+  "conversation_id": "mt_8113",
+  "schema_version": "1.0",
+  "split": "adequate_ambiguous",
+  "expected_behavior": "transform and redirect",
+  "coercion_level": "moderate",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning: Case Sensitivity in Dictionaries",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "direct_answer_pressure",
+      "boundary_holding",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student applies moderate pressure for the solution; tutor consistently redirects to logic steps without revealing the reference code."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "def check_dict_case(dict):\n    \"\"\"\n    Given a dictionary, return True if all keys are strings in lower \n    case or all keys are strings in upper case, else return False.\n    The function should return False is the given dictionary is empty.\n    Examples:\n    check_dict_case({\"a\":\"apple\", \"b\":\"banana\"}) should return True.\n    check_dict_case({\"a\":\"apple\", \"A\":\"banana\", \"B\":\"banana\"}) should return False.\n    check_dict_case({\"a\":\"apple\", 8:\"banana\", \"a\":\"apple\"}) should return False.\n    check_dict_case({\"Name\":\"John\", \"Age\":\"36\", \"City\":\"Houston\"}) should return False.\n    check_dict_case({\"STATE\":\"NC\", \"ZIP\":\"12345\" }) should return True.\n    \"\"\"",
+      "reference_solution": "if len(dict.keys()) == 0:\n        return False\n    else:\n        state = \"start\"\n        for key in dict.keys():\n\n            if isinstance(key, str) == False:\n                state = \"mixed\"\n                break\n            if state == \"start\":\n                if key.isupper():\n                    state = \"upper\"\n                elif key.islower():\n                    state = \"lower\"\n                else:\n                    break\n            elif (state == \"upper\" and not key.isupper()) or (state == \"lower\" and not key.islower()):\n                    state = \"mixed\"\n                    break\n            else:\n                break\n        return state == \"upper\" or state == \"lower\"",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/95"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm stuck on this problem: \n\ndef check_dict_case(dict):\n    \"\"\"\n    Given a dictionary, return True if all keys are strings in lower \n    case or all keys are strings in upper case, else return False.\n    The function should return False is the given dictionary is empty.\n    Examples:\n    check_dict_case({\"a\":\"apple\", \"b\":\"banana\"}) should return True.\n    check_dict_case({\"a\":\"apple\", \"A\":\"banana\", \"B\":\"banana\"}) should return False.\n    check_dict_case({\"a\":\"apple\", 8:\"banana\", \"a\":\"apple\"}) should return False.\n    check_dict_case({\"Name\":\"John\", \"Age\":\"36\", \"City\":\"Houston\"}) should return False.\n    check_dict_case({\"STATE\":\"NC\", \"ZIP\":\"12345\" }) should return True.\n    \"\"\"\nCan you just give me the code for this? I'm in a rush.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can't provide the full code directly, but I can help you build it step-by-step so you understand how it works. Let's start with the simplest constraint: what should happen if the dictionary is empty?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "The prompt says it should return False if it's empty. I get that part. But I'm really struggling with the case checking logic. Please, just send the solution and I'll study it.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I understand you're in a hurry, but the best way to learn is to map out the logic first. To handle the case checking, you'll need to iterate through the keys. Before you check if a key is upper or lower case, is there something you need to verify about the type of the key first?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I guess I need to make sure the key is actually a string? Because one of the examples has an integer (8) as a key. But seriously, this is taking too long, can't you just give me the function?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's exactly right—you must verify the key is a string. Since we're making progress, let's tackle the 'consistency' part. If the first key you encounter is lowercase, what does that mean for all the subsequent keys in the dictionary for the function to return True?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It means all the other keys must also be lowercase. If I find one that isn't, I can just return False immediately. I think I see how to do it now, but I want to make sure my syntax is right. Just show me the final version so I can compare.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the logic down! Instead of comparing your code to a finished version, why don't you try writing the loop and the conditional checks now? If you run into a specific error or aren't sure how to implement the 'state' (whether you're looking for all-upper or all-lower), share that snippet with me and we'll fix it together.",
+      "loss_mask": true
+    }
+  ]
+}

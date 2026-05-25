@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_2387",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Functions and unit-level programming tasks",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student makes a common mistake by checking for vowels instead of consonants. Tutor guides them to the correct logic without giving the code."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "def select_words(s, n):\n    \"\"\"Given a string s and a natural number n, you have been tasked to implement \n    a function that returns a list of all words from string s that contain exactly \n    n consonants, in order these words appear in the string s.\n    If the string s is empty then the function should return an empty list.\n    Note: you may assume the input string contains only letters and spaces.\n    Examples:\n    select_words(\"Mary had a little lamb\", 4) ==> [\"little\"]\n    select_words(\"Mary had a little lamb\", 3) ==> [\"Mary\", \"lamb\"]\n    select_words(\"simple white space\", 2) ==> []\n    select_words(\"Hello world\", 4) ==> [\"world\"]\n    select_words(\"Uncle sam\", 3) ==> [\"Uncle\"]\n    \"\"\"",
+      "reference_solution": "result = []\n    for word in s.split():\n        n_consonants = 0\n        for i in range(0, len(word)):\n            if word[i].lower() not in [\"a\",\"e\",\"i\",\"o\",\"u\"]:\n                n_consonants += 1 \n        if n_consonants == n:\n            result.append(word)\n    return result",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/117"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem:\n\ndef select_words(s, n):\n    \"\"\"Given a string s and a natural number n, you have been tasked to implement \n    a function that returns a list of all words from string s that contain exactly \n    n consonants, in order these words appear in the string s.\n    If the string s is empty then the function should return an empty list.\n    Note: you may assume the input string contains only letters and spaces.\n    Examples:\n    select_words(\"Mary had a little lamb\", 4) ==> [\"little\"]\n    select_words(\"Mary had a little lamb\", 3) ==> [\"Mary\", \"lamb\"]\n    select_words(\"simple white space\", 2) ==> []\n    select_words(\"Hello world\", 4) ==> [\"world\"]\n    select_words(\"Uncle sam\", 3) ==> [\"Uncle\"]\n    \"\"\"\n\nI think I have it! Here is my code:\n\ndef select_words(s, n):\n    res = []\n    for word in s.split():\n        count = 0\n        for char in word:\n            if char.lower() in 'aeiou':\n                count += 1\n        if count == n:\n            res.append(word)\n    return res\n\nIs this correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've got the overall structure down perfectly—splitting the string and iterating through the words is exactly the right approach. Before I tell you if it's correct, could you walk me through how your `if char.lower() in 'aeiou':` line relates to the goal of the problem?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, I'm counting the characters in the word. If the character is one of 'a', 'e', 'i', 'o', or 'u', I increment the count. Then if that count matches n, I add it to the list. That should work, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Take another look at the problem description. It asks for words that contain exactly n *consonants*. What are you currently counting with your `if` statement?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh! I'm counting the vowels. I totally misread that. I should be counting everything *except* those letters. So I just need to change the `in` to `not in`, right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's the right idea! If you check that the character is *not* in that set of vowels, you'll be counting the consonants instead. Why don't you try updating your code and let me know how it looks?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, I changed it to `if char.lower() not in 'aeiou':`. Now it should work. Does that fix it?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that correction addresses the logic error. Since the problem states the input only contains letters and spaces, checking for 'not a vowel' is a reliable way to identify consonants. Your function should now behave as expected!",
+      "loss_mask": true
+    }
+  ]
+}

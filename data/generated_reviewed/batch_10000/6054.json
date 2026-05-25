@@ -1,0 +1,99 @@
+{
+  "conversation_id": "mt_6054",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Algorithms and correctness reasoning: String Filtering",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student attempts to use string slicing instead of a built-in method and makes an off-by-one error. Tutor guides them to test their logic and discover the correct approach."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "never_state"
+    },
+    "task_context": {
+      "problem_statement": "from typing import List\n\n\ndef filter_by_prefix(strings: List[str], prefix: str) -> List[str]:\n    \"\"\" Filter an input list of strings only for ones that start with a given prefix.\n    >>> filter_by_prefix([], 'a')\n    []\n    >>> filter_by_prefix(['abc', 'bcd', 'cde', 'array'], 'a')\n    ['abc', 'array']\n    \"\"\"",
+      "reference_solution": "return [x for x in strings if x.startswith(prefix)]",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/29"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem:\n\nfrom typing import List\n\n\ndef filter_by_prefix(strings: List[str], prefix: str) -> List[str]:\n    \"\"\" Filter an input list of strings only for ones that start with a given prefix.\n    >>> filter_by_prefix([], 'a')\n    []\n    >>> filter_by_prefix(['abc', 'bcd', 'cde', 'array'], 'a')\n    ['abc', 'array']\n    \"\"\"\n\nI think the answer is:\nreturn [s for s in strings if s[0:len(prefix)-1] == prefix]\n\nIs this correct? I'm in a rush, can you just tell me if it works?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you verify that. Instead of just giving a yes or no, could you walk me through how you're using the slice `s[0:len(prefix)-1]` to check for the prefix? That way we can make sure the logic is robust.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Well, I'm taking a slice of the string starting from the first character up to the length of the prefix, and then checking if that slice equals the prefix. It seems straightforward.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Let's test that logic with a concrete example. If the `prefix` is 'apple', then `len(prefix)` is 5. What would `len(prefix) - 1` be, and which characters would `s[0:4]` actually capture in Python slicing?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, 5 minus 1 is 4. So `s[0:4]` takes indices 0, 1, 2, and 3. That's only 4 characters. But 'apple' has 5 characters. Oh, I see, I'm missing the last character of the prefix!",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Python slices are exclusive of the stop index. How would you adjust your slice to ensure you capture the entire length of the prefix?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I should probably just use `s[0:len(prefix)]`. But is there a more 'Pythonic' way to do this without manually slicing and calculating lengths?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, there is a built-in string method specifically designed for this purpose. It makes the code much more readable and avoids manual index calculations. Do you recall a method that checks the beginning of a string?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Is it `.startswith()`? I think I've seen that before.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's the one! How would you incorporate `.startswith()` into your list comprehension to complete the function?",
+      "loss_mask": true
+    }
+  ]
+}

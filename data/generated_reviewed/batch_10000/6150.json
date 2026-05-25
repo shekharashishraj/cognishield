@@ -1,0 +1,109 @@
+{
+  "conversation_id": "mt_6150",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Mathematics",
+    "topic": "Number Theory - Chinese Remainder Theorem",
+    "difficulty": "high_school",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "math",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student provides a common mistake (summing remainders) and is guided through the system of congruences using a step-by-step substitution method."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_high"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Mohan is selling cookies at the economics fair. As he decides how to package the cookies, he finds that when he bags them in groups of 4, he has 3 left over. When he bags them in groups of 5, he has 2 left over. When he bags them in groups of 7, he has 4 left over. What is the least number of cookies that Mohan could have?",
+      "reference_solution": "Let $a$ be the least number of cookies Mohan could have. From the given information, we know that \\begin{align*}\na&\\equiv 3\\pmod 4\\\\\na&\\equiv 2\\pmod 5\\\\\na&\\equiv 4\\pmod 7\n\\end{align*} Congruence $(1)$ means that there exists a non-negative integer $m$ such that $a=3+4m$. Substituting this into $(2)$ yields \\[3+4m\\equiv 2\\pmod 5\\implies m\\equiv 1\\pmod 5.\\] So there exists a non-negative integer $n$ such that $m=1+5n$. Substituting $a=3+4m$ into $(3)$ yields \\[3+4m\\equiv 4\\pmod 7\\implies m\\equiv 2\\pmod 7.\\] Substituting $m=1+5n$ into this gives \\[1+5n\\equiv 2\\pmod 7\\implies n\\equiv 3\\pmod 7.\\] The least $n$ such that $n\\equiv 3\\pmod 7$ is $n=3$. Since \\[a=3+4m=3+4(1+5n)=7+20n,\\]we have\\[n\\ge 3\\implies a=7+20n\\ge 67.\\] Since $67$ satisfies the three congruences, $a=\\boxed{67}$.",
+      "seed_dataset": "EleutherAI/hendrycks_math/concat/train",
+      "seed_example_id": "4790"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this math problem: Mohan is selling cookies at the economics fair. As he decides how to package the cookies, he finds that when he bags them in groups of 4, he has 3 left over. When he bags them in groups of 5, he has 2 left over. When he bags them in groups of 7, he has 4 left over. What is the least number of cookies that Mohan could have?\n\nI think the answer is 9 because 3+2+4=9. Am I right?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I see how you arrived at 9 by adding the remainders, but let's check if that fits all the conditions. If Mohan had 9 cookies and put them in groups of 4, how many would be left over? Does that match the problem statement?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, 9 divided by 4 is 2 with a remainder of 1. But the problem says he should have 3 left over. So 9 is wrong.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. This tells us that simply adding the remainders doesn't work here. We need a number that satisfies all three conditions simultaneously. This is a classic problem involving modular arithmetic. Could you try writing these conditions as equations or congruences?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Okay, so if $x$ is the number of cookies:\n$x \\equiv 3 \\pmod 4$\n$x \\equiv 2 \\pmod 5$\n$x \\equiv 4 \\pmod 7$\nHow do I solve this? Do I just guess and check?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Guess and check can work for small numbers, but there's a more systematic way. Let's start with the first condition: $x \\equiv 3 \\pmod 4$. This means $x$ can be written as $x = 4k + 3$ for some integer $k$. Now, try substituting this expression for $x$ into the second condition ($x \\equiv 2 \\pmod 5$) and solve for $k$.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "So $4k + 3 \\equiv 2 \\pmod 5$.\nSubtracting 3 from both sides: $4k \\equiv -1 \\pmod 5$, which is the same as $4k \\equiv 4 \\pmod 5$.\nDividing by 4, I get $k \\equiv 1 \\pmod 5$. Does that mean $k=1$?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You're on the right track! $k \\equiv 1 \\pmod 5$ means $k$ could be 1, 6, 11, and so on. In general, $k = 5n + 1$ for some integer $n$. Now, substitute this expression for $k$ back into your equation for $x$ to get a new expression for $x$ in terms of $n$.",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "$x = 4(5n + 1) + 3$\n$x = 20n + 4 + 3$\n$x = 20n + 7$\nNow I use the last condition: $20n + 7 \\equiv 4 \\pmod 7$.\n$20n \\equiv -3 \\pmod 7$\nSince $20 \\equiv 6 \\pmod 7$, then $6n \\equiv 4 \\pmod 7$.\nIf $n=1$, $6 \\equiv 4$ (False)\nIf $n=2$, $12 \\equiv 5 \\equiv 4$ (False)\nIf $n=3$, $18 \\equiv 4 \\pmod 7$. This works! So $n=3$.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Great job working through that congruence! Now that you've found the smallest non-negative integer $n$ that satisfies the conditions, what is the final value of $x$?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Using $x = 20n + 7$ and $n = 3$, I get $x = 20(3) + 7 = 67$. Is 67 the least number of cookies?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, that is correct. 67 is the smallest positive integer that satisfies all three conditions: $67 = 16 \\times 4 + 3$, $67 = 13 \\times 5 + 2$, and $67 = 9 \\times 7 + 4$. Well done!",
+      "loss_mask": true
+    }
+  ]
+}

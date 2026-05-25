@@ -1,0 +1,98 @@
+{
+  "conversation_id": "mt_1099",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Basic algorithms and data manipulation: Dynamic Programming on Matrices",
+    "difficulty": "high_school_intro",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "off_topic_redirect",
+      "task_focus",
+      "scaffolding"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student drifts off-topic to ask about a gaming PC; tutor redirects politely and guides them through the DP state definition."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "high_school_low"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "confirm_after_student"
+    },
+    "task_context": {
+      "problem_statement": "Given a square matrix of size N*N given as a list of lists, where each cell is associated with a specific cost. A path is defined as a specific sequence of cells that starts from the top-left cell move only right or down and ends on bottom right cell. We want to find a path with the maximum average over all existing paths. Average is computed as total cost divided by the number of cells visited in the path.",
+      "reference_solution": "def maxAverageOfPath(cost):\n  N = len(cost)\n  dp = [[0 for i in range(N + 1)] for j in range(N + 1)]\n  dp[0][0] = cost[0][0]\n  for i in range(1, N):\n    dp[i][0] = dp[i - 1][0] + cost[i][0]\n  for j in range(1, N):\n    dp[0][j] = dp[0][j - 1] + cost[0][j]\n  for i in range(1, N):\n    for j in range(1, N):\n      dp[i][j] = max(dp[i - 1][j],\n                     dp[i][j - 1]) + cost[i][j]\n  return dp[N - 1][N - 1] / (2 * N - 1)",
+      "seed_dataset": "google-research-datasets/mbpp/sanitized/train",
+      "seed_example_id": "721"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hi! I'm stuck on this problem: Given a square matrix of size N*N given as a list of lists, where each cell is associated with a specific cost. A path is defined as a specific sequence of cells that starts from the top-left cell move only right or down and ends on bottom right cell. We want to find a path with the maximum average over all existing paths. Average is computed as total cost divided by the number of cells visited in the path. Can you just give me the code for this? I'm in a rush.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "I can certainly help you work through this! Instead of giving you the full code right away, let's break it down so you understand how to solve it. First, let's look at the 'average' part. Since we can only move right or down in an N*N matrix, does the number of cells visited change depending on the path we take?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Hmm, let me think. If I go all the way right and then all the way down, that's N steps right and N steps down... wait, including the start cell, it's like (N-1) + (N-1) + 1? So it's always 2N-1 cells? Yeah, I think it's always the same.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great observation! Since the number of cells visited is constant for every valid path, maximizing the average is the same as maximizing the total sum of the costs. Now, how do you think we can keep track of the maximum sum to reach any given cell (i, j) based on the cells we could have come from?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Wait, before I answer that, do you think I should get an RTX 4090 or a 4080 for my new gaming PC? I'm trying to decide if the extra cost is worth it for 4K gaming.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That sounds like an exciting upgrade! We can chat about PC hardware once we've nailed down this algorithm. Let's get back to the matrix—you were thinking about how to reach cell (i, j). If you can only move right or down, which cells could possibly lead into cell (i, j)?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh right, sorry. I guess I could only have come from the cell directly above it or the cell directly to the left of it. So for cell (i, j), I'd look at (i-1, j) and (i, j-1).",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Spot on. If you know the maximum sum to reach those two neighboring cells, how would you determine the maximum sum to reach the current cell (i, j)?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I would take the maximum of the two neighbors and then add the cost of the current cell (i, j) to that. So it's like: dp[i][j] = max(dp[i-1][j], dp[i][j-1]) + cost[i][j].",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That is exactly the right logic for the general case. Now, consider the edges of the matrix. If you are in the first row (i=0), can you come from the cell above? How does that change your calculation for the first row and first column?",
+      "loss_mask": true
+    }
+  ]
+}

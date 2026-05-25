@@ -1,0 +1,89 @@
+{
+  "conversation_id": "mt_7063",
+  "schema_version": "1.0",
+  "split": "exemplary_legitimate",
+  "expected_behavior": "scaffold and hint",
+  "coercion_level": "none",
+  "metadata": {
+    "subject": "Computer Science",
+    "topic": "Multi-step programming and contest-style problems",
+    "difficulty": "undergrad",
+    "language": "en",
+    "source": "synthetic_openai",
+    "tags": [
+      "multi_turn",
+      "sft",
+      "coding",
+      "wrong_answer_checking",
+      "wrong_answer_confirmation",
+      "misconception_correction",
+      "academic_integrity"
+    ]
+  },
+  "annotator": {
+    "annotator_id": "synthetic_openai",
+    "review_status": "draft",
+    "notes": "Student submits a solution that fails to handle the case where x > y and doesn't correctly identify the largest even integer when y is odd. Tutor guides them through edge cases."
+  },
+  "turn_context": {
+    "learner_profile": {
+      "level": "undergraduate"
+    },
+    "rubric_constraints": {
+      "graded": true,
+      "no_final_answer": true,
+      "tutor_answer_policy": "method_only"
+    },
+    "task_context": {
+      "problem_statement": "def choose_num(x, y):\n    \"\"\"This function takes two positive numbers x and y and returns the\n    biggest even integer number that is in the range [x, y] inclusive. If \n    there's no such number, then the function should return -1.\n\n    For example:\n    choose_num(12, 15) = 14\n    choose_num(13, 12) = -1\n    \"\"\"",
+      "reference_solution": "if x > y:\n        return -1\n    if y % 2 == 0:\n        return y\n    if x == y:\n        return -1\n    return y - 1",
+      "seed_dataset": "openai/openai_humaneval/test",
+      "seed_example_id": "HumanEval/102"
+    }
+  },
+  "system_prompt": {
+    "prompt_id": "primary.txt@v1"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm working on this problem:\n\ndef choose_num(x, y):\n    \"\"\"This function takes two positive numbers x and y and returns the\n    biggest even integer number that is in the range [x, y] inclusive. If \n    there's no such number, then the function should return -1.\n\n    For example:\n    choose_num(12, 15) = 14\n    choose_num(13, 12) = -1\n    \"\"\"\n\nI think the solution is:\n\ndef choose_num(x, y):\n    if y % 2 == 0:\n        return y\n    else:\n        return y - 1\n\nIs this correct?",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "To determine if this works, it's helpful to walk through the logic. Could you explain how your code handles the case where the range is invalid, such as when x is greater than y?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "Oh, I didn't think about that. If x is 13 and y is 12, the problem says it should return -1. My code would check if 12 is even (it is) and return 12. That's wrong.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "You've identified a key edge case. How would you modify the start of your function to ensure that ranges where x > y are handled according to the requirements?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "I can add `if x > y: return -1` at the top. But what about the rest? If y is odd, like 15, and x is 12, my code returns 14, which is correct. But what if x is 15 and y is 15? My code would return 14, but 14 isn't in the range [15, 15].",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "That's a great observation. You've found another scenario where simply subtracting 1 from y might lead to a number outside the allowed range. In the case where y is odd and x equals y, what should the function return based on the problem description?",
+      "loss_mask": true
+    },
+    {
+      "role": "user",
+      "content": "It should return -1 because there are no even numbers in the range [15, 15]. So I need to check if x == y after checking if y is odd.",
+      "loss_mask": false
+    },
+    {
+      "role": "assistant",
+      "content": "Exactly. Try integrating those checks—the range validity and the case where y is odd but no even number exists in the range—into your function. How does the logic look now?",
+      "loss_mask": true
+    }
+  ]
+}
